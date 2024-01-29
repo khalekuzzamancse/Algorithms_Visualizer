@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="domain-desktop">
+    <output-path>$PROJECT_DIR$/architecture_layers/domain/build/libs</output-path>
+    <root id="archive" name="domain-desktop.jar">
+      <element id="module-output" name="DSAVisualier2024.architecture_layers.domain.desktopMain" />
+    </root>
+  </artifact>
+</component>

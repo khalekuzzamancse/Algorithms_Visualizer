@@ -1,0 +1,6 @@
+[versions]
+featureModules-navigation=":feature:navigation"
+ui-array=":architecture_layers:ui:array"
+
+
+

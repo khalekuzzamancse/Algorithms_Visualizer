@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
@@ -8,7 +9,20 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/applications" />
+            <option value="$PROJECT_DIR$/applications/android" />
+            <option value="$PROJECT_DIR$/applications/desktop" />
+            <option value="$PROJECT_DIR$/applications/ios" />
+            <option value="$PROJECT_DIR$/applications/web" />
+            <option value="$PROJECT_DIR$/architecture_layers" />
+            <option value="$PROJECT_DIR$/architecture_layers/data" />
+            <option value="$PROJECT_DIR$/architecture_layers/domain" />
+            <option value="$PROJECT_DIR$/architecture_layers/ui" />
+            <option value="$PROJECT_DIR$/architecture_layers/ui/array" />
+            <option value="$PROJECT_DIR$/architecture_layers/ui/common_ui" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/navigation" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
