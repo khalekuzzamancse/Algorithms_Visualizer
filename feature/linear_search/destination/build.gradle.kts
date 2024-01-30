@@ -23,7 +23,8 @@ kotlin {
                 implementation(compose.animationGraphics)
                 implementation(compose.materialIconsExtended)
                 implementation("dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1")
-                implementation(project(localModules.versions.features.linearSearch.destination.get()))
+                implementation(project(localModules.versions.features.linearSearch.data.get()))
+                implementation(project(localModules.versions.features.linearSearch.ui.get()))
             }
         }
         val androidMain by getting{
@@ -41,7 +42,7 @@ kotlin {
 
 }
 android {
-    namespace = "com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation"
+    namespace = "com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.destination"
     compileSdk = 34
     defaultConfig {
         minSdk = 27

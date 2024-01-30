@@ -38,6 +38,7 @@ val uiLyaers=listOf(
 val coreModules = listOf(":core")
 val featuresModules=listOf(
     ":feature",
+    ":feature:linear_search", ":feature:linear_search:data",":feature:linear_search:domain",":feature:linear_search:ui",":feature:linear_search:destination",
     ":feature:navigation",
 )
 

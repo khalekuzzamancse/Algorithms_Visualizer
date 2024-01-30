@@ -13,7 +13,7 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
 
 
 @Composable
-internal fun <T> Array(
+ fun <T> Array(
     cellSize: Dp = 64.dp,
     arrayManager: ArrayManager<T>,
 ) {
@@ -29,7 +29,7 @@ internal fun <T> Array(
 }
 
 @Composable
-internal fun <T> Array(
+ fun <T> Array(
     modifier: Modifier = Modifier,
     invisibleCell: Boolean = false,
     state: ArrayManager<T>,

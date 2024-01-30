@@ -9,19 +9,19 @@ import kotlinx.coroutines.flow.update
 /**
  * @param value toString() of value will be used as label
  */
-internal data class ArrayElement<T>(
+ data class ArrayElement<T>(
     val position: Offset = Offset.Zero,
     val color: Color = Color.Unspecified,
     val value: T,
 )
 
-internal data class ArrayCell(
+ data class ArrayCell(
     val position: Offset = Offset.Zero,
     val elementRef: Int? = null,
     val color: Color = Color.Unspecified,
 )
 
-internal data class ArrayManager<T>(
+ data class ArrayManager<T>(
     private val list: List<T>,
     private val cellSizePx: Float,
 ) {

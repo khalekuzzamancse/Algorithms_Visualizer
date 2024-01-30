@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayManager
 
 @Composable
-internal fun <T> PlacingElement(
+ fun <T> PlacingElement(
     state: ArrayManager<T>,
     cellSize: Dp,
     onDragStart: (Int) -> Unit,
@@ -60,7 +60,7 @@ internal fun <T> PlacingElement(
     }
 }
 @Composable
-internal fun ArrayCellElement(
+ fun ArrayCellElement(
     size: Dp,
     color: Color = Color.Red,
     currentOffset: Offset = Offset.Zero,

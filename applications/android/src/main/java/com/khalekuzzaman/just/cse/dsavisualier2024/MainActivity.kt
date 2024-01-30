@@ -20,7 +20,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             DSAVisualier2024Theme {
 
-                Icons.Default.Co
 
 
             }

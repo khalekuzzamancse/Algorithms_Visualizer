@@ -21,7 +21,7 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun <T> ArrayCells(
+ fun <T> ArrayCells(
     invisibleCell: Boolean = false,
     state: ArrayManager<T>,
     size: Dp,
@@ -49,7 +49,7 @@ internal fun <T> ArrayCells(
 
  */
 @Composable
-internal fun ArrayCell(
+ fun ArrayCell(
     modifier: Modifier = Modifier,
     size: Dp,
     backgroundColor: Color = Color.Unspecified,

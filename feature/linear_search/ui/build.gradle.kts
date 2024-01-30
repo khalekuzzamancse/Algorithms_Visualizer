@@ -22,8 +22,12 @@ kotlin {
                 implementation(compose.animation)
                 implementation(compose.animationGraphics)
                 implementation(compose.materialIconsExtended)
+                implementation(libs.kotlinx.coroutines.core)
                 implementation("dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1")
-                implementation(project(localModules.versions.features.linearSearch.destination.get()))
+
+                implementation(project(localModules.versions.ui.array.get()))
+                api(project(localModules.versions.features.linearSearch.domain.get()))
+                implementation(project(localModules.versions.features.linearSearch.data.get()))
             }
         }
         val androidMain by getting{
@@ -41,7 +45,7 @@ kotlin {
 
 }
 android {
-    namespace = "com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation"
+    namespace = "com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.ui"
     compileSdk = 34
     defaultConfig {
         minSdk = 27

@@ -1,7 +1,6 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    id("org.jetbrains.compose")
 }
 kotlin {
     androidTarget {
@@ -17,13 +16,9 @@ kotlin {
     sourceSets{
         val commonMain by getting{
             dependencies {
-                implementation(compose.ui)
-                implementation(compose.material3)
-                implementation(compose.animation)
-                implementation(compose.animationGraphics)
-                implementation(compose.materialIconsExtended)
-                implementation("dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1")
-                implementation(project(localModules.versions.features.linearSearch.destination.get()))
+                implementation(libs.kotlinx.coroutines.core)
+                //implementation(localModules.versions.features.linearSearch.domain)
+                implementation(project(":feature:linear_search:domain"))
             }
         }
         val androidMain by getting{
@@ -40,8 +35,9 @@ kotlin {
 
 
 }
+
 android {
-    namespace = "com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation"
+    namespace = "com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.data"
     compileSdk = 34
     defaultConfig {
         minSdk = 27

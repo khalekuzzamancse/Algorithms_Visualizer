@@ -1,6 +1,8 @@
 [versions]
 featureModules-navigation=":feature:navigation"
 ui-array=":architecture_layers:ui:array"
-
-
+features-linearSearch-data=":feature:linear_search:data"
+features-linearSearch-domain=":feature:linear_search:domain"
+features-linearSearch-ui=":feature:linear_search:ui"
+features-linearSearch-destination=":feature:linear_search:destination"
 
