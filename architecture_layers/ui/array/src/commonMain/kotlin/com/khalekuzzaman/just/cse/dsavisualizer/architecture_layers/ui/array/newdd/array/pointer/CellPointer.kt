@@ -1,12 +1,15 @@
-package com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array
+package com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.pointer
 
 import androidx.compose.animation.core.animateOffsetAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,6 +43,28 @@ fun CellPointerComposable(
         Text(
             text = label,
             modifier = Modifier
+        )
+    }
+}
+@Composable
+fun CellPointerComposable2(
+    cellSize: Dp,
+    label: String,
+    position: Offset = Offset.Zero,
+) {
+    val offsetAnimation by animateOffsetAsState(position, label = "")
+    Box(
+        modifier = Modifier
+            .size(cellSize)
+            .offset {
+                IntOffset(offsetAnimation.x.toInt(), offsetAnimation.y.toInt())
+            }.background(MaterialTheme.colorScheme.tertiary.copy(alpha =0.8f)),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Text(
+            text = label,
+            modifier = Modifier,
+            color = MaterialTheme.colorScheme.onTertiary
         )
     }
 }

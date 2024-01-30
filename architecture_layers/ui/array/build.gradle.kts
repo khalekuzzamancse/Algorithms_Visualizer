@@ -22,6 +22,7 @@ kotlin {
                 implementation(compose.animation)
                 implementation(compose.animationGraphics)
                 implementation(compose.materialIconsExtended)
+                implementation(libs.kotlinx.coroutines.core)
                 implementation("dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1")
             }
         }

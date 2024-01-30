@@ -1,4 +1,4 @@
-package com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.controller
+package com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller
 
 import androidx.compose.ui.geometry.Offset
 import kotlin.math.abs
