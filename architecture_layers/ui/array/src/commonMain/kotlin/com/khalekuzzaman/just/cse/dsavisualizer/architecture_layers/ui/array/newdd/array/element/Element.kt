@@ -35,6 +35,7 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
  fun <T> PlacingElement(
     state: ArrayManager<T>,
     cellSize: Dp,
+    enableDrag: Boolean = false,
     onDragStart: (Int) -> Unit,
     onDragEnd: (Int) -> Unit = {},
 ) {
@@ -44,10 +45,13 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
             size = cellSize,
             currentOffset = element.position,
             onDrag = { dragAmount ->
+                if (enableDrag)
                 state.onDragElement(index, dragAmount)
             }, onDragEnd = {
+                if (enableDrag)
                 onDragEnd(index)
             }, onDragStart = {
+                if (enableDrag)
                 onDragStart(index)
             },
             color = MaterialTheme.colorScheme.secondary

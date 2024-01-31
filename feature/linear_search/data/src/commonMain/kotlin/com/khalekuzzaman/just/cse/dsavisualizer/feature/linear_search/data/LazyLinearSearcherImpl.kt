@@ -1,5 +1,7 @@
 package com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.data
 
+import com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.data.dto.LazyLinearSearchState
+import com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.data.dto.LinearSearchPseudocode
 import com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.domain.LinearSearcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,10 +15,14 @@ import kotlinx.coroutines.launch
 class LazyLinearSearcherImpl<T>(
     private val list: List<T>,
     private val target: T,
-) {
+) : LinearSearcher<T> {
     private val codeHighlighted = LinearSearchPseudocode()
-    private val _codes = MutableStateFlow(codeHighlighted.code)
-     val pseudocode = _codes.asStateFlow()
+    private val _codes = MutableStateFlow(codeHighlighted.code.map { it.toModel() })
+
+    //
+    override val pseudocode = _codes.asStateFlow()
+
+    //
     private val currentIndex = MutableStateFlow<Int?>(null)
     private val searchEnded = MutableStateFlow(false)
     private val isMatched = MutableStateFlow<Boolean?>(null)
@@ -28,9 +34,9 @@ class LazyLinearSearcherImpl<T>(
             searchEnded.value,
             isMatched.value,
             currentElement.value
-        )
+        ).toModel()
     )
-    val state = _state.asStateFlow()
+    override val state = _state.asStateFlow()
 
     init {
         CoroutineScope(Dispatchers.Default).launch {
@@ -42,7 +48,7 @@ class LazyLinearSearcherImpl<T>(
             ) { index, ended, matched, element ->
                 LazyLinearSearchState(index, ended, matched, element)
             }.collect { state ->
-                _state.update { state }
+                _state.update { state.toModel() }
             }
         }
 
@@ -58,7 +64,7 @@ class LazyLinearSearcherImpl<T>(
         }
     }
 
-    fun next() {
+    override fun next() {
         if (searchNotStarted.value) {
             beReadyToSearch()
             return
@@ -71,29 +77,27 @@ class LazyLinearSearcherImpl<T>(
     }
 
 
-
-
     private fun onSearchStartedButNotEnded() {
         currentIndex.value?.let { currentIndex ->
             //4 WHILE (index < number of items in the list)
             highLightCode(4)
             if (currentIndex < list.size) {
                 isMatched.update { currentElement.value == target }
-                highLightCode(listOf(4,5))
+                highLightCode(listOf(4, 5))
                 //IF (list[index] == target element)
                 if (isMatched.value as Boolean) {
                     //7 RETURN index
-                    highLightCode(listOf(4,5,7))
+                    highLightCode(listOf(4, 5, 7))
 
                     onSearchEnded()
                 } else {
                     //9 INCREMENT index by 1
-                    highLightCode(listOf(4,5,9))
+                    highLightCode(listOf(4, 5, 9))
                     readyForNextIterator()
                 }
             } else {
                 //11 RETURN -1
-                highLightCode(listOf(4,5,11))
+                highLightCode(listOf(4, 5, 11))
                 onSearchEnded()
             }
         }
@@ -104,7 +108,7 @@ class LazyLinearSearcherImpl<T>(
         isMatched.update { null }
     }
 
-    fun hasNext() = !searchEnded.value
+    override fun hasNext() = !searchEnded.value
 
 
     private fun onSearchEnded() {
@@ -125,7 +129,7 @@ class LazyLinearSearcherImpl<T>(
         CoroutineScope(Dispatchers.Default).launch {
             line.forEach { lineNo ->
                 _codes.update {
-                    codeHighlighted.highLightPseudocode(lineNo)
+                    codeHighlighted.highLightPseudocode(lineNo).map { it.toModel() }
                 }
                 delay(200)
             }
@@ -136,7 +140,7 @@ class LazyLinearSearcherImpl<T>(
 
     private fun highLightCode(line: Int) {
         _codes.update {
-            codeHighlighted.highLightPseudocode(line)
+            codeHighlighted.highLightPseudocode(line).map { it.toModel() }
         }
 
 

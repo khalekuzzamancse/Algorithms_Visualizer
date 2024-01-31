@@ -1,6 +1,7 @@
 [versions]
 featureModules-navigation=":feature:navigation"
 ui-array=":architecture_layers:ui:array"
+ui-commonUI=":architecture_layers:ui:common_ui"
 features-linearSearch-data=":feature:linear_search:data"
 features-linearSearch-domain=":feature:linear_search:domain"
 features-linearSearch-ui=":feature:linear_search:ui"

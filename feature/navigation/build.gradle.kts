@@ -24,6 +24,7 @@ kotlin {
                 implementation(compose.materialIconsExtended)
                 implementation("dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1")
                 implementation(project(localModules.versions.features.linearSearch.destination.get()))
+                implementation(project(localModules.versions.ui.commonUI.get()))
             }
         }
         val androidMain by getting{

@@ -1,4 +1,4 @@
-package com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.linear_search.ui.viewmodel
+package com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.linear_search.ui.viewmodel
 
 import androidx.compose.ui.graphics.Color
 import com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.data.LazyLinearSearcherImpl
@@ -21,6 +21,11 @@ internal class LinearSearchViewModel<T : Any>(
     private val _pointerIndex = MutableStateFlow<Int?>(null)
     val pointerIndex =_pointerIndex.asStateFlow()
     val pseudocode=searcher.pseudocode
+    private val _showPseudocode=MutableStateFlow(false)
+    val showPseudocode=_showPseudocode.asStateFlow()
+    fun togglePseudocodeVisibility(){
+        _showPseudocode.update { !it }
+    }
     init {
         CoroutineScope(Dispatchers.Default).launch {
             searcher.state.collect{state->

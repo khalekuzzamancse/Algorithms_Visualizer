@@ -26,6 +26,7 @@ kotlin {
                 implementation("dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1")
 
                 implementation(project(localModules.versions.ui.array.get()))
+                implementation(project(localModules.versions.ui.commonUI.get()))
                 api(project(localModules.versions.features.linearSearch.domain.get()))
                 implementation(project(localModules.versions.features.linearSearch.data.get()))
             }

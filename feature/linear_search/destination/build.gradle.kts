@@ -25,6 +25,7 @@ kotlin {
                 implementation("dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1")
                 implementation(project(localModules.versions.features.linearSearch.data.get()))
                 implementation(project(localModules.versions.features.linearSearch.ui.get()))
+                implementation(project(localModules.versions.ui.commonUI.get()))
             }
         }
         val androidMain by getting{

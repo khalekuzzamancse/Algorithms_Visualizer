@@ -13,8 +13,9 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
 
 
 @Composable
- fun <T> Array(
+fun <T> Array(
     cellSize: Dp = 64.dp,
+    enableDrag: Boolean = false,
     arrayManager: ArrayManager<T>,
 ) {
     Array(
@@ -22,20 +23,27 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
         cellSize = cellSize,
         onCellPositionChanged = arrayManager::onCellPositionChanged,
         state = arrayManager,
-        onDragEnd = arrayManager::onDragEnd,
-        onDragStart = arrayManager::onDragStart
+        onDragEnd = {
+            if (enableDrag)
+                arrayManager.onDragEnd(it)
+        },
+        onDragStart = {
+            if (enableDrag)
+                arrayManager.onDragStart(it)
+        }
     )
 
 }
 
 @Composable
- fun <T> Array(
+private fun <T> Array(
     modifier: Modifier = Modifier,
     invisibleCell: Boolean = false,
+    enableDrag: Boolean=false,
     state: ArrayManager<T>,
     cellSize: Dp,
     onCellPositionChanged: (Int, Offset) -> Unit = { _, _ -> },
-    onDragStart: (Int) -> Unit,
+    onDragStart: (Int) -> Unit={},
     onDragEnd: (Int) -> Unit = {},
 ) {
     Box(modifier = modifier) {
@@ -46,6 +54,7 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
             size = cellSize
         )
         PlacingElement(
+            enableDrag=false,
             state = state,
             cellSize = cellSize,
             onDragStart = onDragStart,
