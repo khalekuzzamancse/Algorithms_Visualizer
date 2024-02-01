@@ -27,6 +27,7 @@ kotlin {
                 implementation(project(localModules.versions.features.linearSearch.destination.get()))
                 implementation(project(localModules.versions.ui.commonUI.get()))
                 implementation(project(localModules.versions.core.realm.get()))
+                implementation(project(localModules.versions.core.database.mongodb.get()))
             }
         }
         val androidMain by getting{

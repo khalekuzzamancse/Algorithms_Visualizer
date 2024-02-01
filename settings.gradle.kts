@@ -30,15 +30,24 @@ val applicationModules = listOf(
     ":applications:web",
     ":applications:ios"
 )
-val uiLyaers=listOf(
+val uiLyaers = listOf(
     ":architecture_layers:ui:common_ui",
     ":architecture_layers:ui:array",
 )
 
-val coreModules = listOf(":core",":core:realm")
-val featuresModules=listOf(
+val coreModules = listOf(
+    ":core",
+    ":core:realm",
+    ":core:database",
+    ":core:database:mongodb",
+)
+val featuresModules = listOf(
     ":feature",
-    ":feature:linear_search", ":feature:linear_search:data",":feature:linear_search:domain",":feature:linear_search:ui",":feature:linear_search:destination",
+    ":feature:linear_search",
+    ":feature:linear_search:data",
+    ":feature:linear_search:domain",
+    ":feature:linear_search:ui",
+    ":feature:linear_search:destination",
     ":feature:navigation",
 )
 

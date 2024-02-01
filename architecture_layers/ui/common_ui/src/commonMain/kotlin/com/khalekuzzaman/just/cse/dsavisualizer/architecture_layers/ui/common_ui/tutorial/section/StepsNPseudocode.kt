@@ -27,8 +27,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.common_ui.tutorial.TutorialContent
 
-
-
 @Composable
 fun TutorialStepsNPseudoCodeSection(modifier: Modifier = Modifier, steps: TutorialContent.Steps) {
     Column(
