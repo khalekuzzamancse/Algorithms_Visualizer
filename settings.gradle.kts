@@ -35,7 +35,7 @@ val uiLyaers=listOf(
     ":architecture_layers:ui:array",
 )
 
-val coreModules = listOf(":core")
+val coreModules = listOf(":core",":core:realm")
 val featuresModules=listOf(
     ":feature",
     ":feature:linear_search", ":feature:linear_search:data",":feature:linear_search:domain",":feature:linear_search:ui",":feature:linear_search:destination",

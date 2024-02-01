@@ -6,4 +6,5 @@ features-linearSearch-data=":feature:linear_search:data"
 features-linearSearch-domain=":feature:linear_search:domain"
 features-linearSearch-ui=":feature:linear_search:ui"
 features-linearSearch-destination=":feature:linear_search:destination"
-
+features-navigation=":feature:navigation"
+core-realm=":core:realm"

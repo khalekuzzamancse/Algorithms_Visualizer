@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/architecture_layers/ui/array" />
             <option value="$PROJECT_DIR$/architecture_layers/ui/common_ui" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core/realm" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/linear_search" />
             <option value="$PROJECT_DIR$/feature/linear_search/data" />

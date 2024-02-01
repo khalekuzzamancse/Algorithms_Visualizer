@@ -8,6 +8,7 @@ kotlin {
         compilations.all {
             kotlinOptions {
                 jvmTarget = "17"
+               // jvmTarget = "1.8"
             }
         }
     }
@@ -25,6 +26,7 @@ kotlin {
                 implementation("dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1")
                 implementation(project(localModules.versions.features.linearSearch.destination.get()))
                 implementation(project(localModules.versions.ui.commonUI.get()))
+                implementation(project(localModules.versions.core.realm.get()))
             }
         }
         val androidMain by getting{
