@@ -1,4 +1,4 @@
-package com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.common_ui.tutorial.content_and_parser
+package com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.data.tutorial.admin_test_data.content_builder
 
 class TutorialContentBuilder {
     private val stringBuilder = StringBuilder()

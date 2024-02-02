@@ -1,9 +1,14 @@
-package com.khalekuzzaman.just.cse.dsavisualizer.feature.admin_section.linear_search.implementation
+package com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.data.tutorial.admin_test_data.linear_serach.add
 
-import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.common_ui.tutorial.section.tutorial.TutorialContent
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.data.tutorial.AlgoName
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.data.tutorial.TutorialCRUD
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.data.tutorial.implementation.Implementation
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.data.tutorial.implementation.Implementations
+import kotlinx.coroutines.runBlocking
+
 
 private val linearSearchImplementations = listOf(
-    TutorialContent.Implementation(
+  Implementation(
         languageName = "C",
         code = """
             #include <stdio.h>
@@ -31,7 +36,7 @@ private val linearSearchImplementations = listOf(
             }
         """.trimIndent()
     ),
-    TutorialContent.Implementation(
+    Implementation(
         languageName = "C++",
         code = """
             #include <iostream>
@@ -59,7 +64,7 @@ private val linearSearchImplementations = listOf(
             }
         """.trimIndent()
     ),
-    TutorialContent.Implementation(
+    Implementation(
         languageName = "Java",
         code = """
             public class LinearSearch {
@@ -85,7 +90,7 @@ private val linearSearchImplementations = listOf(
             }
         """.trimIndent()
     ),
-    TutorialContent.Implementation(
+    Implementation(
         languageName = "Python",
         code = """
             def linear_search(arr, key):
@@ -103,7 +108,7 @@ private val linearSearchImplementations = listOf(
                 print(f"Element {key} not found")
         """.trimIndent()
     ),
-    TutorialContent.Implementation(
+  Implementation(
         languageName = "Kotlin",
         code = """
             fun linearSearch(arr: IntArray, key: Int): Int {
@@ -128,3 +133,12 @@ private val linearSearchImplementations = listOf(
         """.trimIndent()
     )
 )
+fun main() {
+    runBlocking {
+        val data= Implementations(
+            algoName = AlgoName.LinearSearch,
+            implementations = linearSearchImplementations
+        )
+        TutorialCRUD().addImplementation(data)
+    }
+}

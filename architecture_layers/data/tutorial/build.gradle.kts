@@ -21,6 +21,15 @@ kotlin {
 
             }
         }
+        val commonTest by getting {
+            dependencies {
+                implementation ("org.junit.jupiter:junit-jupiter-api:5.6.3")
+                implementation ("org.junit.jupiter:junit-jupiter-engine:5.6.3")
+                implementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
+                implementation("org.mockito:mockito-core:4.8.0")
+
+            }
+        }
         val androidMain by getting{
             dependencies {
             }
@@ -43,3 +52,4 @@ android {
     }
 
 }
+
