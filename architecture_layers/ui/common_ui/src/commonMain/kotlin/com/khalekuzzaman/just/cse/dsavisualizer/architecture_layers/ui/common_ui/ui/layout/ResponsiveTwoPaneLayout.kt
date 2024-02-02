@@ -18,6 +18,9 @@ import com.just.cse.digital_diary.two_zero_two_three.common_ui.layout.two_panes.
  * @param topOrRightPane ,will be the top of pane1 in compact mode and in medium and expanded mode
  * pane2 will be side of pane1 as siblings of Row
  */
+enum class WindowMode{
+    Compact,NonCompact
+}
 @Composable
 fun TwoPaneLayout(
     snackBarMessage: String? = null,
@@ -25,6 +28,7 @@ fun TwoPaneLayout(
     props:TwoPaneProps=TwoPaneProps(),
     showTopOrRightPane: Boolean,
     secondaryPaneAnimationState:Any?,
+    onCurrentMode:(WindowMode)->Unit={},
     leftPane: @Composable () -> Unit,
     topOrRightPane: @Composable () -> Unit,
 ) {
@@ -32,6 +36,7 @@ fun TwoPaneLayout(
         snackBarMessage = snackBarMessage,
         showProgressBar = showProgressBar,
         onCompact = {
+            onCurrentMode(WindowMode.Compact)
             CompactModeLayout(
                 showTopPane = showTopOrRightPane,
                 enter = props.topPaneAnimation.enter,
@@ -45,6 +50,7 @@ fun TwoPaneLayout(
 
         },
         onNonCompact = {
+            onCurrentMode(WindowMode.NonCompact)
             NonCompactModeLayout(
                 showPane2 = showTopOrRightPane,
                 pane1MaxWithPortion =props.pane1MaxWidthPortion,

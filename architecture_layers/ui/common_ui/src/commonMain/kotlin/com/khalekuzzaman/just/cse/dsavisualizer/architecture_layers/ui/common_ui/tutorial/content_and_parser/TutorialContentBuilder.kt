@@ -9,7 +9,6 @@ class TutorialContentBuilder {
             TextType.HIGHLIGHT -> stringBuilder.append("<high>$text</high>")
 
         }
-        stringBuilder.append(" ")//add a space
         return this
     }
 

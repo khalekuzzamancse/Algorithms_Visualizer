@@ -18,7 +18,6 @@ kotlin {
             dependencies {
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(project(localModules.versions.core.database.mongodb.get()))
-                implementation(project(":feature:linear_search:domain"))
 
             }
         }
@@ -36,9 +35,8 @@ kotlin {
 
 
 }
-
 android {
-    namespace = "com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.data"
+    namespace = "com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.data.tutorial"
     compileSdk = 34
     defaultConfig {
         minSdk = 27

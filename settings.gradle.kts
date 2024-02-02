@@ -20,6 +20,7 @@ dependencyResolutionManagement {
 val architectureLayers = listOf(
     ":architecture_layers",
     ":architecture_layers:data",
+    ":architecture_layers:data:tutorial",
     ":architecture_layers:domain",
     ":architecture_layers:ui",
 )
@@ -49,6 +50,7 @@ val featuresModules = listOf(
     ":feature:linear_search:ui",
     ":feature:linear_search:destination",
     ":feature:navigation",
+    ":feature:admin_section"
 )
 
 rootProject.name = "DSAVisualier2024"

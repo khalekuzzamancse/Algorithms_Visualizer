@@ -1,7 +1,7 @@
 package com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.data
 
-import com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.data.dto.LazyLinearSearchState
-import com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.data.dto.LinearSearchPseudocode
+import com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.data.dto.non_database.LazyLinearSearchState
+import com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.data.dto.non_database.LinearSearchPseudocode
 import com.khalekuzzaman.just.cse.dsavisualizer.feature.linear_search.domain.LinearSearcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
