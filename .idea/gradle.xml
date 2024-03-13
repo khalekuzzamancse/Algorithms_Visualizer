@@ -28,10 +28,6 @@
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/admin_section" />
             <option value="$PROJECT_DIR$/feature/linear_search" />
-            <option value="$PROJECT_DIR$/feature/linear_search/data" />
-            <option value="$PROJECT_DIR$/feature/linear_search/destination" />
-            <option value="$PROJECT_DIR$/feature/linear_search/domain" />
-            <option value="$PROJECT_DIR$/feature/linear_search/ui" />
             <option value="$PROJECT_DIR$/feature/navigation" />
           </set>
         </option>
