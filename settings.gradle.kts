@@ -18,10 +18,10 @@ dependencyResolutionManagement {
     }
 }
 val architectureLayers = listOf(
-    ":common_layers",
-    ":common_layers:data",
-    ":common_layers:domain",
-    ":common_layers:ui",
+    ":common",
+    ":common:data",
+    ":common:domain",
+    ":common:ui",
 )
 val applicationModules = listOf(
     ":applications",
@@ -31,8 +31,8 @@ val applicationModules = listOf(
     ":applications:ios"
 )
 val uiLyaers = listOf(
-    ":common_layers:ui:common_ui",
-    ":common_layers:ui:array",
+    ":common:ui:common_ui",
+    ":common:ui:array",
 )
 
 val coreModules = listOf(
