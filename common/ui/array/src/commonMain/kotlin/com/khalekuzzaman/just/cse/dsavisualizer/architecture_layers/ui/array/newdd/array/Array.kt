@@ -9,27 +9,27 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.cell.ArrayCells
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.element.PlacingElement
-import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayManager
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController
 
 
 @Composable
 fun <T> Array(
     cellSize: Dp = 64.dp,
     enableDrag: Boolean = false,
-    arrayManager: ArrayManager<T>,
+    arrayController: ArrayController<T>,
 ) {
     Array(
         modifier = Modifier.wrapContentSize(),
         cellSize = cellSize,
-        onCellPositionChanged = arrayManager::onCellPositionChanged,
-        state = arrayManager,
+        onCellPositionChanged = arrayController::onCellPositionChanged,
+        state = arrayController,
         onDragEnd = {
             if (enableDrag)
-                arrayManager.onDragEnd(it)
+                arrayController.onDragEnd(it)
         },
         onDragStart = {
             if (enableDrag)
-                arrayManager.onDragStart(it)
+                arrayController.onDragStart(it)
         }
     )
 
@@ -40,7 +40,7 @@ private fun <T> Array(
     modifier: Modifier = Modifier,
     invisibleCell: Boolean = false,
     enableDrag: Boolean=false,
-    state: ArrayManager<T>,
+    state: ArrayController<T>,
     cellSize: Dp,
     onCellPositionChanged: (Int, Offset) -> Unit = { _, _ -> },
     onDragStart: (Int) -> Unit={},

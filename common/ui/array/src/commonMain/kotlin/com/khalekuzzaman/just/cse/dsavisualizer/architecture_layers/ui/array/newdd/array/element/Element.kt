@@ -29,11 +29,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayManager
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController
 
 @Composable
  fun <T> PlacingElement(
-    state: ArrayManager<T>,
+    state: ArrayController<T>,
     cellSize: Dp,
     enableDrag: Boolean = false,
     onDragStart: (Int) -> Unit,

@@ -1,4 +1,4 @@
-package feature.search.ui.visulizer.controller
+package feature.search.un_used
 
 import feature.search.ui.visulizer.model.State
 import feature.search.ui.visulizer.model.Pseudocode
@@ -38,6 +38,8 @@ internal class LinearSearcherImpl<T>(
     )
     override val state = _state.asStateFlow()
 
+
+
     init {
         CoroutineScope(Dispatchers.Default).launch {
             combine(
@@ -52,6 +54,7 @@ internal class LinearSearcherImpl<T>(
             }
         }
 
+
     }
 
 
@@ -65,6 +68,7 @@ internal class LinearSearcherImpl<T>(
     }
 
     override fun next() {
+
         if (searchNotStarted.value) {
             beReadyToSearch()
             return
@@ -109,6 +113,7 @@ internal class LinearSearcherImpl<T>(
     }
 
     override fun hasNext() = !searchEnded.value
+
 
 
     private fun onSearchEnded() {

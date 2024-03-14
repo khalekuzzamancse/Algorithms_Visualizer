@@ -33,17 +33,17 @@ internal fun VisualizationRoute() {
     val cellSize = 64.dp
     val sizePx = with(LocalDensity.current) { cellSize.toPx() }
     val visitedCellColor = Color.Red
-    val viewModel = remember {
+    val controller = remember {
         VisualizationController(
             list = list,
             visitedCellColor = visitedCellColor,
             cellSizePx = sizePx,
-            target = 60
+            target = 30
         )
     }
-    val arrayManager = viewModel.arrayManager
-    val searcher = viewModel.searcher
-    val pointerIndex = viewModel.pointerIndex.collectAsState().value
+    val arrayManager = controller.arrayController
+    val searcher = controller.searcher
+    val pointerIndex = controller.pointerIndex.collectAsState(null).value
 
     FlowRow(
         Modifier.verticalScroll(rememberScrollState()),
@@ -52,32 +52,35 @@ internal fun VisualizationRoute() {
     ) {
         ControlSection(
             onNext = searcher::next,
-            isCodeOff = viewModel.showPseudocode.collectAsState().value,
-            onCodeVisibilityToggleRequest = viewModel::togglePseudocodeVisibility
+            isCodeOff = controller.showPseudocode.collectAsState().value,
+            onCodeVisibilityToggleRequest = controller::togglePseudocodeVisibility
         )
         Spacer(Modifier.height(64.dp))
         Box {
             Array(
                 cellSize = cellSize,
-                arrayManager = arrayManager,
+                arrayController = arrayManager,
                 enableDrag = false
             )
-            pointerIndex?.let {
-                CellPointerComposable2(
-                    cellSize = cellSize,
-                    position = arrayManager.cells.value[pointerIndex].position,
-                    label = "i"
-                )
+            pointerIndex?.let {index->
+                if (index>=0&&index<list.size){
+                    CellPointerComposable2(
+                        cellSize = cellSize,
+                        position = arrayManager.cells.value[index].position,
+                        label = "i"
+                    )
+                }
+
             }
 
         }
         Column {
 //            VariablesSection()
             Spacer(Modifier.height(64.dp))
-            AnimatedVisibility(viewModel.showPseudocode.collectAsState().value) {
+            AnimatedVisibility(controller.showPseudocode.collectAsState().value) {
                 PseudoCodeExecutor(
                     modifier = Modifier.padding(8.dp),
-                    code = viewModel.pseudocode.collectAsState().value.map {
+                    code = controller.pseudocode.collectAsState().value.map {
                         PseudoCodeLine(
                             line = it.line,
                             lineNumber = it.lineNumber,
@@ -93,4 +96,3 @@ internal fun VisualizationRoute() {
 
 
 }
-

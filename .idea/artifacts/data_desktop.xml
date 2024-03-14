@@ -1,8 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="data-desktop">
-    <output-path>$PROJECT_DIR$/feature/linear_search/data/build/libs</output-path>
-    <root id="archive" name="data-desktop.jar">
-      <element id="module-output" name="DSAVisualier2024.feature.linear_search.data.desktopMain" />
-    </root>
+    <output-path>$PROJECT_DIR$/common/data/build/libs</output-path>
+    <root id="archive" name="data-desktop.jar" />
   </artifact>
 </component>

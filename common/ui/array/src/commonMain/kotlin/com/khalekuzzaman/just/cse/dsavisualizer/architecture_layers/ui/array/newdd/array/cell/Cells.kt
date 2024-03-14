@@ -16,14 +16,14 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayManager
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController
 
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
  fun <T> ArrayCells(
     invisibleCell: Boolean = false,
-    state: ArrayManager<T>,
+    state: ArrayController<T>,
     size: Dp,
     onCellPositionChanged: (Int, Offset) -> Unit = { _, _ -> },
 ) {
