@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.cell.ArrayCells
-import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.element.PlacingElement
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.components.ArrayCells
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.components.PlacingElement
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController
 
 
@@ -30,7 +30,8 @@ fun <T> VisualArray(
         onDragStart = {
             if (enableDrag)
                 arrayController.onDragStart(it)
-        }
+        },
+        enableDrag=enableDrag
     )
 
 }
@@ -39,7 +40,7 @@ fun <T> VisualArray(
 private fun <T> VisualArray(
     modifier: Modifier = Modifier,
     invisibleCell: Boolean = false,
-    enableDrag: Boolean=false,
+    enableDrag: Boolean,
     state: ArrayController<T>,
     cellSize: Dp,
     onCellPositionChanged: (Int, Offset) -> Unit = { _, _ -> },
@@ -49,13 +50,13 @@ private fun <T> VisualArray(
     Box(modifier = modifier) {
         ArrayCells(
             invisibleCell = invisibleCell,
-            state = state,
+            controller = state,
             onCellPositionChanged = onCellPositionChanged,
             size = cellSize
         )
         PlacingElement(
-            enableDrag=false,
-            state = state,
+            enableDrag=enableDrag,
+            controller = state,
             cellSize = cellSize,
             onDragStart = onDragStart,
             onDragEnd = onDragEnd

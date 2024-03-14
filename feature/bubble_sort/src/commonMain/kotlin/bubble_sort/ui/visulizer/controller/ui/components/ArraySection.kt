@@ -1,4 +1,4 @@
-package feature.search.ui.visulizer.controller.ui.components
+package bubble_sort.ui.visulizer.controller.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable

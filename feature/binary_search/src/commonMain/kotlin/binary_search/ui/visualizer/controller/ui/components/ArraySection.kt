@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.VisualArray
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController
-import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.pointer.CellPointerComposable2
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.components.CellPointerComposable
 
 @Composable
 fun <T> ArraySection(
@@ -24,31 +24,37 @@ fun <T> ArraySection(
         )
         low?.let { index ->
             if (index.isWithinRange(list.size)) {
-                CellPointerComposable2(
-                    cellSize = cellSize,
-                    position = arrayController.cells.value[index].position,
-                    label = "L"
-                )
+                arrayController.getCellPosition(index)?.let {
+                    CellPointerComposable(
+                        cellSize = cellSize,
+                        position = it,
+                        label = "L"
+                    )
+                }
             }
 
         }
         high?.let { index ->
             if (index.isWithinRange(list.size)) {
-                CellPointerComposable2(
-                    cellSize = cellSize,
-                    position = arrayController.cells.value[index].position,
-                    label = "R"
-                )
+                arrayController.getCellPosition(index)?.let {
+                    CellPointerComposable(
+                        cellSize = cellSize,
+                        position = it,
+                        label = "R"
+                    )
+                }
             }
 
         }
         mid?.let { index ->
             if (index.isWithinRange(list.size)) {
-                CellPointerComposable2(
-                    cellSize = cellSize,
-                    position = arrayController.cells.value[index].position,
-                    label = "M"
-                )
+                arrayController.getCellPosition(index)?.let {
+                    CellPointerComposable(
+                        cellSize = cellSize,
+                        position = it,
+                        label = "M"
+                    )
+                }
             }
 
         }

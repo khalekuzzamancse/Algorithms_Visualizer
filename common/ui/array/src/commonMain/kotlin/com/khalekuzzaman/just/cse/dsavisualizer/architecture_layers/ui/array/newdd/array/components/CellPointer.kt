@@ -1,4 +1,4 @@
-package com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.pointer
+package com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.components
 
 import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.foundation.background
@@ -20,6 +20,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 
+/**
+ * Represent the pointer  of the cell ,this helpful when you
+ */
 @Composable
 fun CellPointerComposable(
     cellSize: Dp,
@@ -47,7 +50,7 @@ fun CellPointerComposable(
     }
 }
 @Composable
-fun CellPointerComposable2(
+fun CellPointerComposable(
     cellSize: Dp,
     label: String,
     position: Offset = Offset.Zero,

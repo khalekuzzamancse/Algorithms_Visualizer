@@ -1,4 +1,4 @@
-package com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.element
+package com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.components
 
 import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.foundation.background
@@ -31,22 +31,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController
 
+/**
+ * It is used to define the cell element,the element are take the same coordinate as it
+ * corresponding cell takes,
+ * [controller] has the information how many cell it has and what are the cell value needed to be
+ * so based on the number of cell and the list value it will create and place UI represent of the element of array
+ */
 @Composable
  fun <T> PlacingElement(
-    state: ArrayController<T>,
+    controller: ArrayController<T>,
     cellSize: Dp,
     enableDrag: Boolean = false,
     onDragStart: (Int) -> Unit,
     onDragEnd: (Int) -> Unit = {},
 ) {
     //placing the element on top of cells
-    state.elements.collectAsState().value.forEachIndexed { index, element ->
+    controller.elements.collectAsState().value.forEachIndexed { index, element ->
         ArrayCellElement(
             size = cellSize,
             currentOffset = element.position,
             onDrag = { dragAmount ->
                 if (enableDrag)
-                state.onDragElement(index, dragAmount)
+                controller.onDragElement(index, dragAmount)
             }, onDragEnd = {
                 if (enableDrag)
                 onDragEnd(index)
@@ -63,8 +69,12 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
         }
     }
 }
+
+/**
+ * It denote a single element of the array that will take the same coordinate as it corresponding cell
+ */
 @Composable
- fun ArrayCellElement(
+ private fun ArrayCellElement(
     size: Dp,
     color: Color = Color.Red,
     currentOffset: Offset = Offset.Zero,

@@ -1,4 +1,4 @@
-package com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.cell
+package com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,17 +19,22 @@ import androidx.compose.ui.unit.dp
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController
 
 
+/**
+ * The cells of the array,the cell does not direcly contain the element because
+ * we want the element be move able or draggable so that in case of sorting algo they can be swapped.
+ * that is why we the cell does not contain a fix element
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
  fun <T> ArrayCells(
     invisibleCell: Boolean = false,
-    state: ArrayController<T>,
+    controller: ArrayController<T>,
     size: Dp,
     onCellPositionChanged: (Int, Offset) -> Unit = { _, _ -> },
 ) {
     //Placing the cell
     FlowRow {
-        state.cells.collectAsState().value.forEachIndexed { index, cell ->
+        controller.cells.collectAsState().value.forEachIndexed { index, cell ->
             ArrayCell(size = size,
                 hideBorder = invisibleCell,
                 onPositionChanged = { position ->
@@ -49,7 +54,7 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
 
  */
 @Composable
- fun ArrayCell(
+private fun ArrayCell(
     modifier: Modifier = Modifier,
     size: Dp,
     backgroundColor: Color = Color.Unspecified,
