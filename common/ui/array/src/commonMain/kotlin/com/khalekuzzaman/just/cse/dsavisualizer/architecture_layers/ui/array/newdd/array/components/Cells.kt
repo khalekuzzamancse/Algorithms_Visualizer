@@ -17,6 +17,7 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.swappable.SwappableArrayController
 
 
 /**
@@ -45,7 +46,27 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
         }
     }
 }
-
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun <T> ArrayCells(
+    invisibleCell: Boolean = false,
+    controller: SwappableArrayController<T>,
+    size: Dp,
+    onCellPositionChanged: (Int, Offset) -> Unit = { _, _ -> },
+) {
+    //Placing the cell
+    FlowRow {
+        controller.cells.collectAsState().value.forEachIndexed { index, cell ->
+            ArrayCell(size = size,
+                hideBorder = invisibleCell,
+                onPositionChanged = { position ->
+                    onCellPositionChanged(index, position.positionInParent())
+                },
+                backgroundColor = cell.color
+            )
+        }
+    }
+}
 /**
  * This just show for the border,it can not moved.the array element will be represent by another
  * composable so that they can drag and visible to the user that element changes their position
