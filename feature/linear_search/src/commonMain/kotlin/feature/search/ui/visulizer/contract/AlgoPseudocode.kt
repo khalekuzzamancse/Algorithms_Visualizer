@@ -1,63 +1,63 @@
-package feature.search.ui.visulizer.model
+package feature.search.ui.visulizer.contract
 
-
-internal class Pseudocode {
-    fun highLightPseudocode(lineNumber: Int): List<PseudoCodeLine> {
+internal class AlgoPseudocode {
+    fun highLightPseudocode(lineNumber: Int): List<Pseudocode.Line> {
         return code.map {
             if (it.lineNumber == lineNumber)
                 it.copy(highLighting = true)
-            else it.copy(highLighting = false)
+            else it
         }
     }
 
     val code = listOf(
-        PseudoCodeLine(
+        Pseudocode.Line(
             line = "LinearSearch(list, target_element)",
             lineNumber = 1
         ),
-        PseudoCodeLine(
+        Pseudocode.Line(
             line = "{",
             lineNumber = 2
         ),
-        PseudoCodeLine(
+        Pseudocode.Line(
             line = "  INITIALIZE index = 0",
             lineNumber = 3
         ),
-        PseudoCodeLine(
+        Pseudocode.Line(
             line = "  WHILE (index < number of items in the list)",
             lineNumber = 4
         ),
-        PseudoCodeLine(
+        Pseudocode.Line(
             line = "    IF (list[index] == target element)",
             lineNumber = 5
         ),
-        PseudoCodeLine(
+        Pseudocode.Line(
             line = "    {",
             lineNumber = 6
         ),
-        PseudoCodeLine(
+        Pseudocode.Line(
             line = "      RETURN index",
             lineNumber = 7
         ),
-        PseudoCodeLine(
+        Pseudocode.Line(
             line = "    }",
             lineNumber = 8
         ),
-        PseudoCodeLine(
+        Pseudocode.Line(
             line = "    INCREMENT index by 1",
             lineNumber = 9
         ),
-        PseudoCodeLine(
+        Pseudocode.Line(
             line = "  }",
             lineNumber = 10
         ),
-        PseudoCodeLine(
+        Pseudocode.Line(
             line = "  RETURN -1",
             lineNumber = 11
         ),
-        PseudoCodeLine(
+        Pseudocode.Line(
             line = "}",
             lineNumber = 12
         )
     )
 }
+

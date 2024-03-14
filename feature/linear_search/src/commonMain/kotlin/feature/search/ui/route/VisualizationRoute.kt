@@ -17,14 +17,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.Array
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.pointer.CellPointerComposable2
 import feature.search.MyPackagePrivate
+import feature.search.ui.visulizer.contract.AlgoVariablesState
 import feature.search.ui.visulizer.controller.VisualizationController
+import feature.search.ui.visulizer.contract.Pseudocode
 import layers.ui.common_ui.ControlSection
+import layers.ui.common_ui.Variable
+import layers.ui.common_ui.VariablesSection
 import layers.ui.common_ui.common.pseudocode.PseudoCodeExecutor
-import layers.ui.common_ui.common.pseudocode.PseudoCodeLine
+import layers.ui.common_ui.common.pseudocode.CodeLine
 
 @OptIn(ExperimentalLayoutApi::class, MyPackagePrivate::class)
 @Composable
@@ -38,12 +44,13 @@ internal fun VisualizationRoute() {
             list = list,
             visitedCellColor = visitedCellColor,
             cellSizePx = sizePx,
-            target = 30
+            target = 60
         )
     }
-    val arrayManager = controller.arrayController
+    val arrayController = controller.arrayController
     val searcher = controller.searcher
-    val pointerIndex = controller.pointerIndex.collectAsState(null).value
+    val currentIndex = controller.currentIndex.collectAsState(null).value
+
 
     FlowRow(
         Modifier.verticalScroll(rememberScrollState()),
@@ -56,43 +63,67 @@ internal fun VisualizationRoute() {
             onCodeVisibilityToggleRequest = controller::togglePseudocodeVisibility
         )
         Spacer(Modifier.height(64.dp))
-        Box {
-            Array(
-                cellSize = cellSize,
-                arrayController = arrayManager,
-                enableDrag = false
-            )
-            pointerIndex?.let {index->
-                if (index>=0&&index<list.size){
-                    CellPointerComposable2(
-                        cellSize = cellSize,
-                        position = arrayManager.cells.value[index].position,
-                        label = "i"
-                    )
-                }
-
-            }
-
-        }
+        ArraySection(list, cellSize, arrayController, currentIndex)
         Column {
-//            VariablesSection()
+            _VariableSection(controller.variables.collectAsState(emptyList()).value)
             Spacer(Modifier.height(64.dp))
             AnimatedVisibility(controller.showPseudocode.collectAsState().value) {
-                PseudoCodeExecutor(
-                    modifier = Modifier.padding(8.dp),
-                    code = controller.pseudocode.collectAsState().value.map {
-                        PseudoCodeLine(
-                            line = it.line,
-                            lineNumber = it.lineNumber,
-                            highLighting = it.highLighting
-                        )
-                    }
-                )
+                PseudoCodeSection(controller.pseudocode.collectAsState().value)
             }
 
         }
 
     }
 
+
+}
+
+@Composable
+private fun _VariableSection(
+    variables: List<AlgoVariablesState>
+) {
+    VariablesSection(variables.map {
+        Variable(it.name, it.value)
+    })
+
+}
+
+@Composable
+private fun PseudoCodeSection(
+    code: List<Pseudocode.Line>
+) {
+    PseudoCodeExecutor(
+        modifier = Modifier.padding(8.dp),
+        code = code.map {
+            CodeLine(line = it.line, highLighting = it.highLighting, lineNumber = it.lineNumber)
+        }
+    )
+}
+
+@Composable
+private fun <T> ArraySection(
+    list: List<T>,
+    cellSize: Dp,
+    arrayController: ArrayController<T>,
+    currentIndex: Int?
+) {
+    Box {
+        Array(
+            cellSize = cellSize,
+            arrayController = arrayController,
+            enableDrag = false
+        )
+        currentIndex?.let { index ->
+            if (index >= 0 && index < list.size) {
+                CellPointerComposable2(
+                    cellSize = cellSize,
+                    position = arrayController.cells.value[index].position,
+                    label = "i"
+                )
+            }
+
+        }
+
+    }
 
 }

@@ -6,13 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
-data class PseudoCodeLine(
+data class CodeLine(
     val line: String,
     val highLighting: Boolean = false,
     val lineNumber: Int,
 )
 @Composable
-fun PseudoCodeExecutor(modifier: Modifier=Modifier,code: List<PseudoCodeLine>) {
+fun PseudoCodeExecutor(modifier: Modifier=Modifier,code: List<CodeLine>) {
     Column(modifier) {
         code.forEach {
             Text(
