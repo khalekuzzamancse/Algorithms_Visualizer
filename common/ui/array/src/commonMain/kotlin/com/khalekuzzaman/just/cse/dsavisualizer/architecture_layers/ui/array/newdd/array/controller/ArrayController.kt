@@ -129,6 +129,8 @@ data class ArrayController<T>(
 
     }
 
+
+
     private fun runIfValid(index: Int?, block: () -> Unit) {
         if (index != null && index >= 0 && index < list.size) {
             block()

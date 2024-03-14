@@ -1,13 +1,14 @@
 package com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation
 
 import androidx.compose.runtime.Composable
-import feature.search.ui.route.LinearSearchDestination
+import binary_search.ui.route.BinarySearchSimulator
 
 
 @Composable
 fun MyApplication() {
     //LinearSearchScreen()
-    LinearSearchDestination()
+    BinarySearchSimulator()
+   // LinearSearchDestination()
   // QuizListScreen()
 //QuizDemo()
 

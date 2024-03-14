@@ -13,12 +13,12 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
 
 
 @Composable
-fun <T> Array(
+fun <T> VisualArray(
     cellSize: Dp = 64.dp,
     enableDrag: Boolean = false,
     arrayController: ArrayController<T>,
 ) {
-    Array(
+    VisualArray(
         modifier = Modifier.wrapContentSize(),
         cellSize = cellSize,
         onCellPositionChanged = arrayController::onCellPositionChanged,
@@ -36,7 +36,7 @@ fun <T> Array(
 }
 
 @Composable
-private fun <T> Array(
+private fun <T> VisualArray(
     modifier: Modifier = Modifier,
     invisibleCell: Boolean = false,
     enableDrag: Boolean=false,

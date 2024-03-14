@@ -43,7 +43,7 @@ val coreModules = listOf(
 )
 val featuresModules = listOf(
     ":feature",
-    ":feature:linear_search",
+    ":feature:linear_search",":feature:binary_search",
     ":feature:navigation",
     ":feature:admin_section"
 )
