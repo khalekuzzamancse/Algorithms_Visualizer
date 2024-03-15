@@ -18,10 +18,10 @@ dependencyResolutionManagement {
     }
 }
 val architectureLayers = listOf(
-    ":architecture_layers",
-    ":architecture_layers:data",
-    ":architecture_layers:domain",
-    ":architecture_layers:ui",
+    ":common",
+    ":common:data",
+    ":common:domain",
+    ":common:ui",
 )
 val applicationModules = listOf(
     ":applications",
@@ -30,21 +30,24 @@ val applicationModules = listOf(
     ":applications:web",
     ":applications:ios"
 )
-val uiLyaers=listOf(
-    ":architecture_layers:ui:common_ui",
-    ":architecture_layers:ui:array",
+val uiLyaers = listOf(
+    ":common:ui:common_ui",
+    ":common:ui:array",
 )
 
-val coreModules = listOf(":core")
-val featuresModules=listOf(
+val coreModules = listOf(
+    ":core",
+    ":core:realm",
+    ":core:database",
+    ":core:database:mongodb",
+)
+val featuresModules = listOf(
     ":feature",
+    ":feature:linear_search",":feature:binary_search",
+    ":feature:bubble_sort",":feature:selection_sort",":feature:insertion_sort",
     ":feature:navigation",
+    ":feature:admin_section"
 )
 
-rootProject.name = "DSAVisualier2024"
-include(applicationModules)
-include(architectureLayers)
-include(coreModules)
-include(featuresModules)
-include(uiLyaers)
- 
+rootProject.name = "AlgorithmVisualizer"
+include(applicationModules+architectureLayers+coreModules+featuresModules+uiLyaers)

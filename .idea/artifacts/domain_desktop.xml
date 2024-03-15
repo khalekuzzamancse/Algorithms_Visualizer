@@ -1,8 +1,8 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="domain-desktop">
-    <output-path>$PROJECT_DIR$/architecture_layers/domain/build/libs</output-path>
+    <output-path>$PROJECT_DIR$/common/domain/build/libs</output-path>
     <root id="archive" name="domain-desktop.jar">
-      <element id="module-output" name="DSAVisualier2024.architecture_layers.domain.desktopMain" />
+      <element id="module-output" name="AlgorithmVisualizer.common.domain.desktopMain" />
     </root>
   </artifact>
 </component>

@@ -1,11 +1,19 @@
 package com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.ArrayModuleRoot
+import bubble_sort.ui.route.BubbleSortSimulator
+import quick_sort.ui.route.InsertionSortSimulator
+import selection_sort.ui.route.SelectionSortSimulator
+
 
 @Composable
-fun Application() {
-    ArrayModuleRoot()
+fun MyApplication() {
+    //LinearSearchScreen()
+    //BubbleSortSimulator()
+    InsertionSortSimulator()
+   // SelectionSortSimulator()
+   // LinearSearchDestination()
+  // QuizListScreen()
+//QuizDemo()
 
 }
