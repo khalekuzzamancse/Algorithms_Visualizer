@@ -8,36 +8,34 @@ kotlin {
         compilations.all {
             kotlinOptions {
                 jvmTarget = "17"
-               // jvmTarget = "1.8"
             }
         }
     }
-    jvm("desktop"){
+    jvm("desktop") {
         jvmToolchain(17)
     }
-    sourceSets{
-        val commonMain by getting{
+    sourceSets {
+        val commonMain by getting {
             dependencies {
                 implementation(compose.ui)
                 implementation(compose.material3)
                 implementation(compose.animation)
                 implementation(compose.animationGraphics)
                 implementation(compose.materialIconsExtended)
+                implementation(libs.kotlinx.coroutines.core)
                 implementation("dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1")
-                implementation(project(":feature:linear_search"))
+
+                implementation(project(localModules.versions.ui.array.get()))
                 implementation(project(localModules.versions.ui.commonUI.get()))
-                implementation(project(localModules.versions.features.binarySearch.get()))
-                implementation(project(localModules.versions.features.bubbleSort.get()))
-                implementation(project(localModules.versions.features.selectionSort.get()))
-                implementation(project(localModules.versions.core.realm.get()))
-                implementation(project(localModules.versions.core.database.mongodb.get()))
+                implementation(project(localModules.versions.common.domain.get()))
+                implementation(project(localModules.versions.common.data.get()))
             }
         }
-        val androidMain by getting{
+        val androidMain by getting {
             dependencies {
             }
         }
-        val desktopMain by getting{
+        val desktopMain by getting {
             dependencies {
                 //dependency to support android coil on desktop
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing")
@@ -48,7 +46,7 @@ kotlin {
 
 }
 android {
-    namespace = "com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation"
+    namespace = "selection_sort"
     compileSdk = 34
     defaultConfig {
         minSdk = 27

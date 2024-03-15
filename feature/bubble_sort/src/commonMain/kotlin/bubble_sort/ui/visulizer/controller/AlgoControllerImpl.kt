@@ -16,6 +16,7 @@ internal class AlgoControllerImpl<T : Comparable<T>>(list: List<T>) :
     override val pseudocode = MutableStateFlow(emptyList<Pseudocode.Line>())
     private val _state = MutableStateFlow(initializeState())
     override val algoState: StateFlow<AlgoState<T>> = _state.asStateFlow()
+    val list=builder.list
 
 
     override fun next() {
@@ -43,7 +44,7 @@ internal class BubbleSortSequence<T : Comparable<T>>(
     private val n = array.size
     private var i = 0
     private var j = 0
-    private val list = array.toMutableList()
+     val list = array.toMutableList()
     private var swappedElement: SwappedElement<T>? = null
     val result = sequence {
         i = 0
