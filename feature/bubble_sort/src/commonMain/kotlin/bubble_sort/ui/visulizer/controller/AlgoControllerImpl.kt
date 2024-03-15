@@ -31,9 +31,7 @@ internal class AlgoControllerImpl<T : Comparable<T>>(list: List<T>) :
         AlgoState(
             i = null,
             j = null,
-            swapAblePair = null,
-            shouldSwap = null,
-            ended = false
+            swappablePair = null
         )
 
 
@@ -46,7 +44,7 @@ internal class BubbleSortSequence<T : Comparable<T>>(
     private var i = 0
     private var j = 0
     private val list = array.toMutableList()
-    private var swappedElement:SwappedElement<T> ?=null
+    private var swappedElement: SwappedElement<T>? = null
     val result = sequence {
         i = 0
         while (i < n - 1) {
@@ -54,41 +52,45 @@ internal class BubbleSortSequence<T : Comparable<T>>(
             j = 0
             while (j < n - i - 1) {
                 if (list[j] > list[j + 1]) {
-                    swappedElement= SwappedElement(
+                    swappedElement = SwappedElement(
                         j = j,
-                        jPlus1 = j+1,
+                        jPlus1 = j + 1,
                         jValue = list[j],
-                        jPlus1Value = list[j+1]
+                        jPlus1Value = list[j + 1]
                     )//before swap notify about the swap about element
                     swap()
-
                     yield(newState()) //notify swapped
-                    swappedElement=null//clear old swap element
+                    swappedElement = null//clear old swap element
                 }
                 j++
                 yield(newState()) //notify j changed
             }
             i++
-            swappedElement=null //clear old swap element
+            swappedElement = null //clear old swap element
             //no need to notify here because the next Line=2 ,will be notify
         }
+        yield(endedState()) //notify ended
     }
 
     private fun swap() {
-        val j=this.j
-        val jNeighbour=j+1
+        val j = this.j
+        val jNeighbour = j + 1
         val temp = list[j]
         list[j] = list[jNeighbour]
         list[jNeighbour] = temp
     }
-
+    private fun endedState(): AlgoState<T> {
+        return AlgoState(
+            i = null,
+            j = null,
+            swappablePair = null,
+        )
+    }
     private fun newState(): AlgoState<T> {
         return AlgoState(
             i = i,
             j = j,
-            shouldSwap=false,
-            swapAblePair = swappedElement,
-            ended = false,
+            swappablePair = swappedElement,
         )
     }
 }

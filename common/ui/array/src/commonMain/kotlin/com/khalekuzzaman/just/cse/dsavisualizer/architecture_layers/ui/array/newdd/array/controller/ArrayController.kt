@@ -87,13 +87,7 @@ data class ArrayController<T>(
             }
         }
     }
-    fun swapCellElement(i: Int, j: Int) {
-        val arraySize = cells.value.size
-        val isValidRange = (i in 0..<arraySize) && (j in 0..<arraySize)
-        if (isValidRange) {
-          //implement later
-        }
-    }
+
     /**
      * This useful for while dragging element,where the [position] can be any,not mandatory that
      * it is a cell position,so do not use it for swapping(without drag) because in case of swapping

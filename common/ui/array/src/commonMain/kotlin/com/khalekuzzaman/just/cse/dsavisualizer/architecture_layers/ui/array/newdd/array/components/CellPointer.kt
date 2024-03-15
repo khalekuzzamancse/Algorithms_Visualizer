@@ -61,7 +61,7 @@ fun CellPointerComposable(
             .size(cellSize)
             .offset {
                 IntOffset(offsetAnimation.x.toInt(), offsetAnimation.y.toInt())
-            }.background(MaterialTheme.colorScheme.tertiary.copy(alpha =0.8f)),
+            }.background(MaterialTheme.colorScheme.tertiary.copy(alpha =0.5f)),
         contentAlignment = Alignment.BottomCenter
     ) {
         Text(

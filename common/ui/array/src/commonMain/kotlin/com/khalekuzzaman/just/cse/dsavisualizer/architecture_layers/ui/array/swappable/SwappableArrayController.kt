@@ -38,7 +38,7 @@ data class SwappableArrayController<T>(
         }
     )
 
-    val cellCurrentElements: List<T?>
+    internal val cellCurrentElements: List<T?>
         get() = cells.value.map { cell ->
             if (cell.element == null) null
             else cell.element.value
@@ -100,6 +100,40 @@ data class SwappableArrayController<T>(
             }
         }
     }
+
+    fun changeElementColor(index: Int, color: Color) {
+        if (isValidRange(index)) {
+            cells.update { cells ->
+                cells.mapIndexed { i, cell ->
+                    if (index == i) {
+                        val element = cell.element
+                        if (element != null)
+                            cell.copy(element = element.copy(color = color))
+                        else cell
+                    } else cell
+                }
+
+            }
+        }
+    }
+
+
+    fun changeCellColor(index: Int?, color: Color) {
+        //checking null and range here to avoid all client to check the valid index
+        //if we have n client then we reduce the n times extra code
+        if (isValidRange(index)) {
+            cells.update { cells ->
+                cells.mapIndexed { i, cell ->
+                    if (index == i)
+                        cell.copy(color = color)
+                    else cell
+                }
+
+            }
+        }
+
+    }
+
     private fun isValidRange(index: Int?) =
         (index != null) && (index >= 0 && index < cells.value.size)
 

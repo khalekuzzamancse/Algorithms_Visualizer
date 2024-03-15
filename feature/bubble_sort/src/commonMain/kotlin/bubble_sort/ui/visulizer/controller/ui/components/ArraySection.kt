@@ -6,22 +6,25 @@ import androidx.compose.ui.unit.Dp
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.VisualArray
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.components.CellPointerComposable
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.swappable.SwappableArrayController
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.swappable.SwappableVisualArray
+
 
 @Composable
- fun <T> ArraySection(
+fun <T> ArraySection(
     list: List<T>,
     cellSize: Dp,
-    arrayController: ArrayController<T>,
-    currentIndex: Int?
+    arrayController: SwappableArrayController<T>,
+    i: Int?,
+    j: Int?,
 ) {
     Box {
-       VisualArray(
+        SwappableVisualArray(
             cellSize = cellSize,
-            arrayController = arrayController,
-            enableDrag = false
+            controller = arrayController,
         )
-        currentIndex?.let { index ->
-            if (index.isWithinRange(list.size)){
+        i?.let { index ->
+            if (index.isWithinRange(list.size)) {
                 arrayController.getCellPosition(index)?.let {
                     CellPointerComposable(
                         cellSize = cellSize,
@@ -30,11 +33,36 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
                     )
                 }
             }
-            
+
+        }
+        j?.let { index ->
+            if (index.isWithinRange(list.size)) {
+                arrayController.getCellPosition(index)?.let {
+                    CellPointerComposable(
+                        cellSize = cellSize,
+                        position = it,
+                        label = "j"
+                    )
+                }
+            }
+
+        }
+        j?.let { index ->
+            val `j+1`=index+1
+            if (`j+1`.isWithinRange(list.size)) {
+                arrayController.getCellPosition(`j+1`)?.let {
+                    CellPointerComposable(
+                        cellSize = cellSize,
+                        position = it,
+                        label = "j+1"
+                    )
+                }
+            }
+
 
         }
 
     }
-
 }
-private fun Int.isWithinRange(size:Int)= this in 0..<size
+
+private fun Int?.isWithinRange(size: Int) = this != null && this in 0..<size

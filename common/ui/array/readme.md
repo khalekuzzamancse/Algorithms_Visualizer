@@ -8,4 +8,6 @@ also it can be used as queue and stack in case of graph algorithms
   - It define the component such as cell, the cell pointer and the cell element UI component for the array
 - `newdd.array.controller`
   - it define the controller that manage the state for the visual array and its components
-  
+
+  #Package `swappable`
+  - Used for swappable but non draggable array

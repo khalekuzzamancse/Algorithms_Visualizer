@@ -6,19 +6,18 @@ package bubble_sort.ui.visulizer.contract
  * Though it seems reduce but it is helpful
  */
 internal data class SwappedElement<T>(
-    val j:Int,
-    val jPlus1:Int,
-    val jValue:T,
-    val jPlus1Value:T
+    val j: Int,
+    val jPlus1: Int,
+    val jValue: T,
+    val jPlus1Value: T
 )
+
 internal data class AlgoState<T>(
     val i: Int?,
     val j: Int?,
-    val swapAblePair: SwappedElement<T> ?,
-    val ended: Boolean,
-    val shouldSwap: Boolean?,
-    ){
-     fun  toVariablesState(): List<AlgoVariablesState> {
+    val swappablePair: SwappedElement<T>?,
+) {
+    fun toVariablesState(): List<AlgoVariablesState> {
         return listOf(
             AlgoVariablesState(
                 name = "i",
@@ -30,10 +29,10 @@ internal data class AlgoState<T>(
             ),
             AlgoVariablesState(
                 name = "j+1",
-                value = if (this.j != null) "${this.j+1}" else null
+                value = if (this.j != null) "${this.j + 1}" else null
             ),
 
-        )
+            )
     }
 
 }
