@@ -28,6 +28,7 @@
             <option value="$PROJECT_DIR$/feature/admin_section" />
             <option value="$PROJECT_DIR$/feature/binary_search" />
             <option value="$PROJECT_DIR$/feature/bubble_sort" />
+            <option value="$PROJECT_DIR$/feature/insertion_sort" />
             <option value="$PROJECT_DIR$/feature/linear_search" />
             <option value="$PROJECT_DIR$/feature/navigation" />
             <option value="$PROJECT_DIR$/feature/selection_sort" />

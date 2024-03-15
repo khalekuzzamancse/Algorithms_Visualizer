@@ -101,6 +101,65 @@ data class SwappableArrayController<T>(
         }
     }
 
+    /**
+     * [from] and [to] represent the index
+     * * Note that the old value will be override and the [from] cell will be empty
+     * @param isCopy is true then the remove will not removed from old cell
+     * othewise it will removed form old cell
+     */
+    fun moveElement(from: Int, to: Int) {
+        if (isValidRange(from) && isValidRange(to)) {
+            //the will not position will not changed,the element position need to change
+            val targetPosition = cells.value[to].position
+            var element = cells.value[from].element
+            if (element != null)
+                element = element.copy(position = targetPosition)
+            cells.update { cells ->
+                cells.mapIndexed { index, cell ->
+                    when (index) {
+                        from -> cell.copy(element=null)//removing old element
+                        to -> cell.copy(element = element)
+                        else -> cell
+                    }
+                    }
+
+            }
+        }
+    }
+    fun copyElement(from: Int, to: Int) {
+        if (isValidRange(from) && isValidRange(to)) {
+            //the will not position will not changed,the element position need to change
+            val targetPosition = cells.value[to].position
+            var element = cells.value[from].element
+            if (element != null)
+                element = element.copy(position = targetPosition)
+            cells.update { cells ->
+                cells.mapIndexed { index, cell ->
+                    if (index==to) cell.copy(element = element)
+                    else  cell
+                }
+            }
+        }
+    }
+    fun changeElementValue(targetIndex: Int, value:T) {
+        if (isValidRange(targetIndex)) {
+            cells.update { cells ->
+                cells.mapIndexed { index, cell ->
+                    if (targetIndex==index) {
+                        val element=cell.element
+                        if (element!=null){
+                            cell.copy(element=element.copy(value = value))
+                        }
+                        else{
+                           cell.copy(element= SwappableElement(value=value, position =cell.position ))
+                        }
+                    }
+                    else  cell
+                }
+            }
+        }
+    }
+
     fun changeElementColor(index: Int, color: Color) {
         if (isValidRange(index)) {
             cells.update { cells ->
