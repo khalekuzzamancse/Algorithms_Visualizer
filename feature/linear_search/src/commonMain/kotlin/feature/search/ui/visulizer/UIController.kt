@@ -1,4 +1,4 @@
-package feature.search.ui.visulizer.controller.ui
+package feature.search.ui.visulizer
 
 import androidx.compose.ui.graphics.Color
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController

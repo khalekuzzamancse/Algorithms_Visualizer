@@ -7,9 +7,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import layers.ui.common_ui.common.tutorial.content_and_parser.RichContent
-import layers.ui.common_ui.common.tutorial.content_and_parser.RichContentCombiner
-import layers.ui.common_ui.common.tutorial.content_and_parser.TextParser
+import layers.ui.common_ui.tutorial.content_and_parser.RichContent
+import layers.ui.common_ui.tutorial.content_and_parser.RichContentCombiner
+import layers.ui.common_ui.tutorial.content_and_parser.TextParser
 import layers.ui.common_ui.common.ui.network_image.ImageLoader
 
 @Composable

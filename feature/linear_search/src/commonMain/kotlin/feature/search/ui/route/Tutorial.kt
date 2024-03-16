@@ -8,10 +8,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import layers.data.data.remote.TutorialRepositoryImpl
 import layers.data.demo_data.linear_search.LinearSearchDemoData
-import layers.ui.common_ui.common.tutorial.section.steps.TutorialStepsNPseudoCodeSection
-import layers.ui.common_ui.common.tutorial.section.tutorial.TutorialContent
-import layers.ui.common_ui.tutorial.section.implementation.TutorialImplementationSection
-import layers.ui.common_ui.tutorial.section.tutorial.TutorialSection
+import layers.ui.common_ui.tutorial.TutorialStepsNPseudoCodeSection
+import layers.ui.common_ui.tutorial.TutorialContent
+import layers.ui.common_ui.tutorial.TutorialImplementationSection
+import layers.ui.common_ui.tutorial.TutorialSection
 
 @Composable
 internal fun TheorySection() {

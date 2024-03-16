@@ -1,12 +1,12 @@
-package feature.search.ui.visulizer.controller.ui.components
+package feature.search.ui.visulizer.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import feature.search.ui.visulizer.contract.Pseudocode
-import layers.ui.common_ui.common.pseudocode.CodeLine
-import layers.ui.common_ui.common.pseudocode.PseudoCodeExecutor
+import layers.ui.common_ui.pseudocode.CodeLine
+import layers.ui.common_ui.pseudocode.PseudoCodeExecutor
 
 @Composable
  internal fun PseudoCodeSection(

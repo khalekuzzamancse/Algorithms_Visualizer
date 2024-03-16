@@ -1,4 +1,4 @@
-package feature.search.ui.visulizer.controller.ui
+package feature.search.ui.visulizer
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -14,9 +14,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import feature.search.ui.visulizer.controller.ui.components.ArraySection
-import feature.search.ui.visulizer.controller.ui.components.PseudoCodeSection
-import feature.search.ui.visulizer.controller.ui.components._VariableSection
+import feature.search.ui.visulizer.components.ArraySection
+import feature.search.ui.visulizer.components.PseudoCodeSection
+import feature.search.ui.visulizer.components._VariableSection
 import layers.ui.common_ui.ControlSection
 
 @OptIn(ExperimentalLayoutApi::class)

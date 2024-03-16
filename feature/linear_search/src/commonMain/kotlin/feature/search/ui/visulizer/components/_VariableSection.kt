@@ -1,4 +1,4 @@
-package feature.search.ui.visulizer.controller.ui.components
+package feature.search.ui.visulizer.components
 
 import androidx.compose.runtime.Composable
 import feature.search.ui.visulizer.contract.AlgoVariablesState

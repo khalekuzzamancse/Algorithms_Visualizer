@@ -1,2 +1,2 @@
-package layers.ui.common_ui.common.algorithm_navigation
+package layers.ui.common_ui.algorithm_navigation
 

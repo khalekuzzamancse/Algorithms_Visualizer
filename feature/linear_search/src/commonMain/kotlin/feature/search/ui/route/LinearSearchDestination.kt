@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import feature.search.ui.visulizer.controller.ui.UIController
-import feature.search.ui.visulizer.controller.ui.VisualizationRoute
+import feature.search.ui.visulizer.UIController
+import feature.search.ui.visulizer.VisualizationRoute
 
 
 @Composable

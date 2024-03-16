@@ -1,4 +1,4 @@
-package layers.ui.common_ui.common.tutorial.section.steps
+package layers.ui.common_ui.tutorial
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,7 +25,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import layers.ui.common_ui.common.tutorial.section.tutorial.TutorialContent
 
 @Composable
 fun TutorialStepsNPseudoCodeSection(modifier: Modifier = Modifier, steps: TutorialContent.Steps) {
@@ -100,26 +99,6 @@ private fun PseudocodeSection(pseudocode: String) {
         Spacer(modifier = Modifier.height(8.dp))
 
         CodeEditor(code = pseudocode)
-    }
-}
-
-@Composable
-internal fun CodeEditor(code: String) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background)
-            .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(4.dp))
-    ) {
-      Text(
-            text = code,
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier
-                .padding(16.dp)
-                .background(Color.Transparent)
-                .padding(8.dp),
-
-        )
     }
 }
 

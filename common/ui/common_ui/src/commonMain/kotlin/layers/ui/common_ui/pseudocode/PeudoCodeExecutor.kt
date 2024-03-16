@@ -1,4 +1,4 @@
-package layers.ui.common_ui.common.pseudocode
+package layers.ui.common_ui.pseudocode
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text

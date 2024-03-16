@@ -1,4 +1,4 @@
-package layers.ui.common_ui.tutorial.section.tutorial
+package layers.ui.common_ui.tutorial
 
 import androidx.compose.runtime.Composable
 import layers.ui.common_ui.tutorial.RichContent

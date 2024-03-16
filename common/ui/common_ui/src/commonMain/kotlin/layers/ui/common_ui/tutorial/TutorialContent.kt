@@ -1,4 +1,4 @@
-package layers.ui.common_ui.common.tutorial.section.tutorial
+package layers.ui.common_ui.tutorial
 interface TutorialContent {
 
     /**

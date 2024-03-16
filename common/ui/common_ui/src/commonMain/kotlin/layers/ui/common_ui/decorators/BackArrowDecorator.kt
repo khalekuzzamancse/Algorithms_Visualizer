@@ -1,4 +1,4 @@
-package layers.ui.common_ui.common.decorators
+package layers.ui.common_ui.decorators
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

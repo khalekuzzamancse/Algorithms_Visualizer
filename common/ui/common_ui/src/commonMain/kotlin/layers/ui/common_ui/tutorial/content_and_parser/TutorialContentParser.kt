@@ -1,4 +1,4 @@
-package layers.ui.common_ui.common.tutorial.content_and_parser
+package layers.ui.common_ui.tutorial.content_and_parser
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
