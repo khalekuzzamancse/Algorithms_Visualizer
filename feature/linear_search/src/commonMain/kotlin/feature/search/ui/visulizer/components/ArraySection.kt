@@ -26,7 +26,7 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
                     CellPointerComposable(
                         cellSize = cellSize,
                         position = it,
-                        label = "i"
+                        label = "↑"
                     )
                 }
             }

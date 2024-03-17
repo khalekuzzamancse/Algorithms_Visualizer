@@ -60,11 +60,11 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
                 if (enableDrag)
                 onDragStart(index)
             },
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.colorScheme.tertiary
         ) {
             Text(
                 text = "${element.value}",
-                style = TextStyle(color = MaterialTheme.colorScheme.onSecondary, fontSize = 16.sp),
+                style = TextStyle(color = MaterialTheme.colorScheme.onTertiary, fontSize = 16.sp),
             )
         }
     }

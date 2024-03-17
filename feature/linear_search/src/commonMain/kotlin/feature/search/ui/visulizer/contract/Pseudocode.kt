@@ -1,4 +1,7 @@
 package feature.search.ui.visulizer.contract
+
+import androidx.compose.ui.text.AnnotatedString
+
 /**
  * Used as separate from other module pseudocode so that
  * that module can easily detach from other module
@@ -11,11 +14,12 @@ internal interface Pseudocode{
      * @param variableState is the variable value ,at this moment
      */
     data class Line(
-        val line: String,
+        val line: AnnotatedString,
         val highLighting: Boolean = false,
         val lineNumber: Int,
         val indentationLevel:Int=0,
-        val variableState:String?=null
+        val topPaddingLevel:Int=0,
+        val variableState:AnnotatedString?=null
     ): Pseudocode
 
 }

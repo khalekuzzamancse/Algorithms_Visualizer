@@ -1,20 +1,22 @@
 package layers.ui.common_ui.pseudocode
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.times
 
 /**
  * * Using this module own state holder to easily decouple from outer module
@@ -22,23 +24,31 @@ import androidx.compose.ui.unit.sp
  * @param variableState is the variable value ,at this moment
  */
 data class CodeLine(
-    val line: String,
+    val line: AnnotatedString,
     val highLighting: Boolean = false,
     val lineNumber: Int,
     val indentationLevel: Int = 0,
-    val variableState: String? = null
+    val topPaddingLevel:Int=0,
+    val variableState: AnnotatedString? = null
 )
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PseudoCodeExecutor(modifier: Modifier = Modifier, code: List<CodeLine>) {
-    Column(modifier) {
+    val containerColor=MaterialTheme.colorScheme.onBackground
+    Column(modifier.background(containerColor).padding(16.dp)) {
         code.forEach { codeLine ->
-            FlowRow(
-            ) {
+            val paddingStart=when(codeLine.indentationLevel){
+                1->16.dp
+                2->24.dp
+                3->32.dp
+                else ->0.dp
+            }
+            FlowRow(Modifier.padding(start=paddingStart, top = codeLine.topPaddingLevel*4.dp)) {
                 Text(
                     text = codeLine.line,
-                    color = if (codeLine.highLighting) Color.Red else Color.Unspecified,
+                    color = if (codeLine.highLighting)MaterialTheme.colorScheme.tertiaryContainer
+                    else MaterialTheme.colorScheme.background,
                     fontSize = 15.sp
                 )
                 Spacer(Modifier.width(2.dp))
@@ -46,14 +56,13 @@ fun PseudoCodeExecutor(modifier: Modifier = Modifier, code: List<CodeLine>) {
                 if (codeLine.variableState != null) {
                     Text(
                         text = "// ${codeLine.variableState}",
-                        color = Color.Gray,
+                        color=MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
                         fontSize = 12.sp,
                         modifier=Modifier.align(Alignment.CenterVertically)
                     )
                 }
             }
-
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(8.dp))
 
         }
 

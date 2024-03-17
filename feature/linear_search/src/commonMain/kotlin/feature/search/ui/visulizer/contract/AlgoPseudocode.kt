@@ -1,5 +1,6 @@
 package feature.search.ui.visulizer.contract
 
+import androidx.compose.ui.text.AnnotatedString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -8,69 +9,60 @@ import kotlinx.coroutines.flow.update
  * Need to maintain the single source of truth,so that previous change is stored
  */
 internal object AlgoPseudocode {
+
     private val code: List<Pseudocode.Line> = listOf(
         Pseudocode.Line(
-            line = "LinearSearch( list, target )",
+            line = AnnotatedString("LinearSearch( list, target ) {"),
             lineNumber = 1,
             indentationLevel = 0,
         ),
         Pseudocode.Line(
-            line = "{",
-            lineNumber = 2,
-            indentationLevel = 0,
-        ),
-        Pseudocode.Line(
-            line = " len = number of items in the list",
+            line = AnnotatedString("len = list.size"),
             lineNumber = 3,
+            indentationLevel = 1,
         ),
         Pseudocode.Line(
-            line = " index = 0",
-            lineNumber = 4,
+            line = AnnotatedString("for ( index=0 ; i<len; index++) {"),
+            lineNumber = 5,
+            indentationLevel = 1,
+            topPaddingLevel = 1
+        ),
+        Pseudocode.Line(
+            line = AnnotatedString("current = list[index]"),
+            lineNumber = 6,
+            indentationLevel = 2,
+        ),
+        Pseudocode.Line(
+            line = AnnotatedString("isFound = (current==target)"),
+            lineNumber = 7,
+            indentationLevel = 2,
+        ),
+        Pseudocode.Line(
+            line = AnnotatedString("if ( isFound )"),
+            lineNumber = 8,
+            indentationLevel = 2,
+        ),
+        Pseudocode.Line(
+            line = AnnotatedString("return index"),
+            lineNumber = 10,
+            indentationLevel = 3,
+        ),
+        Pseudocode.Line(
+            line = AnnotatedString("}"),
+            lineNumber = 13,
+            indentationLevel = 1,
+            topPaddingLevel = 1
         ),
 
         Pseudocode.Line(
-            line = "  WHILE (index < len)",
-            lineNumber = 5,
+            line = AnnotatedString("return -1"),
+            lineNumber = 14,
+            indentationLevel = 1,
         ),
         Pseudocode.Line(
-            line = "current = list[index]",
-            lineNumber = 6
-        ),
-        Pseudocode.Line(
-            line = "isFound = (current==target)",
-            lineNumber = 7
-        ),
-        Pseudocode.Line(
-            line = "  IF (isFound)",
-            lineNumber = 8
-        ),
-        Pseudocode.Line(
-            line = "    {",
-            lineNumber = 9
-        ),
-        Pseudocode.Line(
-            line = "      RETURN index",
-            lineNumber = 10
-        ),
-        Pseudocode.Line(
-            line = "    }",
-            lineNumber = 11
-        ),
-        Pseudocode.Line(
-            line = "    INCREMENT index by 1",
-            lineNumber = 12
-        ),
-        Pseudocode.Line(
-            line = "  }",
-            lineNumber = 13
-        ),
-        Pseudocode.Line(
-            line = "  RETURN -1",
-            lineNumber = 14
-        ),
-        Pseudocode.Line(
-            line = "}",
-            lineNumber = 15
+            line = AnnotatedString("}"),
+            lineNumber = 15,
+            indentationLevel = 0,
         )
     )
 
@@ -108,11 +100,12 @@ internal object AlgoPseudocode {
 
     }
 
+
     private fun showStateOfLine3(length: Int) {
         _codes.update { codes ->
             codes.map { code ->
                 if (code.lineNumber == 3) {
-                    code.copy(variableState = " len : $length")
+                    code.copy(variableState = AnnotatedString(" len : $length"))
                 } else code
             }
         }
@@ -132,7 +125,7 @@ internal object AlgoPseudocode {
         _codes.update { codes ->
             codes.map { code ->
                 if (code.lineNumber == 1) {
-                    code.copy(variableState = " target : $target")
+                    code.copy(variableState = AnnotatedString(" target : $target"))
                 } else code
             }
         }
@@ -142,7 +135,7 @@ internal object AlgoPseudocode {
         _codes.update { codes ->
             codes.map { code ->
                 if (code.lineNumber == 5) {
-                    code.copy(variableState = " index : $index")
+                    code.copy(variableState = AnnotatedString(" index : $index"))
                 } else code
             }
         }
@@ -152,7 +145,7 @@ internal object AlgoPseudocode {
         _codes.update { codes ->
             codes.map { code ->
                 if (code.lineNumber == 6) {
-                    code.copy(variableState = " current : $current")
+                    code.copy(variableState = AnnotatedString(" current : $current"))
                 } else code
             }
         }
@@ -162,36 +155,17 @@ internal object AlgoPseudocode {
         _codes.update { codes ->
             codes.map { code ->
                 if (code.lineNumber == 7) {
-                    code.copy(variableState = " ( $current == $target ) : ${current == target}")
+                    code.copy(variableState = AnnotatedString(" ( $current == $target ) : ${current == target}"))
                 } else code
             }
         }
         _codes.update { codes ->
             codes.map { code ->
                 if (code.lineNumber == 8) {
-                    code.copy(variableState = " ${current == target}")
+                    code.copy(variableState = AnnotatedString(" ${current == target}"))
                 } else code
             }
         }
-    }
-
-    /**
-     * Takes list(line number,state:String)
-     */
-    fun updateVariableState(
-        states: List<Pair<Int, String?>>,
-    ) {
-        _codes.update { codes ->
-            codes.map { line ->
-                val updatedLine = states.find { it.first == line.lineNumber }
-                if (updatedLine != null) {
-                    line.copy(variableState = updatedLine.second)
-                } else {
-                    line.copy(variableState = null)
-                }
-            }
-        }
-
     }
 
 

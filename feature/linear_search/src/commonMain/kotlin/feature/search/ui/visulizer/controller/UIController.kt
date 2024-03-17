@@ -13,7 +13,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-internal class UIController<T:Comparable<T>>(val list: List<T>, val cellSizePx: Float, target: T) {
+internal class UIController<T : Comparable<T>>(
+    val list: List<T>, val cellSizePx: Float, target: T,
+    private val visitedCellColor: Color
+) {
     val arrayController = ArrayController(list = list, cellSizePx = cellSizePx)
     val algoController = AlgoControllerImpl(list = list, target = target)
 
@@ -32,8 +35,8 @@ internal class UIController<T:Comparable<T>>(val list: List<T>, val cellSizePx: 
             currentIndex.collect(::markCellAsVisited)
         }
     }
-    private fun markCellAsVisited(index:Int?){
-         val visitedCellColor = Color.Red
+
+    private fun markCellAsVisited(index: Int?) {
         arrayController.changeCellColor(
             index = index,
             color = visitedCellColor
