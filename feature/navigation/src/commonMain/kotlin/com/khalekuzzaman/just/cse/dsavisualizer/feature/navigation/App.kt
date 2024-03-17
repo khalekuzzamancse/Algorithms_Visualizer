@@ -7,11 +7,11 @@ import feature.search.ui.route.LinearSearchDestination
 @Composable
 fun MyApplication() {
 //    LinearSearchDestination()
-    TabLayout()
+   // TabLayout()
     //BubbleSortSimulator()
     //InsertionSortSimulator()
    // SelectionSortSimulator()
-   // LinearSearchDestination()
+LinearSearchDestination()
   // QuizListScreen()
 //QuizDemo()
 

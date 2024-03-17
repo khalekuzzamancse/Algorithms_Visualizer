@@ -1,15 +1,13 @@
 package com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoGraph
-import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.Language
-import androidx.compose.material.icons.filled.LineAxis
 import androidx.compose.material.icons.outlined.AutoGraph
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Description
@@ -19,6 +17,7 @@ import androidx.compose.material.icons.twotone.Code
 import androidx.compose.material.icons.twotone.Language
 import androidx.compose.material.icons.twotone.LineAxis
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -36,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import platform_contracts.WebPageLoader
 import kotlin.math.min
 
 @Composable
@@ -69,16 +69,47 @@ fun TabLayout() {
             focusedIcon = Icons.TwoTone.Code
         )
     )
-
-    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
-        CustomScrollableTabs(
-            selectedTabIndex = selectedTab,
-            tabs = tabs,
-            onClickTab = {
-                selectedTab = it
+    Scaffold (
+        topBar = {
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
+                CustomScrollableTabs(
+                    selectedTabIndex = selectedTab,
+                    tabs = tabs,
+                    onClickTab = {
+                        selectedTab = it
+                    }
+                )
             }
-        )
+
+        }
+    ){ paddingValues ->
+        Column(Modifier.padding(paddingValues).fillMaxWidth()) {
+            AnimatedContent(selectedTab){tab->
+                when(tab){
+                    1->{
+                        WebPageLoader(url = "https://khalekuzzamancse.github.io/documentations/docs/quick_sort/theory.html")
+
+                    }
+                    2->{
+                        WebPageLoader(url = "https://khalekuzzamancse.github.io/documentations/docs/quick_sort/complexity_analysis.html")
+
+                    }
+
+                   3->{
+                    WebPageLoader(url = "https://khalekuzzamancse.github.io/documentations/docs/quick_sort/steps_n_pseucode.html")
+
+                    }
+                    4->{
+                        WebPageLoader(url = "https://khalekuzzamancse.github.io/documentations/docs/quick_sort/implementaion.html")
+                    }
+
+                }
+            }
+
+        }
+
     }
+
 
 
 }
@@ -136,7 +167,7 @@ fun CustomScrollableTabs(
                     }
                 }
             }
-        ) { measurables, constraints ->
+        ) { measurable, constraints ->
             //This value comes from androidx.compose.material3 TabRow.kt
             val minTabWidth = 90.dp.roundToPx()
 
@@ -144,7 +175,7 @@ fun CustomScrollableTabs(
             val availableWidth = constraints.maxWidth
 
             //calculate the sum of all the data elements, the result should be the tab's actual width
-            val elements = measurables.subList(0, measurables.size - 1).map { measurable ->
+            val elements = measurable.subList(0, measurable.size - 1).map { measurable ->
                 measurable.measure(constraints)
             }
             val elementWidth = elements.sumOf {
@@ -156,7 +187,7 @@ fun CustomScrollableTabs(
 
             //let the sum-width above to be the new constraints which is used to measure the tabRow
             val width = min(availableWidth, elementWidth)
-            val tabRow = measurables.last().measure(constraints.copy(maxWidth = width))
+            val tabRow = measurable.last().measure(constraints.copy(maxWidth = width))
             val height = tabRow.height
 
             //report the width and height of this layout. It should only contains the tabs, all data

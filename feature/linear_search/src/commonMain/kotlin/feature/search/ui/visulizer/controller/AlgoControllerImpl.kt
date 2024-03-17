@@ -1,19 +1,19 @@
 package feature.search.ui.visulizer.controller
 
-import feature.search.ui.visulizer.contract.AlgoStateController
-import feature.search.ui.visulizer.contract.Pseudocode
 import feature.search.ui.visulizer.contract.AlgoPseudocode
 import feature.search.ui.visulizer.contract.AlgoState
+import feature.search.ui.visulizer.contract.AlgoStateController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 
-internal class AlgoControllerImpl<T>(list: List<T>, private val target: T) : AlgoStateController<T> {
-    private val builder=Sequences(list, target)
+internal class AlgoControllerImpl<T : Comparable<T>>(list: List<T>, private val target: T) :
+    AlgoStateController<T> {
+    private val builder = LinearSearchBaseIterator(list, target)
     private val iterator = builder.result.iterator()
-    override val pseudocode=builder.pseudocode
+    override val pseudocode = builder.pseudocode
     private val _state = MutableStateFlow(initializeState())
     override val algoState: StateFlow<AlgoState<T>> = _state.asStateFlow()
 
@@ -32,69 +32,83 @@ internal class AlgoControllerImpl<T>(list: List<T>, private val target: T) : Alg
         AlgoState(
             target = target,
             currentIndex = -1,
-            searchEnded = false,
-            isMatched = null,
             currentElement = null
         )
 
 
 }
 
-internal class Sequences<T>(
+private class LinearSearchBaseIterator<T : Comparable<T>>(
     private val list: List<T>,
     private val target: T,
 ) {
-    private var currentIndex = -1 // Before search starts
+    private var length = list.size
+    private var index = 0 // Before search starts
     private var searchEnded = false
-    private var isMatched: Boolean? = null
-    private var currentElement: T? = null
-    private val codeHighlighted = AlgoPseudocode()
-    private val _pseudocode = MutableStateFlow(codeHighlighted.code)
-     val pseudocode: StateFlow<List<Pseudocode.Line>> = _pseudocode.asStateFlow()
+    private var isFound: Boolean? = null
+    private var current: T? = null
+    val pseudocode = AlgoPseudocode.codes
 
     val result = sequence {
-        updatePseudocode(1)
         yield(newState())// Search not started
+        updateVariablesState(length=length)
         for (i in list.indices) {
-            currentIndex = i
-            currentElement = list[i]
-            isMatched = currentElement == target
-            updatePseudocode(3)
+            index = i
+            updatePseudocode(5)
+            updateVariablesState(length = length, target = target, index = index)
             yield(newState())
-            if (isMatched as Boolean) {
+            current = list[i]
+            isFound = current == target
+            yield(newState())
+            updateVariablesState(length = length, target = target, index = index, current = current)
+            if (isFound as Boolean) {
                 searchEnded = true
-                updatePseudocode(5)
                 yield(newState()) // Target found
+                updatePseudocode(10)
                 break // Exit after finding the match
             }
-            updatePseudocode(9)
             yield(newState())
+            updateVariablesState(length = length, target = target)
+            updatePseudocode(12)
+            yield(newState())
+
         }
 
         if (!searchEnded) { // If the search ends without finding the target
             searchEnded = true
-            updatePseudocode(12)
+            updateVariablesState()
             yield(newState())
+            updatePseudocode(14)
         }
     }
 
-    private fun newState():AlgoState<T>{
-      return  AlgoState(
-          target = target,
-          currentIndex = currentIndex,
-          searchEnded = searchEnded,
-          isMatched = isMatched,
-          currentElement = currentElement
-      )
+    private fun newState(): AlgoState<T> {
+        return AlgoState(
+            target = target,
+            currentIndex = index,
+            currentElement = current
+        )
     }
-    private fun updatePseudocode(lineNo:Int){
-        _pseudocode.update {
-            codeHighlighted.highLightPseudocode(lineNo)
-        }
+
+    private fun updateVariablesState(
+        length: Int? = null,
+        target: T? = null,
+        index: Int? = null,
+        current: T? = null
+    ) {
+        AlgoPseudocode.updateStates(
+            length = length,
+            target = target,
+            index = index,
+            current = current
+        )
     }
+
+    private fun updatePseudocode(lineNo: Int) {
+        AlgoPseudocode.highLightPseudocode(lineNo)
+
+    }
+
 
 }
-
-
-
 

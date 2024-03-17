@@ -16,12 +16,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import feature.search.ui.visulizer.components.ArraySection
 import feature.search.ui.visulizer.components.PseudoCodeSection
-import feature.search.ui.visulizer.components._VariableSection
+import feature.search.ui.visulizer.controller.UIController
 import layers.ui.common_ui.ControlSection
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun <T>VisualizationRoute(
+internal fun <T:Comparable<T>>VisualizationRoute(
     cellSize: Dp,
     uiController: UIController<T>
 ) {
@@ -42,8 +42,6 @@ internal fun <T>VisualizationRoute(
         Spacer(Modifier.height(64.dp))
         ArraySection(uiController.list,cellSize, arrayController, currentIndex)
         Column {
-            _VariableSection(uiController.variables.collectAsState(emptyList()).value)
-            Spacer(Modifier.height(64.dp))
             AnimatedVisibility(uiController.showPseudocode.collectAsState().value) {
                 PseudoCodeSection(uiController.pseudocode.collectAsState().value)
             }
