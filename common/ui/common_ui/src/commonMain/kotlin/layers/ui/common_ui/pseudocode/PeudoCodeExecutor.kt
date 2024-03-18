@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -55,7 +54,7 @@ fun PseudoCodeExecutor(modifier: Modifier = Modifier, code: List<CodeLine>) {
                     fontSize = 15.sp
                 )
                 Spacer(Modifier.width(4.dp))
-                Row(Modifier.padding(start = paddingStart, top = codeLine.topPaddingLevel * 4.dp)) {
+                FlowRow(Modifier.padding(start = paddingStart, top = codeLine.topPaddingLevel * 4.dp)) {
                     Text(
                         text = codeLine.line,
                         color = if (codeLine.highLighting) MaterialTheme.colorScheme.tertiaryContainer
