@@ -1,10 +1,11 @@
-package com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation
+package layers.ui.common_ui.decorators
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoGraph
 import androidx.compose.material.icons.filled.Description
@@ -35,11 +36,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import platform_contracts.WebPageLoader
 import kotlin.math.min
 
+enum class TabDestination {
+    Visualization, Theory, ComplexityAnalysis, Pseudocode, Implementation
+
+}
+
 @Composable
-fun TabLayout() {
+fun TabLayoutDecorator(
+    onClickTab: (TabDestination) -> Unit,
+    content: @Composable () -> Unit = {},
+) {
 
     var selectedTab by remember { mutableStateOf(0) }
     val tabs = listOf(
@@ -69,47 +77,26 @@ fun TabLayout() {
             focusedIcon = Icons.TwoTone.Code
         )
     )
-    Scaffold (
+    Scaffold(
         topBar = {
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
                 CustomScrollableTabs(
                     selectedTabIndex = selectedTab,
                     tabs = tabs,
-                    onClickTab = {
-                        selectedTab = it
+                    onClickTab = { select ->
+                        selectedTab = select
+                        onClickTab(TabDestination.entries[select])
                     }
                 )
             }
 
         }
-    ){ paddingValues ->
-        Column(Modifier.padding(paddingValues).fillMaxWidth()) {
-            AnimatedContent(selectedTab){tab->
-                when(tab){
-                    1->{
-                        WebPageLoader(url = "https://khalekuzzamancse.github.io/documentations/docs/quick_sort/theory.html")
-
-                    }
-                    2->{
-                        WebPageLoader(url = "https://khalekuzzamancse.github.io/documentations/docs/quick_sort/complexity_analysis.html")
-
-                    }
-
-                   3->{
-                    WebPageLoader(url = "https://khalekuzzamancse.github.io/documentations/docs/quick_sort/steps_n_pseucode.html")
-
-                    }
-                    4->{
-                        WebPageLoader(url = "https://khalekuzzamancse.github.io/documentations/docs/quick_sort/implementaion.html")
-                    }
-
-                }
-            }
-
+    ) { paddingValues ->
+        Box(Modifier.padding(paddingValues)) {
+            content()
         }
 
     }
-
 
 
 }
@@ -121,8 +108,8 @@ fun TabLayout() {
  */
 data class TabItem(
     val label: String,
-    val unFocusedIcon: ImageVector,
-    val focusedIcon: ImageVector = unFocusedIcon,
+    val unFocusedIcon: ImageVector? = null,
+    val focusedIcon: ImageVector? = unFocusedIcon,
 
     )
 
@@ -142,7 +129,9 @@ fun CustomScrollableTabs(
             content = {
                 //This part will not be displayed, just used for calculating the whole with of all tabs
                 tabs.forEachIndexed { index, tab ->
-                    Column {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         //here wrapping to Column
                         _Tab(tab, index == selectedTabIndex)
                     }
@@ -156,13 +145,17 @@ fun CustomScrollableTabs(
                 ) {
                     tabs.forEachIndexed { index, tab ->
                         //here wrapping to Tab
-                            Tab(
-                                selected = index == selectedTabIndex,
-                                onClick = { onClickTab(index) }
+                        Tab(
+                            selected = index == selectedTabIndex,
+                            onClick = { onClickTab(index) }
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 _Tab(tab, index == selectedTabIndex)
-
                             }
+
+                        }
 
                     }
                 }
@@ -201,24 +194,27 @@ fun CustomScrollableTabs(
 
 
 @Composable
-private fun _Tab(tab:TabItem, isSelected:Boolean) {
+private fun _Tab(tab: TabItem, isSelected: Boolean) {
+    (if (isSelected) tab.focusedIcon else tab.unFocusedIcon)?.let {
         Icon(
-            imageVector = if (isSelected) tab.focusedIcon else tab.unFocusedIcon,
+            imageVector = it,
             contentDescription = null
         )
-        Text(
-            modifier = Modifier.padding(
-                horizontal = 16.dp,
-                vertical = 14.dp
-            ),
-            text = tab.label,
-            color = Color.Black,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.W500,
-            lineHeight = 20.sp,
-            textAlign = TextAlign.Center
-        )
+    }
 
+    Text(
+        modifier = Modifier.padding(
+            horizontal = 16.dp,
+            vertical = 14.dp
+        ),
+        text = tab.label,
+        color = Color.Black,
+        fontSize = 14.sp,
+        fontWeight = FontWeight.W500,
+        lineHeight = 20.sp,
+        textAlign = TextAlign.Center
+    )
+    Spacer(Modifier.width(4.dp))//trailing space for horizontally
 
 
 }

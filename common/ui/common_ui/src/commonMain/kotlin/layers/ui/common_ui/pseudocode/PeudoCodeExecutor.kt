@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,40 +29,52 @@ data class CodeLine(
     val highLighting: Boolean = false,
     val lineNumber: Int,
     val indentationLevel: Int = 0,
-    val topPaddingLevel:Int=0,
+    val topPaddingLevel: Int = 0,
     val variableState: AnnotatedString? = null
 )
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PseudoCodeExecutor(modifier: Modifier = Modifier, code: List<CodeLine>) {
-    val containerColor=MaterialTheme.colorScheme.onBackground
+    val containerColor = MaterialTheme.colorScheme.onBackground
     Column(modifier.background(containerColor).padding(16.dp)) {
-        code.forEach { codeLine ->
-            val paddingStart=when(codeLine.indentationLevel){
-                1->16.dp
-                2->24.dp
-                3->32.dp
-                else ->0.dp
+        code.forEachIndexed{ index,codeLine ->
+            val lineNo=index+1
+            val paddingStart = when (codeLine.indentationLevel) {
+                1 -> 16.dp
+                2 -> 24.dp
+                3 -> 32.dp
+                else -> 0.dp
             }
-            FlowRow(Modifier.padding(start=paddingStart, top = codeLine.topPaddingLevel*4.dp)) {
+            FlowRow {
+                //line number
                 Text(
-                    text = codeLine.line,
-                    color = if (codeLine.highLighting)MaterialTheme.colorScheme.tertiaryContainer
+                    text = if (lineNo<10) "0$lineNo" else "$lineNo",//add leading 0 if number <10
+                    color = if (codeLine.highLighting) MaterialTheme.colorScheme.tertiaryContainer
                     else MaterialTheme.colorScheme.background,
                     fontSize = 15.sp
                 )
-                Spacer(Modifier.width(2.dp))
-                // if VariableActive is active
-                if (codeLine.variableState != null) {
+                Spacer(Modifier.width(4.dp))
+                Row(Modifier.padding(start = paddingStart, top = codeLine.topPaddingLevel * 4.dp)) {
                     Text(
-                        text = "// ${codeLine.variableState}",
-                        color=MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
-                        fontSize = 12.sp,
-                        modifier=Modifier.align(Alignment.CenterVertically)
+                        text = codeLine.line,
+                        color = if (codeLine.highLighting) MaterialTheme.colorScheme.tertiaryContainer
+                        else MaterialTheme.colorScheme.background,
+                        fontSize = 15.sp
                     )
+                    Spacer(Modifier.width(2.dp))
+                    // if VariableActive is active
+                    if (codeLine.variableState != null) {
+                        Text(
+                            text = "// ${codeLine.variableState}",
+                            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
+                            fontSize = 12.sp,
+                            modifier = Modifier.align(Alignment.CenterVertically)
+                        )
+                    }
                 }
             }
+
             Spacer(Modifier.height(8.dp))
 
         }

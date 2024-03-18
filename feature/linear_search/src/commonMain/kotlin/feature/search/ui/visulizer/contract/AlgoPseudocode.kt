@@ -7,8 +7,10 @@ import kotlinx.coroutines.flow.update
 
 /**
  * Need to maintain the single source of truth,so that previous change is stored
+ * Do not make it singleton so otherwise the reset or for re use it will preserve the old state,which leads
+ * unexpected behaviour
  */
-internal object AlgoPseudocode {
+internal class AlgoPseudocode {
 
     private val code: List<Pseudocode.Line> = listOf(
         Pseudocode.Line(
