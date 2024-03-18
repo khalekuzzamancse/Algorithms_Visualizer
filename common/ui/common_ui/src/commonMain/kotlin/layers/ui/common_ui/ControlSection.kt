@@ -22,10 +22,10 @@ import androidx.compose.ui.unit.dp
 fun ControlSection(
     modifier: Modifier = Modifier,
     isCodeOff: Boolean = false,
-    onNext: () -> Unit={},
-    onResetRequest:()->Unit={},
-    onAutoPlayRequest:()->Unit={},
-    onCodeVisibilityToggleRequest: () -> Unit={},
+    onNext: () -> Unit = {},
+    onResetRequest: () -> Unit = {},
+    onAutoPlayRequest: () -> Unit = {},
+    onCodeVisibilityToggleRequest: () -> Unit = {},
 ) {
     FlowRow(modifier) {
         Button(
@@ -51,7 +51,7 @@ fun ControlSection(
             onClick = onResetRequest
         ) {
             Icon(
-                imageVector =Icons.Default.Replay,
+                imageVector = Icons.Default.Replay,
                 contentDescription = "reset"
             )
             Spacer(Modifier.width(4.dp))
@@ -62,13 +62,12 @@ fun ControlSection(
             onClick = onAutoPlayRequest
         ) {
             Icon(
-                imageVector =Icons.Outlined.Timer,
+                imageVector = Icons.Outlined.Timer,
                 contentDescription = "automatic play"
             )
             Spacer(Modifier.width(4.dp))
             Text("Auto")
         }
-
 
 
     }

@@ -1,36 +1,22 @@
-package layers.ui.common_ui.decorators
+package layers.ui.common_ui.decorators.tab_layout
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AutoGraph
-import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.outlined.AutoGraph
-import androidx.compose.material.icons.outlined.Code
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.LineAxis
-import androidx.compose.material.icons.twotone.Code
-import androidx.compose.material.icons.twotone.Language
-import androidx.compose.material.icons.twotone.LineAxis
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -38,61 +24,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlin.math.min
 
-enum class TabDestination {
-    Visualization, Theory, ComplexityAnalysis, Pseudocode, Implementation
+/*
+Putting into a single file because it will used as library so that you can copy-paste it direcly
+without working about external files
+ */
 
-}
 
 @Composable
 fun TabLayoutDecorator(
-    onClickTab: (TabDestination) -> Unit,
+    modifier: Modifier=Modifier,
+    controller: TabDecoratorController,
+    topBar: @Composable () -> Unit = {},
     content: @Composable () -> Unit = {},
 ) {
-
-    var selectedTab by remember { mutableStateOf(0) }
-    val tabs = listOf(
-        TabItem(
-            label = "Visualization",
-            unFocusedIcon = Icons.Outlined.AutoGraph,
-            focusedIcon = Icons.Filled.AutoGraph
-        ),
-        TabItem(
-            label = "Theory",
-            unFocusedIcon = Icons.Outlined.Description,
-            focusedIcon = Icons.Filled.Description
-        ),
-        TabItem(
-            label = "Complexity Analysis",
-            unFocusedIcon = Icons.Outlined.LineAxis,
-            focusedIcon = Icons.TwoTone.LineAxis
-        ),
-        TabItem(
-            label = "Pseudocode",
-            unFocusedIcon = Icons.Outlined.Language,
-            focusedIcon = Icons.TwoTone.Language
-        ),
-        TabItem(
-            label = "Implementation",
-            unFocusedIcon = Icons.Outlined.Code,
-            focusedIcon = Icons.TwoTone.Code
-        )
-    )
     Scaffold(
-        topBar = {
+        topBar = topBar
+    ) { paddingValues ->
+        Column(modifier.padding(paddingValues)) {
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
                 CustomScrollableTabs(
-                    selectedTabIndex = selectedTab,
-                    tabs = tabs,
+                    selectedTabIndex = controller.selected.collectAsState(TabDestination.Visualization).value.ordinal,
+                    tabs = controller.tabs,
                     onClickTab = { select ->
-                        selectedTab = select
-                        onClickTab(TabDestination.entries[select])
+                        controller.onDestinationSelected(TabDestination.entries[select])
                     }
                 )
             }
-
-        }
-    ) { paddingValues ->
-        Box(Modifier.padding(paddingValues)) {
             content()
         }
 
@@ -101,17 +58,6 @@ fun TabLayoutDecorator(
 
 }
 
-/**
- * The compose tab has bug such as it can not be centered as wrap content width
- * also it is not easily customizable even you edit the source code .that is why
- * we are making this custom,under the hood we are using the compose tab layout
- */
-data class TabItem(
-    val label: String,
-    val unFocusedIcon: ImageVector? = null,
-    val focusedIcon: ImageVector? = unFocusedIcon,
-
-    )
 
 @Composable
 fun CustomScrollableTabs(
