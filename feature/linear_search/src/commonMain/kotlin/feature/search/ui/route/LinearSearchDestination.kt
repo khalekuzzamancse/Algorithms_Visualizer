@@ -31,7 +31,7 @@ import platform_contracts.WebPageLoader
 
 
 @Composable
-fun LinearSearchDestination(modifier: Modifier = Modifier) {
+fun LinearSearchDestination(modifier: Modifier = Modifier,  onExitRequest:()->Unit={}) {
 
     var inputMode by remember { mutableStateOf(true) }
     var list by remember { mutableStateOf(listOf(10, 20, 30, 40, 50)) }
@@ -49,7 +49,8 @@ fun LinearSearchDestination(modifier: Modifier = Modifier) {
     } else {
         _SearchDestination(
             modifier = modifier,
-            list = list, target = target
+            list = list, target = target,
+            onExitRequest = onExitRequest
         )
 
     }
@@ -62,7 +63,8 @@ fun LinearSearchDestination(modifier: Modifier = Modifier) {
 private fun <T : Comparable<T>> _SearchDestination(
     modifier: Modifier = Modifier,
     list: List<T>,
-    target: T
+    target: T,
+    onExitRequest:()->Unit={},
 ) {
     val cellSize = 64.dp
     val sizePx = with(LocalDensity.current) { cellSize.toPx() }
@@ -87,7 +89,7 @@ private fun <T : Comparable<T>> _SearchDestination(
             TopAppBar(
                 navigationIcon = {
                     IconButton(
-                        onClick = {}
+                        onClick =onExitRequest
                     ) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
                     }

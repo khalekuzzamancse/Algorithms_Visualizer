@@ -23,6 +23,7 @@ kotlin {
                 implementation(compose.animation)
                 implementation(compose.animationGraphics)
                 implementation(compose.materialIconsExtended)
+                implementation(compose.components.resources)
                 implementation("dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1")
                 implementation(project(":feature:linear_search"))
                 implementation(project(":common:data"))
