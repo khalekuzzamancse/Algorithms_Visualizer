@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ControlSection(
     modifier: Modifier = Modifier,
-    isCodeOff: Boolean = false,
+    showPseudocode: Boolean = false,
     onNext: () -> Unit = {},
     onResetRequest: () -> Unit = {},
     onAutoPlayRequest: () -> Unit = {},
@@ -40,7 +40,7 @@ fun ControlSection(
             onClick = onCodeVisibilityToggleRequest
         ) {
             Icon(
-                imageVector = if (isCodeOff) Icons.Default.CodeOff else Icons.Default.Code,
+                imageVector = if (showPseudocode) Icons.Default.CodeOff else Icons.Default.Code,
                 contentDescription = "code on off"
             )
             Spacer(Modifier.width(4.dp))

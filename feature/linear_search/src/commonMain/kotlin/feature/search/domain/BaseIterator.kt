@@ -1,11 +1,17 @@
 package feature.search.domain
 
+/**
+ * It is used to reduce the boiler plat code of the the those iterator
+ * that are going to use the Sequence builder.
+ * * It give us loose coupled as a easily underlying different implementation can provide
+ * without distributing the client
+ */
 abstract class BaseIterator<T : Comparable<T>>(
-    val elements: List<T>,
-     val target: T//target
+    numberOfElement:Int,
+    private val target: T//target
 ) {
     abstract val result: Sequence<VisualizationState>
-    protected var length = elements.size
+    protected var length = numberOfElement
     protected var index = 0 // Before search starts
     protected var searchEnded = false
     protected  var isFound: Boolean? = null

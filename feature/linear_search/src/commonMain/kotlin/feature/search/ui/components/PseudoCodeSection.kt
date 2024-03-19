@@ -8,10 +8,11 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import feature.search.PackageLevelAccess
 import feature.search.domain.Pseudocode
 import layers.ui.common_ui.pseudocode.CodeLine
 import layers.ui.common_ui.pseudocode.PseudoCodeExecutor
-
+@PackageLevelAccess //avoid to access other layer such domain or data/infrastructure
 @Composable
 internal fun PseudoCodeSection(
     code: List<Pseudocode.Line>

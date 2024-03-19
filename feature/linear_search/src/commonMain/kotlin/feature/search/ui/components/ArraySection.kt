@@ -6,10 +6,12 @@ import androidx.compose.ui.unit.Dp
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.VisualArray
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.components.CellPointerComposable
+import feature.search.PackageLevelAccess
 
+@PackageLevelAccess //avoid to access other layer such domain or data/infrastructure
 @Composable
  fun <T> ArraySection(
-    list: List<T>,
+    elements: List<T>,
     cellSize: Dp,
     arrayController: ArrayController<T>,
     currentIndex: Int?
@@ -21,7 +23,7 @@ import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.new
             enableDrag = false
         )
         currentIndex?.let { index ->
-            if (index.isWithinRange(list.size)){
+            if (index.isWithinRange(elements.size)){
                 arrayController.getCellPosition(index)?.let {
                     CellPointerComposable(
                         cellSize = cellSize,

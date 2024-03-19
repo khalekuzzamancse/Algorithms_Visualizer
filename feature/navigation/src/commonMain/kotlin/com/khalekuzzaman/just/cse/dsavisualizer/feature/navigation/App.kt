@@ -9,7 +9,7 @@ import androidx.compose.runtime.setValue
 import com.example.compose.AppTheme
 import com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation.home.HomeDestination
 import com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation.home.dashboard.Destination
-import feature.search.ui.LinearSearchDestination
+import feature.search.ui.LinearSearchRoute
 
 
 @Composable
@@ -27,7 +27,7 @@ fun MyApplication() {
         } else {
             AnimatedContent(destination) { selected ->
                 when (selected) {
-                    Destination.LinearSearch -> LinearSearchDestination(onExitRequest = gotoHome)
+                    Destination.LinearSearch -> LinearSearchRoute(onExitRequest = gotoHome)
                     else -> gotoHome()
                 }
 

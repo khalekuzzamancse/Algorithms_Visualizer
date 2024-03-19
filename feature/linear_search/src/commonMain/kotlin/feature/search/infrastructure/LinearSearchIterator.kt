@@ -1,22 +1,23 @@
 package feature.search.infrastructure
 
+import feature.search.PackageLevelAccess
 import feature.search.domain.BaseIterator
-
+@PackageLevelAccess //avoid to access other layer such ui layer
 class LinearSearchIterator<T : Comparable<T>>(
-    val list: List<T>,
+    private val elements: List<T>,
     target: T,
-) : BaseIterator<T>(list, target) {
+) : BaseIterator<T>(elements.size, target) {
 
     override val pseudocode = super.pseudocode
     override val result = sequence {
         yield(newState())// Search not started
         updateVariablesState(length = length)
-        for (i in list.indices) {
+        for (i in elements.indices) {
             index = i
             updatePseudocode(5)
             updateVariablesState(length = length, target = target, index = index)
             yield(newState())
-            current = list[i]
+            current = elements[i]
             isFound = current == target
 
             updateVariablesState(length = length, target = target, index = index, current = current)

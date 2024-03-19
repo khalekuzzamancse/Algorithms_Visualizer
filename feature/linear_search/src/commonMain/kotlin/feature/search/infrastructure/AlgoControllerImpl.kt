@@ -1,5 +1,6 @@
 package feature.search.infrastructure
 
+import feature.search.PackageLevelAccess
 import feature.search.domain.AlgoStateController
 import feature.search.domain.BaseIterator
 import feature.search.domain.VisualizationState
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.update
  * @param iterator used as abstract so that we can provide different implementation
  * or can change the iterator easily
  */
+@PackageLevelAccess //avoid to access other layer such ui layer
 internal class AlgoControllerImpl<T : Comparable<T>>(
     private val target: T,
     private val iterator: BaseIterator<T>
