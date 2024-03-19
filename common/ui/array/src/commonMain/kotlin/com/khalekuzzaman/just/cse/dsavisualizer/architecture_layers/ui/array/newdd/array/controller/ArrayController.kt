@@ -13,26 +13,27 @@ data class ArrayController<T>(
     private val cellSizePx: Float,
 ) {
     val cells = MutableStateFlow(List(list.size) { index -> ArrayCell(elementId = index) })
-   internal val elements = MutableStateFlow(list.mapIndexed { _, value -> ArrayElement(value = value) })
+    internal val elements =
+        MutableStateFlow(list.mapIndexed { _, value -> ArrayElement(value = value) })
 
     val cellsCurrentElements: List<T?>
         get() = cells.value.map { if (it.elementId == null) null else elements.value[it.elementId].value }
 
 
-
-    fun getCellPosition(index: Int?):Offset?{
+    fun getCellPosition(index: Int?): Offset? {
         val arraySize = cells.value.size
-        if (index==null) return null
-        val isValid= index in 0..arraySize
+        if (index == null) return null
+        val isValid = index in 0..arraySize
         return if (isValid) cells.value[index].position else null
     }
+
     /**
      * Only needed while placing the cell,it denote the cell position,not the element position
      * It is needed when placing the cell.
      * if we need to move the element then use the [changeElementPosition]
      */
 
-   internal fun onCellPositionChanged(index: Int, position: Offset) {
+    internal fun onCellPositionChanged(index: Int, position: Offset) {
         runIfValid(index) {
             changeCellPosition(index, position)
             changeElementPosition(index, position)
@@ -93,7 +94,7 @@ data class ArrayController<T>(
      * it is a cell position,so do not use it for swapping(without drag) because in case of swapping
      * we have to change the element reference also
      */
-     fun changeElementPosition(index: Int, position: Offset) {
+    fun changeElementPosition(index: Int, position: Offset) {
         runIfValid(index) {
             elements.update { elements ->
                 elements.mapIndexed { i, element ->
@@ -151,7 +152,7 @@ data class ArrayController<T>(
 
 
     private fun runIfValid(index: Int?, block: () -> Unit) {
-       val isValid= (index!=null)&&(index in 0..<cells.value.size)
+        val isValid = (index != null) && (index in 0..<cells.value.size)
         if (isValid) {
             block()
         }

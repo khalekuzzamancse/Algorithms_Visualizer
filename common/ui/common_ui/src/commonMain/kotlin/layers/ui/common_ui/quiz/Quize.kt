@@ -1,4 +1,4 @@
-package layers.ui.common_ui.common.quiz
+package layers.ui.common_ui.quiz
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

@@ -1,4 +1,7 @@
 package binary_search.ui.visualizer.contract
+
+import androidx.compose.ui.text.AnnotatedString
+
 /**
  * Used as separate from other module pseudocode so that
  * that module can easily detach from other module
@@ -6,7 +9,7 @@ package binary_search.ui.visualizer.contract
 
 internal interface Pseudocode{
     data class Line(
-        val line: String,
+        val line: AnnotatedString,
         val highLighting: Boolean = false,
         val lineNumber: Int,
     ): Pseudocode

@@ -39,7 +39,7 @@ internal fun <T:Comparable<T>>VisualizationRoute(
     ) {
         ControlSection(
             onNext = algoController::next,
-            isCodeOff = uiController.showPseudocode.collectAsState().value,
+            showPseudocode = uiController.showPseudocode.collectAsState().value,
             onCodeVisibilityToggleRequest = uiController::togglePseudocodeVisibility
         )
         Spacer(Modifier.height(64.dp))

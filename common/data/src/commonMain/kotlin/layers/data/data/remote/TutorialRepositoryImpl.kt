@@ -8,8 +8,9 @@ import layers.domain.response_model.TutorialTheoryResponseModel
 
 class TutorialRepositoryImpl : TutorialRepository {
     override fun getTutorialTheory(): Flow<TutorialTheoryResponseModel> {
-        return DataFetcher().fetchTutorialTheory().map {
-            TutorialTheoryResponseModel(it.richString)
-        }
+        TODO()
+//        return DataFetcher().fetchTutorialTheory().map {
+//            TutorialTheoryResponseModel(it.richString)
+//        }
     }
 }

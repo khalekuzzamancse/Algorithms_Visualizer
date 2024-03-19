@@ -11,12 +11,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import binary_search.ui.visualizer.controller.AlgoControllerImpl
 import binary_search.ui.visualizer.controller.ui.components.ArraySection
 import binary_search.ui.visualizer.controller.ui.components.PseudoCodeSection
 import binary_search.ui.visualizer.controller.ui.components._VariableSection
@@ -42,7 +39,7 @@ internal fun <T:Comparable<T>>VisualizationRoute(
     ) {
         ControlSection(
             onNext = algoController::next,
-            isCodeOff = uiController.showPseudocode.collectAsState().value,
+            showPseudocode = uiController.showPseudocode.collectAsState().value,
             onCodeVisibilityToggleRequest = uiController::togglePseudocodeVisibility
         )
         Spacer(Modifier.height(64.dp))

@@ -61,13 +61,13 @@ fun CellPointerComposable(
             .size(cellSize)
             .offset {
                 IntOffset(offsetAnimation.x.toInt(), offsetAnimation.y.toInt())
-            }.background(MaterialTheme.colorScheme.tertiary.copy(alpha =0.5f)),
+            }.background(MaterialTheme.colorScheme.tertiaryContainer.copy(alpha =0.7f)),
         contentAlignment = Alignment.BottomCenter
     ) {
         Text(
             text = label,
             modifier = Modifier,
-            color = MaterialTheme.colorScheme.onTertiary
+            color = MaterialTheme.colorScheme.onTertiaryContainer
         )
     }
 }

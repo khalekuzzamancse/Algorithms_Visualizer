@@ -39,7 +39,7 @@ val coreModules = listOf(
     ":core",
     ":core:realm",
     ":core:database",
-    ":core:database:mongodb",
+//    ":core:database:mongodb", disconnecting it
 )
 val featuresModules = listOf(
     ":feature",

@@ -17,7 +17,7 @@ kotlin {
         val commonMain by getting{
             dependencies {
                 implementation(libs.kotlinx.coroutines.core)
-                implementation(project(localModules.versions.core.database.mongodb.get()))
+                //implementation(project(localModules.versions.core.database.mongodb.get()))
                 implementation(project(localModules.versions.common.domain.get()))
             }
         }
