@@ -1,4 +1,4 @@
-package feature.search.ui.route
+package feature.search.ui
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
@@ -21,8 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import feature.search.ui.visulizer.VisualizationRoute
-import feature.search.ui.visulizer.controller.UIController
 import layers.ui.common_ui.decorators.tab_layout.TabDecoratorControllerImpl
 import layers.ui.common_ui.decorators.tab_layout.TabDestination
 import layers.ui.common_ui.decorators.tab_layout.TabLayoutDecorator

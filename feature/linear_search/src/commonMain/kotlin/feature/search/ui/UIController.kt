@@ -1,16 +1,15 @@
-package feature.search.ui.visulizer.controller
+package feature.search.ui
 
 import androidx.compose.ui.graphics.Color
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController
-import feature.search.ui.visulizer.contract.AlgoPseudocode
-import feature.search.ui.visulizer.contract.AlgoVariablesState
-import feature.search.ui.visulizer.contract.SimulationState
+import feature.search.infrastructure.AlgoControllerImpl
+import feature.search.domain.VisualizationState
+import feature.search.infrastructure.LinearSearchIterator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -21,16 +20,14 @@ internal class UIController<T : Comparable<T>>(
     private val visitedCellColor: Color
 ) {
     val arrayController = ArrayController(list = list, cellSizePx = cellSizePx)
-    val algoController = AlgoControllerImpl(list = list, target = target)
+    val iterator = LinearSearchIterator(list, target)
+    val algoController = AlgoControllerImpl(iterator = iterator, target = target)
 
     val currentIndex: Flow<Int?> = algoController.algoState.map { state ->
-        if (state is SimulationState.AlgoState<*>)
+        if (state is VisualizationState.AlgoState<*>)
             state.currentIndex
         else null
     }
-
-
-
 
 
     val pseudocode = algoController.pseudocode

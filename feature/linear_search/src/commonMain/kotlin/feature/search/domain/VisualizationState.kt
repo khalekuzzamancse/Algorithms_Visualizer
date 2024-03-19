@@ -1,15 +1,15 @@
-package feature.search.ui.visulizer.contract
+package feature.search.domain
 
-internal interface SimulationState{
+interface VisualizationState{
      data class AlgoState<T>(
         val target: T,
         val currentIndex: Int?,
         val currentElement: T?,
-    ):SimulationState
+    ): VisualizationState
     data class Finished(
         val foundedIndex: Int,
         val comparisons:Int
-    ):SimulationState
+    ): VisualizationState
 
 }
 

@@ -9,7 +9,7 @@ import androidx.compose.runtime.setValue
 import com.example.compose.AppTheme
 import com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation.home.HomeDestination
 import com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation.home.dashboard.Destination
-import feature.search.ui.route.LinearSearchDestination
+import feature.search.ui.LinearSearchDestination
 
 
 @Composable

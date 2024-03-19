@@ -1,4 +1,4 @@
-package feature.search.ui.visulizer
+package feature.search.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -17,10 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import feature.search.ui.visulizer.components.ArraySection
-import feature.search.ui.visulizer.components.PseudoCodeSection
-import feature.search.ui.visulizer.contract.SimulationState
-import feature.search.ui.visulizer.controller.UIController
+import feature.search.ui.components.ArraySection
+import feature.search.ui.components.PseudoCodeSection
+import feature.search.domain.VisualizationState
 import layers.ui.common_ui.ControlSection
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -56,7 +55,7 @@ internal fun <T : Comparable<T>> VisualizationRoute(
                 onAutoPlayRequest = onAutoPlayRequest
             )
             Spacer(Modifier.height(64.dp))
-            if (endedState is SimulationState.Finished){
+            if (endedState is VisualizationState.Finished){
                 _ResultSummary(
                     foundedIndex = endedState.foundedIndex,
                     comparisons = endedState.comparisons

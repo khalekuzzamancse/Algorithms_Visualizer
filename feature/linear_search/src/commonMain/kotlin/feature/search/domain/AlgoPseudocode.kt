@@ -1,16 +1,38 @@
-package feature.search.ui.visulizer.contract
+package feature.search.domain
 
 import androidx.compose.ui.text.AnnotatedString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+/**
+ * Used as separate from other module pseudocode so that
+ * that module can easily detach from other module
+ *
+ */
+
+interface Pseudocode{
+    /**
+     * @param indentationLevel the number of space from the left side
+     * @param variableState is the variable value ,at this moment
+     */
+    data class Line(
+        val line: AnnotatedString,
+        val highLighting: Boolean = false,
+        val lineNumber: Int,
+        val indentationLevel:Int=0,
+        val topPaddingLevel:Int=0,
+        val variableState:AnnotatedString?=null
+    ): Pseudocode
+
+}
+
 
 /**
  * Need to maintain the single source of truth,so that previous change is stored
  * Do not make it singleton so otherwise the reset or for re use it will preserve the old state,which leads
  * unexpected behaviour
  */
-internal class AlgoPseudocode {
+class AlgoPseudocode {
 
     private val code: List<Pseudocode.Line> = listOf(
         Pseudocode.Line(
