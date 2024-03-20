@@ -14,7 +14,7 @@ internal object AlgorithmsNames{
         subjectName = "Data Structure and Algorithms",
         item = listOf(
             AlgorithmItem(name = "Linear Search", icon = Icons.Filled.Search, destination = Destination.LinearSearch),
-            AlgorithmItem(name = "Binary Search", icon = Icons.Filled.Search),
+            AlgorithmItem(name = "Binary Search", icon = Icons.Filled.Search,destination = Destination.BinarySearch),
             AlgorithmItem(name = "Bubble Sort", icon = Icons.AutoMirrored.Filled.Sort),
             AlgorithmItem(name = "Selection Sort", icon = Icons.AutoMirrored.Filled.Sort),
             AlgorithmItem(name = "Insertion Sort", icon = Icons.AutoMirrored.Filled.Sort),

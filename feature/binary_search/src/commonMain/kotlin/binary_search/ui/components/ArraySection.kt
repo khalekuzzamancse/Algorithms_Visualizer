@@ -1,12 +1,14 @@
-package binary_search.ui.visualizer.controller.ui.components
+package binary_search.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.VisualArray
-import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.components.CellPointerComposable
+import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.newdd.array.controller.ArrayController
+import binary_search.PackageLevelAccess
 
+@PackageLevelAccess //avoid to access other layer such domain or data/infrastructure
 @Composable
 fun <T> ArraySection(
     list: List<T>,
@@ -16,6 +18,7 @@ fun <T> ArraySection(
     high: Int?,
     mid: Int?
 ) {
+
     Box {
         VisualArray(
             cellSize = cellSize,
@@ -28,7 +31,7 @@ fun <T> ArraySection(
                     CellPointerComposable(
                         cellSize = cellSize,
                         position = it,
-                        label = "L"
+                        label = "low"
                     )
                 }
             }
@@ -40,7 +43,7 @@ fun <T> ArraySection(
                     CellPointerComposable(
                         cellSize = cellSize,
                         position = it,
-                        label = "R"
+                        label = "high"
                     )
                 }
             }
@@ -52,7 +55,7 @@ fun <T> ArraySection(
                     CellPointerComposable(
                         cellSize = cellSize,
                         position = it,
-                        label = "M"
+                        label = "mid"
                     )
                 }
             }
