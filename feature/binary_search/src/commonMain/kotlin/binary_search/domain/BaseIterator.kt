@@ -14,16 +14,15 @@ abstract class BaseIterator<T : Comparable<T>>(
     protected var length = numberOfElement
     protected var midValue: T? = null
     protected var low = 0
-    protected var mid:Int? = null
+    protected var mid: Int? = null
     protected var high = length - 1
 
     private val algoPseudocode = AlgoPseudocode()
     open val pseudocode = algoPseudocode.codes
-    protected fun createEndState(): VisualizationState.Finished {
+    protected fun createEndState(foundedAt: Int?, comparisons:Int): VisualizationState.Finished {
         return VisualizationState.Finished(
-            low = low,
-            high = high,
-            mid=mid
+            comparisons = comparisons,
+            foundedAt =foundedAt
         )
     }
 
@@ -36,11 +35,12 @@ abstract class BaseIterator<T : Comparable<T>>(
             midValue = if (mid == null) null else midValue,
         )
     }
-    fun initialState(): VisualizationState.AlgoState<T>{////uses as public for that
+
+    fun initialState(): VisualizationState.AlgoState<T> {////uses as public for that
         return VisualizationState.AlgoState(
             target = target,
             low = null,
-            high =null,
+            high = null,
             mid = null,
             midValue = null,
         )

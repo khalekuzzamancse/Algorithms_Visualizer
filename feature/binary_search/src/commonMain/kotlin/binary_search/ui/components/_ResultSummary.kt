@@ -4,25 +4,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import binary_search.PackageLevelAccess
+import binary_search.domain.VisualizationState
 
 @PackageLevelAccess //avoid to use other layer such domain or data/infrastructure
 @Composable
 internal fun _ResultSummary(
-    low: Int?,
-    high: Int?,
-    mid: Int?,
+    endState: VisualizationState.Finished
 ) {
-    val isSuccess = true
-
+    val isSuccess = endState.foundedAt != null
     Column {
         Text(if (isSuccess) "Successfully Search" else "UnSuccessfully Search")
         if (isSuccess) {
-            Text("Founded at index : $low")
+            Text("Founded at index : ${endState.foundedAt}")
         }
-        Text("Low :$low")
-        Text("High :$high")
-        Text("Mid :$mid")
-
+        Text("Comparisons :${endState.comparisons}")
     }
 
 }

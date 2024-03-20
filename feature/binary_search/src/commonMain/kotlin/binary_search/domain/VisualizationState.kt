@@ -9,9 +9,8 @@ interface VisualizationState{
          val midValue: T?,
     ): VisualizationState
     data class Finished(
-        val low: Int?,
-        val high:Int?,
-        val mid: Int?,
+        val comparisons: Int?,
+        val foundedAt: Int?,
     ): VisualizationState
 
 }

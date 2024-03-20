@@ -23,7 +23,7 @@ internal fun TopBar(onExitRequest:()->Unit) {
             }
         },
         title = {
-            Text("Linear Search")
+            Text("Binary Search")
         },
     )
 }

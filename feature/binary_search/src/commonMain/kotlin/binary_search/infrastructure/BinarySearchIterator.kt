@@ -10,6 +10,7 @@ class BinarySearchIterator<T : Comparable<T>>(
 ) : BaseIterator<T>(elements.size, target) {
     private var ended = false
     private var isFound: Boolean? = null
+    private var comparisons:Int=0
    override val result = sequence {
        updateVariablesState(length = length,target=target,low=low,high=high)
         yield(newState()) // Initial state
@@ -17,11 +18,13 @@ class BinarySearchIterator<T : Comparable<T>>(
              mid = (low + high) / 2
             midValue = elements[mid!!]
             isFound = midValue == target
+            comparisons++
             updateVariablesState(length = length,target=target,low=low,high=high,mid=mid,midValue=midValue)
             yield(newState(mid))
             if (isFound as Boolean) {
                 ended = true
                 yield(newState(mid)) // Target found
+                yield(createEndState(foundedAt = mid,comparisons=comparisons))//on success result
                 break
             } else if (midValue!! < target) {
                 low = mid!! + 1
@@ -37,10 +40,12 @@ class BinarySearchIterator<T : Comparable<T>>(
        //return -1 ;should not use return in that statement here...
         if (!ended) { // If the search ends without finding the target
             ended = true
-            yield(createEndState())
+            yield(createEndState(foundedAt = null,comparisons=comparisons))
         }
        updateVariablesState()//clear the pseudocode variable state
-       yield(createEndState())//return the end state for both successful search or un successful search
+
+
+
     }
 
 

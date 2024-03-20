@@ -14,6 +14,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
@@ -43,7 +47,7 @@ internal fun <T : Comparable<T>> VisualizationDestination(
     onAutoPlayRequest: () -> Unit,
 ) {
 
-    val tabController=viewModel.tabController
+    val tabController = viewModel.tabController
     TabLayoutDecorator(
         modifier = Modifier.padding(start = 8.dp, end = 8.dp),
         controller = tabController,
@@ -56,18 +60,16 @@ internal fun <T : Comparable<T>> VisualizationDestination(
                             _VisualizationDestination(
                                 modifier = Modifier.padding(top = 16.dp),
                                 cellSize = arrayCellSize,
-                                onResetRequest = onResetRequest,
-                                onAutoPlayRequest = onAutoPlayRequest,
+                                arrayElements = viewModel.elements.collectAsState().value,
                                 arrayController = viewModel.arrayController.collectAsState().value,
-                                onNext = viewModel::onNext,
+                                endState = viewModel.endState.collectAsState(null).value,
+                                pseudocode = viewModel.pseudocode.collectAsState().value,
                                 low = viewModel.low.collectAsState().value,
                                 high = viewModel.high.collectAsState().value,
                                 mid = viewModel.mid.collectAsState().value,
-                                endState = viewModel.endState.collectAsState(null).value,
-                                pseudocode = viewModel.pseudocode.collectAsState().value,
-                                onTogglePseudocodeVisibly = viewModel::togglePseudocodeVisibility,
-                                arrayElements = viewModel.elements.collectAsState().value,
-                                showPseudocode = viewModel.showPseudocode.collectAsState().value
+                                onNext = viewModel::onNext,
+                                onResetRequest = onResetRequest,
+                                onAutoPlayRequest = onAutoPlayRequest
                             )
                         }
 
@@ -85,27 +87,28 @@ internal fun <T : Comparable<T>> VisualizationDestination(
 /**
  * It's totally stateless so easier to test and debug and reuse
  */
-@OptIn(ExperimentalLayoutApi::class, PackageLevelAccess::class)//okay to use  within the UI layer
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun <T : Comparable<T>> _VisualizationDestination(
     modifier: Modifier = Modifier,
     cellSize: Dp,
     arrayElements: List<T>,
     arrayController: ArrayController<T>,
-    showPseudocode: Boolean,
     endState: VisualizationState.Finished?,
     pseudocode: List<Pseudocode.Line>?,//can be hide and show
     low: Int?,
     high: Int?,
     mid: Int?,
     onNext: () -> Unit,
-    onTogglePseudocodeVisibly: () -> Unit,
     onResetRequest: () -> Unit,
     onAutoPlayRequest: () -> Unit,
 ) {
-
+    var showPseudocode by remember { mutableStateOf(true) }
+    //okay to store pseudocode as locally,to avoid extra state keep to present
+    //because this state does not need to preserve on activity recreation.
+    //because this not a important state so if we lost it,then it's okay.
     FlowRow(
-        modifier = modifier.verticalScroll(rememberScrollState()),
+        modifier = modifier,
         horizontalArrangement = Arrangement.Center,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -117,34 +120,60 @@ private fun <T : Comparable<T>> _VisualizationDestination(
             ControlSection(
                 onNext = onNext,// algoController::next
                 showPseudocode = showPseudocode,
-                onCodeVisibilityToggleRequest = onTogglePseudocodeVisibly,
+                onCodeVisibilityToggleRequest = { showPseudocode=! showPseudocode },
                 onResetRequest = onResetRequest,
                 onAutoPlayRequest = onAutoPlayRequest
             )
-            Spacer(Modifier.height(64.dp))
-            if (endState!=null) {
-                _ResultSummary(
-                    low = endState.low,
-                    high = endState.high,
-                    mid=endState.mid
-                )
-                Spacer(Modifier.height(64.dp))
-            }
-            ArraySection(
-                list = arrayElements,
-                cellSize = cellSize,
-                arrayController = arrayController,
-                low = low,
-                high=high,
-                mid=mid
+            Spacer(Modifier.height(16.dp))
+            ArrayNResultNCodeSection(
+                modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()), cellSize = cellSize, arrayElements = arrayElements,
+                arrayController = arrayController, endState = endState, pseudocode = pseudocode,
+                low = low, high = high, mid = mid, showPseudocode = showPseudocode
             )
+
         }
+    }
+
+}
+
+@OptIn(PackageLevelAccess::class)////okay to use  within the UI layer
+@Composable
+private fun <T> ArrayNResultNCodeSection(
+    modifier: Modifier = Modifier,
+    cellSize: Dp,
+    arrayElements: List<T>,
+    arrayController: ArrayController<T>,
+    endState: VisualizationState.Finished?,
+    showPseudocode: Boolean,
+    pseudocode: List<Pseudocode.Line>?,//can be hide and show
+    low: Int?,
+    high: Int?,
+    mid: Int?,
+) {
+
+
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    )
+    {
+        if (endState != null) {
+            _ResultSummary(endState)
+            Spacer(Modifier.height(16.dp))
+        }
+        ArraySection(
+            list = arrayElements,
+            cellSize = cellSize,
+            arrayController = arrayController,
+            low = low,
+            high = high,
+            mid = mid
+        )
         AnimatedVisibility(showPseudocode) {
             pseudocode?.let { PseudoCodeSection(it) }
 
         }
-
     }
 
-
 }
+

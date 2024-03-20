@@ -41,7 +41,7 @@ internal class BinarySearchViewModel<T : Comparable<T>>(
     private val _mid = MutableStateFlow<Int?>(null)
     private val _pseudocode = MutableStateFlow<List<Pseudocode.Line>>(emptyList())
     private val _endState = MutableStateFlow<VisualizationState.Finished?>(null)
-    private val _showPseudocode = MutableStateFlow(true)
+
 
     //PUBLIC
     val low = _low.asStateFlow()
@@ -49,7 +49,6 @@ internal class BinarySearchViewModel<T : Comparable<T>>(
     val mid = _mid.asStateFlow()
     val endState = _endState.asStateFlow()
     val pseudocode = _pseudocode.asStateFlow()
-    val showPseudocode = _showPseudocode.asStateFlow()
     //
 
 
@@ -62,7 +61,7 @@ internal class BinarySearchViewModel<T : Comparable<T>>(
     }
 
     fun onInputCompleted(elements: List<Int>, target: Int) {
-        _elements.update { elements }
+        _elements.update { elements.sorted() }//if by mistake user input un sorted array
         _target.update { target }
         _arrayController.update { ArrayController(list = _elements.value, cellSizePx = cellSizePx) }
         //using factory method so do not need to pass as dependency because this same as dependency injection
@@ -75,9 +74,7 @@ internal class BinarySearchViewModel<T : Comparable<T>>(
 
     }
 
-    fun togglePseudocodeVisibility() {
-        _showPseudocode.update { !it }
-    }
+
 
     private fun observe() {
         launch {
