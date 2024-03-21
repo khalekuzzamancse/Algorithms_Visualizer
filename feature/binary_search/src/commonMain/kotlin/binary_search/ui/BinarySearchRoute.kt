@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import layers.ui.common_ui.decorators.tab_layout.TabDecoratorControllerImpl
-import layers.ui.common_ui.dialogue.InputListDialog
+import layers.ui.common_ui.dialogue.SearchInputDialoge
 import binary_search.PackageLevelAccess
 import binary_search.ui.destinations.VisualizationDestination
 
@@ -41,7 +41,7 @@ fun BinarySearchRoute(
     }
 
     if (viewModel.isInputMode.collectAsState().value) {
-        InputListDialog(
+        SearchInputDialoge(
             showDialog = true,
             onDismiss = viewModel::onInputCompleted,
             onConfirm = viewModel::onInputCompleted

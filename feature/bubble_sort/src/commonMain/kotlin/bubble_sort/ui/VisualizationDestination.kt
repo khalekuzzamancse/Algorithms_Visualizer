@@ -1,4 +1,4 @@
-package bubble_sort.ui.route
+package bubble_sort.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -11,26 +11,29 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import bubble_sort.ui.visulizer.controller.ui.UIController
-import bubble_sort.ui.visulizer.controller.ui.components.ArraySection
-import bubble_sort.ui.visulizer.controller.ui.components.PseudoCodeSection
-import bubble_sort.ui.visulizer.controller.ui.components._VariableSection
+import bubble_sort.ui.components.ArraySection
+import bubble_sort.ui.components.PseudoCodeSection
 import layers.ui.common_ui.ControlSection
 
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun <T:Comparable<T>>VisualizationRoute(
+internal fun <T:Comparable<T>>VisualizationDestination(
     cellSize: Dp,
-    uiController: UIController<T>
+    viewModel: BubbleSortViewModel<T>
 ) {
-    val arrayController = uiController.arrayController
-    val algoController = uiController.algoController
-    val i = uiController.i.collectAsState(null).value
-    val j=uiController.j.collectAsState(null).value
+    var showPseudocode by remember { mutableStateOf(true) }
+    val arrayController = viewModel.arrayController
+    val i = viewModel.i.collectAsState(null).value
+    val j=viewModel.j.collectAsState(null).value
+
 
     FlowRow(
         Modifier.verticalScroll(rememberScrollState()),
@@ -38,23 +41,22 @@ internal fun <T:Comparable<T>>VisualizationRoute(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         ControlSection(
-            onNext = algoController::next,
-            showPseudocode = uiController.showPseudocode.collectAsState().value,
-            onCodeVisibilityToggleRequest = uiController::togglePseudocodeVisibility
+            onNext =viewModel::onNext,
+            showPseudocode = showPseudocode,
+            onCodeVisibilityToggleRequest = { showPseudocode=!showPseudocode }
         )
         Spacer(Modifier.height(64.dp))
         ArraySection(
-            list = uiController.list,
+            list = viewModel.list.collectAsState().value,
             cellSize = cellSize,
-            arrayController = arrayController,
+            arrayController = arrayController.collectAsState().value,
             i = i,
             j = j,
         )
         Column {
-            _VariableSection(uiController.variables.collectAsState(emptyList()).value)
             Spacer(Modifier.height(64.dp))
-            AnimatedVisibility(uiController.showPseudocode.collectAsState().value) {
-                PseudoCodeSection(uiController.pseudocode.collectAsState().value)
+            AnimatedVisibility(showPseudocode) {
+                PseudoCodeSection(viewModel.pseudocode.collectAsState().value)
             }
 
         }

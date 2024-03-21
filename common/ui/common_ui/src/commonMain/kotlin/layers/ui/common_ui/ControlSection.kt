@@ -27,6 +27,7 @@ fun ControlSection(
     onAutoPlayRequest: () -> Unit = {},
     onCodeVisibilityToggleRequest: () -> Unit = {},
 ) {
+
     FlowRow(modifier) {
         Button(
             onClick = onNext,
