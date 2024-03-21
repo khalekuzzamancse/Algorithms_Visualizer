@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import bubble_sort.ui.components.ArraySection
 import bubble_sort.ui.components.PseudoCodeSection
-import layers.ui.common_ui.ControlSection
+import layers.ui.common_ui.controll_section.ControlSection
 
 
 @OptIn(ExperimentalLayoutApi::class)

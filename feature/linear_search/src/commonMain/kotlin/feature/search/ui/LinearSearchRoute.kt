@@ -43,7 +43,7 @@ fun LinearSearchRoute(
     if (viewModel.isInputMode.collectAsState().value) {
         SearchInputDialoge(
             showDialog = true,
-            onDismiss = viewModel::onInputCompleted,
+            onDismiss = onExitRequest,
             onConfirm = viewModel::onInputCompleted
         )
     } else {

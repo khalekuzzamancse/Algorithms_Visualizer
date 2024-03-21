@@ -11,7 +11,7 @@ import binary_search.PackageLevelAccess
 @PackageLevelAccess //avoid to access other layer such domain or data/infrastructure
 @Composable
 fun <T> ArraySection(
-    list: List<T>,
+    elements: List<T>,
     cellSize: Dp,
     arrayController: ArrayController<T>,
     low: Int?,
@@ -26,7 +26,7 @@ fun <T> ArraySection(
             enableDrag = false
         )
         low?.let { index ->
-            if (index.isWithinRange(list.size)) {
+            if (index.isWithinRange(elements.size)) {
                 arrayController.getCellPosition(index)?.let {
                     CellPointerComposable(
                         cellSize = cellSize,
@@ -38,7 +38,7 @@ fun <T> ArraySection(
 
         }
         high?.let { index ->
-            if (index.isWithinRange(list.size)) {
+            if (index.isWithinRange(elements.size)) {
                 arrayController.getCellPosition(index)?.let {
                     CellPointerComposable(
                         cellSize = cellSize,
@@ -50,7 +50,7 @@ fun <T> ArraySection(
 
         }
         mid?.let { index ->
-            if (index.isWithinRange(list.size)) {
+            if (index.isWithinRange(elements.size)) {
                 arrayController.getCellPosition(index)?.let {
                     CellPointerComposable(
                         cellSize = cellSize,

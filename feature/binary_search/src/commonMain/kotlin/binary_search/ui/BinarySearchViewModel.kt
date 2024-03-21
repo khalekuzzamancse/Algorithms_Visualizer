@@ -56,9 +56,7 @@ internal class BinarySearchViewModel<T : Comparable<T>>(
     Used by when the input dialogue is dismissed
      */
     //METHODS SECTION
-    fun onInputCompleted() {
-        _isInputMode.update { false }
-    }
+
 
     fun onInputCompleted(elements: List<Int>, target: Int) {
         _elements.update { elements.sorted() }//if by mistake user input un sorted array

@@ -16,7 +16,8 @@ import feature.search.ui.LinearSearchRoute
 
 @Composable
 fun MyApplication() {
-    BubbleSortRoute()
+    Home()
+   // BubbleSortRoute()
     //BubbleSortSimulator()
     //InsertionSortSimulator()
     // SelectionSortSimulator()
