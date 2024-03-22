@@ -12,6 +12,9 @@ import androidx.compose.material.icons.filled.Timeline
 import androidx.compose.material.icons.filled.Train
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.khalekuzzaman.just.cse.dsavisualier2024.ui.theme.DSAVisualier2024Theme
 import com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation.MyApplication
 
@@ -21,8 +24,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             DSAVisualier2024Theme {
                 MyApplication()
-                Icons.Default.ManageHistory
-
 
             }
         }

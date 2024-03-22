@@ -23,9 +23,13 @@ internal abstract class BaseIterator<T : Comparable<T>>(
         return VisualizationState.Finished
     }
 
-    protected fun newState(): VisualizationState.AlgoState<T> {
+    //explicitly update state to avoid side effect and unwanted behaviour
+    protected fun newState(
+        i: Int? = null,
+        j: Int? = null, swappedPair: SwappedPair<T>? = null
+    ): VisualizationState.AlgoState<T> {
         return VisualizationState.AlgoState(
-            i = i, j = j, swappablePair = swappablePair
+            i = i, j = j, swappablePair = swappedPair
         )
     }
 
@@ -42,8 +46,8 @@ internal abstract class BaseIterator<T : Comparable<T>>(
             i = i,
             j = j,
             jValue = jValue,
-            jPlus1=jPlus1,
             jPlus1Value = jPlus1Value
+
         )
     }
 

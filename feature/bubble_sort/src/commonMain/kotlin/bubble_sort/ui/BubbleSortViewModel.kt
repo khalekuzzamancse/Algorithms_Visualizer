@@ -1,5 +1,6 @@
 package bubble_sort.ui
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import bubble_sort.di.Factory
 import bubble_sort.domain.AlgoStateController
@@ -15,7 +16,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-internal class BubbleSortViewModel<T : Comparable<T>> {
+internal class BubbleSortViewModel<T : Comparable<T>>(
+    private val visitedCellColor:Color
+) {
     private val _elements = MutableStateFlow(listOf(10, 5, 4, 13, 8))
     private val _isInputMode = MutableStateFlow(true)
     private lateinit var _algoController: AlgoStateController<Int>
@@ -112,10 +115,10 @@ internal class BubbleSortViewModel<T : Comparable<T>> {
     }
 
 
-    private fun markCellAsVisited(index: Int?, color: Color = Color.Red) {
+    private fun markCellAsVisited(index: Int?) {
         arrayController.value.changeCellColor(
             index = index,
-            color = color
+            color = visitedCellColor
         )
     }
 

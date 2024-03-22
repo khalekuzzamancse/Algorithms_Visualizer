@@ -1,14 +1,5 @@
 package bubble_sort.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -17,51 +8,59 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import bubble_sort.ui.components.ArraySection
 import bubble_sort.ui.components.PseudoCodeSection
-import layers.ui.common_ui.controll_section.ControlSection
+import layers.ui.common_ui.decorators.SimulationScreenEvent
+import layers.ui.common_ui.decorators.SimulationScreenState
+import layers.ui.common_ui.decorators.SimulationSlot
 
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun <T:Comparable<T>>VisualizationDestination(
+internal fun <T : Comparable<T>> VisualizationDestination(
+    modifier:Modifier=Modifier,
     cellSize: Dp,
-    viewModel: BubbleSortViewModel<T>
+    viewModel: BubbleSortViewModel<T>,
+    onExitRequest: () -> Unit={},
+    onResetRequest: () -> Unit={},
+    onAutoPlayRequest: () -> Unit={},
 ) {
-    var showPseudocode by remember { mutableStateOf(true) }
-    val arrayController = viewModel.arrayController
-    val i = viewModel.i.collectAsState(null).value
-    val j=viewModel.j.collectAsState(null).value
 
+    var state by remember { mutableStateOf(SimulationScreenState()) }
 
-    FlowRow(
-        Modifier.verticalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        ControlSection(
-            onNext =viewModel::onNext,
-            showPseudocode = showPseudocode,
-            onCodeVisibilityToggleRequest = { showPseudocode=!showPseudocode }
-        )
-        Spacer(Modifier.height(64.dp))
-        ArraySection(
-            list = viewModel.list.collectAsState().value,
-            cellSize = cellSize,
-            arrayController = arrayController.collectAsState().value,
-            i = i,
-            j = j,
-        )
-        Column {
-            Spacer(Modifier.height(64.dp))
-            AnimatedVisibility(showPseudocode) {
-                PseudoCodeSection(viewModel.pseudocode.collectAsState().value)
+    SimulationSlot(
+        modifier = modifier,
+        state = state,
+        resultSummary = {
+        },
+        pseudoCode = { PseudoCodeSection(viewModel.pseudocode.collectAsState().value) },
+        visualization = {
+            ArraySection(
+                list = viewModel.list.collectAsState().value,
+                cellSize = cellSize,
+                arrayController = viewModel.arrayController.collectAsState().value,
+                i = viewModel.i.collectAsState(null).value,
+                j = viewModel.j.collectAsState(null).value,
+            )
+        },
+        onEvent = { event ->
+            when (event) {
+                SimulationScreenEvent.AutoPlayRequest -> onAutoPlayRequest()
+                SimulationScreenEvent.NextRequest -> viewModel.onNext()
+                SimulationScreenEvent.NavigationRequest -> onExitRequest()
+                SimulationScreenEvent.ResetRequest -> onResetRequest()
+                SimulationScreenEvent.CodeVisibilityToggleRequest -> {
+                    val isVisible = state.showPseudocode
+                    state = state.copy(showPseudocode = !isVisible)
+                }
+
+                SimulationScreenEvent.ToggleNavigationSection -> {
+                    val isVisible = state.showNavTabs
+                    state = state.copy(showNavTabs = !isVisible)
+                }
             }
 
-        }
-
-    }
+        },
+    )
 
 
 }

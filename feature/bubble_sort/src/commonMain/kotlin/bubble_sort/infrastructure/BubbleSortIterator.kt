@@ -7,28 +7,30 @@ internal class BubbleSortIterator<T : Comparable<T>>(array: List<T>) : BaseItera
     override val result = sequence {
         i = 0
         updateVariablesState(len = length)
-        yield(newState())
+        yield(newState(i = i))
         while (i < length - 1) { //for ( i =0 ;i <length ; i++)
             updateVariablesState(len = length, i = i)
-            yield(newState())
+            yield(newState(i = i))
             j = 0
-            while (j < length - i - 1) { ////for ( j =0 ;j <length ; i++)
-                updateVariablesState(
-                    len = length,
+            updateVariablesState(len = length, i = i, j = j)
+            yield(newState(i = i, j = j))
+            while (j < length - i - 1) { // for ( j =0 ;j <length ; i++)
+                val shouldSwap = sortedList[j] > sortedList[j + 1]
+
+                updateVariablesState(len = length,
                     i = i,
                     j = j,
+                    jValue = sortedList[j],
+                    jPlus1Value = sortedList[j + 1]
                 )
-                yield(newState())
-                if (sortedList[j] > sortedList[j + 1]) {
+                yield(newState(i = i, j = j))
+                if (shouldSwap) {
                     swappablePair = SwappedPair(
                         j = j,
                         jPlus1 = j + 1,
                         jValue = sortedList[j],
                         jPlus1Value = sortedList[j + 1]
-                    )//before swap notify about the swap about element
-                    swap()
-                    yield(newState()) //notify swapped
-                    swappablePair = null//clear old swap element
+                    )
                     updateVariablesState(
                         len = length,
                         i = i,
@@ -36,9 +38,16 @@ internal class BubbleSortIterator<T : Comparable<T>>(array: List<T>) : BaseItera
                         jValue = sortedList[j],
                         jPlus1Value = sortedList[j + 1]
                     )
+                    yield(newState(i = i, j = j))
+                    yield(newState(i = i, j = j, swappablePair))
+                    swap()
+                    swappablePair = null//clear old swap element
+                    updateVariablesState(len = length, i = i, j = j)
                 }
                 j++
-                yield(newState()) //notify j changed
+                updateVariablesState(len = length, i = i, j = j)
+                yield(newState(i = i, j = j)) //notify j changed
+
             }
             i++
             swappablePair = null //clear old swap element

@@ -75,7 +75,7 @@ class AlgoPseudocode {
         ),
         Pseudocode.Line(
             line = AnnotatedString("swap( [list[j], list[j+1] )"),
-            lineNumber = 10,
+            lineNumber = 7,
             indentationLevel = 3,
         ),
         Pseudocode.Line(
@@ -112,7 +112,6 @@ class AlgoPseudocode {
         len: Int? = null,
         i: Int? = null,
         j: Int? = null,
-        jPlus1: Int? = null,
         jValue: T? = null,
         jPlus1Value: T? = null
     ) {
@@ -120,10 +119,19 @@ class AlgoPseudocode {
         if (len != null) updateLine2(len) else hideStateOfLine(2)
         if (i != null) updateLine3(i) else hideStateOfLine(3)
         if (j != null) updateLine4(j) else hideStateOfLine(4)
-        if (jValue != null && jPlus1Value != null) {
-            updateLine5(jValue, jPlus1Value)
-            updateLine6(jValue, jPlus1Value)
-            updateLine7(jValue, jPlus1Value)
+
+        if (jValue != null && jPlus1Value != null){
+            updateLine5(jValue, jPlus1Value) //list[j]]?list[j]
+            updateLine6(jValue, jPlus1Value) //shouldSwap
+            val swapNeed=jValue>jPlus1Value
+            if (swapNeed)
+                updateLine7(jValue, jPlus1Value)
+
+        }
+        else{
+            hideStateOfLine(5)
+            hideStateOfLine(6)
+            hideStateOfLine(7)
         }
 
 
@@ -132,14 +140,14 @@ class AlgoPseudocode {
     private fun updateLine2(len: Int) = updateLine(2, AnnotatedString(" len : $len"))
     private fun updateLine3(i: Int) = updateLine(3, AnnotatedString(" i : $i"))
     private fun updateLine4(j: Int) = updateLine(4, AnnotatedString(" j : $j"))
-    private fun <T> updateLine5(jValue: T, jPlus1Value: T) =
-        updateLine(5, AnnotatedString(" $jPlus1Value > $jValue : {$jPlus1Value>$jValue}"))
+    private fun<T : Comparable<T>> updateLine5(jValue: T, jPlus1Value: T) =
+        updateLine(5, AnnotatedString(" $jValue > $jPlus1Value : ${jValue > jPlus1Value}"))
 
-    private fun <T> updateLine6(jValue: T, jPlus1Value: T) =
-        updateLine(5, AnnotatedString(" {$jPlus1Value>$jValue}"))
+    private fun <T : Comparable<T>> updateLine6(jValue: T, jPlus1Value: T) =
+        updateLine(6, AnnotatedString(" ${jValue > jPlus1Value}"))
 
-    private fun <T> updateLine7(jValue: T, jPlus1Value: T) =
-        updateLine(5, AnnotatedString("swap ( $jValue , $jPlus1Value )"))
+    private fun <T : Comparable<T>> updateLine7(jValue: T, jPlus1Value: T) =
+        updateLine(7, AnnotatedString("swap ( $jValue , $jPlus1Value )"))
 
     private fun updateLine(lineNumber: Int, string: AnnotatedString) {
         _codes.update { codes ->
