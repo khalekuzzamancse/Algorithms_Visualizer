@@ -10,6 +10,7 @@ kotlin {
                 jvmTarget = "17"
             }
         }
+
     }
     jvm("desktop") {
         jvmToolchain(17)
@@ -31,14 +32,25 @@ kotlin {
                 implementation(project(localModules.versions.common.data.get()))
             }
         }
+        val commonTest by getting{
+            dependencies {
+                implementation("org.jetbrains.kotlin:kotlin-test:1.9.21")
+                implementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.21")
+            }
+
+        }
+
         val androidMain by getting {
             dependencies {
             }
         }
+
+
         val desktopMain by getting {
             dependencies {
-                //dependency to support android coil on desktop
+                //dependency to support coroutine desktop
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing")
+
             }
         }
     }
@@ -50,6 +62,5 @@ android {
     compileSdk = 34
     defaultConfig {
         minSdk = 27
-    }
-
+}
 }

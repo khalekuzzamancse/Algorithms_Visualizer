@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import feature.search.PackageLevelAccess
 import feature.search.ui.destinations.VisualizationDestination
 import layers.ui.common_ui.decorators.tab_layout.TabDecoratorControllerImpl
-import layers.ui.common_ui.dialogue.InputListDialog
+import layers.ui.common_ui.dialogue.SearchInputDialoge
 
 /**
  * This is only public api
@@ -41,9 +41,9 @@ fun LinearSearchRoute(
     }
 
     if (viewModel.isInputMode.collectAsState().value) {
-        InputListDialog(
+        SearchInputDialoge(
             showDialog = true,
-            onDismiss = viewModel::onInputCompleted,
+            onDismiss = onExitRequest,
             onConfirm = viewModel::onInputCompleted
         )
     } else {

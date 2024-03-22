@@ -14,7 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import layers.ui.common_ui.ControlSection
+import layers.ui.common_ui.controll_section.ControlSection
 import quick_sort.ui.visulizer.controller.UIController
 import quick_sort.ui.visulizer.controller.ui.components.ArraySection
 import quick_sort.ui.visulizer.controller.ui.components.PseudoCodeSection

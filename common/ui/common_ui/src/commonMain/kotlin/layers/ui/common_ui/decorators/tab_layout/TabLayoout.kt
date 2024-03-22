@@ -1,10 +1,13 @@
 package layers.ui.common_ui.decorators.tab_layout
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
@@ -29,13 +32,40 @@ Putting into a single file because it will used as library so that you can copy-
 without working about external files
  */
 
+@Composable
+fun TabLayoutDecorator(
+    modifier: Modifier = Modifier,
+    controller: TabDecoratorController,
+    showTabs: Boolean = true,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Column(modifier) {
+        AnimatedVisibility(showTabs) {
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
+                CustomScrollableTabs(
+                    selectedTabIndex = controller.selected.collectAsState(TabDestination.Visualization).value.ordinal,
+                    tabs = controller.tabs,
+                    onClickTab = { select ->
+                        controller.onDestinationSelected(TabDestination.entries[select])
+                    }
+                )
+            }
+        }
+        if (showTabs)
+            Spacer(Modifier.height(16.dp))
+        content()
+    }
+
+
+}
+
 
 @Composable
 fun TabLayoutDecorator(
-    modifier: Modifier=Modifier,
+    modifier: Modifier = Modifier,
     controller: TabDecoratorController,
-    topBar: @Composable () -> Unit = {},
-    content: @Composable () -> Unit = {},
+    topBar: @Composable () -> Unit,
+    content: @Composable () -> Unit,
 ) {
     Scaffold(
         topBar = topBar

@@ -46,11 +46,11 @@ fun <T> SwappableElementPlacer(
             ArrayCellElement(
                 size = cellSize,
                 currentOffset = element.position,
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.tertiary
             ) {
                 Text(
                     text = "${element.value}",
-                    style = TextStyle(color = MaterialTheme.colorScheme.onSecondary, fontSize = 16.sp),
+                    style = TextStyle(color = MaterialTheme.colorScheme.onTertiary, fontSize = 16.sp),
                 )
             }
         }

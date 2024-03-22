@@ -38,9 +38,7 @@ internal class LinearSearchViewModel<T : Comparable<T>>(
     /*
     Used by when the input dialogue is dismissed
      */
-    fun onInputCompleted() {
-        _isInputMode.update { false }
-    }
+
 
     fun onInputCompleted(elements: List<Int>, target: Int) {
         _elements.update { elements }
@@ -68,11 +66,7 @@ internal class LinearSearchViewModel<T : Comparable<T>>(
     private val _pseudocode = MutableStateFlow<List<Pseudocode.Line>>(emptyList())
     val pseudocode = _pseudocode.asStateFlow()
 
-    private val _showPseudocode = MutableStateFlow(true)
-    val showPseudocode = _showPseudocode.asStateFlow()
-    fun togglePseudocodeVisibility() {
-        _showPseudocode.update { !it }
-    }
+
 
     private fun observe() {
         CoroutineScope(Dispatchers.Default).launch {

@@ -18,7 +18,7 @@ import selection_sort.ui.visulizer.controller.ui.UIController
 import selection_sort.ui.visulizer.controller.ui.components.ArraySection
 import selection_sort.ui.visulizer.controller.ui.components.PseudoCodeSection
 import selection_sort.ui.visulizer.controller.ui.components._VariableSection
-import layers.ui.common_ui.ControlSection
+import layers.ui.common_ui.controll_section.ControlSection
 
 
 @OptIn(ExperimentalLayoutApi::class)

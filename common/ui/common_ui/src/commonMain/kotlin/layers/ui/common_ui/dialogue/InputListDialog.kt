@@ -17,6 +17,58 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 
+/**
+ * * Completely stateless component ,directly can be reused,
+ * * date is returned as Milli second so that this component does not need to coupled with a dateConverter,
+ *
+ */
+@Composable
+fun ArrayInputDialog(
+    showDialog: Boolean,
+    onDismiss: () -> Unit = {},
+    onConfirm: (List<Int>) -> Unit
+) {
+    if (showDialog) {
+        var text by rememberSaveable { mutableStateOf("10, 5, 4, 13, 8") }
+        val list = text.split("\\s*,\\s*|\\s+".toRegex()) // Split by comma or space
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text(text = "Enter List of Numbers") },
+            text = {
+                Column {
+                    TextField(
+                        label = { Text("List") },
+                        value = text,
+                        onValueChange = { text = it },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
+
+                }
+
+
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        val numberList = list.mapNotNull { it.toIntOrNull() }
+                        try {
+                            onConfirm(numberList)
+                        } catch (_: Exception) {
+                        }
+                    }
+                ) {
+                    Text("OK")
+                }
+            },
+            dismissButton = {
+                Button(onClick = onDismiss) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+}
+
 
 /**
  * * Completely stateless component ,directly can be reused,
@@ -24,10 +76,10 @@ import androidx.compose.ui.unit.dp
  *
  */
 @Composable
-fun InputListDialog(
+fun SearchInputDialoge(
     showDialog: Boolean,
-    onDismiss: () -> Unit={},
-    onConfirm: (List<Int>,target:Int) -> Unit
+    onDismiss: () -> Unit = {},
+    onConfirm: (List<Int>, target: Int) -> Unit
 ) {
     if (showDialog) {
         var text by rememberSaveable { mutableStateOf("10 20 30 40 50 60") }
@@ -59,10 +111,10 @@ fun InputListDialog(
                 Button(
                     onClick = {
                         val numberList = list.mapNotNull { it.toIntOrNull() }
-                       try {
-                           onConfirm(numberList,target.toInt())
-                       }
-                       catch (_:Exception){}
+                        try {
+                            onConfirm(numberList, target.toInt())
+                        } catch (_: Exception) {
+                        }
                     }
                 ) {
                     Text("OK")

@@ -62,6 +62,11 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(project(":feature:navigation"))
 
+    //
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0-alpha03")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0-alpha03")
+//
+
 
 
 }
