@@ -1,5 +1,7 @@
 package binary_search.ui.destinations
 
+
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -16,6 +18,7 @@ import binary_search.ui.components._ResultSummary
 import layers.ui.common_ui.decorators.SimulationScreenEvent
 import layers.ui.common_ui.decorators.SimulationScreenState
 import layers.ui.common_ui.decorators.SimulationSlot
+
 
 @OptIn(PackageLevelAccess::class)//okay to use  within the UI layer
 @PackageLevelAccess //avoid to access other layer such domain or data/infrastructure
@@ -68,3 +71,4 @@ internal fun <T : Comparable<T>> VisualizationDestination(
 
 
 }
+

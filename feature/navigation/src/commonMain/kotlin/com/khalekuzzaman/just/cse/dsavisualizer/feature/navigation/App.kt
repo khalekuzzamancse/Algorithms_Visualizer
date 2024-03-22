@@ -1,6 +1,5 @@
 package com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,9 +8,8 @@ import androidx.compose.runtime.setValue
 import binary_search.ui.BinarySearchRoute
 import bubble_sort.ui.BubbleSortRoute
 import com.example.compose.AppTheme
-import com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation.home.HomeDestination
 import com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation.home.dashboard.Destination
-import feature.search.ui.LinearSearchRoute
+import binary_search.ui.BinarySearchRoute
 
 
 @Composable

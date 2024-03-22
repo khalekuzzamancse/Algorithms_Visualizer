@@ -58,6 +58,8 @@ internal class BinarySearchViewModel<T : Comparable<T>>(
     //METHODS SECTION
 
 
+
+
     fun onInputCompleted(elements: List<Int>, target: Int) {
         _elements.update { elements.sorted() }//if by mistake user input un sorted array
         _target.update { target }
