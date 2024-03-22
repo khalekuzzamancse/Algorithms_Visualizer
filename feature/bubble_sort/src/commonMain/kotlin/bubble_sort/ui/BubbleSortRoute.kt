@@ -21,7 +21,7 @@ fun BubbleSortRoute(
     val visitedCellColor = MaterialTheme.colorScheme.secondaryContainer
     val cellSize = 64.dp
     val createViewModel: () -> BubbleSortViewModel<Int> = {
-        BubbleSortViewModel<Int>(visitedCellColor)
+        BubbleSortViewModel(visitedCellColor)
     }
     var viewModel by  remember { mutableStateOf(createViewModel()) }
     if (viewModel.isInputMode.collectAsState().value) {

@@ -45,7 +45,9 @@ internal fun <T : Comparable<T>> VisualizationDestination(
         onEvent = { event ->
             when (event) {
                 SimulationScreenEvent.AutoPlayRequest -> onAutoPlayRequest()
-                SimulationScreenEvent.NextRequest -> viewModel.onNext()
+                SimulationScreenEvent.NextRequest -> {
+                    viewModel.onNext()
+                }
                 SimulationScreenEvent.NavigationRequest -> onExitRequest()
                 SimulationScreenEvent.ResetRequest -> onResetRequest()
                 SimulationScreenEvent.CodeVisibilityToggleRequest -> {

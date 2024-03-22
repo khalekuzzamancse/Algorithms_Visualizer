@@ -44,9 +44,9 @@ internal class BubbleSortViewModel<T : Comparable<T>>(
       */
 
     fun onInputComplete(elements: List<Int>) {
-        _algoController = Factory.createAlgoController(_elements.value)
         _elements.update { elements }
-        _arrayController.update { SwappableArrayController(list = elements) }
+        _algoController = Factory.createAlgoController(_elements.value)
+        _arrayController.update { SwappableArrayController(list = _elements.value) }
         //using factory method so do not need to pass as dependency because this same as dependency injection
         //if the algoController need change to different implementation,then return different from the factory
         //the client does not need to change  or worry
