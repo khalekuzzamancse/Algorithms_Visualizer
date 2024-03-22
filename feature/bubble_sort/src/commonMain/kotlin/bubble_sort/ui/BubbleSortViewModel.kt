@@ -35,7 +35,7 @@ internal class BubbleSortViewModel<T : Comparable<T>>(
     val j = _j.asStateFlow()
 
     private val _swappablePair = MutableStateFlow<SwappedPair<T>?>(null)
-    val swapPair = _swappablePair.asStateFlow()
+    private val swapPair = _swappablePair.asStateFlow()
 
     private val _pseudocode = MutableStateFlow<List<Pseudocode.Line>>(emptyList())
     val pseudocode=_pseudocode.asStateFlow()
@@ -91,7 +91,6 @@ internal class BubbleSortViewModel<T : Comparable<T>>(
         }
         launch {
             _algoController.pseudocode.collect{
-                println(it)
                 _pseudocode.value=it
             }
         }

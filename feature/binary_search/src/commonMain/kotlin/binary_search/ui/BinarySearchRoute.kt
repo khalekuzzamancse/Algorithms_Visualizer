@@ -44,6 +44,7 @@ fun BinarySearchRoute(
         SearchInputDialoge(
             showDialog = true,
             onDismiss = onExitRequest,
+            onConfirm = viewModel::onInputCompleted
 
         )
     } else {

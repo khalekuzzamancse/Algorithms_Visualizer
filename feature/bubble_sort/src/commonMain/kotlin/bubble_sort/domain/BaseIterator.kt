@@ -37,7 +37,6 @@ internal abstract class BaseIterator<T : Comparable<T>>(
         len: Int? = null,
         i: Int? = null,
         j: Int? = null,
-        jPlus1: Int? = null,
         jValue: T? = null,
         jPlus1Value: T? = null
     ) {

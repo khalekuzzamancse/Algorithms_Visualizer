@@ -17,7 +17,8 @@ internal class BubbleSortIterator<T : Comparable<T>>(array: List<T>) : BaseItera
             while (j < length - i - 1) { // for ( j =0 ;j <length ; i++)
                 val shouldSwap = sortedList[j] > sortedList[j + 1]
 
-                updateVariablesState(len = length,
+                updateVariablesState(
+                    len = length,
                     i = i,
                     j = j,
                     jValue = sortedList[j],
