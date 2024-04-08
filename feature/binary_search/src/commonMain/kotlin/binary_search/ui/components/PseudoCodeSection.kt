@@ -22,7 +22,6 @@ internal fun PseudoCodeSection(
         modifier = Modifier
             .padding(8.dp)
             .widthIn(max=500.dp)
-            .heightIn(max=400.dp)
             .fillMaxHeight()
             .fillMaxWidth()
 

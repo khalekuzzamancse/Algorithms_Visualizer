@@ -6,15 +6,15 @@ plugins {
 }
 
 android {
-    namespace = "com.khalekuzzaman.just.cse.dsavisualier2024"
+    namespace = "com.app"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.khalekuzzaman.just.cse.dsavisualier2024"
+        applicationId = "com.khalekuzzaman.just.cse.algorithms_simulator"
         minSdk = 27
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -24,7 +24,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -62,11 +62,8 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(project(":feature:navigation"))
 
-    //
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0-alpha03")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0-alpha03")
 //
-
-
-
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }

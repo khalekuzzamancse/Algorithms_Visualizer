@@ -1,4 +1,4 @@
-package com.khalekuzzaman.just.cse.dsavisualier2024.ui.theme
+package com.app.theme
 
 import android.app.Activity
 import android.os.Build
@@ -38,7 +38,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun DSAVisualier2024Theme(
+fun AndroidAppThemes(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,

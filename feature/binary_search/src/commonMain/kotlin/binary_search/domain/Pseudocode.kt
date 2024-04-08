@@ -37,7 +37,7 @@ class AlgoPseudocode {
 
     private val code: List<Pseudocode.Line> = listOf(
         Pseudocode.Line(
-            line = AnnotatedString("BinarySearch(list, target) {"),
+            line = AnnotatedString("binarySearch(list, target) {"),
             lineNumber = 1,
             indentationLevel = 0,
         ),
@@ -78,24 +78,40 @@ class AlgoPseudocode {
             indentationLevel = 2,
         ),
         Pseudocode.Line(
-            line = AnnotatedString("return mid"),
+            line = AnnotatedString("    return mid"),
             lineNumber = 10,
             indentationLevel = 3,
         ),
         Pseudocode.Line(
-            line = AnnotatedString("else if (current < target)"),
+            line = AnnotatedString(" else if (current < target)"),
             lineNumber = 13,
             indentationLevel = 1,
             topPaddingLevel = 1
         ),
 
         Pseudocode.Line(
-            line = AnnotatedString("low = mid + 1"),
+            line = AnnotatedString("    low = mid + 1"),
             lineNumber = 14,
             indentationLevel = 1,
         ),
         Pseudocode.Line(
-            line = AnnotatedString("high = mid - 1"),
+            line = AnnotatedString("  else"),
+            lineNumber = 13,
+            indentationLevel = 1,
+            topPaddingLevel = 1
+        ),
+        Pseudocode.Line(
+            line = AnnotatedString("       high = mid - 1"),
+            lineNumber = 15,
+            indentationLevel = 0,
+        ),
+        Pseudocode.Line(
+            line = AnnotatedString("  }"),
+            lineNumber = 15,
+            indentationLevel = 0,
+        ),
+        Pseudocode.Line(
+            line = AnnotatedString(" return -1"),
             lineNumber = 15,
             indentationLevel = 0,
         ),
@@ -104,11 +120,6 @@ class AlgoPseudocode {
             lineNumber = 15,
             indentationLevel = 0,
         ),
-        Pseudocode.Line(
-            line = AnnotatedString("return -1"),
-            lineNumber = 15,
-            indentationLevel = 0,
-        )
     )
 
 

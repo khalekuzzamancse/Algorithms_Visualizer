@@ -14,7 +14,7 @@ fun main() {
         val state= remember { WindowState(
             position = WindowPosition(0.dp, 0.dp),
         ) }
-        state.size= DpSize(width = 400.dp, height =700.dp)
+        state.size= DpSize(width = 800.dp, height =700.dp)
         Window(
             state=state,
             title = "Compose Desktop",

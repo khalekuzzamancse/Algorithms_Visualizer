@@ -1,4 +1,4 @@
-package com.khalekuzzaman.just.cse.dsavisualier2024.ui.theme
+package com.app.theme
 
 import androidx.compose.ui.graphics.Color
 
