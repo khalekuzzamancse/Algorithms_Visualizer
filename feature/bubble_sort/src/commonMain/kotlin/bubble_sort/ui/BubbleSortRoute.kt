@@ -27,7 +27,7 @@ fun BubbleSortRoute(
     if (viewModel.isInputMode.collectAsState().value) {
         ArrayInputDialog(
             showDialog = true,
-            onDismiss = {},
+            onDismiss = onExitRequest,
             onConfirm = viewModel::onInputComplete
         )
     } else {

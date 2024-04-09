@@ -25,8 +25,9 @@ import com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation.home.dashboar
 @PublishedApi
 @Composable
 internal fun HomeDestination(
-    onAboutUsRequest: () -> Unit = {},
-    onNavigationRequest: (Destination) -> Unit = {},
+    onAboutUsRequest: () -> Unit,
+    onContactUsClick:()->Unit,
+    onDestinationClick: (Destination) -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -35,7 +36,7 @@ internal fun HomeDestination(
                         Text("Visualizer")
                 },
                 actions = {
-                    MyDropDownMenu(onAboutClick=onAboutUsRequest)
+                    MyDropDownMenu(onAboutClick=onAboutUsRequest, onInfoClick = onContactUsClick)
                 }
 
             )
@@ -54,7 +55,7 @@ internal fun HomeDestination(
                 Spacer(Modifier.height(32.dp))
                 Divider(thickness = 2.dp, color = MaterialTheme.colorScheme.primary)
                 Spacer(Modifier.height(4.dp))
-                DashBoard(onNavigationRequest = onNavigationRequest)
+                DashBoard(onNavigationRequest = onDestinationClick)
             }
 
 

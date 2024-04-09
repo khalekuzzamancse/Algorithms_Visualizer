@@ -23,26 +23,26 @@ class TabDecoratorControllerImpl() :TabDecoratorController{
             unFocusedIcon = Icons.Outlined.AutoGraph,
             focusedIcon = Icons.Filled.AutoGraph
         ),
-        TabItem(
-            label = "Theory",
-            unFocusedIcon = Icons.Outlined.Description,
-            focusedIcon = Icons.Filled.Description
-        ),
-        TabItem(
-            label = "Complexity Analysis",
-            unFocusedIcon = Icons.Outlined.LineAxis,
-            focusedIcon = Icons.TwoTone.LineAxis
-        ),
-        TabItem(
-            label = "Pseudocode",
-            unFocusedIcon = Icons.Outlined.Language,
-            focusedIcon = Icons.TwoTone.Language
-        ),
-        TabItem(
-            label = "Implementation",
-            unFocusedIcon = Icons.Outlined.Code,
-            focusedIcon = Icons.TwoTone.Code
-        )
+//        TabItem(
+//            label = "Theory",
+//            unFocusedIcon = Icons.Outlined.Description,
+//            focusedIcon = Icons.Filled.Description
+//        ),
+//        TabItem(
+//            label = "Complexity Analysis",
+//            unFocusedIcon = Icons.Outlined.LineAxis,
+//            focusedIcon = Icons.TwoTone.LineAxis
+//        ),
+//        TabItem(
+//            label = "Pseudocode",
+//            unFocusedIcon = Icons.Outlined.Language,
+//            focusedIcon = Icons.TwoTone.Language
+//        ),
+//        TabItem(
+//            label = "Implementation",
+//            unFocusedIcon = Icons.Outlined.Code,
+//            focusedIcon = Icons.TwoTone.Code
+//        )
     )
     private val _selected=MutableStateFlow(TabDestination.Visualization)
     override val selected: Flow<TabDestination> =_selected.asStateFlow()

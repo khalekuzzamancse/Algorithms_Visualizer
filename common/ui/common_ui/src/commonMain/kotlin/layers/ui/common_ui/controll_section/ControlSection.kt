@@ -96,15 +96,15 @@ fun TopBarControlSection(
                         )
                     }
                     Spacer(Modifier.width(8.dp))
-                    IconButton(
-                        onClick = onAutoPlayRequest
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Timer,
-                            contentDescription = "automatic play",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
+//                    IconButton(
+//                        onClick = onAutoPlayRequest
+//                    ) {
+//                        Icon(
+//                            imageVector = Icons.Outlined.Timer,
+//                            contentDescription = "automatic play",
+//                            tint = MaterialTheme.colorScheme.primary
+//                        )
+//                    }
                     IconButton(
                         onClick = onToggleNavigationSection
                     ) {
