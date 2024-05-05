@@ -6,7 +6,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
-import com.khalekuzzaman.just.cse.dsavisualizer.feature.navigation.MyApplication
+import feature.navigation.MyApplication
 
 
 fun main() {
