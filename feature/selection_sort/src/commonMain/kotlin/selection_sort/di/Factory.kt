@@ -1,6 +1,5 @@
 package selection_sort.di
 
-import selection_sort.domain.AlgoPseudocode
 import selection_sort.domain.AlgoSimulator
 import selection_sort.infrastructure.AlgoSimulatorImpl
 
@@ -16,5 +15,5 @@ internal object Factory {
     fun <T:Comparable<T>> createAlgoSimulator(elements:List<T>): AlgoSimulator<T> {
        return AlgoSimulatorImpl(list = elements)
     }
-    fun createAlgoPseudocode()= AlgoPseudocode()
+
 }

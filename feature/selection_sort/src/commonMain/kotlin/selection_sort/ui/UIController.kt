@@ -4,14 +4,12 @@ import androidx.compose.ui.graphics.Color
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.swappable.SwappableArrayController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import selection_sort.di.Factory
-import selection_sort.domain.AlgoVariablesState
 
 
 internal class UIController<T : Comparable<T>>(val list: List<T>) {
@@ -21,8 +19,7 @@ internal class UIController<T : Comparable<T>>(val list: List<T>) {
     val i = algoController.algoState.map { it.i }
     val minIndex = algoController.algoState.map { it.minIndex }
     private val swapPair = algoController.algoState.map { it.swappablePair }
-    val variables: Flow<List<AlgoVariablesState>> =
-        algoController.algoState.map { it.toVariablesState() }
+
 
     val pseudocode = algoController.pseudocode
     private val _showPseudocode = MutableStateFlow(true)

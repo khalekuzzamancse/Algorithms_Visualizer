@@ -15,21 +15,6 @@ internal data class AlgoState<T>(
     val i: Int?,
     val minIndex: Int?,
     val swappablePair: SwappedElement<T>?,
-) {
-    fun toVariablesState(): List<AlgoVariablesState> {
-        return listOf(
-            AlgoVariablesState(
-                name = "i",
-                value = if (this.i != null) "${this.i}" else null
-            ),
-            AlgoVariablesState(
-                name = "minIdx",
-                value = if (this.minIndex != null) "${this.minIndex}" else null
-            ),
-
-            )
-    }
-
-}
+)
 
 

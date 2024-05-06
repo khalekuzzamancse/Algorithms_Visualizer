@@ -1,26 +1,7 @@
 package selection_sort
 
 import androidx.compose.ui.text.AnnotatedString
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-
-/* TODO:
- - Make a Adapter that will takes the algo state and return the new pseudocode
- by using the pseudocode builder.
- The adapter may observe the algo state and then emit new pseudocode for each state change.
- *
- */
-/**
- * - Expose the variable that state will be used for debugging
- */
-internal class PseudocodeExecutorImpl : PseudocodeExecutor {
-    private val _codes = MutableStateFlow(DebuggablePseudocodeBuilder().build())
-    override val pseudocode = _codes.asStateFlow()
-
-    override fun highLightLine(lineNumber: Int) {
-        TODO("Not yet implemented")
-    }
-}
+import selection_sort.domain.LineForPseudocode
 
 
 internal data class PseudoCodeVariablesValue(
@@ -31,22 +12,20 @@ internal data class PseudoCodeVariablesValue(
     val current: String? = null,
     val min: String? = null
 )
-/*
-  Need to maintain the state of:
-  len, i, minIndex, isMinFound ,current=list[i], min=list[minIndex]
-   */
 
-internal class DebuggablePseudocodeBuilder() {
+
+internal class DebuggablePseudocodeBuilder {
     private var i: String? = null
     private var len: String? = null
     private var minIndex: String? = null
     private var isMinFound: String? = null
-    private var current: String? = null
-    private var min: String? = null
+    private var current: String? = null //list[i]
+    private var min: String? = null //list[minIndex]
 
 
-    fun build(value:PseudoCodeVariablesValue?=null): List<LineForPseudocode> {
+    fun build(value: PseudoCodeVariablesValue? = null): List<LineForPseudocode> {
         value?.let { updateVariables(it) }
+        log("$value")
 
         return listOf(
             _createLine("selectionSort( list ) {)"),
@@ -71,7 +50,7 @@ internal class DebuggablePseudocodeBuilder() {
                 if (isMinFound != null) "isMinFound:$isMinFound" else null      //debuggingText
             },
 
-            _createLine("swap( list[i], list[minIndex] )") {
+            _createLine("list.swap(i,minIndex)") {
                 if (current != null && min != null) "swap($current, $min)" else null     //debuggingText
             },
 
@@ -81,13 +60,19 @@ internal class DebuggablePseudocodeBuilder() {
 
         )
     }
-    private fun updateVariables(value: PseudoCodeVariablesValue){
+
+
+    //TODO: Add the Helper method in this section --  Add the Helper method in this section
+    //TODO: Add the Helper method in this section --  Add the Helper method in this section
+
+    private fun updateVariables(value: PseudoCodeVariablesValue) {
         i = value.i
         len = value.len
         minIndex = value.minIndex
         isMinFound = value.isMinFound
         current = value.current
     }
+
     @Suppress("FunctionName")
     private fun _createLine(
         string: String,
@@ -98,7 +83,13 @@ internal class DebuggablePseudocodeBuilder() {
             debuggingText = debuggingText()
         )
     }
-
+    @Suppress("Unused")
+    private fun log(message: String, methodName: String? = null) {
+        val tag = "${this@DebuggablePseudocodeBuilder::class.simpleName}Log:"
+        val method = if (methodName == null) "" else "$methodName()'s "
+        val msg = "$method:-> $message"
+        println("$tag::$msg")
+    }
 
 }
 

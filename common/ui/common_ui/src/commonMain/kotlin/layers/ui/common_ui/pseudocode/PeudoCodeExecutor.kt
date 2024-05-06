@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.times
 data class CodeLine(
     val line: AnnotatedString,
     val highLighting: Boolean = false,
+    val debugText:String?=null,
     val lineNumber: Int,
     val indentationLevel: Int = 0,
     val topPaddingLevel: Int = 0,
@@ -63,9 +64,9 @@ fun PseudoCodeExecutor(modifier: Modifier = Modifier, code: List<CodeLine>) {
                     )
                     Spacer(Modifier.width(2.dp))
                     // if VariableActive is active
-                    if (codeLine.variableState != null) {
+                    if (codeLine.debugText != null) {
                         Text(
-                            text = "// ${codeLine.variableState}",
+                            text = "// ${codeLine.debugText}",
                             color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
                             fontSize = 12.sp,
                             modifier = Modifier.align(Alignment.CenterVertically)

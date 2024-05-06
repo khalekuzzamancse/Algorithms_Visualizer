@@ -54,6 +54,7 @@ android {
 }
 
 dependencies {
+
     implementation(libs.androidx.activity.compose)
     implementation(compose.ui)
     implementation(compose.material3)

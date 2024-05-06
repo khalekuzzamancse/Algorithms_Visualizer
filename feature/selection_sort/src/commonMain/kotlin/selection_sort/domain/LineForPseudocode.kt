@@ -1,4 +1,4 @@
-package selection_sort
+package selection_sort.domain
 
 import androidx.compose.ui.text.AnnotatedString
 
