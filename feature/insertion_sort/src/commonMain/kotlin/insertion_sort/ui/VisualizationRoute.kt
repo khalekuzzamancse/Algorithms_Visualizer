@@ -27,7 +27,7 @@ import layers.ui.common_ui.pseudocode.PseudoCodeExecutor
 fun InsertionSortSimulator() {
 
     var isInputMode by remember { mutableStateOf(true) }
-    var controller by remember { mutableStateOf(Controller(listOf(10, 5, 4, 13, 8))) }
+    var simulateController by remember { mutableStateOf(SimulateController(listOf(10, 5, 4, 13, 8))) }
 
 
     if (isInputMode) {
@@ -36,14 +36,14 @@ fun InsertionSortSimulator() {
                 //  onExitRequest
             },
             onConfirm = { list ->
-                controller = Controller(list)
+                simulateController = SimulateController(list)
                 isInputMode = false
             }
         )
     } else {
         VisualizationRoute(
             cellSize = 64.dp,
-            controller = controller,
+            simulateController = simulateController,
             onResetRequest = {
                 isInputMode = true
             },
@@ -58,17 +58,17 @@ fun InsertionSortSimulator() {
 internal fun <T : Comparable<T>> VisualizationRoute(
     modifier: Modifier = Modifier,
     cellSize: Dp,
-    controller: Controller<T>,
+    simulateController: SimulateController<T>,
     onExitRequest: () -> Unit,
     onResetRequest: () -> Unit,
     onAutoPlayRequest: () -> Unit,
 ) {
     var state by remember { mutableStateOf(SimulationScreenState()) }
-    val arrayController = controller.arrayController
-    val algoController = controller.algoController
-    val i = controller.i.collectAsState(null).value
-    val j = controller.j.collectAsState(null).value
-    val shiftedIndex = controller.shiftedIndex.collectAsState(null).value
+    val arrayController = simulateController.arrayController
+    val algoController = simulateController.algoController
+    val i = simulateController.i.collectAsState(null).value
+    val j = simulateController.j.collectAsState(null).value
+    val shiftedIndex = simulateController.shiftedIndex.collectAsState(null).value
 
 
     SimulationSlot(
@@ -79,7 +79,7 @@ internal fun <T : Comparable<T>> VisualizationRoute(
         pseudoCode = { _PseudoCodeSection(emptyList()) },
         visualization = {
             ArraySection(
-                list = controller.list,
+                list = simulateController.list,
                 cellSize = cellSize,
                 arrayController = arrayController,
                 i = i,

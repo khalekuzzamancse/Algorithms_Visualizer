@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-internal class Controller<T : Comparable<T>>(val list: List<T>) {
+internal class SimulateController<T : Comparable<T>>(val list: List<T>) {
     val arrayController = SwappableArrayController(list = list)
     val algoController = AlgoControllerImpl(list = list)
 
