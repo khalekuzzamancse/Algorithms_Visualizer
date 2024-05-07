@@ -20,16 +20,15 @@ import com.example.compose.AppTheme
 import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
 import feature.search.ui.LinearSearchRoute
+import graph_editor.GraphEditor
 import kotlinx.coroutines.launch
-import insertion_sort.ui.InsertionSortSimulator
-import selection_sort.ui.SelectionSortSimulator
 
 @Composable
 fun MyApplication() {
     AppTheme {
       //  NavHost()
-        SelectionSortSimulator()
-      //  InsertionSortSimulator()
+        GraphEditor()
+
     }
 
 

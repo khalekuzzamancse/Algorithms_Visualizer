@@ -46,7 +46,8 @@ val featuresModules = listOf(
     ":feature:linear_search",":feature:binary_search",
     ":feature:bubble_sort",":feature:selection_sort",":feature:insertion_sort",
     ":feature:navigation",
-    ":feature:admin_section"
+    ":feature:admin_section",
+    ":feature:graph", ":feature:graph:graph_editor"
 )
 
 rootProject.name = "AlgorithmVisualizer"
