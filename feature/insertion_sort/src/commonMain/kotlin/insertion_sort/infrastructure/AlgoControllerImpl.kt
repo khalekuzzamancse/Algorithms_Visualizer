@@ -1,8 +1,8 @@
-package quick_sort.ui.visulizer.controller
+package insertion_sort.infrastructure
 
-import quick_sort.ui.visulizer.contract.AlgoState
-import quick_sort.ui.visulizer.contract.AlgoStateController
-import quick_sort.ui.visulizer.contract.Pseudocode
+import insertion_sort.domain.AlgoState
+import insertion_sort.domain.AlgoStateController
+import insertion_sort.domain.LineForPseudocode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +12,7 @@ internal class AlgoControllerImpl<T : Comparable<T>>(list: List<T>) :
     AlgoStateController<T> {
     private val builder = InsertionSortSequence(list)
     private val iterator = builder.result.iterator()
-    override val pseudocode = MutableStateFlow(emptyList<Pseudocode.Line>())
+    override val pseudocode = MutableStateFlow(emptyList<LineForPseudocode>())
     private val _state = MutableStateFlow(initializeState())
     override val algoState: StateFlow<AlgoState<T>> = _state.asStateFlow()
 
@@ -55,14 +55,17 @@ internal class InsertionSortSequence<T : Comparable<T>>(
             val key = list[i] //key=current element
             _key = list[i]
             var j = i - 1
-            while (j >= 0 && list[j] > key) {
+            while (needsShifting(j, key)) {
                 _j = j
                 yield(newState()) // Notify for new j
-                list[j + 1] = list[j]
+
+                shiftLeftElementToRight(j) //list[j + 1] = list[j]
                 shiftThisIndexBy1 = j
+
                 yield(newState()) // Notify an element(j] is shifted to right
-                shiftThisIndexBy1 = null //clear old shifting info
+                clearOldShiftingInfo() //shiftThisIndexBy1 = null
                 j -= 1
+
             }
             list[j + 1] = key
             keyFinalPosition = j + 1
@@ -74,6 +77,16 @@ internal class InsertionSortSequence<T : Comparable<T>>(
         }
         yield(endedState())
     }
+
+
+    private fun clearOldShiftingInfo(){
+        shiftThisIndexBy1 = null //clear old shifting info
+    }
+    private fun shiftLeftElementToRight(j:Int){
+        list[j + 1] = list[j]
+    }
+    private fun needsShifting(j:Int,key:T)= j >= 0 && list[j] > key
+
 
     private fun newState(): AlgoState<T> {
         return AlgoState(

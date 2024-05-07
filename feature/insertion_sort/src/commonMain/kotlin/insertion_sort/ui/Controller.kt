@@ -1,27 +1,25 @@
-package quick_sort.ui.visulizer.controller
+package insertion_sort.ui
 
 import androidx.compose.ui.graphics.Color
 import com.khalekuzzaman.just.cse.dsavisualizer.architecture_layers.ui.array.swappable.SwappableArrayController
+import insertion_sort.infrastructure.AlgoControllerImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import quick_sort.ui.visulizer.contract.AlgoVariablesState
 
 
-internal class UIController<T : Comparable<T>>(val list: List<T>) {
+internal class Controller<T : Comparable<T>>(val list: List<T>) {
     val arrayController = SwappableArrayController(list = list)
     val algoController = AlgoControllerImpl(list = list)
 
     val i = algoController.algoState.map { it.i }
     val j = algoController.algoState.map { it.j}
      val shiftedIndex = algoController.algoState.map { it.shiftedIndex }
-    val variables: Flow<List<AlgoVariablesState>> =
-        algoController.algoState.map { it.toVariablesState() }
+
 
     val pseudocode = algoController.pseudocode
     private val _showPseudocode = MutableStateFlow(true)

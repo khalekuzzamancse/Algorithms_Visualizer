@@ -1,4 +1,4 @@
-package quick_sort.ui.visulizer.contract
+package insertion_sort.domain
 
 
 /**
@@ -11,11 +11,6 @@ internal data class AlgoState<T>(
     val shiftedIndex:Int?,
     val keyFinalPosition:Int?,
     val key:T?=null,
-) {
-    fun toVariablesState(): List<AlgoVariablesState> {
-        return listOf()
-    }
-
-}
+)
 
 

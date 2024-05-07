@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
  */
 @Composable
 fun ArrayInputDialog(
-    showDialog: Boolean,
+    showDialog: Boolean=true,
     onDismiss: () -> Unit = {},
     onConfirm: (List<Int>) -> Unit
 ) {

@@ -21,13 +21,14 @@ import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
 import feature.search.ui.LinearSearchRoute
 import kotlinx.coroutines.launch
-import selection_sort.ui.SelectionSortSimulator
+import insertion_sort.ui.InsertionSortSimulator
 
 @Composable
 fun MyApplication() {
     AppTheme {
       //  NavHost()
-        SelectionSortSimulator()
+      //  SelectionSortSimulator()
+        InsertionSortSimulator()
     }
 
 

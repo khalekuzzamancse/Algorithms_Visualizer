@@ -1,4 +1,4 @@
-package quick_sort.ui.visulizer.controller.ui.components
+package insertion_sort.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable

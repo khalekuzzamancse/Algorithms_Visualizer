@@ -1,6 +1,5 @@
 package bubble_sort.ui
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import bubble_sort.di.Factory
 import bubble_sort.domain.AlgoStateController
@@ -21,13 +20,15 @@ internal class BubbleSortViewModel<T : Comparable<T>>(
 ) {
     private val _elements = MutableStateFlow(listOf(10, 5, 4, 13, 8))
     private val _isInputMode = MutableStateFlow(true)
+    val isInputMode = _isInputMode.asStateFlow()
+
     private lateinit var _algoController: AlgoStateController<Int>
     private val _arrayController =
         MutableStateFlow(SwappableArrayController(list = _elements.value))
 
     //
     val arrayController = _arrayController.asStateFlow()
-    val isInputMode = _isInputMode.asStateFlow()
+
     val list = _elements.asStateFlow()
     private val _i = MutableStateFlow<Int?>(null)
     private val _j = MutableStateFlow<Int?>(null)
