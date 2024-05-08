@@ -1,4 +1,4 @@
-package graph_editor.ui.components.edge
+package graph_editor.domain
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -6,11 +6,11 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import graph_editor.component.edge.EdgePoint
+import graph_editor.ui.component.edge.EdgePoint
 import kotlin.math.atan2
 
 
-data class GraphEditorVisualEdgeImp(
+data class VisualEdge(
     val id: String,
     val start: Offset,
     val end: Offset,

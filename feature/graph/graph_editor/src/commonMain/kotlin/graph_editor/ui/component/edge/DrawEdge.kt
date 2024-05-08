@@ -1,4 +1,4 @@
-package graph_editor.ui.ui.edge
+package graph_editor.ui.component.edge
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -8,12 +8,11 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.unit.Dp
-import graph_editor.component.edge.EdgePoint
-import graph_editor.ui.components.edge.GraphEditorVisualEdgeImp
+import graph_editor.domain.VisualEdge
 
 
 fun DrawScope.drawEdge(
-    edge: GraphEditorVisualEdgeImp,
+    edge: VisualEdge,
     textMeasurer: TextMeasurer? = null,
 ) {
     //drawEdge

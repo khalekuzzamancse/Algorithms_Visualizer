@@ -1,4 +1,4 @@
-package graph_editor.component
+package graph_editor.ui.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
-fun DataInput(
+fun DataInputDialogue(
     isOpen: Boolean = false,
     message:String="",
     onInputComplete: (String) -> Unit,

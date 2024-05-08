@@ -1,3 +1,9 @@
+
+NEXT TODO:
+- Prevent user to add node with empty label
+- Take input about the graph has weighed or not,if not weighted then do not show edge cost dialogue
+
+
 Todo:
 - Each node size can be different,before drawing the node,it is not possible to tell it exact size
 - We need each node size and the topLeft
@@ -7,7 +13,7 @@ Todo:
 - then using the set of nodes and set of edges we can build the graph
 
 TODO:
-- OnTap a node is adding,what the node size and the initial position will be depends on the tap postion and the text measurement
+- OnTap a node is adding,what the node size and the initial position will be depends on the tap position and the text measurement
 but before tapping we inputted the text of that node,
 - onAddNodeRequest() ,here we can decide the size of the node ,by measuring the text size
 

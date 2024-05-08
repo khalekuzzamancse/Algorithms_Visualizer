@@ -1,31 +1,31 @@
-package graph_editor.component.edge
+package graph_editor.ui.component.edge
 
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import graph_editor.component.Range
-import graph_editor.ui.components.edge.GraphEditorVisualEdgeImp
+import graph_editor.domain.VisualEdge
+import graph_editor.ui.component.Range
 
-class EdgeSelectionManager(
-    private val edges: List<GraphEditorVisualEdgeImp>,
+class EdgeSelectionController(
+    private val edges: List<VisualEdge>,
     private val tappedPosition: Offset,
 ) {
-    private var selectedEdge: GraphEditorVisualEdgeImp? = null
+    private var selectedEdge: VisualEdge? = null
 
     init {
         selectedEdge = edges.find { edge -> isAnyControlTouched(edge) }
     }
 
-    fun findSelectedEdge(): GraphEditorVisualEdgeImp? {
+    fun findSelectedEdge(): VisualEdge? {
         return selectedEdge
     }
 
-    fun getEdgesWithSelection(): List<GraphEditorVisualEdgeImp> {
+    fun getEdgesWithSelection(): List<VisualEdge> {
         val point = findSelectedPoint()
         return highLightPoint(point)
     }
 
-    private fun highLightPoint(point: EdgePoint): List<GraphEditorVisualEdgeImp> {
+    private fun highLightPoint(point: EdgePoint): List<VisualEdge> {
         selectedEdge?.let { activeEdge ->
             val highLightedEdge = when (point) {
                 EdgePoint.Start -> activeEdge.copy(
@@ -72,22 +72,22 @@ class EdgeSelectionManager(
         return EdgePoint.None
     }
 
-    private fun isAnyControlTouched(edge: GraphEditorVisualEdgeImp): Boolean {
+    private fun isAnyControlTouched(edge: VisualEdge): Boolean {
         return isStartTouched(edge) || isEndTouched(edge) || isControlTouched(edge)
     }
 
 
-    private fun isControlTouched(edge: GraphEditorVisualEdgeImp) =
+    private fun isControlTouched(edge: VisualEdge) =
         isTargetTouched(edge, edge.pathCenter)
 
-    private fun isStartTouched(edge: GraphEditorVisualEdgeImp) =
+    private fun isStartTouched(edge: VisualEdge) =
         isTargetTouched(edge, edge.start)
 
-    private fun isEndTouched(edge: GraphEditorVisualEdgeImp) =
+    private fun isEndTouched(edge: VisualEdge) =
         isTargetTouched(edge, edge.end)
 
     private fun isTargetTouched(
-        edge: GraphEditorVisualEdgeImp,
+        edge: VisualEdge,
         target: Offset
     ): Boolean {
         val minTouchTargetPx = edge.minTouchTargetPx

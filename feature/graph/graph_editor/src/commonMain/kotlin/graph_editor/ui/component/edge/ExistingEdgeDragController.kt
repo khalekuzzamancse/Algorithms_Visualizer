@@ -1,8 +1,8 @@
-package graph_editor.component.edge
+package graph_editor.ui.component.edge
 
 
 import androidx.compose.ui.geometry.Offset
-import graph_editor.ui.components.edge.GraphEditorVisualEdgeImp
+import graph_editor.domain.VisualEdge
 
 /*
 There are two reasons for dragging:
@@ -12,14 +12,14 @@ Or neither existing edge is being dragged nor new edge being added.
 it will handle just the existing edge dragging,
  */
 
-class ExistingEdgeDragManager(private val selectedEdge: GraphEditorVisualEdgeImp) {
+class ExistingEdgeDragController(private val selectedEdge: VisualEdge) {
 
-    fun onDrag(dragAmount: Offset): GraphEditorVisualEdgeImp {
+    fun onDrag(dragAmount: Offset): VisualEdge {
         return selectedEdge.updatePoint(dragAmount)
     }
 
 
-    private fun GraphEditorVisualEdgeImp.updatePoint(amount: Offset): GraphEditorVisualEdgeImp {
+    private fun VisualEdge.updatePoint(amount: Offset): VisualEdge {
        // Log.i("SelectedPoint","${selectedEdge.selectedPoint}")
         return when (selectedPoint) {
             EdgePoint.Start -> {

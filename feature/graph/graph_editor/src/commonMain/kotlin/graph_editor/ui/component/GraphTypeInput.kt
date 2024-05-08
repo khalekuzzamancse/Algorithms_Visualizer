@@ -1,4 +1,4 @@
-package graph_editor.component
+package graph_editor.ui.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

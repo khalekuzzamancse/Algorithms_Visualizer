@@ -1,7 +1,8 @@
-package graph_editor.component.node
+package graph_editor.ui.component.node
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import graph_editor.domain.VisualNode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -12,11 +13,11 @@ We used here some extension method on nodes because these are only
 used by the node manager so other going  to use it,so we do not keep these
 method inside the Node class itself so that the node class become lightweight
  */
-data class GraphEditorNodeManager(
+data class GraphEditorNodeController(
     private val deviceDensity: Float,
 ) {
 
-    private val _nodes = MutableStateFlow(emptySet<GraphEditorNode>())
+    private val _nodes = MutableStateFlow(emptySet<VisualNode>())
     val nodes = _nodes.asStateFlow()
 
     /*
@@ -25,11 +26,11 @@ data class GraphEditorNodeManager(
     User may want to remove the tapped node.
     User may want to drag the tapped node.
      */
-    private var _selectedGraphEditorNode = MutableStateFlow<GraphEditorNode?>(null)
-    val selectedNode=_selectedGraphEditorNode.asStateFlow()
+    private var _selectedVisualNode = MutableStateFlow<VisualNode?>(null)
+    val selectedNode=_selectedVisualNode.asStateFlow()
     fun observeCanvasTap(offset: Offset) {
-        _selectedGraphEditorNode.value = _nodes.value.find { it.isInsideCircle(offset) }
-        val aNodeIsTapped = _selectedGraphEditorNode.value != null
+        _selectedVisualNode.value = _nodes.value.find { it.isInsideCircle(offset) }
+        val aNodeIsTapped = _selectedVisualNode.value != null
         if (aNodeIsTapped){
 //            deactivateAllNodes()//remove if already some node highlighted
             highlightTappedNode()
@@ -40,7 +41,7 @@ data class GraphEditorNodeManager(
 
     private fun highlightTappedNode() {
         //if a node is tapped
-        _selectedGraphEditorNode.value?.let {
+        _selectedVisualNode.value?.let {
             val selectedNode = it.makeActive()
             //replace the tapped node with active node.
             _nodes.value = _nodes.value - it
@@ -49,7 +50,7 @@ data class GraphEditorNodeManager(
     }
 
     private fun deactivateAllNodes() {
-        _selectedGraphEditorNode.value=null
+        _selectedVisualNode.value=null
         val selectedNodeColor = Color.Blue
         _nodes.update { nodeSet ->
             nodeSet.map {
@@ -59,7 +60,7 @@ data class GraphEditorNodeManager(
         }
     }
 
-    private fun GraphEditorNode.makeActive(): GraphEditorNode {
+    private fun VisualNode.makeActive(): VisualNode {
         val activeNodeColor = Color.Blue
         return copy(color = activeNodeColor)
     }
@@ -68,7 +69,7 @@ data class GraphEditorNodeManager(
     //
 
     fun removeNode() {
-        _selectedGraphEditorNode.value?.let { activeNode ->
+        _selectedVisualNode.value?.let { activeNode ->
             _nodes.update { nodeSet ->
                 nodeSet.filter { it.id != activeNode.id }.toSet()
             }
@@ -76,17 +77,17 @@ data class GraphEditorNodeManager(
 
     }
 
-    fun add(graphEditorNode: GraphEditorNode) {
-        _nodes.value = _nodes.value + graphEditorNode
+    fun add(visualNode: VisualNode) {
+        _nodes.value = _nodes.value + visualNode
     }
 
-    fun setNode(set: Set<GraphEditorNode>) {
+    fun setNode(set: Set<VisualNode>) {
         _nodes.update { set }
     }
 
 
     fun onDragging(dragAmount: Offset) {
-        _selectedGraphEditorNode.value?.let { activeNode ->
+        _selectedVisualNode.value?.let { activeNode ->
             _nodes.update { set ->
                 set.map {
                     if(it.id==activeNode.id)
@@ -98,16 +99,16 @@ data class GraphEditorNodeManager(
         }
     }
 
-    private fun GraphEditorNode.isInsideCircle(touchPosition: Offset): Boolean {
+    private fun VisualNode.isInsideCircle(touchPosition: Offset): Boolean {
         val minX = topLeft.x
         val minY = topLeft.y
-        val shapeSize = minNodeSize
-        val maxX = minX + shapeSize.value * deviceDensity
-        val maxY = minY + shapeSize.value * deviceDensity
+        val shapeSize = exactSizePx
+        val maxX = minX + shapeSize
+        val maxY = minY + shapeSize
         return touchPosition.x in minX..maxX && touchPosition.y in minY..maxY
     }
 
-    private fun GraphEditorNode.updateTopLeft(amount: Offset): GraphEditorNode {
+    private fun VisualNode.updateTopLeft(amount: Offset): VisualNode {
         var (x, y) = topLeft + amount
         if (x.isBeyondCanvas()) x = 0f
         if (y.isBeyondCanvas()) y = 0f

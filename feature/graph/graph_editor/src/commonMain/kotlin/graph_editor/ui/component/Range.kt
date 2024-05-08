@@ -1,4 +1,4 @@
-package graph_editor.component
+package graph_editor.ui.component
 
 class Range(private val start: Float, private val end: Float) {
     fun contains(value: Float): Boolean {

@@ -1,19 +1,17 @@
-package graph_editor.ui.components.edge
+package graph_editor.ui.component.edge
 
 import androidx.compose.ui.geometry.Offset
-import graph_editor.component.edge.EdgePoint
-import graph_editor.component.edge.EdgeSelectionManager
-import graph_editor.component.edge.ExistingEdgeDragManager
+import graph_editor.domain.VisualEdge
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class GraphEditorEdgeManger : GraphEditorVisualEdgeManger {
-    private val _edges: MutableStateFlow<List<GraphEditorVisualEdgeImp>> =
+class GraphEditorEdgeController  {
+    private val _edges: MutableStateFlow<List<VisualEdge>> =
         MutableStateFlow(emptyList())
-    override val edges = _edges.asStateFlow()
+     val edges = _edges.asStateFlow()
 
-    fun addEdge(edge: GraphEditorVisualEdgeImp) {
+    fun addEdge(edge: VisualEdge) {
         _edges.value = edges.value + edge.copy(selectedPoint= EdgePoint.End)
         _selectedEdge.value = edge.copy(selectedPoint= EdgePoint.End)
         newlyAdding=true
@@ -24,13 +22,13 @@ class GraphEditorEdgeManger : GraphEditorVisualEdgeManger {
     Select the edge to remove it.
      */
 
-    private val _selectedEdge = MutableStateFlow<GraphEditorVisualEdgeImp?>(null)
+    private val _selectedEdge = MutableStateFlow<VisualEdge?>(null)
     val selectedEdge = _selectedEdge.asStateFlow()
     private var newlyAdding=false
 
 
-    override fun onTap(tappedPosition: Offset) {
-        val tapListener = EdgeSelectionManager(_edges.value, tappedPosition)
+     fun onTap(tappedPosition: Offset) {
+        val tapListener = EdgeSelectionController(_edges.value, tappedPosition)
         _selectedEdge.value = tapListener.findSelectedEdge()
         _edges.update { tapListener.getEdgesWithSelection() }
     }
@@ -65,11 +63,11 @@ class GraphEditorEdgeManger : GraphEditorVisualEdgeManger {
 
     }
 
-    override fun dragOngoing(dragAmount: Offset, position: Offset) {
+     fun dragOngoing(dragAmount: Offset, position: Offset) {
         _selectedEdge.value?.let { activeEdge ->
             _edges.update { edges ->
                 edges.map { edge ->
-                    if (edge.id == activeEdge.id) ExistingEdgeDragManager(edge).onDrag(
+                    if (edge.id == activeEdge.id) ExistingEdgeDragController(edge).onDrag(
                         dragAmount
                     ) else edge
                 }
@@ -77,12 +75,12 @@ class GraphEditorEdgeManger : GraphEditorVisualEdgeManger {
         }
     }
 
-    override fun dragEnded() {
+     fun dragEnded() {
         _selectedEdge.value=null
         newlyAdding=false
     }
 
-    override fun setEdge(edges: List<GraphEditorVisualEdgeImp>) {
+     fun setEdge(edges: List<VisualEdge>) {
         _edges.update { edges }
     }
 
