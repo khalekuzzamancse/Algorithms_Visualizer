@@ -13,7 +13,6 @@ internal data class VisualEdge(
     val control: Offset,
     val cost: String?,
     val isDirected: Boolean,
-    val minTouchTargetPx: Float
 ) {
     companion object {
         private val pathMeasurer = PathMeasure()
