@@ -3,10 +3,10 @@ package graph_editor.ui.component.edge
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import graph_editor.domain.VisualEdge
+import graph_editor.ui.component.VisualEdge
 import graph_editor.ui.component.Range
 
-class EdgeSelectionController(
+internal class EdgeSelectionControllerImpl(
     private val edges: List<VisualEdge>,
     private val tappedPosition: Offset,
 ) {

@@ -27,6 +27,7 @@ kotlin {
                 implementation("dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1")
                 implementation(project(":feature:linear_search"))
                 implementation(project(":feature:graph:graph_editor"))
+                implementation(project(localModules.versions.features.graph.bfs.get()))
                 implementation(project(":common:data"))
                 implementation(project(localModules.versions.ui.commonUI.get()))
                 implementation(project(localModules.versions.features.binarySearch.get()))

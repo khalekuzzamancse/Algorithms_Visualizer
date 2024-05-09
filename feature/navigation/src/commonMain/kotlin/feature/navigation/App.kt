@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import bfs.ui.InputGraph
 import binary_search.ui.BinarySearchRoute
 import bubble_sort.ui.BubbleSortRoute
 import com.example.compose.AppTheme
@@ -27,7 +28,8 @@ import kotlinx.coroutines.launch
 fun MyApplication() {
     AppTheme {
       //  NavHost()
-        GraphEditor()
+       // GraphEditor()
+        InputGraph()
 
     }
 

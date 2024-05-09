@@ -1,4 +1,4 @@
-package feature.navigation
+package feature.navigation.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

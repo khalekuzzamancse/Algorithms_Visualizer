@@ -1,4 +1,4 @@
-package graph_editor.domain
+package graph_editor.ui.component
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 /**
  *
  */
-data class VisualNode(
+internal data class VisualNode(
     val id: String,
     val label: String,
     val topLeft: Offset = Offset.Zero,

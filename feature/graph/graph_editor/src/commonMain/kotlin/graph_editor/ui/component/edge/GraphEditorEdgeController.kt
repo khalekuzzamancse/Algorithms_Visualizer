@@ -1,12 +1,12 @@
 package graph_editor.ui.component.edge
 
 import androidx.compose.ui.geometry.Offset
-import graph_editor.domain.VisualEdge
+import graph_editor.ui.component.VisualEdge
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class GraphEditorEdgeController  {
+internal class GraphEditorEdgeController  {
     private val _edges: MutableStateFlow<List<VisualEdge>> =
         MutableStateFlow(emptyList())
      val edges = _edges.asStateFlow()
@@ -28,7 +28,7 @@ class GraphEditorEdgeController  {
 
 
      fun onTap(tappedPosition: Offset) {
-        val tapListener = EdgeSelectionController(_edges.value, tappedPosition)
+        val tapListener = EdgeSelectionControllerImpl(_edges.value, tappedPosition)
         _selectedEdge.value = tapListener.findSelectedEdge()
         _edges.update { tapListener.getEdgesWithSelection() }
     }

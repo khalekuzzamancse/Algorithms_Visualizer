@@ -12,3 +12,7 @@ core-realm=":core:realm"
 core-database-mongodb=":core:database:mongodb"
 common-data=":common:data"
 common-domain=":common:domain"
+
+## Graph
+features-graph-editor=":feature:graph:graph_editor"
+features-graph-bfs=":feature:graph:bfs"

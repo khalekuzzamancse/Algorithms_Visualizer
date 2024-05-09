@@ -7,12 +7,12 @@ package graph_editor.domain
  * the label of the node,that is why keep the [Node],since [Node] is small class so it is okay
  */
 data class Edge(
-    val startNode: Node,
-    val endNode: Node,
+    val from: Node,
+    val to: Node,
     val cost:String?=null
 ){
     override fun toString(): String {
-        return "(${startNode.label},${endNode.label})" //for debugging purpose overriding
+        return "(${from.label},${to.label})" //for debugging purpose overriding
     }
 }
 

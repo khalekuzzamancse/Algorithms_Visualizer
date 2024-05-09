@@ -2,15 +2,19 @@ package graph_editor.infrastructure
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
-import graph_editor.domain.VisualNode
+import graph_editor.ui.component.VisualNode
 import graph_editor.ui.component.node.GraphEditorNodeController
 import graph_editor.domain.Edge
 import graph_editor.domain.Graph
 import graph_editor.ui.component.GraphEditorMode
 import graph_editor.domain.GraphEditorController
+import graph_editor.domain.GraphResult
 import graph_editor.domain.Node
+import graph_editor.domain.VisualEdgeModel
+import graph_editor.domain.VisualGraphModel
+import graph_editor.domain.VisualNodeModel
 import graph_editor.ui.component.edge.GraphEditorEdgeController
-import graph_editor.domain.VisualEdge
+import graph_editor.ui.component.VisualEdge
 import kotlinx.coroutines.flow.StateFlow
 import java.util.UUID
 
@@ -27,12 +31,13 @@ after tap if mode==AddNode is on then change the mode.
  */
 
 
-@Suppress("LocalVariableName")
-data class GraphEditorControllerImpl(
+@Suppress("LocalVariableName", "FunctionName")
+internal data class GraphEditorControllerImpl(
     private val density: Float,
 ) : GraphEditorController {
     private val nodeManger = GraphEditorNodeController(density)
     private val edgeManger = GraphEditorEdgeController()
+
     //Direction
     private var hasDirection: Boolean = true
 
@@ -55,14 +60,17 @@ data class GraphEditorControllerImpl(
         edgeManger.removeEdge()
     }
 
-    override fun onSave() {
-        log(getGraph().toString())
+    override fun onDone(): GraphResult {
+        return GraphResult(
+            isDirected = hasDirection,
+            visualGraph = getVisualGraph(),
+            graph = getGraph()
+        )
     }
 
     override fun onDirectionChanged(hasDirection: Boolean) {
         this.hasDirection = hasDirection
     }
-
 
 
     override fun onAddNodeRequest(label: String, nodeSizePx: Float) {
@@ -105,7 +113,7 @@ data class GraphEditorControllerImpl(
     }
 
 
-    override fun onDragStart(startPosition: Offset) =edgeManger.onDragStart(startPosition)
+    override fun onDragStart(startPosition: Offset) = edgeManger.onDragStart(startPosition)
 
 
     override fun onDrag(dragAmount: Offset) {
@@ -113,7 +121,7 @@ data class GraphEditorControllerImpl(
         edgeManger.dragOngoing(dragAmount, dragAmount)
     }
 
-    override fun dragEnd() =edgeManger.dragEnded()
+    override fun dragEnd() = edgeManger.dragEnded()
 
 
     private fun addNode(position: Offset) {
@@ -121,6 +129,12 @@ data class GraphEditorControllerImpl(
             val radius = it.exactSizePx / 2
             nodeManger.add(it.copy(topLeft = position - Offset(radius, radius)))
         }
+    }
+
+    private fun getVisualGraph(): VisualGraphModel {
+        val _nodes = nodes.value.map { it._toVisualModel() }.toSet()
+        val _edges = edges.value.map { it._toVisualModel() }.toSet()
+        return VisualGraphModel(_nodes, _edges)
     }
 
     override fun getGraph(): Graph {
@@ -132,7 +146,7 @@ data class GraphEditorControllerImpl(
 
         log(_nodes.toString())
         log(_edges.toString())
-        return Graph(nodes = _nodes, edges = _edges, isDirected = hasDirection)
+        return Graph(nodes = _nodes, edges = _edges)
     }
 
     //TODO:Helper method --- Helper method --- Helper method --- Helper method --- Helper method --- Helper method --- Helper method
@@ -171,6 +185,21 @@ data class GraphEditorControllerImpl(
         }
         return _edges.toSet() //returning immutable copy,to avoid side effect
     }
+
+    private fun VisualNode._toVisualModel() = VisualNodeModel(
+        id = id,
+        label = label,
+        topLeft = topLeft,
+        sizePx = exactSizePx
+    )
+
+    private fun VisualEdge._toVisualModel() = VisualEdgeModel(
+        id = id,
+        start = start,
+        end = end,
+        control = control,
+        cost = cost
+    )
 
     @Suppress("Unused")
     private fun log(message: String, methodName: String? = null) {

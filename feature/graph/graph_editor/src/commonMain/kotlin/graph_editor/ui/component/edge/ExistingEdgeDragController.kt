@@ -2,7 +2,7 @@ package graph_editor.ui.component.edge
 
 
 import androidx.compose.ui.geometry.Offset
-import graph_editor.domain.VisualEdge
+import graph_editor.ui.component.VisualEdge
 
 /*
 There are two reasons for dragging:
@@ -12,7 +12,7 @@ Or neither existing edge is being dragged nor new edge being added.
 it will handle just the existing edge dragging,
  */
 
-class ExistingEdgeDragController(private val selectedEdge: VisualEdge) {
+internal class ExistingEdgeDragController(private val selectedEdge: VisualEdge) {
 
     fun onDrag(dragAmount: Offset): VisualEdge {
         return selectedEdge.updatePoint(dragAmount)

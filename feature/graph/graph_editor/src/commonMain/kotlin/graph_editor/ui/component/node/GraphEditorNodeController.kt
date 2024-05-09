@@ -2,7 +2,7 @@ package graph_editor.ui.component.node
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import graph_editor.domain.VisualNode
+import graph_editor.ui.component.VisualNode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -13,7 +13,7 @@ We used here some extension method on nodes because these are only
 used by the node manager so other going  to use it,so we do not keep these
 method inside the Node class itself so that the node class become lightweight
  */
-data class GraphEditorNodeController(
+internal data class GraphEditorNodeController(
     private val deviceDensity: Float,
 ) {
 

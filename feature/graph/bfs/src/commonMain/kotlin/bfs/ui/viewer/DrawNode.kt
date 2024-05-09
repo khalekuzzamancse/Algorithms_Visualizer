@@ -1,4 +1,4 @@
-package graph_editor.ui.component.node
+package bfs.ui.viewer
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -8,13 +8,13 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
-import graph_editor.ui.component.VisualNode
 
 
 internal fun DrawScope.drawNode(
     node: VisualNode,
     measurer: TextMeasurer,
 ) {
+    val color=Color.Red
 
     val radius = node.exactSizePx / 2
     translate(
@@ -22,7 +22,7 @@ internal fun DrawScope.drawNode(
         top = node.topLeft.y
     ) {
         drawCircle(
-            color = node.color,
+            color = color,
             radius = radius,
             center = Offset(radius, radius)
         )
@@ -35,7 +35,7 @@ internal fun DrawScope.drawNode(
             topLeft = Offset(radius, radius) -offsetForCenterText,
             textMeasurer = measurer,
             style = TextStyle(
-                color = if (node.color.luminance() > 0.5) {
+                color = if (color.luminance() > 0.5) {
                     Color.Black
                 } else {
                     Color.White

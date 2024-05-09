@@ -1,5 +1,5 @@
 package graph_editor.ui.component
 
-enum class GraphEditorMode {
+internal enum class GraphEditorMode {
     NodeAdd, EdgeAdd, None
 }

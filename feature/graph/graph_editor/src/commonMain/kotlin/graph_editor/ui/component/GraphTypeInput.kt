@@ -19,16 +19,12 @@ import androidx.compose.ui.window.Dialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GraphTypeInput(
-    isOpen: Boolean = false,
-    message: String = "",
-    onInputComplete: (String) -> Unit,
+internal fun GraphTypeInput(
+    onInputComplete: (GraphType) -> Unit,
 ) {
-    val options = listOf("Directed", "Undirected")
-    var expanded by remember { mutableStateOf(isOpen) }
+    val options = listOf(GraphType.Undirected,GraphType.Directed,GraphType.UnDirectedWeighted,GraphType.DirectedWeighted)
     var selectedOptionText by remember { mutableStateOf(options[0]) }
 
-    if (isOpen) {
         Dialog(
             onDismissRequest = { }
         ) {
@@ -38,13 +34,12 @@ fun GraphTypeInput(
                 shape = MaterialTheme.shapes.medium,
             ) {
                 Column {
-                    options.forEach { selectionOption ->
+                    options.forEach { selected ->
                         DropdownMenuItem(
-                            text = { Text(selectionOption) },
+                            text = { Text(selected.label) },
                             onClick = {
-                                selectedOptionText = selectionOption
-                                expanded = false
-                                onInputComplete(selectedOptionText)
+                                selectedOptionText = selected
+                                onInputComplete(selected)
                             },
                             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                         )
@@ -53,6 +48,6 @@ fun GraphTypeInput(
 
             }
         }
-    }
+
 }
 

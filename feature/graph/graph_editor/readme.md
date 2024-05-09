@@ -21,4 +21,9 @@ but before tapping we inputted the text of that node,
 
 - Create add a new node to that list,when user added it to graph
 - A node can have the function called isWithinBoundary(offset)
+
+# Implementation Guide TODO(Refactor)
 - 
+- Use DI that is why only depends on abstraction
+- Right now need not using automatic DI,that is why use manual DI container with factory method to create object
+- Since Following DI so all class are testable as well as anytime can introduce automatic DI container without changing the code

@@ -1,6 +1,6 @@
 package graph_editor.ui.component
 
-class Range(private val start: Float, private val end: Float) {
+internal class Range(private val start: Float, private val end: Float) {
     fun contains(value: Float): Boolean {
         return value in start..end
     }

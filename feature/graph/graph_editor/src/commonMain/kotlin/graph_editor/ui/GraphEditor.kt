@@ -32,39 +32,55 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import graph_editor.domain.GraphEditorController
+import graph_editor.domain.GraphResult
 import graph_editor.infrastructure.GraphEditorControllerImpl
 import graph_editor.ui.component.DataInputDialogue
+import graph_editor.ui.component.GraphType
 import graph_editor.ui.component.GraphTypeInput
 import graph_editor.ui.component.node.drawNode
 import graph_editor.ui.component.edge.drawEdge
 
 @Composable
 fun GraphEditor(
-    isTree: Boolean = false,//if tree then edge must be undirected
     density: Float = 1f,
-     controller:GraphEditorController = remember { GraphEditorControllerImpl(density) }
+    onDone: (GraphResult) -> Unit,
 ) {
     val hostState = remember { SnackbarHostState() }
+    val controller: GraphEditorController = remember { GraphEditorControllerImpl(density) }
 
-    var takeDirection by remember {
+
+    var showGraphTypeInputDialog by remember {
         mutableStateOf(true)
     }
-    GraphTypeInput(takeDirection) {
-        takeDirection = false
-        if (it == "Undirected") {
-            controller.onDirectionChanged(false)
+    if (showGraphTypeInputDialog) {
+        GraphTypeInput { type ->
+            showGraphTypeInputDialog = false
+            when (type) {
+                GraphType.Undirected ->  controller.onDirectionChanged(hasDirection = false)
+                GraphType.Directed -> controller.onDirectionChanged(hasDirection = true)
+                GraphType.DirectedWeighted -> controller.onDirectionChanged(hasDirection = true)
+                GraphType.Tree -> {}
+                GraphType.UnDirectedWeighted -> controller.onDirectionChanged(hasDirection = false)
+
+            }
+
         }
-
     }
-    val textMeasurer = rememberTextMeasurer()
 
+
+    val textMeasurer = rememberTextMeasurer()
+    //defining the min size of node,because node can be so small if it has small string in it label
+    val minNodeSizePx = with(LocalDensity.current) { 48.dp.toPx() }
 
     var openAddNodePopup by remember { mutableStateOf(false) }
-    var openAddEdgePopup by remember { mutableStateOf(false) }
+    var inputEdgeCost by remember { mutableStateOf(false) }
+
 
 
     Scaffold(
@@ -77,10 +93,11 @@ fun GraphEditor(
                     openAddNodePopup = true
                 },
                 onAddEdgeRequest = {
-                    openAddEdgePopup = true
+                    inputEdgeCost = true
                 },
                 onSaveRequest = {
-                    controller.onSave()
+                    val result = controller.onDone()
+                    onDone(result)
                 },
                 onRemoveNodeRequest = { controller.onRemovalRequest() }
             )
@@ -93,22 +110,26 @@ fun GraphEditor(
 
         ) {
 
-            DataInputDialogue(
-                isOpen = openAddNodePopup,
-                message = "Enter Node Value"
-            ) { inputtedText ->
-                val textSizePx = _calculateTextSizePx(inputtedText, textMeasurer)
-                controller.onAddNodeRequest(label = inputtedText, nodeSizePx = textSizePx)
-                openAddNodePopup = false
+            if (openAddNodePopup) {
+                DataInputDialogue(
+                    description = "Enter Node Value"
+                ) { inputtedText ->
+                    val textSizePx = _calculateTextSizePx(inputtedText, textMeasurer)
+                    controller.onAddNodeRequest(
+                        label = inputtedText,
+                        nodeSizePx = maxOf(textSizePx, minNodeSizePx)
+                    )
+                    openAddNodePopup = false
+                }
             }
-            DataInputDialogue(
-                isOpen = openAddEdgePopup,
-                message = "Enter Edge Cost"
-            ) {
-                controller.onEdgeConstInput(it)
-                openAddEdgePopup = false
+            if (inputEdgeCost) {
+                DataInputDialogue(
+                    description = "Enter Edge Cost"
+                ) {
+                    controller.onEdgeConstInput(it)
+                    inputEdgeCost = false
+                }
             }
-
             Editor(controller)
         }
 
@@ -118,9 +139,9 @@ fun GraphEditor(
 
 
 @Composable
-fun Editor(
+private fun Editor(
     controller: GraphEditorController,
-    ) {
+) {
     val textMeasurer = rememberTextMeasurer() //
     val nodes = controller.nodes.collectAsState().value
     val edges = controller.edges.collectAsState().value

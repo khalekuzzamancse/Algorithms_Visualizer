@@ -1,4 +1,4 @@
-package graph_editor.ui.component.edge
+package bfs.ui.viewer
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -7,29 +7,16 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.drawText
-import androidx.compose.ui.unit.Dp
-import graph_editor.ui.component.VisualEdge
 
 
 internal fun DrawScope.drawEdge(
     edge: VisualEdge,
     textMeasurer: TextMeasurer? = null,
 ) {
+    val pathColor: Color = Color.Black
     //drawEdge
-    drawPath(path = edge.path, color = edge.pathColor, style = Stroke(3f))
-    //draw anchor point
-    when (edge.selectedPoint) {
-        EdgePoint.Start ->
-            drawControlPoints(edge.selectedPointColor, edge.anchorPointRadius, edge.start)
+    drawPath(path = edge.path, color = pathColor, style = Stroke(3f))
 
-        EdgePoint.End ->
-            drawControlPoints(edge.selectedPointColor, edge.anchorPointRadius, edge.end)
-
-        EdgePoint.Control ->
-            drawControlPoints(edge.selectedPointColor, edge.anchorPointRadius, edge.pathCenter)
-
-        else -> {}
-    }
     //draw edge cost
     if (textMeasurer != null) {
         edge.cost?.let { text ->
@@ -37,7 +24,7 @@ internal fun DrawScope.drawEdge(
         }
     }
     if (edge.isDirected) {
-        drawArrowHead(edge.pathColor, edge.arrowHeadPosition, edge.end)
+        drawArrowHead(pathColor, edge.arrowHeadPosition, edge.end)
     }
 
 }
@@ -61,9 +48,6 @@ private fun DrawScope.drawEdgeCost(
 
 }
 
-private fun DrawScope.drawControlPoints(color: Color, radius: Dp, center: Offset) {
-    drawCircle(color, radius = radius.toPx(), center = center)
-}
 
 private fun DrawScope.drawArrowHead(color: Color, arrowHeadPosition: Offset, end: Offset) {
     if (arrowHeadPosition != Offset.Unspecified){
