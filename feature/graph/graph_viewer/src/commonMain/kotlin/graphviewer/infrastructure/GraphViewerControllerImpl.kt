@@ -2,8 +2,8 @@ package graphviewer.infrastructure
 
 import androidx.compose.ui.graphics.Color
 import graphviewer.domain.GraphViewerController
-import graphviewer.domain.VisualEdge
-import graphviewer.domain.VisualNode
+import graphviewer.domain.GraphViewerEdgeModel
+import graphviewer.domain.GraphViewerNodeModel
 import graphviewer.ui.viewer.GraphViewerEdge
 import graphviewer.ui.viewer.GraphViewerNode
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,35 +11,38 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+/**
+ * - Client should not create direct instance of it to avoid coupling
+ * - Instead client should use DI container to get the instance with is abstraction
+ */
 @Suppress("FunctionName")
-class GraphViewerControllerImpl(
-    nodes: Set<VisualNode>,
-    edges: Set<VisualEdge>
+ class GraphViewerControllerImpl internal constructor(
+    nodes: Set<GraphViewerNodeModel>,
+    edges: Set<GraphViewerEdgeModel>
 ) : GraphViewerController {
-    private val highLightedColor = Color.Green
     private val _nodes = MutableStateFlow(nodes.map { it._toGraphViewerNode() }.toSet())
     private val _edges = MutableStateFlow(edges.map { it._toGraphViewerEdge() }.toSet())
     override val nodes: StateFlow<Set<GraphViewerNode>> = _nodes.asStateFlow()
     override val edges: StateFlow<Set<GraphViewerEdge>> = _edges.asStateFlow()
 
-    override fun highLightNode(id: String) {
+    override fun changeNodeColor(id: String,color: Color) {
         _nodes.update { nodes ->
             nodes.map { node ->
                 if (node.id == id)
                 {
                     println("Contorller:Idfound:${node.label}")
-                    node.copy(color = highLightedColor)
+                    node.copy(color = color)
                 }
                 else node
             }.toSet()
         }
     }
 
-    override fun highLightEdge(id: String) {
+    override fun changeEdgeColor(id: String,color: Color) {
         _edges.update { edges ->
             edges.map { edge ->
                 if (edge.id == id)
-                    edge.copy(color = highLightedColor)
+                    edge.copy(color = color)
                 else edge
             }.toSet()
         }
@@ -48,7 +51,7 @@ class GraphViewerControllerImpl(
     override fun resetAllNodeColor() {
         _nodes.update { nodes ->
             nodes.map { node ->
-                node.copy(color = Color.Unspecified)
+                node.copy(color = Color.Red)
             }.toSet()
         }
     }
@@ -60,7 +63,7 @@ class GraphViewerControllerImpl(
     //TODO: Helper method section -- TODO: Helper method section -- TODO: Helper method section
     //TODO: Helper method section -- TODO: Helper method section -- TODO: Helper method section
 
-    private fun VisualNode._toGraphViewerNode() = GraphViewerNode(
+    private fun GraphViewerNodeModel._toGraphViewerNode() = GraphViewerNode(
         id = id,
         label = label,
         topLeft = topLeft,
@@ -68,7 +71,7 @@ class GraphViewerControllerImpl(
         color = Color.Red
     )
 
-    private fun VisualEdge._toGraphViewerEdge() = GraphViewerEdge(
+    private fun GraphViewerEdgeModel._toGraphViewerEdge() = GraphViewerEdge(
         id = id,
         start = start,
         end = end,

@@ -9,7 +9,7 @@ import kotlin.math.atan2
  * - This is for take the input from the client module only
  * - To avoid tight couping do not use it to other  purpose,instead crate separate class using these value
  */
-data class VisualEdge(
+data class GraphViewerEdgeModel(
     val id: String,
     val start: Offset,
     val end: Offset,

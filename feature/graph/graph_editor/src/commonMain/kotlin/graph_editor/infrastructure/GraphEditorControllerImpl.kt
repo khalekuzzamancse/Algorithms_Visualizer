@@ -39,7 +39,7 @@ internal data class GraphEditorControllerImpl(
     private val edgeManger = GraphEditorEdgeController()
 
     //Direction
-    private var hasDirection: Boolean = true
+    private var hasDirection: Boolean = false
 
     override val edges: StateFlow<List<VisualEdge>>
         get() = edgeManger.edges
@@ -83,7 +83,7 @@ internal data class GraphEditorControllerImpl(
     }
 
 
-    override fun onEdgeConstInput(cost: String) {
+    override fun onEdgeConstInput(cost: String?) {
         operationMode = GraphEditorMode.EdgeAdd
         edgeManger.addEdge(
             VisualEdge(
@@ -146,7 +146,7 @@ internal data class GraphEditorControllerImpl(
 
         log(_nodes.toString())
         log(_edges.toString())
-        return Graph(nodes = _nodes, edges = _edges)
+        return Graph(isUndirected = hasDirection,nodes = _nodes, edges = _edges)
     }
 
     //TODO:Helper method --- Helper method --- Helper method --- Helper method --- Helper method --- Helper method --- Helper method

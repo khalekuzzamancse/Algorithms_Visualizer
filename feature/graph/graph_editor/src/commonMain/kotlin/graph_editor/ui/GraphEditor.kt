@@ -53,6 +53,7 @@ fun GraphEditor(
 ) {
     val hostState = remember { SnackbarHostState() }
     val controller: GraphEditorController = remember { GraphEditorControllerImpl(density) }
+    var isWightedGraph= remember { false }
 
 
     var showGraphTypeInputDialog by remember {
@@ -61,6 +62,7 @@ fun GraphEditor(
     if (showGraphTypeInputDialog) {
         GraphTypeInput { type ->
             showGraphTypeInputDialog = false
+            isWightedGraph=(type==GraphType.DirectedWeighted||type==GraphType.UnDirectedWeighted)
             when (type) {
                 GraphType.Undirected ->  controller.onDirectionChanged(hasDirection = false)
                 GraphType.Directed -> controller.onDirectionChanged(hasDirection = true)
@@ -93,7 +95,13 @@ fun GraphEditor(
                     openAddNodePopup = true
                 },
                 onAddEdgeRequest = {
-                    inputEdgeCost = true
+                    if (isWightedGraph){
+                        inputEdgeCost = true
+                    }
+                    else{
+                        controller.onEdgeConstInput(cost = null)//Adding edge with null cost
+                    }
+
                 },
                 onSaveRequest = {
                     val result = controller.onDone()

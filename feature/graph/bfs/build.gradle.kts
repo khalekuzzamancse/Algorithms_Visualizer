@@ -29,9 +29,8 @@ kotlin {
                 implementation(project(localModules.versions.ui.commonUI.get()))
                 implementation(project(localModules.versions.common.domain.get()))
                 implementation(project(localModules.versions.common.data.get()))
-                //Add the Graph Editor to take the nodes information
-                implementation(project(localModules.versions.features.graph.editor.get()))
-                implementation(project(localModules.versions.features.graph.viewer.get()))
+                implementation(project(localModules.versions.features.graph.editor.get())) //to take graph input from user
+                implementation(project(localModules.versions.features.graph.viewer.get())) //to show uneditable graph with highlight state
             }
         }
         val androidMain by getting {

@@ -1,4 +1,5 @@
 TODO:
+Fix the graph direction problem in the Adjacent list
 - Graph viewer should able to highlight a node(by id) 
 - Graph viewer should able to highlight a edge(by id)
 - Graph viewer should clear all the node color
