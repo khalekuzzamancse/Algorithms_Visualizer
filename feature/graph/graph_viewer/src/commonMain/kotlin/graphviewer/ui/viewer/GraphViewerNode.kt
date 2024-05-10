@@ -1,14 +1,14 @@
-package bfs.ui.viewer
+package graphviewer.ui.viewer
 
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 
 
-/**
- * - Color can be changed,while highlight such as traveling
- */
-internal data class VisualNode(
+
+data class GraphViewerNode(
     val id: String,
     val label: String,
     val topLeft: Offset = Offset.Zero,
     val exactSizePx: Float,
+    val color: Color
 )

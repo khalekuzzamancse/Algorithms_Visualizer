@@ -1,18 +1,20 @@
-package bfs.ui.viewer
+package graphviewer.ui.viewer
 
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathMeasure
 import kotlin.math.atan2
 
 
-internal data class VisualEdge(
+data class GraphViewerEdge(
     val id: String,
     val start: Offset,
     val end: Offset,
     val control: Offset,
     val cost: String?,
     val isDirected: Boolean,
+    val color: Color
 ) {
     companion object {
         private val pathMeasurer = PathMeasure()

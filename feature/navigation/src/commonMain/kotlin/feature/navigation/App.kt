@@ -21,7 +21,6 @@ import com.example.compose.AppTheme
 import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
 import feature.search.ui.LinearSearchRoute
-import graph_editor.ui.GraphEditor
 import kotlinx.coroutines.launch
 
 @Composable
@@ -30,7 +29,6 @@ fun MyApplication() {
       //  NavHost()
        // GraphEditor()
         InputGraph()
-
     }
 
 

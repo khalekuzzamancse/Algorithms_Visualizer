@@ -1,8 +1,9 @@
-package bfs.ui.viewer
+package graphviewer.ui.viewer
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -15,12 +16,25 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
+import graphviewer.domain.GraphViewerController
+
+/**
+ * - Using Dependency injection
+ */
+@Composable
+fun GraphViewer(
+    controller: GraphViewerController
+) {
+    _GraphViewer(
+        nodes = controller.nodes.collectAsState().value,
+        edges = controller.edges.collectAsState().value
+    )
+}
 
 @Composable
-internal fun GraphViewer(
-    nodes: Set<VisualNode>,
-    edges: Set<VisualEdge>
-
+private fun _GraphViewer(
+    nodes: Set<GraphViewerNode>,
+    edges: Set<GraphViewerEdge>
 ) {
     val textMeasurer = rememberTextMeasurer() //
 
@@ -45,10 +59,10 @@ TODO: Draw Node function
 
 
 private fun DrawScope._drawNode(
-    node: VisualNode,
+    node: GraphViewerNode,
     measurer: TextMeasurer,
 ) {
-    val color = Color.Red
+    val color =node.color
 
     val radius = node.exactSizePx / 2
     translate(
@@ -88,7 +102,7 @@ TODO: Draw edge function
  */
 
 private fun DrawScope._drawEdge(
-    edge: VisualEdge,
+    edge: GraphViewerEdge,
     textMeasurer: TextMeasurer? = null,
 ) {
     val pathColor: Color = Color.Black

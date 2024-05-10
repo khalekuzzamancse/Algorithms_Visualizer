@@ -29,9 +29,6 @@ kotlin {
                 implementation(project(localModules.versions.ui.commonUI.get()))
                 implementation(project(localModules.versions.common.domain.get()))
                 implementation(project(localModules.versions.common.data.get()))
-                //Add the Graph Editor to take the nodes information
-                implementation(project(localModules.versions.features.graph.editor.get()))
-                implementation(project(localModules.versions.features.graph.viewer.get()))
             }
         }
         val androidMain by getting {
@@ -49,7 +46,7 @@ kotlin {
 
 }
 android {
-    namespace = "bfs"
+    namespace = "graphviewer"
     compileSdk = 34
     defaultConfig {
         minSdk = 27

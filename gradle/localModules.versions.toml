@@ -15,4 +15,5 @@ common-domain=":common:domain"
 
 ## Graph
 features-graph-editor=":feature:graph:graph_editor"
+features-graph-viewer=":feature:graph:graph_viewer"
 features-graph-bfs=":feature:graph:bfs"
