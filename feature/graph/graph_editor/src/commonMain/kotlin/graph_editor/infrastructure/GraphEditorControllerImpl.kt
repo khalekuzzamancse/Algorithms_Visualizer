@@ -39,7 +39,7 @@ internal data class GraphEditorControllerImpl(
     private val edgeManger = GraphEditorEdgeController()
 
     //Direction
-    private var hasDirection: Boolean = false
+    private  var undirected: Boolean =true
 
     override val edges: StateFlow<List<VisualEdge>>
         get() = edgeManger.edges
@@ -62,14 +62,15 @@ internal data class GraphEditorControllerImpl(
 
     override fun onDone(): GraphResult {
         return GraphResult(
-            isDirected = hasDirection,
+            undirected = undirected,
             visualGraph = getVisualGraph(),
             graph = getGraph()
         )
     }
 
-    override fun onDirectionChanged(hasDirection: Boolean) {
-        this.hasDirection = hasDirection
+
+    override fun onDirectionChanged(undirected: Boolean) {
+        this.undirected = undirected
     }
 
 
@@ -93,7 +94,7 @@ internal data class GraphEditorControllerImpl(
                 control = Offset.Zero,
                 cost = cost,
                 minTouchTargetPx = 30.dp.value * density,
-                isDirected = hasDirection,
+                undirected = undirected,
             )
         )
     }
@@ -138,15 +139,15 @@ internal data class GraphEditorControllerImpl(
     }
 
     override fun getGraph(): Graph {
-        nodes.value.forEach {
-            log("Node(${it.label},${it.topLeft},${it.bottomRight})")
-        }
+//        nodes.value.forEach {
+//            log(it.toString())
+//        }
+//        edges.value.forEach {
+//            log(it.toString())
+//        }
         val _edges = makeEdges()
         val _nodes = makeNodes()
-
-        log(_nodes.toString())
-        log(_edges.toString())
-        return Graph(isUndirected = hasDirection,nodes = _nodes, edges = _edges)
+        return Graph(undirected = undirected,nodes = _nodes, edges = _edges)
     }
 
     //TODO:Helper method --- Helper method --- Helper method --- Helper method --- Helper method --- Helper method --- Helper method

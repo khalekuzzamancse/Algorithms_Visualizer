@@ -36,7 +36,7 @@ internal fun DrawScope.drawEdge(
             drawEdgeCost(text, textMeasurer, edge.slop, edge.pathCenter)
         }
     }
-    if (edge.isDirected) {
+    if (!edge.undirected) {
         drawArrowHead(edge.pathColor, edge.arrowHeadPosition, edge.end)
     }
 

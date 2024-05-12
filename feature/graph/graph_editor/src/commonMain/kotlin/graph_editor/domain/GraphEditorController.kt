@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 
     fun onRemovalRequest()
     fun onDone():GraphResult
-    fun onDirectionChanged(hasDirection: Boolean)
+    fun onDirectionChanged(undirected: Boolean)
     fun onAddNodeRequest(label: String, nodeSizePx: Float)
     fun onEdgeConstInput(cost: String?)
     fun onTap(tappedPosition: Offset)

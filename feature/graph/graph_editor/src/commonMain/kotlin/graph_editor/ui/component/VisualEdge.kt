@@ -16,7 +16,7 @@ internal data class VisualEdge(
     val end: Offset,
     val control: Offset,
     val cost: String?,
-    val isDirected: Boolean,
+    val undirected: Boolean,
     val pathColor: Color = Color.Black,
     val selectedPointColor: Color = Color.Red,
     val showSelectedPoint: Boolean = false,

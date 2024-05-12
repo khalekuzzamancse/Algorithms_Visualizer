@@ -5,8 +5,8 @@ package bfs.domain
  * - This class used to provide loose coupling to stat we need to use other module class to apply algorithm
  */
 class AlgorithmicGraph(
-    private val isUndirected: Boolean,
-    private val nodes: List<AlgorithmicNode>,
+    private val undirected: Boolean,
+     val nodes: List<AlgorithmicNode>,
     private val edges: List<AlgorithmicEdge>,
 ) {
 
@@ -34,7 +34,7 @@ class AlgorithmicGraph(
             // Populate the adjacency list with edges
             edges.forEach { edge ->
                 adjacencyList[edge.from]?.add(edge.to)
-                if (isUndirected) {
+                if (undirected) {
                     adjacencyList[edge.to]?.add(edge.from)
                 }
             }

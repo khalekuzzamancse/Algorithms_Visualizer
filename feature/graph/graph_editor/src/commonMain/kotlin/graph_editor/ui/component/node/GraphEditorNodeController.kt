@@ -2,6 +2,7 @@ package graph_editor.ui.component.node
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import graph_editor.infrastructure.SavedGraphProvider
 import graph_editor.ui.component.VisualNode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +18,9 @@ internal data class GraphEditorNodeController(
     private val deviceDensity: Float,
 ) {
 
-    private val _nodes = MutableStateFlow(emptySet<VisualNode>())
+
+//    private val _nodes = MutableStateFlow(emptySet<VisualNode>())
+private val _nodes = MutableStateFlow(SavedGraphProvider.nodes.toSet())
     val nodes = _nodes.asStateFlow()
 
     /*

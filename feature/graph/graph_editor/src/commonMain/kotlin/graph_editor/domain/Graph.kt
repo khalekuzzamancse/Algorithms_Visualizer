@@ -7,7 +7,7 @@ package graph_editor.domain
  * - You can make a copy of it to apply the algorithm to that graph,or wrap this graph inside a decorator to give additional functionality
  */
 data class Graph(
-    val isUndirected:Boolean,
+    val undirected:Boolean,
     val nodes: Set<Node>,
     val edges: Set<Edge>
 )
@@ -30,7 +30,7 @@ data class Graph(
         // Populate the adjacency list with edges
         edges.forEach { edge ->
             adjacencyList[edge.from]?.add(edge.to)
-            if (isUndirected) {
+            if (undirected) {
                 adjacencyList[edge.to]?.add(edge.from)
             }
         }

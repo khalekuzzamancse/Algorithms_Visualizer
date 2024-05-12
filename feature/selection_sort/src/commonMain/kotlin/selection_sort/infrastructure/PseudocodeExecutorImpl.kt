@@ -1,4 +1,4 @@
-package selection_sort
+package selection_sort.infrastructure
 
 import androidx.compose.ui.text.AnnotatedString
 import selection_sort.domain.LineForPseudocode
@@ -25,7 +25,7 @@ internal class DebuggablePseudocodeBuilder {
 
     fun build(value: PseudoCodeVariablesValue? = null): List<LineForPseudocode> {
         value?.let { updateVariables(it) }
-        log("$value")
+       // log("$value")
 
         return listOf(
             _createLine("selectionSort( list ) {)"),

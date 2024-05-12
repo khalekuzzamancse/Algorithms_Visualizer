@@ -29,10 +29,7 @@ import kotlinx.coroutines.flow.update
         _nodes.update { nodes ->
             nodes.map { node ->
                 if (node.id == id)
-                {
-                    println("Contorller:Idfound:${node.label}")
                     node.copy(color = color)
-                }
                 else node
             }.toSet()
         }

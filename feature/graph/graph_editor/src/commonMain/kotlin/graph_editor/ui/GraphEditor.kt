@@ -64,11 +64,11 @@ fun GraphEditor(
             showGraphTypeInputDialog = false
             isWightedGraph=(type==GraphType.DirectedWeighted||type==GraphType.UnDirectedWeighted)
             when (type) {
-                GraphType.Undirected ->  controller.onDirectionChanged(hasDirection = false)
-                GraphType.Directed -> controller.onDirectionChanged(hasDirection = true)
-                GraphType.DirectedWeighted -> controller.onDirectionChanged(hasDirection = true)
+                GraphType.Undirected ->  controller.onDirectionChanged(undirected = true)
+                GraphType.Directed -> controller.onDirectionChanged(undirected = false)
+                GraphType.DirectedWeighted -> controller.onDirectionChanged(undirected = false)
                 GraphType.Tree -> {}
-                GraphType.UnDirectedWeighted -> controller.onDirectionChanged(hasDirection = false)
+                GraphType.UnDirectedWeighted -> controller.onDirectionChanged(undirected = true)
 
             }
 

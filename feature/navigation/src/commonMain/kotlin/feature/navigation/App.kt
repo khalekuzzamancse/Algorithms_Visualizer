@@ -14,7 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import bfs.ui.InputGraph
+import bfs.ui.BFSSimulation
 import binary_search.ui.BinarySearchRoute
 import bubble_sort.ui.BubbleSortRoute
 import com.example.compose.AppTheme
@@ -28,7 +28,7 @@ fun MyApplication() {
     AppTheme {
       //  NavHost()
        // GraphEditor()
-        InputGraph()
+        BFSSimulation()
     }
 
 
