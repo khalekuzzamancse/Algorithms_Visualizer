@@ -28,6 +28,7 @@ kotlin {
                 implementation(project(":feature:linear_search"))
                 implementation(project(":feature:graph:graph_editor"))
                 implementation(project(localModules.versions.features.graph.bfs.get()))
+                implementation(project(localModules.versions.features.graph.dfs.get()))
 //                implementation(project(localModules.versions.features.graph.viewer.get()))
                 implementation(project(":common:data"))
                 implementation(project(localModules.versions.ui.commonUI.get()))

@@ -29,6 +29,7 @@
             <option value="$PROJECT_DIR$/feature/bubble_sort" />
             <option value="$PROJECT_DIR$/feature/graph" />
             <option value="$PROJECT_DIR$/feature/graph/bfs" />
+            <option value="$PROJECT_DIR$/feature/graph/dfs" />
             <option value="$PROJECT_DIR$/feature/graph/graph_editor" />
             <option value="$PROJECT_DIR$/feature/graph/graph_viewer" />
             <option value="$PROJECT_DIR$/feature/insertion_sort" />
