@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.update
  * - Instead client should use DI container to get the instance with is abstraction
  */
 @Suppress("FunctionName")
- class GraphViewerControllerImpl internal constructor(
+class GraphViewerControllerImpl internal constructor(
     nodes: Set<GraphViewerNodeModel>,
     edges: Set<GraphViewerEdgeModel>
 ) : GraphViewerController {
@@ -25,7 +25,11 @@ import kotlinx.coroutines.flow.update
     override val nodes: StateFlow<Set<GraphViewerNode>> = _nodes.asStateFlow()
     override val edges: StateFlow<Set<GraphViewerEdge>> = _edges.asStateFlow()
 
-    override fun changeNodeColor(id: String,color: Color) {
+
+
+
+
+    override fun changeNodeColor(id: String, color: Color) {
         _nodes.update { nodes ->
             nodes.map { node ->
                 if (node.id == id)
@@ -35,7 +39,7 @@ import kotlinx.coroutines.flow.update
         }
     }
 
-    override fun changeEdgeColor(id: String,color: Color) {
+    override fun changeEdgeColor(id: String, color: Color) {
         _edges.update { edges ->
             edges.map { edge ->
                 if (edge.id == id)
@@ -54,8 +58,11 @@ import kotlinx.coroutines.flow.update
     }
 
     override fun blinkNode(id: String) {
-        TODO("Not yet implemented")
+        //Stop if any node is blinking
+        //then blink that
+
     }
+
 
     //TODO: Helper method section -- TODO: Helper method section -- TODO: Helper method section
     //TODO: Helper method section -- TODO: Helper method section -- TODO: Helper method section

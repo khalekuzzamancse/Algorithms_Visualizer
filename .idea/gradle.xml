@@ -32,6 +32,7 @@
             <option value="$PROJECT_DIR$/feature/graph/dfs" />
             <option value="$PROJECT_DIR$/feature/graph/graph_editor" />
             <option value="$PROJECT_DIR$/feature/graph/graph_viewer" />
+            <option value="$PROJECT_DIR$/feature/graph/topological_sort" />
             <option value="$PROJECT_DIR$/feature/insertion_sort" />
             <option value="$PROJECT_DIR$/feature/linear_search" />
             <option value="$PROJECT_DIR$/feature/navigation" />

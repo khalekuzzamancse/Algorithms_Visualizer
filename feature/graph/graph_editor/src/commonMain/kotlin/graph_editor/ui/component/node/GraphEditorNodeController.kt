@@ -3,6 +3,7 @@ package graph_editor.ui.component.node
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import graph_editor.infrastructure.SavedGraphProvider
+import graph_editor.ui.component.VisualEdge
 import graph_editor.ui.component.VisualNode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,9 +20,13 @@ internal data class GraphEditorNodeController(
 ) {
 
 
-//    private val _nodes = MutableStateFlow(emptySet<VisualNode>())
-private val _nodes = MutableStateFlow(SavedGraphProvider.nodes.toSet())
+    //    private val _nodes = MutableStateFlow(emptySet<VisualNode>())
+    private val _nodes = MutableStateFlow(SavedGraphProvider.nodes.toSet())
     val nodes = _nodes.asStateFlow()
+
+    fun setInitialNode(nodes:Set<VisualNode>){
+        _nodes.update {  nodes}
+    }
 
     /*
     Observe the canvas tapping so that:
@@ -30,15 +35,14 @@ private val _nodes = MutableStateFlow(SavedGraphProvider.nodes.toSet())
     User may want to drag the tapped node.
      */
     private var _selectedVisualNode = MutableStateFlow<VisualNode?>(null)
-    val selectedNode=_selectedVisualNode.asStateFlow()
+    val selectedNode = _selectedVisualNode.asStateFlow()
     fun observeCanvasTap(offset: Offset) {
         _selectedVisualNode.value = _nodes.value.find { it.isInsideCircle(offset) }
         val aNodeIsTapped = _selectedVisualNode.value != null
-        if (aNodeIsTapped){
+        if (aNodeIsTapped) {
 //            deactivateAllNodes()//remove if already some node highlighted
             highlightTappedNode()
-        }
-        else
+        } else
             deactivateAllNodes()
     }
 
@@ -53,7 +57,7 @@ private val _nodes = MutableStateFlow(SavedGraphProvider.nodes.toSet())
     }
 
     private fun deactivateAllNodes() {
-        _selectedVisualNode.value=null
+        _selectedVisualNode.value = null
         val selectedNodeColor = Color.Blue
         _nodes.update { nodeSet ->
             nodeSet.map {
@@ -93,8 +97,8 @@ private val _nodes = MutableStateFlow(SavedGraphProvider.nodes.toSet())
         _selectedVisualNode.value?.let { activeNode ->
             _nodes.update { set ->
                 set.map {
-                    if(it.id==activeNode.id)
-                    it.updateTopLeft(dragAmount)
+                    if (it.id == activeNode.id)
+                        it.updateTopLeft(dragAmount)
                     else it
 
                 }.toSet()
@@ -117,5 +121,6 @@ private val _nodes = MutableStateFlow(SavedGraphProvider.nodes.toSet())
         if (y.isBeyondCanvas()) y = 0f
         return this.copy(topLeft = Offset(x, y))
     }
+
     private fun Float.isBeyondCanvas() = this < 0f
 }

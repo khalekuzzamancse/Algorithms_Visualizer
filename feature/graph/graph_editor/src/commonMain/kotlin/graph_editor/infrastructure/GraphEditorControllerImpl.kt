@@ -71,6 +71,19 @@ internal data class GraphEditorControllerImpl(
 
     override fun onDirectionChanged(undirected: Boolean) {
         this.undirected = undirected
+        //set a initial demo graph
+        setDemoGraph()
+    }
+    private fun setDemoGraph(){
+        if (undirected){
+            nodeManger.setInitialNode(SavedGraphProvider.nodes.toSet())
+            edgeManger.setEdge(SavedGraphProvider.edges)
+        }
+        else{
+            //for directed
+            nodeManger.setInitialNode(SavedGraphProvider.getTopologicalSortDemoGraph().first.toSet())
+            edgeManger.setEdge(SavedGraphProvider.getTopologicalSortDemoGraph().second)
+        }
     }
 
 
@@ -139,12 +152,12 @@ internal data class GraphEditorControllerImpl(
     }
 
     override fun getGraph(): Graph {
-//        nodes.value.forEach {
-//            log(it.toString())
-//        }
-//        edges.value.forEach {
-//            log(it.toString())
-//        }
+        nodes.value.forEach {
+            log(it.toString())
+        }
+        edges.value.forEach {
+            log(it.toString())
+        }
         val _edges = makeEdges()
         val _nodes = makeNodes()
         return Graph(undirected = undirected,nodes = _nodes, edges = _edges)

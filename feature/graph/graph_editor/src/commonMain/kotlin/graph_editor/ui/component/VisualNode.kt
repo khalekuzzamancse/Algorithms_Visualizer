@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 /**
  *
  */
-internal data class VisualNode(
+data class VisualNode(
     val id: String,
     val label: String,
     val topLeft: Offset = Offset.Zero,

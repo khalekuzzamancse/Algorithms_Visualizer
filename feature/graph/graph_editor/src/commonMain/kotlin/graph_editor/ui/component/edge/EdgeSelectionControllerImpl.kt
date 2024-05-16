@@ -90,15 +90,21 @@ internal class EdgeSelectionControllerImpl(
         edge: VisualEdge,
         target: Offset
     ): Boolean {
-        val minTouchTargetPx = edge.minTouchTargetPx
-        return Range(
-            target.x - minTouchTargetPx / 2,
-            target.x + minTouchTargetPx / 2
-        ).contains(tappedPosition.x) &&
-                Range(
-                    target.y - minTouchTargetPx / 2,
-                    target.y + minTouchTargetPx / 2
-                ).contains(tappedPosition.y)
+        //Can causes crash
+     return try {
+          val minTouchTargetPx = edge.minTouchTargetPx
+          return Range(
+              target.x - minTouchTargetPx / 2,
+              target.x + minTouchTargetPx / 2
+          ).contains(tappedPosition.x) &&
+                  Range(
+                      target.y - minTouchTargetPx / 2,
+                      target.y + minTouchTargetPx / 2
+                  ).contains(tappedPosition.y)
+      }
+      catch (e:Exception){
+          false
+      }
     }
 
 //        return tappedPosition.x in Range(

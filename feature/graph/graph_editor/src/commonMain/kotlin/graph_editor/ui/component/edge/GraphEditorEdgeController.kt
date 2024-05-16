@@ -14,6 +14,10 @@ internal class GraphEditorEdgeController {
     // private val _edges: MutableStateFlow<List<VisualEdge>> = MutableStateFlow(emptyList())
     val edges = _edges.asStateFlow()
 
+    fun setInitialEdge(edge: Set<VisualEdge>) {
+        _edges.update { edge.toList() }
+    }
+
     fun addEdge(edge: VisualEdge) {
         _edges.value = edges.value + edge.copy(selectedPoint = EdgePoint.End)
         _selectedEdge.value = edge.copy(selectedPoint = EdgePoint.End)

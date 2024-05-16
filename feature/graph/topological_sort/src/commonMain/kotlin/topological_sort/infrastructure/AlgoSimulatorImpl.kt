@@ -1,9 +1,9 @@
-package dfs.infrastructure
+package topological_sort.infrastructure
 
-import dfs.domain.AlgoSimulator
-import dfs.domain.AlgorithmicGraph
-import dfs.domain.AlgorithmicNode
-import dfs.domain.SimulationState
+import topological_sort.domain.AlgoSimulator
+import topological_sort.domain.AlgorithmicGraph
+import topological_sort.domain.AlgorithmicNode
+import topological_sort.domain.SimulationState
 
 internal class AlgoSimulatorImpl(
     graph: AlgorithmicGraph,

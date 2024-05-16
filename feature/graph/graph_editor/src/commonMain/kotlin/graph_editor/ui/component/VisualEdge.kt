@@ -10,7 +10,7 @@ import graph_editor.ui.component.edge.EdgePoint
 import kotlin.math.atan2
 
 
-internal data class VisualEdge(
+data class VisualEdge(
     val id: String,
     val start: Offset,
     val end: Offset,

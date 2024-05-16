@@ -1,4 +1,4 @@
-package dfs.ui
+package topological_sort.ui
 
 
 import androidx.compose.foundation.background
@@ -20,12 +20,12 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import dfs.di_containter.BFSFactory
-import dfs.domain.AlgorithmicGraph
-import dfs.domain.AlgorithmicNode
-import dfs.domain.LineForPseudocode
-import dfs.domain.SimulationState
-import dfs.infrastructure.AlgoSimulatorImpl
+import topological_sort.di_containter.BFSFactory
+import topological_sort.domain.AlgorithmicGraph
+import topological_sort.domain.AlgorithmicNode
+import topological_sort.domain.LineForPseudocode
+import topological_sort.domain.SimulationState
+import topological_sort.infrastructure.AlgoSimulatorImpl
 import graphviewer.domain.GraphViewerController
 import graphviewer.ui.viewer.GraphViewer
 import kotlinx.coroutines.CoroutineScope
