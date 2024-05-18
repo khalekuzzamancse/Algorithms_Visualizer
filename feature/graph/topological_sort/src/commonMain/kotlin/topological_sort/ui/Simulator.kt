@@ -35,6 +35,8 @@ internal fun GraphInput(
             isInputMode = false
             val graph = result.visualGraph
 
+            println("TopologicalSortGraph:${result.graph}")
+
 
             val nodes = graph.nodes.map { it._toVisualNode() }.toSet()
             val edges = graph.edges.map { it._toVisualEdge() }.toSet()

@@ -22,6 +22,7 @@ import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
 import feature.search.ui.LinearSearchRoute
 import kotlinx.coroutines.launch
+import topological_sort.ui.TopologicalSortSimulation
 
 @Composable
 fun MyApplication() {
@@ -29,7 +30,8 @@ fun MyApplication() {
       //  NavHost()
        // GraphEditor()
         //BFSSimulation()
-        DFSSimulation()
+      //  DFSSimulation()
+        TopologicalSortSimulation()
     }
 
 

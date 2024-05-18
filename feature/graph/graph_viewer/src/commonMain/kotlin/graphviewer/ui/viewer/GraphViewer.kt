@@ -16,6 +16,7 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.Dp
 import graphviewer.domain.GraphViewerController
 
 /**
@@ -115,10 +116,10 @@ private fun DrawScope._drawEdge(
             drawEdgeCost(text, textMeasurer, edge.slop, edge.pathCenter)
         }
     }
-    if (edge.isDirected) {
-        drawArrowHead(pathColor, edge.arrowHeadPosition, edge.end)
-    }
-
+//    if (edge.isDirected) {
+////        drawArrowHead(pathColor, edge.arrowHeadPosition, edge.end)
+//    }
+    drawArrowHead(pathColor, edge.arrowHeadPosition, edge.end)
 }
 
 private fun DrawScope.drawEdgeCost(
@@ -153,5 +154,3 @@ private fun DrawScope.drawArrowHead(color: Color, arrowHeadPosition: Offset, end
 
 
 }
-
-

@@ -152,12 +152,12 @@ internal data class GraphEditorControllerImpl(
     }
 
     override fun getGraph(): Graph {
-        nodes.value.forEach {
-            log(it.toString())
-        }
-        edges.value.forEach {
-            log(it.toString())
-        }
+//        nodes.value.forEach {
+//            log(it.toString())
+//        }
+//        edges.value.forEach {
+//            log(it.toString())
+//        }
         val _edges = makeEdges()
         val _nodes = makeNodes()
         return Graph(undirected = undirected,nodes = _nodes, edges = _edges)

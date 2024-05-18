@@ -38,7 +38,7 @@ import kotlin.random.Random
 
 
 @Composable
-fun DFSSimulation() {
+fun TopologicalSortSimulation() {
     var canvasSizePx by remember { mutableStateOf(Size(0f, 0f)) }
     var controller by remember { mutableStateOf<SimulatorController?>(null) }
     if (controller == null)//if input mode
