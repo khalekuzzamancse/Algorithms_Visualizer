@@ -197,6 +197,7 @@ internal data class GraphEditorControllerImpl(
                 )
             }
         }
+      log(_edges.toString())
         return _edges.toSet() //returning immutable copy,to avoid side effect
     }
 
