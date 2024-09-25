@@ -1,4 +1,4 @@
-## Next TODO Insha-allah
+## Next TODO Insa-allah
 - Refactor the Pseudocode means rewrite
 - Show which unvisited nodes are pushed in the queue,for which parent
 - 

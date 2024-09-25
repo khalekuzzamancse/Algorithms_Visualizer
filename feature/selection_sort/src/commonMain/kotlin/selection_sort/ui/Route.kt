@@ -23,7 +23,9 @@ import layers.ui.common_ui.pseudocode.PseudoCodeExecutor
 import selection_sort.domain.LineForPseudocode
 
 @Composable
-fun SelectionSortSimulator() {
+fun SelectionSortSimulator(
+    onExitRequest: () -> Unit,
+) {
 
     val cellSize = 64.dp
     var isInputMode by remember { mutableStateOf(true) }
@@ -44,7 +46,7 @@ fun SelectionSortSimulator() {
         VisualizationRoute(
             cellSize = cellSize,
             uiController = simulateController,
-            onExitRequest = {},
+            onExitRequest = onExitRequest,
             onResetRequest = {},
             onAutoPlayRequest = {}
         )

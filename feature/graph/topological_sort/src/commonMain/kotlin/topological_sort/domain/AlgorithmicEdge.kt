@@ -7,4 +7,6 @@ data class AlgorithmicEdge(
     val from: AlgorithmicNode,
     val to: AlgorithmicNode,
     val cost:String?
-)
+){
+
+}

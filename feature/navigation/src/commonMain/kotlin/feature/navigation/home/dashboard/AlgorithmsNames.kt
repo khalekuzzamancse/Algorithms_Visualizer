@@ -9,23 +9,53 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Timeline
 import androidx.compose.material.icons.filled.Train
 
-internal object AlgorithmsNames{
-     val dsaAlgorithms = Algorithms(
+internal object AlgorithmsNames {
+    val dsaAlgorithms = Algorithms(
         subjectName = "Data Structure and Algorithms",
         item = listOf(
-            AlgorithmItem(name = "Linear Search", icon = Icons.Filled.Search, destination = Destination.LinearSearch),
-            AlgorithmItem(name = "Binary Search", icon = Icons.Filled.Search,destination = Destination.BinarySearch),
-            AlgorithmItem(name = "Bubble Sort", icon = Icons.AutoMirrored.Filled.Sort,destination = Destination.BubbleSort),
+            AlgorithmItem(
+                name = "Linear Search",
+                icon = Icons.Filled.Search,
+                destination = Destination.LinearSearch
+            ),
+            AlgorithmItem(
+                name = "Binary Search",
+                icon = Icons.Filled.Search,
+                destination = Destination.BinarySearch
+            ),
+            AlgorithmItem(
+                name = "Bubble Sort",
+                icon = Icons.AutoMirrored.Filled.Sort,
+                destination = Destination.BubbleSort
+            ),
+            AlgorithmItem(
+                name = "Selection Sort",
+                icon = Icons.AutoMirrored.Filled.Sort,
+                destination = Destination.SelectionSort
+            ),
+            AlgorithmItem(
+                name = "Bread First Search",
+                icon = Icons.Filled.Search,
+                destination = Destination.BFS
+            ),
+            AlgorithmItem(
+                name = "Depth First Search",
+                icon = Icons.Filled.Search,
+                destination = Destination.DFS
+            ),
+            AlgorithmItem(
+                name = "Topological sort",
+                icon = Icons.Filled.Search,
+                destination = Destination.TopologicalSort
+            ),
 
-            AlgorithmItem(name = "Selection Sort", icon = Icons.AutoMirrored.Filled.Sort),
             AlgorithmItem(name = "Insertion Sort", icon = Icons.AutoMirrored.Filled.Sort),
             AlgorithmItem(name = "Counting Sort", icon = Icons.AutoMirrored.Filled.Sort),
             AlgorithmItem(name = "Heap Sort", icon = Icons.AutoMirrored.Filled.Sort),
             AlgorithmItem(name = "Inorder Traversal", icon = Icons.Default.Train),
             AlgorithmItem(name = "Postorder Traversal", icon = Icons.Default.Train),
             AlgorithmItem(name = "Preorder Traversal", icon = Icons.Default.Train),
-            AlgorithmItem(name = "Bread First Search", icon = Icons.Filled.Search),
-            AlgorithmItem(name = "Depth First Search", icon = Icons.Filled.Search),
+
             AlgorithmItem(name = "Dijkstra Shortest Path", icon = Icons.Default.Timeline),
             AlgorithmItem(name = "Bellman Form", icon = Icons.Default.Timeline),
 
@@ -33,7 +63,7 @@ internal object AlgorithmsNames{
     )
 
     // Algorithms for OS (Operating Systems) course
-     val osAlgorithms = Algorithms(
+    val osAlgorithms = Algorithms(
         subjectName = "Operating System",
         item = listOf(
             AlgorithmItem("Process Scheduling", Icons.Default.Schedule),

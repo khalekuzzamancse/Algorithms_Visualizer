@@ -10,15 +10,17 @@ class AlgorithmicGraph(
     private val edges: List<AlgorithmicEdge>,
 ) {
 
-    override fun toString(): String {
-        return "AdjacentList:${adjacencyList}"
-    }
+
 
     /**
      * - Given that this application is designed for visualization, and considering that the maximum number of nodes a
      * user will handle at any given time is 50, it is practical and simple to store all nodes directly.
      * This approach is feasible due to the graph's relatively small size.
      */
+
+    fun isNeighbour(from:AlgorithmicNode,to:AlgorithmicNode){
+
+    }
 
     /*
     - Once the adjacency is created,We want to save that
@@ -41,4 +43,7 @@ class AlgorithmicGraph(
 
             return adjacencyList
         }
+    override fun toString(): String {
+        return "AdjacentList:${adjacencyList}"
+    }
 }

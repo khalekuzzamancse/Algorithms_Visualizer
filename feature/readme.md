@@ -1,3 +1,14 @@
+
+# Next TODO:
+Djkstra shortest path
+Tree in order, pre order  and post order ,Heap
+Counting  sort,
+
+
+
+
+
+
 ## Implementing the Pseudocode Executor
 - Since the Iterator or Sequence builder will execute the code,so there is no alternative to 
 update code state within there, we tried to use the algo or simulation state to use update pseudo

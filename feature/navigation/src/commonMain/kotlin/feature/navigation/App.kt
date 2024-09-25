@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import bfs.ui.BFSSimulation
 import dfs.ui.DFSSimulation
 import binary_search.ui.BinarySearchRoute
 import bubble_sort.ui.BubbleSortRoute
@@ -22,16 +23,16 @@ import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
 import feature.search.ui.LinearSearchRoute
 import kotlinx.coroutines.launch
+import selection_sort.ui.SelectionSortSimulator
 import topological_sort.ui.TopologicalSortSimulation
 
 @Composable
 fun MyApplication() {
     AppTheme {
-      //  NavHost()
-       // GraphEditor()
-        //BFSSimulation()
-      //  DFSSimulation()
-        TopologicalSortSimulation()
+          NavHost()
+        // GraphEditor()
+
+
     }
 
 
@@ -47,8 +48,7 @@ private fun NavHost() {
     }
     val navigateTo: (Destination) -> Unit = {
         if (destination == Destination.None) {
-            destination= Destination.Home
-
+            destination = Destination.Home
             scope.launch {
                 scope.launch {
                     snackBarHostState.currentSnackbarData?.dismiss()
@@ -67,20 +67,24 @@ private fun NavHost() {
         }
     ) { scaffoldPadding ->
         Box(modifier = Modifier.padding(scaffoldPadding)) {
-                AnimatedContent(destination) { selected ->
-                    when (selected) {
-                        Destination.LinearSearch -> LinearSearchRoute(onExitRequest = gotoHome)
-                        Destination.BinarySearch -> BinarySearchRoute(onExitRequest = gotoHome)
-                        Destination.BubbleSort -> BubbleSortRoute(onExitRequest = gotoHome)
-                        else -> {
-                            HomeDestination(
-                                onDestinationClick = navigateTo,
-                                onContactUsClick = { navigateTo(Destination.None) },
-                                onAboutUsRequest ={ navigateTo(Destination.None) }
-                            )
-                        }
+            AnimatedContent(destination) { selected ->
+                when (selected) {
+                    Destination.LinearSearch -> LinearSearchRoute(onExitRequest = gotoHome)
+                    Destination.BinarySearch -> BinarySearchRoute(onExitRequest = gotoHome)
+                    Destination.BubbleSort -> BubbleSortRoute(onExitRequest = gotoHome)
+                    Destination.SelectionSort -> SelectionSortSimulator(onExitRequest = gotoHome)
+                    Destination.BFS -> BFSSimulation()
+                    Destination.DFS -> DFSSimulation()
+                    Destination.TopologicalSort -> TopologicalSortSimulation()
+                    else -> {
+                        HomeDestination(
+                            onDestinationClick = navigateTo,
+                            onContactUsClick = { navigateTo(Destination.None) },
+                            onAboutUsRequest = { navigateTo(Destination.None) }
+                        )
                     }
                 }
             }
         }
     }
+}
