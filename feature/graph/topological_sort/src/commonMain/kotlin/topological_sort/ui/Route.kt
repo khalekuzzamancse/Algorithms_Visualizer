@@ -138,6 +138,7 @@ internal class SimulatorController(
                     val id = processingNode.id
                     graphViewerController.changeNodeColor(id = id, color = visitedColor)
 
+
                     state.peekNode?.let {peekOfStack->
                         blinkNode(peekOfStack)
                     }

@@ -25,11 +25,13 @@ import feature.search.ui.LinearSearchRoute
 import kotlinx.coroutines.launch
 import selection_sort.ui.SelectionSortSimulator
 import topological_sort.ui.TopologicalSortSimulation
+import ui.ui.DijkstraSimulationScreen
 
 @Composable
 fun MyApplication() {
     AppTheme {
-          NavHost()
+       //   NavHost()
+        DijkstraSimulationScreen()
         // GraphEditor()
 
 

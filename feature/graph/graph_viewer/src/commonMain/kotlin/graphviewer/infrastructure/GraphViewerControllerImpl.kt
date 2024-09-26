@@ -26,9 +26,17 @@ class GraphViewerControllerImpl internal constructor(
     override val edges: StateFlow<Set<GraphViewerEdge>> = _edges.asStateFlow()
 
 
-
-
-
+    override fun updateDistance(id: String, distance: String) {
+        _nodes.update { nodes ->
+            nodes.map { node ->
+                if (node.id == id) {
+                    node.copy(distance = distance)
+                } else {
+                    node
+                }
+            }.toSet()
+        }
+    }
     override fun changeNodeColor(id: String, color: Color) {
         _nodes.update { nodes ->
             nodes.map { node ->
@@ -42,8 +50,10 @@ class GraphViewerControllerImpl internal constructor(
     override fun changeEdgeColor(id: String, color: Color) {
         _edges.update { edges ->
             edges.map { edge ->
-                if (edge.id == id)
-                    edge.copy(color = color)
+                if (edge.id == id){
+                    edge.copy(color =color)
+                }
+
                 else edge
             }.toSet()
         }
@@ -82,6 +92,6 @@ class GraphViewerControllerImpl internal constructor(
         control = control,
         cost = cost,
         isDirected = isDirected,
-        color = Color.Red
+        color = Color.Black
     )
 }

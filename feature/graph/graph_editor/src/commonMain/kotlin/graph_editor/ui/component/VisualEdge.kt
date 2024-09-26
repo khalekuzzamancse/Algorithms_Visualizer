@@ -15,14 +15,14 @@ data class VisualEdge(
     val start: Offset,
     val end: Offset,
     val control: Offset,
-    val cost: String?,
-    val undirected: Boolean,
+    val cost: String?=null,
+    val undirected: Boolean=false,
     val pathColor: Color = Color.Black,
     val selectedPointColor: Color = Color.Red,
     val showSelectedPoint: Boolean = false,
     val anchorPointRadius: Dp = 4.dp,
     val selectedPoint: EdgePoint = EdgePoint.None,
-    val minTouchTargetPx: Float
+    val minTouchTargetPx: Float=30f
 ) {
     companion object {
         private val pathMeasurer = PathMeasure()

@@ -7,6 +7,7 @@ package graph_editor.domain
  * the label of the node,that is why keep the [Node],since [Node] is small class so it is okay
  */
 data class Edge(
+    val id: String="",
     val from: Node,
     val to: Node,
     val cost:String?=null

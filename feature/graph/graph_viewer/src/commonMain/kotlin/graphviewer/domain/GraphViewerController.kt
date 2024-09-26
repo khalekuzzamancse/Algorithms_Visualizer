@@ -13,6 +13,8 @@ interface GraphViewerController {
      val edges: StateFlow<Set<GraphViewerEdge>>
     fun changeNodeColor(id:String,color: Color)
     fun changeEdgeColor(id: String,color: Color)
+     fun updateDistance(id: String, distance: String)
     fun resetAllNodeColor()
     fun blinkNode(id:String)
+
 }

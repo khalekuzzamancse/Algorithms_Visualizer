@@ -39,7 +39,7 @@ internal data class GraphEditorControllerImpl(
     private val edgeManger = GraphEditorEdgeController()
 
     //Direction
-    private  var undirected: Boolean =true
+    private var undirected: Boolean = true
 
     override val edges: StateFlow<List<VisualEdge>>
         get() = edgeManger.edges
@@ -74,16 +74,19 @@ internal data class GraphEditorControllerImpl(
         //set a initial demo graph
         setDemoGraph()
     }
-    private fun setDemoGraph(){
-        if (undirected){
-            nodeManger.setInitialNode(SavedGraphProvider.nodes.toSet())
-            edgeManger.setEdge(SavedGraphProvider.edges)
-        }
-        else{
-            //for directed
-            nodeManger.setInitialNode(SavedGraphProvider.getTopologicalSortDemoGraph().first.toSet())
-            edgeManger.setEdge(SavedGraphProvider.getTopologicalSortDemoGraph().second)
-        }
+
+    private fun setDemoGraph() {
+        nodeManger.setInitialNode(SavedGraphProvider.getDijkstraGraph().first.toSet())
+        edgeManger.setEdge(SavedGraphProvider.getDijkstraGraph().second)
+//        if (undirected){
+//            nodeManger.setInitialNode(SavedGraphProvider.nodes.toSet())
+//            edgeManger.setEdge(SavedGraphProvider.edges)
+//        }
+//        else{
+//            //for directed
+//            nodeManger.setInitialNode(SavedGraphProvider.getDijkstraGraph().first.toSet())
+//            edgeManger.setEdge(SavedGraphProvider.getDijkstraGraph().second)
+//        }
     }
 
 
@@ -160,7 +163,7 @@ internal data class GraphEditorControllerImpl(
 //        }
         val _edges = makeEdges()
         val _nodes = makeNodes()
-        return Graph(undirected = undirected,nodes = _nodes, edges = _edges)
+        return Graph(undirected = undirected, nodes = _nodes, edges = _edges)
     }
 
     //TODO:Helper method --- Helper method --- Helper method --- Helper method --- Helper method --- Helper method --- Helper method
@@ -191,13 +194,14 @@ internal data class GraphEditorControllerImpl(
             if (isValidEdge) {
                 _edges.add(
                     Edge(
-                        Node(u!!.id, u.label),
-                        Node(v!!.id, v.label)
+                        id = edge.id,
+                        from = Node(u!!.id, u.label),
+                        to = Node(v!!.id, v.label),
+                        cost = edge.cost
                     )
                 )
             }
         }
-      log(_edges.toString())
         return _edges.toSet() //returning immutable copy,to avoid side effect
     }
 

@@ -17,6 +17,9 @@ data class GraphViewerEdgeModel(
     val cost: String?,
     val isDirected: Boolean,
 ) {
+    override fun toString(): String {
+       return "GraphViewerEdgeModel(id=$id,start=$start,end=$end,control=$control,cost=$cost)"
+    }
     companion object {
         private val pathMeasurer = PathMeasure()
     }

@@ -5,7 +5,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-
+                implementation(projects.feature.dijkstra.domain)
+                api(projects.feature.dijkstra.infrastructure)
             }
         }
     }

@@ -49,7 +49,7 @@ val coreModules = listOf(
     ":core:database",
 //    ":core:database:mongodb", disconnecting it
 )
-val graph=":feature:graph"
+val graph=":feature"
 val featuresModules = listOf(
     ":feature",
     ":feature:linear_search",":feature:binary_search",

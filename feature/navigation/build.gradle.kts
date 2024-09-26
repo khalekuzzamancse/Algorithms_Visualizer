@@ -37,7 +37,10 @@ kotlin {
                 implementation(project(localModules.versions.features.selectionSort.get()))
                 implementation(project(localModules.versions.features.insertionSort.get()))
                 implementation(project(localModules.versions.core.realm.get()))
-//                implementation(project(localModules.versions.core.database.mongodb.get()))
+
+                
+                ///
+                implementation(projects.feature.dijkstra.ui)
                 //
             }
         }

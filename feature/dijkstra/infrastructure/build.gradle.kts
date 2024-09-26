@@ -5,8 +5,7 @@ kotlin {
     sourceSets{
         val commonMain by getting{
             dependencies {
-//                implementation(projects.features.academicCalender.domain)
-//                implementation(projects.core.network)
+                implementation(projects.feature.dijkstra.domain)
             }
 
         }
@@ -19,5 +18,5 @@ kotlin {
 
 }
 android {
-    namespace = "data"
+    namespace = "infrastructure"
 }

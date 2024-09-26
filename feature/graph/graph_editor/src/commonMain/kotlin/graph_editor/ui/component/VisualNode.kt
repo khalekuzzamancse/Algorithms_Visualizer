@@ -14,6 +14,9 @@ data class VisualNode(
     val exactSizePx: Float,
     val color: Color = Color.Red,
 ){
+    override fun toString(): String {
+        return "VisualNode(id=$id, label=$label, topLeft=$topLeft, exactSize=$exactSizePx)"
+    }
     val bottomRight=Offset(topLeft.x+exactSizePx,topLeft.y+exactSizePx)
      fun isInsideNode(position: Offset): Boolean {
         val minX = topLeft.x

@@ -16,7 +16,6 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.unit.Dp
 import graphviewer.domain.GraphViewerController
 
 /**
@@ -44,7 +43,7 @@ private fun _GraphViewer(
             .fillMaxSize()
     ) {
         edges.forEach {
-            _drawEdge(it, textMeasurer)
+            _drawEdge(edge = it, textMeasurer = textMeasurer, pathColor = it.color)
         }
         nodes.forEach {
             _drawNode(it, textMeasurer)
@@ -80,7 +79,7 @@ private fun DrawScope._drawNode(
         val textWidthPx = measuredText.size.width * 1f
         val offsetForCenterText = Offset(textWidthPx / 2, textHeightPx / 2)
         drawText(
-            text = node.label,
+            text = node.label+if (node.distance!=null)"\n${node.distance}" else "",
             topLeft = Offset(radius, radius) - offsetForCenterText,
             textMeasurer = measurer,
             style = TextStyle(
@@ -105,8 +104,9 @@ TODO: Draw edge function
 private fun DrawScope._drawEdge(
     edge: GraphViewerEdge,
     textMeasurer: TextMeasurer? = null,
+    pathColor: Color,
 ) {
-    val pathColor: Color = Color.Black
+
     //drawEdge
     drawPath(path = edge.path, color = pathColor, style = Stroke(3f))
 
