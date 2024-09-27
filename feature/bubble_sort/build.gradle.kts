@@ -28,8 +28,8 @@ kotlin {
 
                 implementation(project(localModules.versions.ui.array.get()))
                 implementation(project(localModules.versions.ui.commonUI.get()))
-                implementation(project(localModules.versions.common.domain.get()))
-                implementation(project(localModules.versions.common.data.get()))
+//                implementation(project(localModules.versions.common.domain.get()))
+//                implementation(project(localModules.versions.common.data.get()))
             }
         }
         val commonTest by getting{

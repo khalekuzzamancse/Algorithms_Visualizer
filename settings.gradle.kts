@@ -19,18 +19,8 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
-    versionCatalogs {
-        create("localModules") {
-            from(files("gradle/localModules.versions.toml"))
-        }
-    }
 }
-val architectureLayers = listOf(
-    ":common",
-    ":common:data",
-    ":common:domain",
-    ":common:ui",
-)
+
 val applicationModules = listOf(
     ":applications",
     ":applications:android",
@@ -38,28 +28,23 @@ val applicationModules = listOf(
     ":applications:web",
     ":applications:ios"
 )
-val uiLyaers = listOf(
-    ":common:ui:common_ui",
-    ":common:ui:array",
-)
+
 
 val coreModules = listOf(
     ":core",
-    ":core:realm",
-    ":core:database",
-//    ":core:database:mongodb", disconnecting it
+    ":core:common-ui",":core:common-ui:array",":core:common-ui:common_ui",
+    ":core:common-ui:graph",
 )
-val graph=":feature"
+
 val featuresModules = listOf(
     ":feature",
-    ":feature:linear_search",":feature:binary_search",
-    ":feature:bubble_sort",":feature:selection_sort",":feature:insertion_sort",
+//    ":feature:linear_search",":feature:binary_search",
+//    ":feature:bubble_sort",":feature:selection_sort",":feature:insertion_sort",
     ":feature:navigation",
-    ":feature:admin_section",
-    ":feature:graph", ":feature:graph:graph_editor", ":feature:graph:graph_viewer",
-    ":feature:graph:bfs",":feature:graph:dfs",":feature:graph:topological_sort",
-    "$graph:dijkstra","$graph:dijkstra:domain","$graph:dijkstra:ui","$graph:dijkstra:di","$graph:dijkstra:infrastructure",
+   // ":feature:admin_section",
+//    ":feature:graph:bfs",":feature:graph:dfs",":feature:graph:topological_sort",
+    ":feature:graph-dijkstra",":feature:graph-dijkstra:domain",":feature:graph-dijkstra:ui",":feature:graph-dijkstra:di",":feature:graph-dijkstra:infrastructure",
 )
 
 rootProject.name = "AlgorithmVisualizer"
-include(applicationModules+architectureLayers+coreModules+featuresModules+uiLyaers)
+include(applicationModules+coreModules+featuresModules)

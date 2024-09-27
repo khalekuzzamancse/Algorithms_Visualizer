@@ -28,34 +28,18 @@
             <option value="$PROJECT_DIR$/applications/web" />
             <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/build-logic/convention-plugin" />
-            <option value="$PROJECT_DIR$/common" />
-            <option value="$PROJECT_DIR$/common/data" />
-            <option value="$PROJECT_DIR$/common/domain" />
-            <option value="$PROJECT_DIR$/common/ui" />
-            <option value="$PROJECT_DIR$/common/ui/array" />
-            <option value="$PROJECT_DIR$/common/ui/common_ui" />
             <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/core/database" />
-            <option value="$PROJECT_DIR$/core/realm" />
+            <option value="$PROJECT_DIR$/core/common-ui" />
+            <option value="$PROJECT_DIR$/core/common-ui/array" />
+            <option value="$PROJECT_DIR$/core/common-ui/common_ui" />
+            <option value="$PROJECT_DIR$/core/common-ui/graph" />
             <option value="$PROJECT_DIR$/feature" />
-            <option value="$PROJECT_DIR$/feature/admin_section" />
-            <option value="$PROJECT_DIR$/feature/binary_search" />
-            <option value="$PROJECT_DIR$/feature/bubble_sort" />
-            <option value="$PROJECT_DIR$/feature/dijkstra" />
-            <option value="$PROJECT_DIR$/feature/dijkstra/di" />
-            <option value="$PROJECT_DIR$/feature/dijkstra/domain" />
-            <option value="$PROJECT_DIR$/feature/dijkstra/infrastructure" />
-            <option value="$PROJECT_DIR$/feature/dijkstra/ui" />
-            <option value="$PROJECT_DIR$/feature/graph" />
-            <option value="$PROJECT_DIR$/feature/graph/bfs" />
-            <option value="$PROJECT_DIR$/feature/graph/dfs" />
-            <option value="$PROJECT_DIR$/feature/graph/graph_editor" />
-            <option value="$PROJECT_DIR$/feature/graph/graph_viewer" />
-            <option value="$PROJECT_DIR$/feature/graph/topological_sort" />
-            <option value="$PROJECT_DIR$/feature/insertion_sort" />
-            <option value="$PROJECT_DIR$/feature/linear_search" />
+            <option value="$PROJECT_DIR$/feature/graph-dijkstra" />
+            <option value="$PROJECT_DIR$/feature/graph-dijkstra/di" />
+            <option value="$PROJECT_DIR$/feature/graph-dijkstra/domain" />
+            <option value="$PROJECT_DIR$/feature/graph-dijkstra/infrastructure" />
+            <option value="$PROJECT_DIR$/feature/graph-dijkstra/ui" />
             <option value="$PROJECT_DIR$/feature/navigation" />
-            <option value="$PROJECT_DIR$/feature/selection_sort" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

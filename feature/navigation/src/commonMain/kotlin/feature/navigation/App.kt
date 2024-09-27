@@ -14,17 +14,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import bfs.ui.BFSSimulation
-import dfs.ui.DFSSimulation
-import binary_search.ui.BinarySearchRoute
-import bubble_sort.ui.BubbleSortRoute
+
+
 import com.example.compose.AppTheme
 import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
-import feature.search.ui.LinearSearchRoute
 import kotlinx.coroutines.launch
-import selection_sort.ui.SelectionSortSimulator
-import topological_sort.ui.TopologicalSortSimulation
 import ui.ui.DijkstraSimulationScreen
 
 @Composable
@@ -71,13 +66,13 @@ private fun NavHost() {
         Box(modifier = Modifier.padding(scaffoldPadding)) {
             AnimatedContent(destination) { selected ->
                 when (selected) {
-                    Destination.LinearSearch -> LinearSearchRoute(onExitRequest = gotoHome)
-                    Destination.BinarySearch -> BinarySearchRoute(onExitRequest = gotoHome)
-                    Destination.BubbleSort -> BubbleSortRoute(onExitRequest = gotoHome)
-                    Destination.SelectionSort -> SelectionSortSimulator(onExitRequest = gotoHome)
-                    Destination.BFS -> BFSSimulation()
-                    Destination.DFS -> DFSSimulation()
-                    Destination.TopologicalSort -> TopologicalSortSimulation()
+//                    Destination.LinearSearch -> LinearSearchRoute(onExitRequest = gotoHome)
+//                    Destination.BinarySearch -> BinarySearchRoute(onExitRequest = gotoHome)
+//                    Destination.BubbleSort -> BubbleSortRoute(onExitRequest = gotoHome)
+//                    Destination.SelectionSort -> SelectionSortSimulator(onExitRequest = gotoHome)
+//                    Destination.BFS -> BFSSimulation()
+//                    Destination.DFS -> DFSSimulation()
+//                    Destination.TopologicalSort -> TopologicalSortSimulation()
                     else -> {
                         HomeDestination(
                             onDestinationClick = navigateTo,
