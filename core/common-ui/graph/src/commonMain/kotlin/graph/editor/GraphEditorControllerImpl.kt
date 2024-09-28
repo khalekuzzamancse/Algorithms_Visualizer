@@ -57,13 +57,17 @@ internal data class GraphEditorControllerImpl(
     }
 
     override fun onDone(): GraphResult {
+//
+//        println(nodes.value)
+//        println()
+//        println(edges.value)
 
         return GraphResult(
-            directed = directed,
+            directed = directed,//TODO: Refactor later
             controller = GraphFactory
                 .createGraphViewerController(
-                    nodes.value.map { it }.toSet(),
-                    edges.value.map { it }.toSet()
+                    nodes.value.toSet(),
+                    edges.value.map { it.copy(directed = directed) }.toSet()
                 ),
             nodes = makeNodes(),
             edges = makeEdges()
@@ -73,13 +77,12 @@ internal data class GraphEditorControllerImpl(
 
     override fun onDirectionChanged(directed: Boolean) {
         this.directed = directed
-        //set a initial demo graph
         setDemoGraph()
     }
 
     private fun setDemoGraph() {
-        nodeManger.setInitialNode(SavedGraphProvider.getDijkstraGraph().first.toSet())
-        edgeManger.setEdge(SavedGraphProvider.getDijkstraGraph().second)
+        nodeManger.setInitialNode(SavedGraphProvider.getMSTGraph().first.toSet())
+        edgeManger.setEdge(SavedGraphProvider.getMSTGraph().second)
 //        if (undirected){
 //            nodeManger.setInitialNode(SavedGraphProvider.nodes.toSet())
 //            edgeManger.setEdge(SavedGraphProvider.edges)

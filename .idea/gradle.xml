@@ -33,12 +33,18 @@
             <option value="$PROJECT_DIR$/core/common-ui/array" />
             <option value="$PROJECT_DIR$/core/common-ui/common_ui" />
             <option value="$PROJECT_DIR$/core/common-ui/graph" />
+            <option value="$PROJECT_DIR$/core/database" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/graph-dijkstra" />
             <option value="$PROJECT_DIR$/feature/graph-dijkstra/di" />
             <option value="$PROJECT_DIR$/feature/graph-dijkstra/domain" />
             <option value="$PROJECT_DIR$/feature/graph-dijkstra/infrastructure" />
             <option value="$PROJECT_DIR$/feature/graph-dijkstra/ui" />
+            <option value="$PROJECT_DIR$/feature/graph-mst" />
+            <option value="$PROJECT_DIR$/feature/graph-mst/di" />
+            <option value="$PROJECT_DIR$/feature/graph-mst/domain" />
+            <option value="$PROJECT_DIR$/feature/graph-mst/infrastructure" />
+            <option value="$PROJECT_DIR$/feature/graph-mst/ui" />
             <option value="$PROJECT_DIR$/feature/navigation" />
           </set>
         </option>

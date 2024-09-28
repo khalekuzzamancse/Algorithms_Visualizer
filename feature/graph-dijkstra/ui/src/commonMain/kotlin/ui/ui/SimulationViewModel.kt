@@ -24,6 +24,7 @@ class SimulationViewModel {
     val isInputMode = _isInputMode.asStateFlow()
 
     fun onGraphCreated(result: GraphResult) {
+
         graphController = result.controller
         simulator = DiContainer.createSimulator(_createDijkstraGraph(result.nodes, result.edges))
         _isInputMode.update { false }

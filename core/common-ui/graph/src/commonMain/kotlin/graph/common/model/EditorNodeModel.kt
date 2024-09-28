@@ -27,7 +27,7 @@ internal data class EditorNodeModel(
 
     // Custom toString implementation
     override fun toString(): String {
-        return """VisualNode(id="$id", label="$label", topLeft=${formatOffset(topLeft)}, exactSizePx=${exactSizePx}f)"""
+        return """${this.javaClass.simpleName}(id="$id", label="$label", topLeft=${formatOffset(topLeft)}, exactSizePx=${exactSizePx}f)"""
     }
 
     // Method to format Offset as Offset(xf, yf)

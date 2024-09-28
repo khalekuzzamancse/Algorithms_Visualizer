@@ -1,4 +1,5 @@
 @file:Suppress("unused")
+
 package graph.editor
 
 import androidx.compose.ui.geometry.Offset
@@ -351,8 +352,115 @@ internal object SavedGraphProvider {
                 minTouchTargetPx = 30.0f
             )
         )
+        return Pair(nodes, edges)
+    }
 
+    fun getMSTGraph(): Pair<List<EditorNodeModel>, List<EditorEdgeMode>> {
 
+        val nodes = listOf(
+            EditorNodeModel(
+                id = "A",
+                label = "A",
+                topLeft = Offset(308.0f, 17.125f),
+                exactSizePx = 48.0f
+            ),
+            EditorNodeModel(
+                id = "C",
+                label = "C",
+                topLeft = Offset(277.875f, 165.125f),
+                exactSizePx = 48.0f
+            ),
+            EditorNodeModel(
+                id = "D",
+                label = "D",
+                topLeft = Offset(499.875f, 165.75f),
+                exactSizePx = 48.0f
+            ),
+            EditorNodeModel(
+                id = "B",
+                label = "B",
+                topLeft = Offset(93.75f, 165.125f),
+                exactSizePx = 48.0f
+            ),
+            EditorNodeModel(
+                id = "F",
+                label = "F",
+                topLeft = Offset(408.91162f, 311.91162f),
+                exactSizePx = 48.0f
+            ),
+            EditorNodeModel(
+                id = "E",
+                label = "E",
+                topLeft = Offset(172.125f, 309.0f),
+                exactSizePx = 48.0f
+            )
+        )
+
+        val edges = listOf(
+            EditorEdgeMode(
+                id = "1",
+                start = Offset(345.0f, 52.0f),
+                end = Offset(506.875f, 178.0f),
+                control = Offset(425.9375f, 115.0f),
+                cost = "4"
+            ),
+            EditorEdgeMode(
+                id = "2",
+                start = Offset(518.0f, 205.0f),
+                end = Offset(440.875f, 319.0f),
+                control = Offset(479.4375f, 262.0f),
+                cost = "2"
+            ),
+            EditorEdgeMode(
+                id = "3",
+                start = Offset(314.0f, 51.0f),
+                end = Offset(132.125f, 174.0f),
+                control = Offset(223.0625f, 112.5f),
+                cost = "6" //may seems like 9
+            ),
+            EditorEdgeMode(
+                id = "4",
+                start = Offset(328.0f, 57.0f),
+                end = Offset(302.0f, 172.875f),
+                control = Offset(315.0f, 114.9375f),
+                cost = "9"//may seems like 6
+            ),
+            EditorEdgeMode(
+                id = "5",
+                start = Offset(131.0f, 191.0f),
+                end = Offset(282.875f, 192.0f),
+                control = Offset(206.9375f, 191.5f),
+                cost = "3"
+            ),
+            EditorEdgeMode(
+                id = "6",
+                start = Offset(289.0f, 205.0f),
+                end = Offset(203.0f, 329.875f),
+                control = Offset(246.0f, 267.4375f),
+                cost = "7"
+            ),
+            EditorEdgeMode(
+                id = "7",
+                start = Offset(120.0f, 202.0f),
+                end = Offset(182.91162f, 324.91162f),
+                control = Offset(151.45581f, 263.4558f),
+                cost = "10"
+            ),
+            EditorEdgeMode(
+                id = "8",
+                start = Offset(296.0f, 185.0f),
+                end = Offset(423.875f, 336.0f),
+                control = Offset(359.9375f, 260.5f),
+                cost = "5"
+            ),
+            EditorEdgeMode(
+                id = "7",
+                start = Offset(504.0f, 189.0f),
+                end = Offset(314.125f, 193.0f),
+                control = Offset(409.0625f, 191.0f),
+                cost = "8"//
+            )
+        )
         return Pair(nodes, edges)
     }
 

@@ -17,11 +17,11 @@ class GraphViewerControllerImpl internal constructor(
     edges: Set<EditorEdgeMode>
 ) : GraphViewerController() {
 
-    private val canvasUtils= CanvasUtils(nodes, edges).trimExtraSpace().calculateCanvasSize()
+    private val canvasUtils = CanvasUtils(nodes, edges).trimExtraSpace().calculateCanvasSize()
     private val _nodes = MutableStateFlow(canvasUtils.nodes)
     private val _edges = MutableStateFlow(canvasUtils.edges)
 
-    override val canvasSize=canvasUtils.canvasSize
+    override val canvasSize = canvasUtils.canvasSize
     override val nodes: StateFlow<Set<EditorNodeModel>> = _nodes.asStateFlow()
     override val edges: StateFlow<Set<EditorEdgeMode>> = _edges.asStateFlow()
 
@@ -37,6 +37,7 @@ class GraphViewerControllerImpl internal constructor(
             }.toSet()
         }
     }
+
     override fun changeNodeColor(id: String, color: Color) {
         _nodes.update { nodes ->
             nodes.map { node ->
@@ -50,11 +51,9 @@ class GraphViewerControllerImpl internal constructor(
     override fun changeEdgeColor(id: String, color: Color) {
         _edges.update { edges ->
             edges.map { edge ->
-                if (edge.id == id){
-                    edge.copy(pathColor =color)
-                }
-
-                else edge
+                if (edge.id == id) {
+                    edge.copy(pathColor = color)
+                } else edge
             }.toSet()
         }
     }
@@ -73,6 +72,11 @@ class GraphViewerControllerImpl internal constructor(
 
     }
 
+    override fun filterEdgeByColor(color: Color) {
+        _edges.update { edges ->
+            edges.filter { it.pathColor == color }.toSet()
+        }
+    }
 
 
 }

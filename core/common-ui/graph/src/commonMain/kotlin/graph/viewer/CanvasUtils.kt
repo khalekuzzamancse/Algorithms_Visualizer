@@ -15,8 +15,8 @@ internal class CanvasUtils(
     var edges = edges
         private set
     var canvasSize = Size(1000f, 1000f)//initialize with larger size otherwise can causes crash
-    private val points = nodes.flatMap { node -> listOf(node.topLeft) }
-
+    private val points = nodes.flatMap { node -> listOf(node.topLeft)
+    }+edges.flatMap { node -> listOf(node.start)}+edges.flatMap { node -> listOf(node.end)}+edges.flatMap { node -> listOf(node.control)}
     fun trimExtraSpace(): CanvasUtils {
         val gapFromXAxis = points.minOf { it.x }
         val gapFromYAxis = points.minOf { it.y }

@@ -1,5 +1,6 @@
 package feature.navigation
 
+
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -14,21 +15,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-
-
 import com.example.compose.AppTheme
 import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
 import kotlinx.coroutines.launch
-import ui.ui.DijkstraSimulationScreen
+import mst.ui.PrimsSimulationScreen
 
 @Composable
 fun MyApplication() {
     AppTheme {
        //   NavHost()
-        DijkstraSimulationScreen()
+      //  DijkstraSimulationScreen()
         // GraphEditor()
-
+        PrimsSimulationScreen()
 
     }
 

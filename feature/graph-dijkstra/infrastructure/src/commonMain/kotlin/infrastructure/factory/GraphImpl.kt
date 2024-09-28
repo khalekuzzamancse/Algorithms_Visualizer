@@ -11,6 +11,7 @@ class GraphImpl(
     private val edges: Set<EdgeModel>
 ) : Graph {
 
+
     private val adjacencyList: MutableMap<NodeModel, MutableList<NeighborInfo>> = mutableMapOf()
 
     init {

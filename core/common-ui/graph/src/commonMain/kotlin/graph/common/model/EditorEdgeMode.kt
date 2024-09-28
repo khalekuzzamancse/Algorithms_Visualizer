@@ -63,7 +63,7 @@ internal data class EditorEdgeMode(
         }
     // Custom toString implementation
     override fun toString(): String {
-        return """VisualEdge(id="${id}", start=${formatOffset(start)}, end=${formatOffset(end)}, control=${formatOffset(control)}, cost=${cost?.let { "\"$it\"" } ?: "null"})"""
+        return """${this.javaClass.simpleName}(id="$id", start=${formatOffset(start)}, end=${formatOffset(end)}, control=${formatOffset(control)}, cost=${cost?.let { "\"$it\"" } ?: "null"})"""
     }
 
     // Method to format Offset as Offset(xf, yf)
