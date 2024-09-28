@@ -3,12 +3,12 @@ package graph.viewer
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import graph.common.model.EditorEdgeModel
+import graph.common.model.EditorEdgeMode
 import graph.common.model.EditorNodeModel
 
 internal class CanvasUtils(
     nodes: Set<EditorNodeModel>,
-    edges: Set<EditorEdgeModel>
+    edges: Set<EditorEdgeMode>
 ) {
     var nodes = nodes
         private set

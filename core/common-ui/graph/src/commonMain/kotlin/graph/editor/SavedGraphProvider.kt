@@ -3,7 +3,7 @@ package graph.editor
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import graph.common.model.EditorEdgeModel
+import graph.common.model.EditorEdgeMode
 import graph.common.model.EditorNodeModel
 
 internal object SavedGraphProvider {
@@ -45,7 +45,7 @@ internal object SavedGraphProvider {
         )
     )
     val edges = listOf(
-        EditorEdgeModel(
+        EditorEdgeMode(
             id = "c51a1854-2782-41c8-b81b-4b18d0b2020d",
             start = Offset(400.0f, 74.0f),
             end = Offset(345.0f, 130.9f),
@@ -54,7 +54,7 @@ internal object SavedGraphProvider {
             directed = true,
             minTouchTargetPx = 30.0f
         ),
-        EditorEdgeModel(
+        EditorEdgeMode(
             id = "669a6c7a-1362-446c-a5da-4e0c2be80463",
             start = Offset(323.0f, 150.0f),
             end = Offset(276.1f, 203.0f),
@@ -63,7 +63,7 @@ internal object SavedGraphProvider {
             directed = true,
             minTouchTargetPx = 30.0f
         ),
-        EditorEdgeModel(
+        EditorEdgeMode(
             id = "e14664da-507a-429c-a8c9-01357b08ddeb",
             start = Offset(332.0f, 147.0f),
             end = Offset(380.9f, 216.9f),
@@ -72,7 +72,7 @@ internal object SavedGraphProvider {
             directed = true,
             minTouchTargetPx = 30.0f
         ),
-        EditorEdgeModel(
+        EditorEdgeMode(
             id = "5549a108-336c-4185-af07-8d52d9f422c6",
             start = Offset(413.0f, 68.0f),
             end = Offset(467.0f, 131.9f),
@@ -84,7 +84,7 @@ internal object SavedGraphProvider {
     )
 
 
-    fun getTopologicalSortDemoGraph(): Pair<List<EditorNodeModel>, List<EditorEdgeModel>> {
+    fun getTopologicalSortDemoGraph(): Pair<List<EditorNodeModel>, List<EditorEdgeMode>> {
         val nodes = listOf(
             EditorNodeModel(
                 id = "684e5b6f-c2ed-4427-b7e2-7851fac903d6",
@@ -145,56 +145,56 @@ internal object SavedGraphProvider {
         )
 
         val edges = listOf(
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "7dd81457-5d94-4039-a354-5046f3627ab7",
                 start = Offset(141.0f, 57.0f),
                 end = Offset(143.0f, 110.9f),
                 control = Offset(142.0f, 81.9f),
                 cost = null
             ),
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "e8cb307d-a7e3-4bfd-82e4-28e6e7ca22ca",
                 start = Offset(143.0f, 154.0f),
                 end = Offset(146.0f, 209.9f),
                 control = Offset(144.5f, 181.9f),
                 cost = null
             ),
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "835aa445-f815-4707-9517-1e8c2fb8c22a",
                 start = Offset(56.0f, 189.0f),
                 end = Offset(123.9f, 230.9f),
                 control = Offset(89.9f, 209.9f),
                 cost = null
             ),
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "297f5054-2461-48b3-aa6b-19e4c3c9bfa7",
                 start = Offset(139.0f, 244.0f),
                 end = Offset(138.9f, 290.0f),
                 control = Offset(138.9f, 267.0f),
                 cost = null
             ),
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "a4f22b42-1e67-4516-8513-51a4575f8062",
                 start = Offset(135.0f, 246.0f),
                 end = Offset(61.9f, 295.0f),
                 control = Offset(98.4f, 270.5f),
                 cost = null
             ),
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "b2f9778d-a037-4dcf-879f-0e2ecccdc6c7",
                 start = Offset(150.0f, 245.0f),
                 end = Offset(210.9f, 296.0f),
                 control = Offset(180.4f, 270.5f),
                 cost = null
             ),
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "56e69a96-46c6-4292-85d9-735030ab9d05",
                 start = Offset(212.0f, 330.0f),
                 end = Offset(154.1f, 392.8f),
                 control = Offset(183.0f, 361.4f),
                 cost = null
             ),
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "3dfe3970-1eaf-441b-b32e-8b7711bd9fe0",
                 start = Offset(137.0f, 329.0f),
                 end = Offset(135.2f, 385.8f),
@@ -205,7 +205,7 @@ internal object SavedGraphProvider {
         return Pair(nodes, edges)
     }
 
-    fun getDijkstraGraph(): Pair<List<EditorNodeModel>, List<EditorEdgeModel>> {
+    fun getDijkstraGraph(): Pair<List<EditorNodeModel>, List<EditorEdgeMode>> {
         val nodes = listOf(
             EditorNodeModel(
                 id = "A",
@@ -243,7 +243,7 @@ internal object SavedGraphProvider {
         val minTouch = 30f
         val edges = listOf(
             // (A, B)
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "edge1",
                 start = Offset(87.0f, 131.0f),
                 end = Offset(190.9f, 89.0f),
@@ -253,7 +253,7 @@ internal object SavedGraphProvider {
             ),
 
             // (A, E)
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "edge2",
                 start = Offset(81.0f, 155.0f),
                 end = Offset(198.9f, 190.9f),
@@ -264,7 +264,7 @@ internal object SavedGraphProvider {
             ),
 
             // (B, E)
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "edge3",
                 start = Offset(208.0f, 176.0f),
                 end = Offset(206.0f, 90.1f),
@@ -275,7 +275,7 @@ internal object SavedGraphProvider {
             ),
 
             // (E, B)
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "edge4",
                 start = Offset(222.0f, 94.0f),
                 end = Offset(229.0f, 185.9f),
@@ -286,7 +286,7 @@ internal object SavedGraphProvider {
             ),
 
             // (C, D)
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "edge5",
                 start = Offset(370.0f, 90.0f),
                 end = Offset(380.0f, 177.9f),
@@ -297,7 +297,7 @@ internal object SavedGraphProvider {
             ),
 
             // (D, C)
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "edge6",
                 start = Offset(397.0f, 177.0f),
                 end = Offset(396.0f, 92.1f),
@@ -308,7 +308,7 @@ internal object SavedGraphProvider {
             ),
 
             // (E, C)
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "edge7",
                 start = Offset(234.0f, 186.0f),
                 end = Offset(360.9f, 83.0f),
@@ -319,7 +319,7 @@ internal object SavedGraphProvider {
             ),
 
             // (B, E)
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "edge8",
                 start = Offset(239.0f, 195.0f),
                 end = Offset(370.9f, 190.0f),
@@ -330,7 +330,7 @@ internal object SavedGraphProvider {
             ),
 
             // (D, A)
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "edge9",
                 start = Offset(375.0f, 183.0f),
                 end = Offset(95.1f, 141.0f),
@@ -341,7 +341,7 @@ internal object SavedGraphProvider {
             ),
 
             // (B, C)
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = "edge10",
                 start = Offset(233.9f, 78f),
                 end = Offset(360.6f, 77.2f),

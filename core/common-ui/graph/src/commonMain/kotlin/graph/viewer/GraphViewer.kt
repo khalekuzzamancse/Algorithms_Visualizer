@@ -16,7 +16,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import graph.common.drawEdge
 import graph.common.drawNode
-import graph.common.model.EditorEdgeModel
+import graph.common.model.EditorEdgeMode
 import graph.common.model.EditorNodeModel
 
 
@@ -49,7 +49,7 @@ fun GraphViewer(
 @Composable
 private fun _GraphDrawer(
     nodes: Set<EditorNodeModel>,
-    edges: Set<EditorEdgeModel>
+    edges: Set<EditorEdgeMode>
 ) {
     val textMeasurer = rememberTextMeasurer() //
     val edgeWith = with(LocalDensity.current) { 1.dp.toPx() }

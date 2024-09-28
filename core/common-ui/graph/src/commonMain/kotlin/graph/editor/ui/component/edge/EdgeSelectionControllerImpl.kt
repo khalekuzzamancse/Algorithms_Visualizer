@@ -3,29 +3,29 @@ package graph.editor.ui.component.edge
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import graph.common.model.EditorEdgeModel
+import graph.common.model.EditorEdgeMode
 import graph.editor.ui.component.Range
 
 internal class EdgeSelectionControllerImpl(
-    private val edges: List<EditorEdgeModel>,
+    private val edges: List<EditorEdgeMode>,
     private val tappedPosition: Offset,
 ) {
-    private var selectedEdge: EditorEdgeModel? = null
+    private var selectedEdge: EditorEdgeMode? = null
 
     init {
         selectedEdge = edges.find { edge -> isAnyControlTouched(edge) }
     }
 
-    fun findSelectedEdge(): EditorEdgeModel? {
+    fun findSelectedEdge(): EditorEdgeMode? {
         return selectedEdge
     }
 
-    fun getEdgesWithSelection(): List<EditorEdgeModel> {
+    fun getEdgesWithSelection(): List<EditorEdgeMode> {
         val point = findSelectedPoint()
         return highLightPoint(point)
     }
 
-    private fun highLightPoint(point: EdgePoint): List<EditorEdgeModel> {
+    private fun highLightPoint(point: EdgePoint): List<EditorEdgeMode> {
         selectedEdge?.let { activeEdge ->
             val highLightedEdge = when (point) {
                 EdgePoint.Start -> activeEdge.copy(
@@ -72,22 +72,22 @@ internal class EdgeSelectionControllerImpl(
         return EdgePoint.None
     }
 
-    private fun isAnyControlTouched(edge: EditorEdgeModel): Boolean {
+    private fun isAnyControlTouched(edge: EditorEdgeMode): Boolean {
         return isStartTouched(edge) || isEndTouched(edge) || isControlTouched(edge)
     }
 
 
-    private fun isControlTouched(edge: EditorEdgeModel) =
+    private fun isControlTouched(edge: EditorEdgeMode) =
         isTargetTouched(edge, edge.pathCenter)
 
-    private fun isStartTouched(edge: EditorEdgeModel) =
+    private fun isStartTouched(edge: EditorEdgeMode) =
         isTargetTouched(edge, edge.start)
 
-    private fun isEndTouched(edge: EditorEdgeModel) =
+    private fun isEndTouched(edge: EditorEdgeMode) =
         isTargetTouched(edge, edge.end)
 
     private fun isTargetTouched(
-        edge: EditorEdgeModel,
+        edge: EditorEdgeMode,
         target: Offset
     ): Boolean {
         //Can causes crash

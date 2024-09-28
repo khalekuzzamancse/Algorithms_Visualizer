@@ -9,11 +9,11 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.unit.Dp
 import graph.editor.ui.component.edge.EdgePoint
-import graph.common.model.EditorEdgeModel
+import graph.common.model.EditorEdgeMode
 
 
 internal fun DrawScope.drawEdge(
-    edge: EditorEdgeModel,
+    edge: EditorEdgeMode,
     textMeasurer: TextMeasurer? = null,
     width:Float,
 ) {

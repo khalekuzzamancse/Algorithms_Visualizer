@@ -12,12 +12,12 @@ sqlDelightVersion = "2.0.1"
 lifecycleVersion = "2.8.0-alpha03"
 lifecycleViewmodelCompose = "2.7.0"
 junit = "4.13.2"
+## For room database
+room = "2.7.0-alpha01"
+ksp = "1.9.23-1.0.19"
+sqlite = "2.5.0-SNAPSHOT"
 [libraries]
 androidx-activity-compose= { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
-voyager-screenmodel={module="cafe.adriel.voyager:voyager-screenmodel",version.ref="voyager"}
-voyager-navigator = { group = "cafe.adriel.voyager", name = "voyager-navigator", version.ref = "voyager" }
-voyager-transitions = { group = "cafe.adriel.voyager", name = "voyager-transitions", version.ref = "voyager" }
-
 ##Viewmodel
 viewmodel-ktx={module="androidx.lifecycle:lifecycle-viewmodel-ktx",version.ref="lifecycleVersion"}
 viewmodel-compose={module="androidx.lifecycle:lifecycle-viewmodel-compose",version.ref="lifecycleVersion"}
@@ -41,16 +41,16 @@ windowSize = { module = "dev.chrisbanes.material3:material3-window-size-class-mu
 coil3 = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3-io" }
 coil3-network = { module = "io.coil-kt.coil3:coil-network", version.ref = "coil3-io" }
 coil3-core = { module = "io.coil-kt.coil3:coil-core", version.ref = "coil3-io" }
-# local database
-database-realm-base={ module = "io.realm.kotlin:library-base", version.ref = "realmVersion" }
-database-realm-sync={ module = "io.realm.kotlin:library-sync", version.ref = "realmVersion" }
-androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 
 ##For convention plugin building needs them
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 compose-gradlePlugin = { module = "org.jetbrains.compose:org.jetbrains.compose.gradle.plugin", version.ref = "compose-plugin" }
-
+##ROOM
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-runtime-android = { module = "androidx.room:room-runtime-android", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -60,6 +60,9 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 realm={id="io.realm.kotlin", version.ref = "realmVersion"}
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 sqlDelight= { id = "app.cash.sqldelight",version.ref="sqlDelightVersion"}
+##For Room
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "room" }
 
 #TODO:Convention plugin
 convention-composeMultiplatfrom={id="convention.composeMultiplatform",version="unspecified"}

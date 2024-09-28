@@ -31,9 +31,8 @@ val applicationModules = listOf(
 
 
 val coreModules = listOf(
-    ":core",
-    ":core:common-ui",":core:common-ui:array",":core:common-ui:common_ui",
-    ":core:common-ui:graph",
+    ":core", ":core:database",
+    ":core:common-ui",":core:common-ui:array",":core:common-ui:common_ui", ":core:common-ui:graph",
 )
 
 val featuresModules = listOf(

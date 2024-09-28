@@ -9,8 +9,10 @@ import androidx.compose.ui.unit.dp
 import graph.editor.ui.component.edge.EdgePoint
 import kotlin.math.atan2
 
-
-internal data class EditorEdgeModel(
+/**
+ * - Only id,start,end,control,directed need for drawing means for viewer
+ */
+internal data class EditorEdgeMode(
     val id: String,
     val start: Offset,
     val end: Offset,

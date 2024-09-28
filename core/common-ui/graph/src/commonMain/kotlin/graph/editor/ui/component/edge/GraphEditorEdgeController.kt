@@ -2,23 +2,23 @@ package graph.editor.ui.component.edge
 
 import androidx.compose.ui.geometry.Offset
 import graph.editor.SavedGraphProvider
-import graph.common.model.EditorEdgeModel
+import graph.common.model.EditorEdgeMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 internal class GraphEditorEdgeController {
-    private val _edges: MutableStateFlow<List<EditorEdgeModel>> =
+    private val _edges: MutableStateFlow<List<EditorEdgeMode>> =
         MutableStateFlow(SavedGraphProvider.edges)
 
     // private val _edges: MutableStateFlow<List<VisualEdge>> = MutableStateFlow(emptyList())
     val edges = _edges.asStateFlow()
 
-    fun setInitialEdge(edge: Set<EditorEdgeModel>) {
+    fun setInitialEdge(edge: Set<EditorEdgeMode>) {
         _edges.update { edge.toList() }
     }
 
-    fun addEdge(edge: EditorEdgeModel) {
+    fun addEdge(edge: EditorEdgeMode) {
         _edges.value = edges.value + edge.copy(selectedPoint = EdgePoint.End)
         _selectedEdge.value = edge.copy(selectedPoint = EdgePoint.End)
         newlyAdding = true
@@ -29,7 +29,7 @@ internal class GraphEditorEdgeController {
     Select the edge to remove it.
      */
 
-    private val _selectedEdge = MutableStateFlow<EditorEdgeModel?>(null)
+    private val _selectedEdge = MutableStateFlow<EditorEdgeMode?>(null)
     val selectedEdge = _selectedEdge.asStateFlow()
     private var newlyAdding = false
 
@@ -87,7 +87,7 @@ internal class GraphEditorEdgeController {
         newlyAdding = false
     }
 
-    fun setEdge(edges: List<EditorEdgeModel>) {
+    fun setEdge(edges: List<EditorEdgeMode>) {
         _edges.update { edges }
     }
 

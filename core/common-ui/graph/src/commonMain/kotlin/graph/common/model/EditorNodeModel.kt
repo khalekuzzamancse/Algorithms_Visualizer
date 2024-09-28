@@ -4,7 +4,9 @@ package graph.common.model
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-
+/**
+* - Only id,label,topLeft ,exactSizePx ,distance , need for drawing means for viewer
+*/
 internal data class EditorNodeModel(
     val id: String,
     val distance:String?=null,

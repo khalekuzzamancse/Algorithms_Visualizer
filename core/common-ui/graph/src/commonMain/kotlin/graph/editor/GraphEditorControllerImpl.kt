@@ -5,7 +5,7 @@ import androidx.compose.ui.unit.dp
 import graph.common.model.Edge
 import graph.common.model.GraphResult
 import graph.common.model.Node
-import graph.common.model.EditorEdgeModel
+import graph.common.model.EditorEdgeMode
 import graph.common.model.EditorNodeModel
 import graph.editor.ui.component.GraphEditorMode
 import graph.editor.ui.component.edge.GraphEditorEdgeController
@@ -37,7 +37,7 @@ internal data class GraphEditorControllerImpl(
     //Direction
     private var directed: Boolean = false
 
-    override val edges: StateFlow<List<EditorEdgeModel>>
+    override val edges: StateFlow<List<EditorEdgeMode>>
         get() = edgeManger.edges
     override val nodes: StateFlow<Set<EditorNodeModel>>
         get() = nodeManger.nodes
@@ -105,7 +105,7 @@ internal data class GraphEditorControllerImpl(
     override fun onEdgeConstInput(cost: String?) {
         operationMode = GraphEditorMode.EdgeAdd
         edgeManger.addEdge(
-            EditorEdgeModel(
+            EditorEdgeMode(
                 id = edgeId++.toString(),
                 start = Offset.Zero,
                 end = Offset.Zero,

@@ -1,7 +1,7 @@
 package graph.viewer
 
 import androidx.compose.ui.graphics.Color
-import graph.common.model.EditorEdgeModel
+import graph.common.model.EditorEdgeMode
 import graph.common.model.EditorNodeModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
  */
 class GraphViewerControllerImpl internal constructor(
     nodes: Set<EditorNodeModel>,
-    edges: Set<EditorEdgeModel>
+    edges: Set<EditorEdgeMode>
 ) : GraphViewerController() {
 
     private val canvasUtils= CanvasUtils(nodes, edges).trimExtraSpace().calculateCanvasSize()
@@ -23,7 +23,7 @@ class GraphViewerControllerImpl internal constructor(
 
     override val canvasSize=canvasUtils.canvasSize
     override val nodes: StateFlow<Set<EditorNodeModel>> = _nodes.asStateFlow()
-    override val edges: StateFlow<Set<EditorEdgeModel>> = _edges.asStateFlow()
+    override val edges: StateFlow<Set<EditorEdgeMode>> = _edges.asStateFlow()
 
 
     override fun updateDistance(id: String, distance: String) {

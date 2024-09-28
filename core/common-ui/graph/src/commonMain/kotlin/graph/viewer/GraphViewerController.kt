@@ -2,7 +2,7 @@ package graph.viewer
 
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import graph.common.model.EditorEdgeModel
+import graph.common.model.EditorEdgeMode
 import graph.common.model.EditorNodeModel
 import kotlinx.coroutines.flow.StateFlow
 
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
  */
 abstract class GraphViewerController {
     internal abstract val nodes: StateFlow<Set<EditorNodeModel>>
-    internal abstract val edges: StateFlow<Set<EditorEdgeModel>>
+    internal abstract val edges: StateFlow<Set<EditorEdgeMode>>
     internal abstract val canvasSize: Size
     abstract fun changeNodeColor(id: String, color: Color)
     abstract fun changeEdgeColor(id: String, color: Color)
