@@ -1,73 +1,70 @@
-@file:Suppress("unused")
-
 package mst.infrastructure.factory
 
 import mst.domain.model.EdgeModel
-import mst.domain.model.NeighborInfo
 import mst.domain.model.NodeModel
-import mst.domain.service.Graph
+import mst.infrastructure.model.Neighbor
+import mst.infrastructure.services.Graph
 
 class GraphImpl(
-    private val nodes: Set<NodeModel>,
-    private val edges: Set<EdgeModel>
+   private val nodes: Set<NodeModel>,
+   private val edges: Set<EdgeModel>,
+    startNode: NodeModel
 ) : Graph {
 
-    // Adjacency list directly references the NodeModel instances
-    override val adjacencyList: MutableMap<NodeModel, MutableList<NeighborInfo>> = mutableMapOf()
+    private val adjacency: Map<String, NodeModel> = nodes.associateBy { it.id }
+
+
+    override fun getAllNodeIds(): Set<String> {
+        return adjacency.keys
+    }
+
+    private val distanceFromParent = mutableMapOf<String, Int>()
+    private val parent = mutableMapOf<String, String?>()
+
+    private val adjacencyList: MutableMap<String, MutableList<Neighbor>> = mutableMapOf()
 
     init {
-        // Initialize adjacency list with empty lists
-        nodes.forEach { node -> adjacencyList[node] = mutableListOf() }
+        nodes.forEach { node -> adjacencyList[node.id] = mutableListOf() }
 
-        // Populate adjacency list based on edges (undirected graph)
         edges.forEach { edge ->
-            adjacencyList[edge.u]?.add(
-                NeighborInfo(
-                    edgeId = edge.id,
-                    neighbour = edge.v, // Direct reference to the actual NodeModel
-                    weight = edge.cost
-                )
-            )
-            adjacencyList[edge.v]?.add(
-                NeighborInfo(
-                    edgeId = edge.id,
-                    neighbour = edge.u, // Direct reference to the actual NodeModel
-                    weight = edge.cost
-                )
-            )
+            adjacencyList[edge.u.id]?.add(Neighbor(edge.v.id, edge.cost))
+            adjacencyList[edge.v.id]?.add(Neighbor(edge.u.id, edge.cost))
+        }
+
+        nodes.forEach { node ->
+            distanceFromParent[node.id] = Int.MAX_VALUE
+            parent[node.id] = null
         }
     }
 
-    // Find edge between two nodes (undirected)
-    override fun findEdge(u: NodeModel, v: NodeModel): EdgeModel? {
-        return edges.find { (it.u == u && it.v == v) || (it.u == v && it.v == u) }
+    val startNodeId: String = startNode.id
+
+    override fun getNeighborsOf(nodeId: String): List<Neighbor> {
+        return adjacencyList[nodeId] ?: emptyList()
     }
 
-    // Get neighbors with weights for a node using direct reference from the adjacency list
-    override fun getNeighborsWithWeights(node: NodeModel): List<NeighborInfo> {
-        // Access the adjacency list directly using the node
-        return adjacencyList[node] ?: emptyList()
+    override fun updateParentOf(nodeId: String, parentId: String) {
+        parent[nodeId] = parentId
     }
 
-    // Get the cost of an edge between two nodes
-    override fun getEdgeCost(u: NodeModel, v: NodeModel): Int? {
-        return edges.firstOrNull { (it.u == u && it.v == v) || (it.u == v && it.v == u) }?.cost
+    override fun updateDistanceOf(nodeId: String, distance: Int) {
+        distanceFromParent[nodeId] = distance
     }
 
-    // Return the set of nodes in the graph
-    override fun getNodes(): Set<NodeModel> = nodes
+    override fun getDistanceOf(nodeId: String): Int? {
+        return distanceFromParent[nodeId]
+    }
 
-    // Return a string representation of the adjacency list
-    override fun toString(): String {
-        val sb = StringBuilder()
-        sb.append("Graph Adjacency List:\n")
-        adjacencyList.forEach { (node, neighbors) ->
-            sb.append("${node.label}: ")
-            neighbors.forEach { neighbor ->
-                sb.append("(${neighbor.neighbour.label}, cost: ${neighbor.weight}) ")
-            }
-            sb.append("\n")
-        }
-        return sb.toString()
+    override fun getNode(nodeId: String): NodeModel? {
+        return adjacency[nodeId]
+    }
+
+    override fun getParent(nodeId: String): NodeModel? {
+        val parentId = parent[nodeId]
+        return if (parentId != null) adjacency[parentId] else null
+    }
+
+    override fun findEdge(uId: String, vId: String): EdgeModel? {
+        return edges.find { (it.u.id == uId && it.v.id == vId) || (it.u.id == vId && it.v.id == uId) }
     }
 }

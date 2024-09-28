@@ -1,8 +1,8 @@
-package mst.infrastructure.factory
+package mst.infrastructure.services
 
 import mst.domain.model.EdgeModel
 import mst.domain.model.NodeModel
-import mst.infrastructure.Neighbor
+import mst.infrastructure.model.Neighbor
 
 /**
  * The GraphInterface provides essential methods for interacting with a graph
@@ -18,7 +18,7 @@ import mst.infrastructure.Neighbor
  *   this interface ensures that the graph remains consistent, and algorithms can 
  *   work reliably without the risk of referencing outdated or incorrect data.
  */
-interface GraphInterface {
+interface Graph {
 
     /**
      * Returns all the node IDs present in the graph.

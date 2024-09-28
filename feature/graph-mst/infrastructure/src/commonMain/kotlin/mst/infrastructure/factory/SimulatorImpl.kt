@@ -3,7 +3,6 @@ package mst.infrastructure.factory
 import mst.domain.model.EdgeModel
 import mst.domain.model.NodeModel
 import mst.domain.model.SimulationState
-import mst.domain.service.Graph
 import mst.domain.service.Simulator
 
 class SimulatorImpl internal  constructor(
@@ -16,7 +15,7 @@ class SimulatorImpl internal  constructor(
 
 
     init {
-        val sequence = PrimSimulation(graph = Graph2(nodes,edges,startNode)).start()
+        val sequence = PrimSimulation(graph = GraphImpl(nodes,edges,startNode)).start()
         iterator = sequence.iterator()
     }
 

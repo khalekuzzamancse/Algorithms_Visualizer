@@ -3,7 +3,7 @@ package mst.infrastructure.factory
 import mst.domain.model.SimulationState
 
 class PrimSimulation(
-    private val graph: Graph2
+    private val graph: GraphImpl
 ) {
 
     private val notAddedToMST = mutableListOf<String>()

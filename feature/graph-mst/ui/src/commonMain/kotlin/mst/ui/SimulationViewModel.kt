@@ -1,13 +1,8 @@
 @file:Suppress("functionName")
+
 package mst.ui
+
 import androidx.compose.ui.graphics.Color
-import mst.di.DiContainer
-import mst.domain.model.DijkstraGraphModel
-import mst.domain.model.EdgeModel
-import mst.domain.model.NodeModel
-import mst.domain.model.NodeModel.Companion.INFINITY
-import mst.domain.model.SimulationState
-import mst.domain.service.Simulator
 import graph.common.model.Edge
 import graph.common.model.GraphResult
 import graph.common.model.Node
@@ -15,6 +10,12 @@ import graph.viewer.GraphViewerController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import mst.di.DiContainer
+import mst.domain.model.DijkstraGraphModel
+import mst.domain.model.EdgeModel
+import mst.domain.model.NodeModel
+import mst.domain.model.SimulationState
+import mst.domain.service.Simulator
 
 class SimulationViewModel {
     lateinit var graphController: GraphViewerController
@@ -29,6 +30,7 @@ class SimulationViewModel {
         _isInputMode.update { false }
 
     }
+
     fun onNext() {
         when (val state = simulator.next()) {
             is SimulationState.ProcessingNode -> handleProcessingNode(state.node)
@@ -49,17 +51,9 @@ class SimulationViewModel {
     }
 
 
-    private fun handleDistanceUpdated(nodes: Set<NodeModel>) {
-        nodes.forEach {
-            val distance = if (it.distanceFromParent == INFINITY) "∞" else it.distanceFromParent.toString()
-            graphController.updateDistance(id = it.id, distance = distance)
-        }
-    }
-
     private fun handleSimulationFinished() {
         graphController.filterEdgeByColor(color = Color.Green)
     }
-
 
 
     private fun _createDijkstraGraph(nodes: Set<Node>, edges: Set<Edge>): DijkstraGraphModel {
@@ -77,9 +71,8 @@ class SimulationViewModel {
 
 
     private fun Node._toNodeModel() = NodeModel(
-        id = id, label = label,
+        id = id,
     )
-
 
 
 }
