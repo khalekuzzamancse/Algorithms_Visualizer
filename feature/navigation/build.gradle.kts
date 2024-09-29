@@ -8,8 +8,9 @@ kotlin {
             dependencies {
                 implementation(project(":core:common-ui:graph"))
                 implementation(project(":core:common-ui:common_ui"))
-                implementation(projects.feature.graphDijkstra.ui)
-                implementation(projects.feature.graphMst.ui)
+                //implementation(projects.feature.graphDijkstra.ui)
+               // implementation(projects.feature.graphMst.ui)
+                implementation(projects.feature.treeTraversal.ui)
             }
         }
 

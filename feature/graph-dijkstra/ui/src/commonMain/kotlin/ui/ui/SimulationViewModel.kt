@@ -11,7 +11,7 @@ import domain.service.Simulator
 import graph.common.model.Edge
 import graph.common.model.GraphResult
 import graph.common.model.Node
-import graph.viewer.GraphViewerController
+import graph.graph.viewer.GraphViewerController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

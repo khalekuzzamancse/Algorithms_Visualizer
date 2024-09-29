@@ -19,15 +19,14 @@ import com.example.compose.AppTheme
 import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
 import kotlinx.coroutines.launch
-import mst.ui.PrimsSimulationScreen
+import tree.ui.TreeSimulationScreen
 
 @Composable
 fun MyApplication() {
     AppTheme {
        //   NavHost()
-      //  DijkstraSimulationScreen()
-        // GraphEditor()
-        PrimsSimulationScreen()
+        TreeSimulationScreen()
+
 
     }
 
