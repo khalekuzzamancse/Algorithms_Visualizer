@@ -1,21 +1,20 @@
 package tree.infrastructure.factory
 
-import tree.domain.model.EdgeModel
-import tree.domain.model.NodeModel
 import tree.domain.model.SimulationState
+import tree.domain.model.TraversalType
+import tree.domain.model.TreeNode
 import tree.domain.service.Simulator
 
 class SimulatorImpl internal  constructor(
-    nodes: Set<NodeModel>,
-    edges: Set<EdgeModel>,
-    startNode: NodeModel
+    root:TreeNode,
+    type: TraversalType
 ) : Simulator {
 
     private val iterator: Iterator<SimulationState>
 
 
     init {
-        val sequence = PrimSimulation(graph = GraphImpl(nodes,edges,startNode)).start()
+        val sequence = DFSTraversal(root =root, type =type).traverse()
         iterator = sequence.iterator()
     }
 
