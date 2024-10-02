@@ -1,8 +1,9 @@
-package graph.graph.editor.ui.component.edge
+package graph.graph.editor.controller
 
 
 import androidx.compose.ui.geometry.Offset
 import graph.graph.common.model.EditorEdgeMode
+import graph.graph.editor.model.EdgePoint
 
 /*
 There are two reasons for dragging:

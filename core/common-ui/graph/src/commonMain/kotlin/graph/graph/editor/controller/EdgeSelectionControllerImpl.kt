@@ -1,10 +1,11 @@
-package graph.graph.editor.ui.component.edge
+package graph.graph.editor.controller
 
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import graph.graph.common.model.EditorEdgeMode
-import graph.graph.editor.ui.component.Range
+import graph.graph.editor.model.EdgePoint
+import graph.graph.editor.model.Range
 
 internal class EdgeSelectionControllerImpl(
     private val edges: List<EditorEdgeMode>,

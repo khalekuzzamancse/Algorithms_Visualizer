@@ -1,8 +1,8 @@
-package graph.graph.editor.ui.component.node
+package graph.graph.editor.controller
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import graph.graph.editor.SavedGraphProvider
+import graph.graph.editor.factory.SavedGraphProvider
 import graph.graph.common.model.EditorNodeModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -50,8 +50,8 @@ internal data class GraphEditorNodeController(
         _selectedEditorNodeModel.value?.let {
             val selectedNode = it.makeActive()
             //replace the tapped node with active node.
-            _nodes.value = _nodes.value - it
-            _nodes.value = _nodes.value + selectedNode
+            _nodes.value -= it
+            _nodes.value += selectedNode
         }
     }
 
@@ -84,7 +84,7 @@ internal data class GraphEditorNodeController(
     }
 
     fun add(editorNodeModel: EditorNodeModel) {
-        _nodes.value = _nodes.value + editorNodeModel
+        _nodes.value += editorNodeModel
     }
 
     fun setNode(set: Set<EditorNodeModel>) {

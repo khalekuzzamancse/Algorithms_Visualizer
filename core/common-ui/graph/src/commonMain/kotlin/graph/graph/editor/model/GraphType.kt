@@ -1,4 +1,4 @@
-package graph.graph.editor.ui.component
+package graph.graph.editor.model
 
 /**
  * - Using for type safety

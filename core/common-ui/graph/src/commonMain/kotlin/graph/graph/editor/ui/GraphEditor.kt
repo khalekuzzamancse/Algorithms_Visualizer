@@ -26,25 +26,22 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import graph.graph.editor.GraphEditorController
-import graph.graph.editor.GraphEditorControllerImpl
-import graph.graph.editor.ui.component.DataInputDialogue
+import graph.graph.editor.controller.GraphEditorController
+import graph.graph.editor.factory.GraphEditorControllerImpl
+import graph.graph.editor.ui.component.InputDialog
 import graph.graph.editor.ui.component.GraphTypeInput
 import graph.graph.common.drawEdge
 import graph.graph.common.drawNode
 import graph.graph.common.model.GraphResult
-import graph.graph.editor.ui.component.GraphType
 
 /**
  * @param hasDistance is the graph node has distance such as Node for Dijkstra algorithm. if the graph node has distance
@@ -52,6 +49,7 @@ import graph.graph.editor.ui.component.GraphType
  * try to keep the distance within 2-3 digits
  *
  */
+
 @Composable
 fun GraphEditor(
     density: Float = 1f,
@@ -60,26 +58,13 @@ fun GraphEditor(
 ) {
     val hostState = remember { SnackbarHostState() }
     val controller: GraphEditorController = remember { GraphEditorControllerImpl(density) }
-    var isWightedGraph= remember { false }
-    val nodeMinSizeDp=if(hasDistance) 64.dp else 48.dp
+    val showGraphTypeInputDialog = controller.inputController.takeGraphTypeInput.collectAsState().value
+    val showEdgeCostDialog = controller.inputController.takeEdgeWeightInput.collectAsState().value
+    val showNodeInputDialog = controller.inputController.takeNodeValueInput.collectAsState().value
+    val nodeMinSizeDp = if (hasDistance) 64.dp else 48.dp
 
-    var showGraphTypeInputDialog by remember {
-        mutableStateOf(true)
-    }
     if (showGraphTypeInputDialog) {
-        GraphTypeInput { type ->
-            showGraphTypeInputDialog = false
-            isWightedGraph=(type== GraphType.DirectedWeighted||type==GraphType.UnDirectedWeighted)
-            when (type) {
-                GraphType.Undirected ->  controller.onDirectionChanged(directed = false)
-                GraphType.Directed -> controller.onDirectionChanged(directed = true)
-                GraphType.DirectedWeighted -> controller.onDirectionChanged(directed = true)
-                GraphType.Tree -> {}
-                GraphType.UnDirectedWeighted -> controller.onDirectionChanged(directed = false)
-
-            }
-
-        }
+        GraphTypeInput(controller.inputController::onGraphTypeSelected)
     }
 
 
@@ -87,8 +72,7 @@ fun GraphEditor(
     //defining the min size of node,because node can be so small if it has small string in it label
     val minNodeSizePx = with(LocalDensity.current) { nodeMinSizeDp.toPx() }
 
-    var openAddNodePopup by remember { mutableStateOf(false) }
-    var inputEdgeCost by remember { mutableStateOf(false) }
+
 
 
 
@@ -98,17 +82,17 @@ fun GraphEditor(
             _TopBar(
                 enabledRemoveNode = controller.selectedNode.collectAsState().value != null
                         || controller.selectedEdge.collectAsState().value != null,
-                onAddNodeRequest = {
-                    openAddNodePopup = true
-                },
+                onAddNodeRequest = controller.inputController::onAddNodeRequest,
                 onAddEdgeRequest = {
-                    if (isWightedGraph){
-                        inputEdgeCost = true
-                    }
-                    else{
-                        controller.onEdgeConstInput(cost = null)//Adding edge with null cost
-                    }
-
+                    controller.inputController.onAddEdgeRequest()
+//                    if (isWightedGraph){
+//                        println("wegithed")
+//                        showEdgeWeightInputDialog = true
+//                    }
+//                    else{
+//                        controller.onEdgeConstInput(cost = null)//Adding edge with null cost
+//                    }
+                   // controller.onEdgeConstInput(cost = null)
                 },
                 onSaveRequest = {
                     val result = controller.onDone()
@@ -125,24 +109,25 @@ fun GraphEditor(
 
         ) {
 
-            if (openAddNodePopup) {
-                DataInputDialogue(
-                    description = "Enter Node Value"
+            if (showNodeInputDialog) {
+                InputDialog(
+                    label = "Enter Node Value",
+                    onDismissRequest =controller.inputController::onAddNodeCancelRequest
                 ) { inputtedText ->
                     val textSizePx = _calculateTextSizePx(inputtedText, textMeasurer)
-                    controller.onAddNodeRequest(
+                    controller.inputController.onAddNodeRequest(
                         label = inputtedText,
                         nodeSizePx = maxOf(textSizePx, minNodeSizePx)
                     )
-                    openAddNodePopup = false
                 }
             }
-            if (inputEdgeCost) {
-                DataInputDialogue(
-                    description = "Enter Edge Cost"
+            if (showEdgeCostDialog) {
+                InputDialog(
+                    label = "Enter Edge Cost",
+                    type = KeyboardType.Number,
+                    onDismissRequest = controller.inputController::onAddEdgeCancelRequest
                 ) {
-                    controller.onEdgeConstInput(it)
-                    inputEdgeCost = false
+                    controller.inputController.onEdgeConstInput(it)
                 }
             }
             Editor(controller)
@@ -160,7 +145,7 @@ private fun Editor(
     val textMeasurer = rememberTextMeasurer() //
     val nodes = controller.nodes.collectAsState().value
     val edges = controller.edges.collectAsState().value
-    val edgeWith= with(LocalDensity.current){1.dp.toPx()}
+    val edgeWith = with(LocalDensity.current) { 1.dp.toPx() }
     Canvas(
         modifier = Modifier
             .fillMaxSize()

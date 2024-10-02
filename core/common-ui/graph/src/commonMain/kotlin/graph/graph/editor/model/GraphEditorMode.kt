@@ -1,4 +1,4 @@
-package graph.graph.editor.ui.component
+package graph.graph.editor.model
 
 internal enum class GraphEditorMode {
     NodeAdd, EdgeAdd, None

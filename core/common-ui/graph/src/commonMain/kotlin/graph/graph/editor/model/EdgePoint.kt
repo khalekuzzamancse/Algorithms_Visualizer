@@ -1,4 +1,4 @@
-package graph.graph.editor.ui.component.edge
+package graph.graph.editor.model
 
 internal enum class EdgePoint {
     Start, End, Control, None

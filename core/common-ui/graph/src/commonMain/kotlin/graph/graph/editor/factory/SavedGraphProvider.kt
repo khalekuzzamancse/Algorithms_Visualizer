@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package graph.graph.editor
+package graph.graph.editor.factory
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color

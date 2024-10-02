@@ -9,7 +9,7 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.unit.Dp
 import graph.graph.common.model.EditorEdgeMode
-import graph.graph.editor.ui.component.edge.EdgePoint
+import graph.graph.editor.model.EdgePoint
 
 
 internal fun DrawScope.drawEdge(

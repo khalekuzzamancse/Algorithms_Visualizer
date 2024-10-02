@@ -1,8 +1,9 @@
-package graph.graph.editor.ui.component.edge
+package graph.graph.editor.controller
 
 import androidx.compose.ui.geometry.Offset
-import graph.graph.editor.SavedGraphProvider
+import graph.graph.editor.factory.SavedGraphProvider
 import graph.graph.common.model.EditorEdgeMode
+import graph.graph.editor.model.EdgePoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

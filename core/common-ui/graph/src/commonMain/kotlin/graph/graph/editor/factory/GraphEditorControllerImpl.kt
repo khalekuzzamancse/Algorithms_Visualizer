@@ -1,16 +1,18 @@
-package graph.graph.editor
+@file:Suppress("functionName")
+package graph.graph.editor.factory
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
-import graph.graph.editor.ui.component.GraphEditorMode
+import graph.graph.editor.model.GraphEditorMode
 import graph.graph.GraphFactory
 import graph.graph.common.model.Edge
 import graph.graph.common.model.EditorEdgeMode
 import graph.graph.common.model.EditorNodeModel
 import graph.graph.common.model.GraphResult
 import graph.graph.common.model.Node
-import graph.graph.editor.ui.component.edge.GraphEditorEdgeController
-import graph.graph.editor.ui.component.node.GraphEditorNodeController
+import graph.graph.editor.controller.GraphEditorController
+import graph.graph.editor.controller.GraphEditorEdgeController
+import graph.graph.editor.controller.GraphEditorNodeController
 import kotlinx.coroutines.flow.StateFlow
 
 
@@ -34,8 +36,45 @@ internal data class GraphEditorControllerImpl(
     private val edgeManger = GraphEditorEdgeController()
     private var edgeId: Int = 1
 
-    //Direction
-    private var directed: Boolean = false
+
+    override val inputController = InputControllerImpl(
+        addNodeObserver = ::_onAddNodeRequest,
+        addEdgeRequestObserver = ::_onEdgeConstInput,
+        graphTypeObserver = {
+            setDemoGraph()
+        }
+    )
+
+     private fun _onAddNodeRequest(label: String, nodeSizePx: Float) {
+        nextAddedEditorNodeModel = EditorNodeModel(
+            id = label,//So that guaranteed to be unique
+            label = label,
+            exactSizePx = nodeSizePx
+        )
+        operationMode = GraphEditorMode.NodeAdd
+
+    }
+
+
+     private fun _onEdgeConstInput(cost: String?) {
+        operationMode = GraphEditorMode.EdgeAdd
+        edgeManger.addEdge(
+            EditorEdgeMode(
+                id = edgeId++.toString(),
+                start = Offset.Zero,
+                end = Offset.Zero,
+                control = Offset.Zero,
+                cost = cost,
+                minTouchTargetPx = 30.dp.value * density,
+                directed = inputController.isDirected(),
+            )
+        )
+    }
+
+
+    override var selectedEdge = edgeManger.selectedEdge
+
+
 
     override val edges: StateFlow<List<EditorEdgeMode>>
         get() = edgeManger.edges
@@ -49,7 +88,6 @@ internal data class GraphEditorControllerImpl(
     //Edge and Node Deletion
     override val selectedNode = nodeManger.selectedNode
 
-    override var selectedEdge = edgeManger.selectedEdge
 
     override fun onRemovalRequest() {
         nodeManger.removeNode()
@@ -63,22 +101,17 @@ internal data class GraphEditorControllerImpl(
 //        println(edges.value)
 
         return GraphResult(
-            directed = directed,//TODO: Refactor later
+            directed = inputController.isDirected(),
             controller = GraphFactory
                 .createGraphViewerController(
                     nodes.value.toSet(),
-                    edges.value.map { it.copy(directed = directed) }.toSet()
+                    edges.value.map { it.copy(directed = inputController.isDirected()) }.toSet()
                 ),
             nodes = makeNodes(),
             edges = makeEdges()
         )
     }
 
-
-    override fun onDirectionChanged(directed: Boolean) {
-        this.directed = directed
-        setDemoGraph()
-    }
 
     private fun setDemoGraph() {
         nodeManger.setInitialNode(SavedGraphProvider.getTree().first.toSet())
@@ -94,31 +127,6 @@ internal data class GraphEditorControllerImpl(
 //        }
     }
 
-
-    override fun onAddNodeRequest(label: String, nodeSizePx: Float) {
-        nextAddedEditorNodeModel = EditorNodeModel(
-            id = label,//So that guaranteed to be unique
-            label = label,
-            exactSizePx = nodeSizePx
-        )
-        operationMode = GraphEditorMode.NodeAdd
-    }
-
-
-    override fun onEdgeConstInput(cost: String?) {
-        operationMode = GraphEditorMode.EdgeAdd
-        edgeManger.addEdge(
-            EditorEdgeMode(
-                id = edgeId++.toString(),
-                start = Offset.Zero,
-                end = Offset.Zero,
-                control = Offset.Zero,
-                cost = cost,
-                minTouchTargetPx = 30.dp.value * density,
-                directed = directed,
-            )
-        )
-    }
 
     override fun onTap(tappedPosition: Offset) {
         nodeManger.observeCanvasTap(tappedPosition)
