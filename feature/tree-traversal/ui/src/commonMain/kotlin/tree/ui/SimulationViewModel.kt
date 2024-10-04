@@ -3,7 +3,7 @@
 package tree.ui
 
 import androidx.compose.ui.graphics.Color
-import graph.graph.viewer.GraphViewerController
+import graph.graph.viewer.controller.GraphViewerController
 import graph.tree.TreeResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

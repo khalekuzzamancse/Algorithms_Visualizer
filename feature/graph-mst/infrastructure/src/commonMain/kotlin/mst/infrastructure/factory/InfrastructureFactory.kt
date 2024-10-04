@@ -6,8 +6,7 @@ import mst.domain.model.NodeModel
 import mst.domain.service.Simulator
 
 object InfrastructureFactory {
-    fun createSimulator(
-        graph: DijkstraGraphModel
+    fun createSimulator(graph: DijkstraGraphModel
     ): Simulator =
         SimulatorImpl(graph.nodes, graph.edges, startNode = graph.source)
 

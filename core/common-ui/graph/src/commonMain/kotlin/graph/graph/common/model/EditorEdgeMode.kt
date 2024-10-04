@@ -12,19 +12,19 @@ import kotlin.math.atan2
 /**
  * - Only id,start,end,control,directed need for drawing means for viewer
  */
-internal data class EditorEdgeMode(
+data class EditorEdgeMode internal constructor(
     val id: String,
     val start: Offset,
     val end: Offset,
     val control: Offset,
-    val cost: String?=null,
-    val directed: Boolean=false,
+    val cost: String? = null,
+    val directed: Boolean = false,
     val pathColor: Color = Color.Black,
     val selectedPointColor: Color = Color.Red,
     val showSelectedPoint: Boolean = false,
     val anchorPointRadius: Dp = 4.dp,
-    val selectedPoint: EdgePoint = EdgePoint.None,
-    val minTouchTargetPx: Float=30f
+    internal val selectedPoint: EdgePoint = EdgePoint.None,
+    val minTouchTargetPx: Float = 30f
 ) {
     companion object {
         private val pathMeasurer = PathMeasure()
@@ -32,7 +32,7 @@ internal data class EditorEdgeMode(
 
     val arrowHeadPosition: Offset
         get() {
-            val arrowLength=10f
+            val arrowLength = 10f
             pathMeasurer.setPath(path, false)
             return if (pathMeasurer.length >= arrowLength)
                 pathMeasurer.getPosition(pathMeasurer.length - arrowLength)
@@ -61,9 +61,14 @@ internal data class EditorEdgeMode(
                 Offset.Unspecified
             else pathMeasurer.getPosition(pathLength / 2)//path center
         }
+
     // Custom toString implementation
     override fun toString(): String {
-        return """${this.javaClass.simpleName}(id="$id", start=${formatOffset(start)}, end=${formatOffset(end)}, control=${formatOffset(control)}, cost=${cost?.let { "\"$it\"" } ?: "null"})"""
+        return """${this.javaClass.simpleName}(id="$id", start=${formatOffset(start)}, end=${
+            formatOffset(
+                end
+            )
+        }, control=${formatOffset(control)}, cost=${cost?.let { "\"$it\"" } ?: "null"})"""
     }
 
     // Method to format Offset as Offset(xf, yf)

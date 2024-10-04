@@ -1,6 +1,6 @@
 package graph.tree
 
-import graph.graph.viewer.GraphViewerController
+import graph.graph.viewer.controller.GraphViewerController
 
 /**
  * - This is just transfer the edited graph result to the client module

@@ -18,6 +18,7 @@ import graph.graph.common.drawEdge
 import graph.graph.common.drawNode
 import graph.graph.common.model.EditorEdgeMode
 import graph.graph.common.model.EditorNodeModel
+import graph.graph.viewer.controller.GraphViewerController
 
 
 @Composable

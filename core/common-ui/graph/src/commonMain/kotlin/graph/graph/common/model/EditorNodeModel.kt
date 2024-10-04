@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 /**
 * - Only id,label,topLeft ,exactSizePx ,distance , need for drawing means for viewer
 */
-internal data class EditorNodeModel(
+data class EditorNodeModel(
     val id: String,
     val distance:String?=null,
     val label: String,

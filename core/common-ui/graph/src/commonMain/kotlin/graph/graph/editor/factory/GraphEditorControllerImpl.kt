@@ -1,4 +1,5 @@
 @file:Suppress("functionName")
+
 package graph.graph.editor.factory
 
 import androidx.compose.ui.geometry.Offset
@@ -11,8 +12,6 @@ import graph.graph.common.model.EditorNodeModel
 import graph.graph.common.model.GraphResult
 import graph.graph.common.model.Node
 import graph.graph.editor.controller.GraphEditorController
-import graph.graph.editor.controller.GraphEditorEdgeController
-import graph.graph.editor.controller.GraphEditorNodeController
 import kotlinx.coroutines.flow.StateFlow
 
 
@@ -30,22 +29,23 @@ after tap if mode==AddNode is on then change the mode.
 
 @Suppress("LocalVariableName")
 internal data class GraphEditorControllerImpl(
+    override val inputController: GraphEditorController.InputController,
     private val density: Float,
+    private val initialGraph:Pair<List<EditorNodeModel>, List<EditorEdgeMode>> =Pair(emptyList(), emptyList()),
 ) : GraphEditorController {
     private val nodeManger = GraphEditorNodeController(density)
     private val edgeManger = GraphEditorEdgeController()
     private var edgeId: Int = 1
 
-
-    override val inputController = InputControllerImpl(
-        addNodeObserver = ::_onAddNodeRequest,
-        addEdgeRequestObserver = ::_onEdgeConstInput,
-        graphTypeObserver = {
+    init {
+        inputController.addNodeObserver = ::_onAddNodeRequest
+        inputController.addEdgeRequestObserver = ::_onEdgeConstInput
+        inputController.graphTypeObserver = {
             setDemoGraph()
         }
-    )
+    }
 
-     private fun _onAddNodeRequest(label: String, nodeSizePx: Float) {
+    private fun _onAddNodeRequest(label: String, nodeSizePx: Float) {
         nextAddedEditorNodeModel = EditorNodeModel(
             id = label,//So that guaranteed to be unique
             label = label,
@@ -56,7 +56,7 @@ internal data class GraphEditorControllerImpl(
     }
 
 
-     private fun _onEdgeConstInput(cost: String?) {
+    private fun _onEdgeConstInput(cost: String?) {
         operationMode = GraphEditorMode.EdgeAdd
         edgeManger.addEdge(
             EditorEdgeMode(
@@ -73,7 +73,6 @@ internal data class GraphEditorControllerImpl(
 
 
     override var selectedEdge = edgeManger.selectedEdge
-
 
 
     override val edges: StateFlow<List<EditorEdgeMode>>
@@ -94,7 +93,7 @@ internal data class GraphEditorControllerImpl(
         edgeManger.removeEdge()
     }
 
-    override fun onDone(): GraphResult {
+    override fun onGraphInputCompleted(): GraphResult {
 
 //        println(nodes.value)
 //        println()
@@ -114,8 +113,8 @@ internal data class GraphEditorControllerImpl(
 
 
     private fun setDemoGraph() {
-        nodeManger.setInitialNode(SavedGraphProvider.getTree().first.toSet())
-        edgeManger.setEdge(SavedGraphProvider.getTree().second)
+        nodeManger.setInitialNode(initialGraph.first.toSet())
+        edgeManger.setEdge(initialGraph.second)
 //        if (undirected){
 //            nodeManger.setInitialNode(SavedGraphProvider.nodes.toSet())
 //            edgeManger.setEdge(SavedGraphProvider.edges)

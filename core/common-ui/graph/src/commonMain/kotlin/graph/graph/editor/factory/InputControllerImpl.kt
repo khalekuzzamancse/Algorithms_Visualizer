@@ -37,6 +37,7 @@ internal class InputControllerImpl(
 
         }
         _takeGraphTypeInput.update { false }
+        graphTypeObserver(type)
     }
 
     override fun onAddNodeRequest() = _takeNodeLabelInput.update { true }

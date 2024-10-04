@@ -48,7 +48,7 @@ internal interface GraphEditorController {
     val selectedNode: StateFlow<EditorNodeModel?>
     var selectedEdge: StateFlow<EditorEdgeMode?>
     fun onRemovalRequest()
-    fun onDone(): GraphResult
+    fun onGraphInputCompleted(): GraphResult
     fun onTap(tappedPosition: Offset)
     fun onDragStart(startPosition: Offset)
     fun onDrag(dragAmount: Offset)

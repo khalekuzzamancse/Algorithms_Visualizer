@@ -35,12 +35,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import graph.graph.GraphFactory
 import graph.graph.editor.controller.GraphEditorController
 import graph.graph.editor.factory.GraphEditorControllerImpl
 import graph.graph.editor.ui.component.InputDialog
 import graph.graph.editor.ui.component.GraphTypeInput
 import graph.graph.common.drawEdge
 import graph.graph.common.drawNode
+import graph.graph.common.model.EditorEdgeMode
+import graph.graph.common.model.EditorNodeModel
 import graph.graph.common.model.GraphResult
 
 /**
@@ -54,11 +57,21 @@ import graph.graph.common.model.GraphResult
 fun GraphEditor(
     density: Float = 1f,
     hasDistance: Boolean = false,
+    initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeMode>> = Pair(
+        emptyList(),
+        emptyList()
+    ),
     onDone: (GraphResult) -> Unit,
 ) {
     val hostState = remember { SnackbarHostState() }
-    val controller: GraphEditorController = remember { GraphEditorControllerImpl(density) }
-    val showGraphTypeInputDialog = controller.inputController.takeGraphTypeInput.collectAsState().value
+    val controller: GraphEditorController = remember {
+        GraphFactory.createGraphEditorController(
+            density = density,
+            initialGraph = initialGraph
+        )
+    }
+    val showGraphTypeInputDialog =
+        controller.inputController.takeGraphTypeInput.collectAsState().value
     val showEdgeCostDialog = controller.inputController.takeEdgeWeightInput.collectAsState().value
     val showNodeInputDialog = controller.inputController.takeNodeValueInput.collectAsState().value
     val nodeMinSizeDp = if (hasDistance) 64.dp else 48.dp
@@ -92,10 +105,10 @@ fun GraphEditor(
 //                    else{
 //                        controller.onEdgeConstInput(cost = null)//Adding edge with null cost
 //                    }
-                   // controller.onEdgeConstInput(cost = null)
+                    // controller.onEdgeConstInput(cost = null)
                 },
                 onSaveRequest = {
-                    val result = controller.onDone()
+                    val result = controller.onGraphInputCompleted()
                     onDone(result)
                 },
                 onRemoveNodeRequest = { controller.onRemovalRequest() }
@@ -111,8 +124,8 @@ fun GraphEditor(
 
             if (showNodeInputDialog) {
                 InputDialog(
-                    label = "Enter Node Value",
-                    onDismissRequest =controller.inputController::onAddNodeCancelRequest
+                    label = "Node",
+                    onDismissRequest = controller.inputController::onAddNodeCancelRequest
                 ) { inputtedText ->
                     val textSizePx = _calculateTextSizePx(inputtedText, textMeasurer)
                     controller.inputController.onAddNodeRequest(
@@ -123,7 +136,7 @@ fun GraphEditor(
             }
             if (showEdgeCostDialog) {
                 InputDialog(
-                    label = "Enter Edge Cost",
+                    label = "Edge Cost",
                     type = KeyboardType.Number,
                     onDismissRequest = controller.inputController::onAddEdgeCancelRequest
                 ) {
