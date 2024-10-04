@@ -84,11 +84,10 @@ class GraphViewerControllerImpl internal constructor(
     override fun resetAllEdgeColor() {
         _edges.update { edges ->
             edges.map { edge ->
-                edge.copy(pathColor =edgeColor)
+                edge.copy(pathColor = edgeColor)
             }.toSet()
         }
     }
-
 
 
     override fun blinkNode(id: String) {
@@ -112,7 +111,13 @@ class GraphViewerControllerImpl internal constructor(
 
         // Start blinking the new node
         blinkingJob = scope.launch {
-            val colors = listOf(Color.Yellow, Color.Green, Color.Blue, Color.Red, Color.Magenta) // Colors to blink between
+            val colors = listOf(
+                Color.Yellow,
+                Color.Green,
+                Color.Blue,
+                Color.Red,
+                Color.Magenta
+            ) // Colors to blink between
             while (isActive) {
                 // Randomly select a color different from the base color
                 val randomColor = colors.filter { it != baseColors[id] }.random()
@@ -142,6 +147,12 @@ class GraphViewerControllerImpl internal constructor(
 
     override fun stopBlinkAll() {
         blinkNode("")//dummy id to just stop blink the existing
+    }
+
+    override fun reset() {
+        resetAllNodeColor()
+        resetAllEdgeColor()
+        stopBlinkAll()
     }
 
     override fun filterEdgeByColor(color: Color) {

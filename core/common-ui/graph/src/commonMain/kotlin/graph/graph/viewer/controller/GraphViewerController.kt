@@ -21,6 +21,7 @@ abstract class GraphViewerController {
     abstract fun resetAllEdgeColor()
     abstract fun blinkNode(id: String)
     abstract fun stopBlinkAll()
+    abstract fun reset()
     abstract fun filterEdgeByColor(color: Color)//helpful for MST such as prims algo to remove after finding MST
 
 }

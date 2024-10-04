@@ -20,7 +20,7 @@ import graph.graph.common.model.Node
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NodeSelectionDialog(
-    nodes: List<Node>,
+    nodes: Set<Pair<String,String>>,
     onDismiss: () -> Unit,
     onConfirm: (String) -> Unit
 ) {
@@ -42,16 +42,16 @@ fun NodeSelectionDialog(
                             .size(60.dp)
                             .clip(CircleShape)
                             .background(
-                                if (selectedNodeId == node.id)
+                                if (selectedNodeId == node.first)
                                     MaterialTheme.colorScheme.primary
                                 else
                                     MaterialTheme.colorScheme.surfaceVariant
                             )
-                            .clickable { selectedNodeId = node.id }
+                            .clickable { selectedNodeId = node.first }
                     ) {
                         Text(
-                            text = node.label,
-                            color = if (selectedNodeId == node.id) Color.White else Color.Black,
+                            text = node.second,
+                            color = if (selectedNodeId == node.first) Color.White else Color.Black,
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(8.dp)

@@ -28,17 +28,17 @@ fun DfsSimulation(modifier: Modifier = Modifier) {
 @Composable
 fun _DfsSimulation() {
     val viewModel = remember { SimulationViewModel() }
-    val showDialog = viewModel.unvisitedNeighbours.collectAsState().value.isNotEmpty()
+    val showDialog = viewModel.neighborSelector.neighbors.collectAsState().value.isNotEmpty()
     if (showDialog) {
         NodeSelectionDialog(
-            nodes = viewModel.unvisitedNeighbours.value,
+            nodes = viewModel.neighborSelector.neighbors.value,
             onDismiss = {
-                viewModel.onNeighbourSelected(
-                    viewModel.unvisitedNeighbours.value.first().id
+                viewModel.neighborSelector.onSelected(
+                    viewModel.neighborSelector.neighbors.value.first().first//first id
                 )
             },
             onConfirm = { id ->
-                viewModel.onNeighbourSelected(id)
+                viewModel.neighborSelector.onSelected(id)
             }
         )
     }
@@ -68,7 +68,8 @@ fun _DfsSimulation() {
             onEvent = { event ->
                 when (event) {
                     is SimulationScreenEvent.AutoPlayRequest -> {
-                        viewModel.onAutoPlayRequest(event.time)
+
+                        viewModel.autoPlayer.autoPlayRequest(event.time)
                     }
 
                     SimulationScreenEvent.NextRequest -> viewModel.onNext()

@@ -1,18 +1,16 @@
 package core.commonui.controll_section
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.CodeOff
 import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -22,10 +20,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,7 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
+import core.commonui.CustomTextField
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -102,7 +98,7 @@ fun TopBarControlSection(
                 val second = inputTime.toIntOrNull()
                 if (second != null) {
                     onAutoPlayRequest(second)
-                    autoPlayTimeInSeconds=second
+                    autoPlayTimeInSeconds = second
                     showDialog = false
                 }
             },
@@ -123,17 +119,13 @@ fun AutoPlayDialog(
         onDismissRequest = onCancel,
         title = { Text("Set Autoplay Time") },
         text = {
-            Column {
-                Text("Enter time in second")
-                Spacer(Modifier.height(8.dp))
-                TextField(
-                    value = inputTime,
-                    onValueChange = onInputChange,
-                    label = { Text("Second") },
-                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                    singleLine = true
-                )
-            }
+            CustomTextField(
+                leadingIcon = Icons.Default.Timer,
+                value = inputTime,
+                onValueChange = onInputChange,
+                label = "delay in ms",
+                keyboardType = KeyboardType.Number,
+            )
         },
         confirmButton = {
             Button(onClick = onConfirm) {
@@ -170,7 +162,11 @@ fun TopBarActions(
     onAutoPlayRequest: () -> Unit
 ) {
     IconButton(onClick = onNext) {
-        Icon(Icons.Filled.SkipNext, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+        Icon(
+            Icons.Filled.SkipNext,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary
+        )
     }
     Spacer(Modifier.width(8.dp))
     IconButton(onClick = onCodeVisibilityToggleRequest) {
@@ -182,7 +178,11 @@ fun TopBarActions(
     }
     Spacer(Modifier.width(8.dp))
     IconButton(onClick = onResetRequest) {
-        Icon(Icons.Default.Replay, contentDescription = "reset", tint = MaterialTheme.colorScheme.primary)
+        Icon(
+            Icons.Default.Replay,
+            contentDescription = "reset",
+            tint = MaterialTheme.colorScheme.primary
+        )
     }
     Spacer(Modifier.width(8.dp))
     AutoPlayIconButton(onClick = onAutoPlayRequest)
