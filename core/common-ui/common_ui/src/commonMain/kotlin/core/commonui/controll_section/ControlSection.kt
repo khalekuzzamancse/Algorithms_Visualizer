@@ -59,16 +59,6 @@ fun TopBarControlSection(
     var inputTime by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(autoPlayTimeInSeconds) {
-        autoPlayTimeInSeconds?.let { time ->
-            if (time > 0) {
-                while (true) {
-                    delay(time * 1000L)
-                    onNext()
-                }
-            }
-        }
-    }
 
     Scaffold(
         modifier = modifier,

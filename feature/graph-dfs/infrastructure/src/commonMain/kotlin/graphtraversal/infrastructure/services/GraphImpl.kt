@@ -26,12 +26,14 @@ class GraphImpl(
 
         graph.edges.forEach { edge ->
             adjacencyList[edge.u.id]?.add(edge.v.id)
+            if (!graph.isDirected)
             adjacencyList[edge.v.id]?.add(edge.u.id)
         }
 
         graph.nodes.forEach { node ->
             parent[node.id] = null
         }
+
     }
 
     override val sourceNodeId: String = graph.source.id
@@ -55,7 +57,7 @@ class GraphImpl(
 
     override fun findEdge(uId: String, vId: String): EdgeModel? {
         return if (graph.isDirected)
-            graph.edges.find { (it.u.id == uId && it.v.id == vId)  }
+            graph.edges.find { (it.u.id == uId && it.v.id == vId) }
         else
             graph.edges.find { (it.u.id == uId && it.v.id == vId) || (it.u.id == vId && it.v.id == uId) }
     }
@@ -69,6 +71,24 @@ class GraphImpl(
             .firstOrNull { neighborId ->
                 colors[neighborId] == ColorModel.White
             }
+    }
+
+    override fun getUnvisitedNeighbourOf(nodeId: String): List<String> {
+        return getNeighborsOf(nodeId)
+            .filter { neighborId ->
+                val nodeColor=colors[neighborId]
+                nodeColor == ColorModel.White
+            }
+    }
+    // toString method to print the adjacency list nicely
+    override fun toString(): String {
+        println("isDirected:${graph.isDirected}")
+        val builder = StringBuilder()
+        builder.append("Graph Adjacency List:\n")
+        adjacencyList.forEach { (nodeId, neighbors) ->
+            builder.append("$nodeId -> ${neighbors.joinToString(", ")}\n")
+        }
+        return builder.toString()
     }
 
 }

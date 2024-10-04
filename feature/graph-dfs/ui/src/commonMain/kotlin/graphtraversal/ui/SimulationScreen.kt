@@ -3,10 +3,7 @@
 package graphtraversal.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,12 +19,29 @@ import core.commonui.decorators.SimulationSlot
 import graph.graph.GraphFactory
 import graph.graph.editor.ui.GraphEditor
 import graph.graph.viewer.GraphViewer
-import graph.graph.viewer.controller.GraphViewerController
-
 
 @Composable
-fun DfsSimulation() {
+fun DfsSimulation(modifier: Modifier = Modifier) {
+    _DfsSimulation()
+}
+
+@Composable
+fun _DfsSimulation() {
     val viewModel = remember { SimulationViewModel() }
+    val showDialog = viewModel.unvisitedNeighbours.collectAsState().value.isNotEmpty()
+    if (showDialog) {
+        NodeSelectionDialog(
+            nodes = viewModel.unvisitedNeighbours.value,
+            onDismiss = {
+                viewModel.onNeighbourSelected(
+                    viewModel.unvisitedNeighbours.value.first().id
+                )
+            },
+            onConfirm = { id ->
+                viewModel.onNeighbourSelected(id)
+            }
+        )
+    }
     if (viewModel.isInputMode.collectAsState().value) {
         GraphEditor(
             initialGraph = GraphFactory.getDFSDemoGraph()
@@ -54,14 +68,14 @@ fun DfsSimulation() {
             onEvent = { event ->
                 when (event) {
                     is SimulationScreenEvent.AutoPlayRequest -> {
-
+                        viewModel.onAutoPlayRequest(event.time)
                     }
 
                     SimulationScreenEvent.NextRequest -> viewModel.onNext()
 
                     SimulationScreenEvent.NavigationRequest -> {}
                     SimulationScreenEvent.ResetRequest -> {
-
+                        viewModel.onReset()
                     }
 
                     SimulationScreenEvent.CodeVisibilityToggleRequest -> {

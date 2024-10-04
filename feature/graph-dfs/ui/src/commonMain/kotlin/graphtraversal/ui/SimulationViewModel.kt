@@ -16,8 +16,6 @@ import graphtraversal.domain.model.SimulationState
 import graphtraversal.domain.service.Simulator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,28 +25,82 @@ import kotlinx.coroutines.launch
 class SimulationViewModel {
     lateinit var graphController: GraphViewerController
     private lateinit var simulator: Simulator
+    private lateinit var graph: GraphModel
+    private lateinit var result: GraphResult
+    private val autoPlayTimeInSeconds = MutableStateFlow<Int?>(null)
+
+    init {
+        CoroutineScope(Dispatchers.Default).launch {
+            autoPlayTimeInSeconds.collect { time ->
+                if (time != null) {
+                    if (time > 0) {
+                        while (true) {
+                            delay(time * 1000L)
+                            onNext()
+                        }
+                    }
+                }
+
+            }
+        }
+    }
 
 
     private val _isInputMode = MutableStateFlow(true)
     val isInputMode = _isInputMode.asStateFlow()
-    private val _autoPlayTime = MutableStateFlow<Int?>(null)
+    private val _unvisitedNeighbours = MutableStateFlow<List<Node>>(emptyList())
+    val unvisitedNeighbours = _unvisitedNeighbours.asStateFlow()
+    private var callback: ((String) -> Unit)? = null
 
+    fun onNeighbourSelected(id: String) {
+        _unvisitedNeighbours.update { emptyList() }
+        callback?.let { callback ->
+            callback(id)
+        }
+    }
 
 
     fun onGraphCreated(result: GraphResult) {
-        graphController = result.controller
+        this.result = result
 
-        simulator = DiContainer.createSimulator(
-            _createGraph(directed = result.directed, nodes = result.nodes, edges = result.edges)
-        )
+        graphController = result.controller
+        graph = _createGraph(directed = result.directed, nodes = result.nodes, result.edges)
+        simulator = DiContainer.createSimulator(graph)
         _isInputMode.update { false }
 
+    }
+
+    fun onReset() {
+        simulator = DiContainer.createSimulator(graph)
+        graphController.resetAllNodeColor()
+        graphController.resetAllEdgeColor()
+        graphController.stopBlinkAll()
+        autoPlayTimeInSeconds.update { null }
     }
 
     fun onNext() {
         when (val state = simulator.next()) {
             is SimulationState.ColorChanged -> onColorChanged(state.nodes)
             is SimulationState.ProcessingEdge -> handleProcessingEdge(state.id)
+            is SimulationState.NeighborSelection -> {
+                val neighbourIds: List<String> = state.unvisitedNeighbors
+                callback = state.callback
+                val isNotAutoPlayMode = (autoPlayTimeInSeconds.value == null)
+                if (isNotAutoPlayMode) {
+                    _unvisitedNeighbours.update {
+                        result.nodes.filter { node -> node.id in neighbourIds }
+                    }
+                }
+                else{
+                    callback?.let { it(neighbourIds.first()) }
+                }
+
+            }
+
+            is SimulationState.ExecutionAt -> {
+                handleControlAt(state.nodeId)
+            }
+
             SimulationState.Finished -> handleSimulationFinished()
             else -> Unit // No action for other states
         }
@@ -68,6 +120,9 @@ class SimulationViewModel {
 
     }
 
+    private fun handleControlAt(nodeId: String) {
+        graphController.blinkNode(nodeId)
+    }
 
     private fun handleProcessingEdge(id: String) {
         graphController.changeEdgeColor(id = id, color = Color.Green)
@@ -75,7 +130,8 @@ class SimulationViewModel {
 
 
     private fun handleSimulationFinished() {
-
+        graphController.stopBlinkAll()
+        autoPlayTimeInSeconds.update { null }
     }
 
 
@@ -99,6 +155,11 @@ class SimulationViewModel {
     private fun Node._toNodeModel() = NodeModel(
         id = id,
     )
+
+     fun onAutoPlayRequest(time: Int) {
+        autoPlayTimeInSeconds.update { time }
+
+    }
 
 
 }

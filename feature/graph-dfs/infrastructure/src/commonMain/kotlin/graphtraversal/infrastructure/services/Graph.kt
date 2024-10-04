@@ -29,4 +29,6 @@ interface Graph {
     fun findEdge(uId: String, vId: String): EdgeModel?
     fun updateColor(nodeId: String,color: ColorModel)
     fun getOneUnvisitedNeighbourOf(nodeId: String): String?
+    fun getUnvisitedNeighbourOf(nodeId: String):List<String>
+
 }

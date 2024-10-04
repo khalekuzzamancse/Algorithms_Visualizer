@@ -16,34 +16,66 @@ class DFSSimulation internal constructor(
     private val source = graph.sourceNodeId
 
     fun start() = sequence {
+
         _initialize()
 
         stack.push(source)
         graph.updateColor(source, ColorModel.Gray)
 
         _onColorChanged(source, ColorModel.Gray)
-
         while (stack.isNotEmpty()) {
             val current = stack.peek()
-            val neighbour = graph.getOneUnvisitedNeighbourOf(current)
+            yield(SimulationState.ExecutionAt(current))
+            val unvisitedNeighbours = graph.getUnvisitedNeighbourOf(current)
 
-            val hasAllNeighbourVisited = (neighbour == null)
+            val hasAllNeighbourVisited = unvisitedNeighbours.isEmpty()
             if (hasAllNeighbourVisited) {
                 stack.pop()
-                graph.updateColor(current, ColorModel.Black)//mark as processed
+                graph.updateColor(current, ColorModel.Black)
                 _onColorChanged(current, ColorModel.Black)
             } else {
-                graph.updateColor(neighbour!!, ColorModel.Gray)
-                stack.push(neighbour)
-                //parent=current
-               graph.findEdge(current, neighbour)?.let { edge->
-                   _onEdgeProcessing(edge.id)
-               }
-                _onColorChanged(neighbour, ColorModel.Gray)
+                var selectedNeighbour = unvisitedNeighbours.first()
+                if (unvisitedNeighbours.size > 1) {
+                    yield(SimulationState.NeighborSelection(
+                        unvisitedNeighbors = unvisitedNeighbours,
+                        callback = {
+                            selectedNeighbour = it
+                        }
+                    ))
+                }
 
-
+                graph.updateColor(selectedNeighbour, ColorModel.Gray)
+                stack.push(selectedNeighbour)
+                // parent = current
+                graph.findEdge(current, selectedNeighbour)?.let { edge ->
+                    _onEdgeProcessing(edge.id)
+                }
+                _onColorChanged(selectedNeighbour, ColorModel.Gray)
             }
         }
+
+//        while (stack.isNotEmpty()) {
+//            val current = stack.peek()
+//            val neighbour = graph.getOneUnvisitedNeighbourOf(current)
+//
+//            val hasAllNeighbourVisited = (neighbour == null)
+//            if (hasAllNeighbourVisited) {
+//                stack.pop()
+//                graph.updateColor(current, ColorModel.Black)//mark as processed
+//                _onColorChanged(current, ColorModel.Black)
+//            } else {
+//
+//                graph.updateColor(neighbour!!, ColorModel.Gray)
+//                stack.push(neighbour)
+//                //parent=current
+//               graph.findEdge(current, neighbour)?.let { edge->
+//                   _onEdgeProcessing(edge.id)
+//               }
+//                _onColorChanged(neighbour, ColorModel.Gray)
+//
+//
+//            }
+//        }
 
 
     }
@@ -80,6 +112,7 @@ class DFSSimulation internal constructor(
             )
         )
     }
+
     private suspend fun SequenceScope<SimulationState>._onEdgeProcessing(
         edgeId: String,
     ) {
