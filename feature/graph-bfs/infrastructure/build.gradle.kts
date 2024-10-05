@@ -5,7 +5,7 @@ kotlin {
     sourceSets{
         val commonMain by getting{
             dependencies {
-                implementation(projects.feature.graphDfs.domain)
+                implementation(projects.feature.graphBfs.domain)
             }
 
         }
@@ -18,5 +18,5 @@ kotlin {
 
 }
 android {
-    namespace = "graphtraversal.infrastructure"
+    namespace = "graphbfs.infrastructure"
 }

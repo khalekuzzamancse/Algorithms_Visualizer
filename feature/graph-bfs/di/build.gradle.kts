@@ -5,13 +5,13 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(projects.feature.graphDfs.domain)
-                api(projects.feature.graphDfs.infrastructure)
+                implementation(projects.feature.graphBfs.domain)
+                api(projects.feature.graphBfs.infrastructure)
             }
         }
     }
 
 }
 android {
-    namespace = "graphtraversal.di"
+    namespace = "graphbfs.di"
 }

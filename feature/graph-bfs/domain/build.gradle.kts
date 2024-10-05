@@ -12,5 +12,5 @@ kotlin {
 
 }
 android {
-    namespace = "graphtraversal.domain"
+    namespace = "graphbfs.domain"
 }

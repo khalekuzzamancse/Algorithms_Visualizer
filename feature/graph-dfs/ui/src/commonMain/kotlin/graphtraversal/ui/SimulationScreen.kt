@@ -38,11 +38,11 @@ fun _DfsSimulation() {
             nodes = neighborSelector.neighbors.value,
             onDismiss = {
                 neighborSelector.onSelected(
-                    neighborSelector.neighbors.value.first().id//first id
+                    neighborSelector.neighbors.value.first().id
                 )
             },
-            onConfirm = { id ->
-                neighborSelector.onSelected(id)
+            onConfirm = { ids ->
+                neighborSelector.onSelected(ids)
             }
         )
     }

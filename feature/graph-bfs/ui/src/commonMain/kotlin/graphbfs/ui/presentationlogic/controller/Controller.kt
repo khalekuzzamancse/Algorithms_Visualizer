@@ -1,10 +1,10 @@
-package graphtraversal.presentationlogic.controller
+package graphbfs.ui.presentationlogic.controller
 
 import graph.graph.common.model.GraphResult
 import graph.graph.viewer.controller.GraphViewerController
-import graphtraversal.domain.model.ColorModel
-import graphtraversal.domain.model.SimulationState
-import graphtraversal.presentationlogic.model.NodeModel
+import graphbfs.domain.model.ColorModel
+import graphbfs.domain.model.SimulationState
+import graphbfs.ui.presentationlogic.model.NodeModel
 import kotlinx.coroutines.flow.StateFlow
 /**
  * This layer should not depend on on any libraries or UI implementations such as GraphViewController
@@ -25,12 +25,8 @@ interface Controller {
     interface NeighborSelector {
         /** Pair(node id, label),Selected will be passed via this callback**/
         val neighbors: StateFlow<Set<NodeModel>>
-
-        /**
-         * on callback pass the id of nodes
-         */
-        fun onSelectionRequest(nodes: Set<NodeModel>, callback: (String) -> Unit)
-        fun onSelected(id:String)
+        fun onSelectionRequest(nodes: Set<NodeModel>, callback: (List<String>) -> Unit)
+        fun onSelected(id: List<String>)
     }
 
 

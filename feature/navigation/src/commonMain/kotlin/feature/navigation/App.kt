@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import com.example.compose.AppTheme
 import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
+import graphbfs.ui.ui.BFSSimulation
 import graphtraversal.ui.DfsSimulation
 import kotlinx.coroutines.launch
 
@@ -26,7 +27,8 @@ fun MyApplication() {
     AppTheme {
        //   NavHost()
       //  TreeSimulationScreen()
-        DfsSimulation()
+      //  DfsSimulation()
+        BFSSimulation()
 
 
     }

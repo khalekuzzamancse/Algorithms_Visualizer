@@ -35,6 +35,11 @@
             <option value="$PROJECT_DIR$/core/common-ui/graph" />
             <option value="$PROJECT_DIR$/core/database" />
             <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/graph-bfs" />
+            <option value="$PROJECT_DIR$/feature/graph-bfs/di" />
+            <option value="$PROJECT_DIR$/feature/graph-bfs/domain" />
+            <option value="$PROJECT_DIR$/feature/graph-bfs/infrastructure" />
+            <option value="$PROJECT_DIR$/feature/graph-bfs/ui" />
             <option value="$PROJECT_DIR$/feature/graph-dfs" />
             <option value="$PROJECT_DIR$/feature/graph-dfs/di" />
             <option value="$PROJECT_DIR$/feature/graph-dfs/domain" />
