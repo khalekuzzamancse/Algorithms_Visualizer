@@ -1,6 +1,7 @@
 package feature.navigation
 
 
+import ArrayDemo
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -16,13 +17,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.compose.AppTheme
-import dijkstra.ui.DijkstraSimulationScreen
 import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
-import graphtopologicalsort.ui.TopologicalSortScreen
-import graphtraversal.ui.DfsSimulation
 import kotlinx.coroutines.launch
-import mst.ui.PrimsSimulationScreen
 
 @Composable
 fun MyApplication() {
@@ -33,7 +30,8 @@ fun MyApplication() {
        // BFSSimulation()
       //  PrimsSimulationScreen()
       //  DijkstraSimulationScreen()
-        TopologicalSortScreen()
+       // TopologicalSortScreen()
+        ArrayDemo()
 
 
     }
