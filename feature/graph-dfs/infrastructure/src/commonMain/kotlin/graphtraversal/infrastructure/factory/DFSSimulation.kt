@@ -54,28 +54,6 @@ class DFSSimulation internal constructor(
             }
         }
 
-//        while (stack.isNotEmpty()) {
-//            val current = stack.peek()
-//            val neighbour = graph.getOneUnvisitedNeighbourOf(current)
-//
-//            val hasAllNeighbourVisited = (neighbour == null)
-//            if (hasAllNeighbourVisited) {
-//                stack.pop()
-//                graph.updateColor(current, ColorModel.Black)//mark as processed
-//                _onColorChanged(current, ColorModel.Black)
-//            } else {
-//
-//                graph.updateColor(neighbour!!, ColorModel.Gray)
-//                stack.push(neighbour)
-//                //parent=current
-//               graph.findEdge(current, neighbour)?.let { edge->
-//                   _onEdgeProcessing(edge.id)
-//               }
-//                _onColorChanged(neighbour, ColorModel.Gray)
-//
-//
-//            }
-//        }
 
 
     }

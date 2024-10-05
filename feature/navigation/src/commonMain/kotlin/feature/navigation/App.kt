@@ -19,6 +19,7 @@ import com.example.compose.AppTheme
 import dijkstra.ui.DijkstraSimulationScreen
 import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
+import graphtopologicalsort.ui.TopologicalSortScreen
 import graphtraversal.ui.DfsSimulation
 import kotlinx.coroutines.launch
 import mst.ui.PrimsSimulationScreen
@@ -31,7 +32,8 @@ fun MyApplication() {
         //DfsSimulation()
        // BFSSimulation()
       //  PrimsSimulationScreen()
-        DijkstraSimulationScreen()
+      //  DijkstraSimulationScreen()
+        TopologicalSortScreen()
 
 
     }

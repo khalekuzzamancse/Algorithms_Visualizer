@@ -55,6 +55,11 @@
             <option value="$PROJECT_DIR$/feature/graph-mst/domain" />
             <option value="$PROJECT_DIR$/feature/graph-mst/infrastructure" />
             <option value="$PROJECT_DIR$/feature/graph-mst/ui" />
+            <option value="$PROJECT_DIR$/feature/graph-topologicalsort" />
+            <option value="$PROJECT_DIR$/feature/graph-topologicalsort/di" />
+            <option value="$PROJECT_DIR$/feature/graph-topologicalsort/domain" />
+            <option value="$PROJECT_DIR$/feature/graph-topologicalsort/infrastructure" />
+            <option value="$PROJECT_DIR$/feature/graph-topologicalsort/ui" />
             <option value="$PROJECT_DIR$/feature/navigation" />
             <option value="$PROJECT_DIR$/feature/tree-traversal" />
             <option value="$PROJECT_DIR$/feature/tree-traversal/di" />

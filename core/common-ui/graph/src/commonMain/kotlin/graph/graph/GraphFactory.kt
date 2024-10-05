@@ -35,5 +35,6 @@ object GraphFactory {
     fun getDFSDemoGraph() = SavedGraphProvider.getDijkstraGraph()
     fun getMSTDemoGraph() = SavedGraphProvider.getMSTGraph()
     fun getDijkstraDemoGraph() = SavedGraphProvider.getDijkstraGraph()
+    fun getTopologicalSortDemoGraph() = SavedGraphProvider.getTopologicalSortDemoGraph()
 
 }
