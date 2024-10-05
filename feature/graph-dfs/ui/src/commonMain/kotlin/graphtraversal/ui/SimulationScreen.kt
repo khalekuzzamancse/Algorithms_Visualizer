@@ -21,28 +21,32 @@ import graph.graph.editor.ui.GraphEditor
 import graph.graph.viewer.GraphViewer
 
 @Composable
-fun DfsSimulation(modifier: Modifier = Modifier) {
+fun DfsSimulation() {
     _DfsSimulation()
 }
 
 @Composable
 fun _DfsSimulation() {
     val viewModel = remember { SimulationViewModel() }
-    val showDialog = viewModel.neighborSelector.neighbors.collectAsState().value.isNotEmpty()
+    val neighborSelector = viewModel.neighborSelector
+    val autoPlayer=viewModel.autoPlayer
+    val showDialog = neighborSelector.neighbors.collectAsState().value.isNotEmpty()
+    val inputMode=viewModel.inputMode.collectAsState().value
+
     if (showDialog) {
         NodeSelectionDialog(
-            nodes = viewModel.neighborSelector.neighbors.value,
+            nodes = neighborSelector.neighbors.value,
             onDismiss = {
-                viewModel.neighborSelector.onSelected(
-                    viewModel.neighborSelector.neighbors.value.first().first//first id
+                neighborSelector.onSelected(
+                    neighborSelector.neighbors.value.first().id//first id
                 )
             },
             onConfirm = { id ->
-                viewModel.neighborSelector.onSelected(id)
+                neighborSelector.onSelected(id)
             }
         )
     }
-    if (viewModel.isInputMode.collectAsState().value) {
+    if (inputMode) {
         GraphEditor(
             initialGraph = GraphFactory.getDFSDemoGraph()
         ) { result ->
@@ -69,7 +73,7 @@ fun _DfsSimulation() {
                 when (event) {
                     is SimulationScreenEvent.AutoPlayRequest -> {
 
-                        viewModel.autoPlayer.autoPlayRequest(event.time)
+                      autoPlayer.autoPlayRequest(event.time)
                     }
 
                     SimulationScreenEvent.NextRequest -> viewModel.onNext()

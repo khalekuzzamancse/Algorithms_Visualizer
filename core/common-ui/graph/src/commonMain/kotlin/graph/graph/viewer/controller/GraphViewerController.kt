@@ -4,6 +4,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import graph.graph.common.model.EditorEdgeMode
 import graph.graph.common.model.EditorNodeModel
+import graph.graph.common.model.Node
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -17,6 +18,7 @@ abstract class GraphViewerController {
     abstract fun changeNodeColor(id: String, color: Color)
     abstract fun changeEdgeColor(id: String, color: Color)
     abstract fun updateDistance(id: String, distance: String)
+    abstract fun getNodesById(ids:List<String>):List<Pair<String,String>>//id,label
     abstract fun resetAllNodeColor()
     abstract fun resetAllEdgeColor()
     abstract fun blinkNode(id: String)

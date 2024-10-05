@@ -15,12 +15,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import graph.graph.common.model.Node
+import graphtraversal.presentationlogic.model.NodeModel
 
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NodeSelectionDialog(
-    nodes: Set<Pair<String,String>>,
+    nodes: Set<NodeModel>,
     onDismiss: () -> Unit,
     onConfirm: (String) -> Unit
 ) {
@@ -42,16 +43,16 @@ fun NodeSelectionDialog(
                             .size(60.dp)
                             .clip(CircleShape)
                             .background(
-                                if (selectedNodeId == node.first)
+                                if (selectedNodeId == node.id)
                                     MaterialTheme.colorScheme.primary
                                 else
                                     MaterialTheme.colorScheme.surfaceVariant
                             )
-                            .clickable { selectedNodeId = node.first }
+                            .clickable { selectedNodeId = node.id }
                     ) {
                         Text(
-                            text = node.second,
-                            color = if (selectedNodeId == node.first) Color.White else Color.Black,
+                            text = node.label,
+                            color = if (selectedNodeId == node.id) Color.White else Color.Black,
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(8.dp)

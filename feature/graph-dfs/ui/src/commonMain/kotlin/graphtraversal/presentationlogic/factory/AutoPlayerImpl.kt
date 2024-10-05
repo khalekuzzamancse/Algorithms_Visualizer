@@ -1,5 +1,6 @@
-package graphtraversal.presentationlogic.controller
+package graphtraversal.presentationlogic.factory
 
+import graphtraversal.presentationlogic.controller.Controller
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -11,7 +12,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class AutoPlayerImpl(
-    override var onNextCallback: () -> Unit
+    override var onNextCallback: () -> Unit={}
 ) : Controller.AutoPlayer {
     private val _delay = MutableStateFlow<Int?>(null)
     private var scope: CoroutineScope? = null

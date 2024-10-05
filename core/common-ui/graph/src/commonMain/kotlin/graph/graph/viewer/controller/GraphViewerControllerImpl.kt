@@ -3,6 +3,7 @@ package graph.graph.viewer.controller
 import androidx.compose.ui.graphics.Color
 import graph.graph.common.model.EditorEdgeMode
 import graph.graph.common.model.EditorNodeModel
+import graph.graph.common.model.Node
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -49,6 +50,12 @@ class GraphViewerControllerImpl internal constructor(
             }.toSet()
         }
     }
+
+    override fun getNodesById(ids: List<String>) =
+        nodes.value
+            .filter { node -> node.id in ids }
+            .map { Pair(it.id, it.label) }
+
 
     override fun changeNodeColor(id: String, color: Color) {
         if (blinkingNodeId == id) {

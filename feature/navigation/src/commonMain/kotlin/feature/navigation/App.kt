@@ -20,7 +20,6 @@ import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
 import graphtraversal.ui.DfsSimulation
 import kotlinx.coroutines.launch
-import tree.ui.TreeSimulationScreen
 
 @Composable
 fun MyApplication() {
