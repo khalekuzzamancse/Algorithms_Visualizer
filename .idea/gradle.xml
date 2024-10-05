@@ -45,6 +45,16 @@
             <option value="$PROJECT_DIR$/feature/graph-dfs/domain" />
             <option value="$PROJECT_DIR$/feature/graph-dfs/infrastructure" />
             <option value="$PROJECT_DIR$/feature/graph-dfs/ui" />
+            <option value="$PROJECT_DIR$/feature/graph-dijkstra" />
+            <option value="$PROJECT_DIR$/feature/graph-dijkstra/di" />
+            <option value="$PROJECT_DIR$/feature/graph-dijkstra/domain" />
+            <option value="$PROJECT_DIR$/feature/graph-dijkstra/infrastructure" />
+            <option value="$PROJECT_DIR$/feature/graph-dijkstra/ui" />
+            <option value="$PROJECT_DIR$/feature/graph-mst" />
+            <option value="$PROJECT_DIR$/feature/graph-mst/di" />
+            <option value="$PROJECT_DIR$/feature/graph-mst/domain" />
+            <option value="$PROJECT_DIR$/feature/graph-mst/infrastructure" />
+            <option value="$PROJECT_DIR$/feature/graph-mst/ui" />
             <option value="$PROJECT_DIR$/feature/navigation" />
             <option value="$PROJECT_DIR$/feature/tree-traversal" />
             <option value="$PROJECT_DIR$/feature/tree-traversal/di" />

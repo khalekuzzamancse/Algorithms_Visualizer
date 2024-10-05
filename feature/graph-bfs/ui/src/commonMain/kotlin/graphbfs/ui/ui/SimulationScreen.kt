@@ -95,7 +95,7 @@ private fun _BFSSimulation() {
                             .padding(16.dp),
                         controller = viewModel.graphController
                     )
-                    NodeStatusIndicator(color)
+                    _NodeStatusIndicator(color)
 
                 }
 
@@ -137,7 +137,25 @@ private fun _BFSSimulation() {
 
 
 @Composable
-fun StatusIndicatorBox(color: Color, label: String) {
+private fun _NodeStatusIndicator(nodeStatusColor: NodeStatusColor) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        _StatusIndicatorBox(
+            color = nodeStatusColor.undiscovered,
+            label = "Undiscovered"
+        )
+        _StatusIndicatorBox(
+            color = nodeStatusColor.discovered,
+            label = "Discovered"
+        )
+        _StatusIndicatorBox(
+            color = nodeStatusColor.processed,
+            label = "Processed"
+        )
+    }
+}
+
+@Composable
+private fun _StatusIndicatorBox(color: Color, label: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(8.dp)
@@ -151,33 +169,4 @@ fun StatusIndicatorBox(color: Color, label: String) {
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = label, style = MaterialTheme.typography.bodyMedium)
     }
-}
-
-@Composable
-fun NodeStatusIndicator(nodeStatusColor: NodeStatusColor) {
-    Column(modifier = Modifier.padding(16.dp)) {
-        StatusIndicatorBox(
-            color = nodeStatusColor.undiscovered,
-            label = "Undiscovered"
-        )
-        StatusIndicatorBox(
-            color = nodeStatusColor.discovered,
-            label = "Discovered"
-        )
-        StatusIndicatorBox(
-            color = nodeStatusColor.processed,
-            label = "Processed"
-        )
-    }
-}
-
-
-@Composable
-fun NodeStatusIndicatorPreview() {
-    val color = NodeStatusColor(
-        undiscovered = MaterialTheme.colorScheme.secondaryContainer,
-        discovered = MaterialTheme.colorScheme.secondary,
-        processed = MaterialTheme.colorScheme.primary
-    )
-
 }

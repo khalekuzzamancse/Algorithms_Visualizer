@@ -1,6 +1,6 @@
 @file:Suppress("functionName")
 
-package mst.ui
+package dijkstra.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -36,7 +36,8 @@ import graph.graph.viewer.GraphViewer
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun PrimsSimulationScreen() {
+fun DijkstraSimulationScreen() {
+
     val color = StatusColor(
         processingEdge = MaterialTheme.colorScheme.primary,
         processedNode = MaterialTheme.colorScheme.tertiary
@@ -46,10 +47,9 @@ fun PrimsSimulationScreen() {
 
     if (viewModel.isInputMode.collectAsState().value) {
         GraphEditor(
-            initialGraph = GraphFactory.getMSTDemoGraph()
+            initialGraph = GraphFactory.getDijkstraDemoGraph()
         ) { result ->
             viewModel.onGraphCreated(result)
-            // println(result)
         }
     } else {
         var state by remember { mutableStateOf(SimulationScreenState()) }
@@ -101,21 +101,25 @@ fun PrimsSimulationScreen() {
             },
         )
 
+
     }
 
 
 }
+
+
+
 
 @Composable
 private fun _NodeStatusIndicator(nodeStatusColor: StatusColor) {
     Column(modifier = Modifier.padding(16.dp)) {
         _StatusIndicatorBox(
             color = nodeStatusColor.processedNode,
-            label = "Node Added to MST(processed)"
+            label = "Processed Node"
         )
         _StatusIndicatorBox(
             color = nodeStatusColor.processingEdge,
-            label = "Edge added to MST"
+            label = "Picked Edge"
         )
     }
 }
@@ -136,5 +140,4 @@ private fun _StatusIndicatorBox(color: Color, label: String) {
         Text(text = label, style = MaterialTheme.typography.bodyMedium)
     }
 }
-
 

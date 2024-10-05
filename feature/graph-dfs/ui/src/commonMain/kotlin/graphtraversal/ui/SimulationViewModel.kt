@@ -21,7 +21,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 
-class SimulationViewModel {
+class SimulationViewModel(
+    private val color:NodeStatusColor
+) {
+
     private lateinit var simulator: Simulator
     private lateinit var result: GraphResult
     private lateinit var consumer: _StateConsumer
@@ -81,6 +84,7 @@ class SimulationViewModel {
         graphController = result.controller,
         autoPlayer = autoPlayer,
         neighborSelector = neighborSelector,
+        statusColor = color
     )
 }
 
@@ -92,6 +96,7 @@ class SimulationViewModel {
 
 private typealias UiNodeModel=graphtraversal.presentationlogic.model.NodeModel
 private class _StateConsumer(
+    private val statusColor: NodeStatusColor,
     private val autoPlayer: Controller.AutoPlayer,
     private val neighborSelector: Controller.NeighborSelector,
     private val graphController: GraphViewerController
@@ -134,9 +139,9 @@ private class _StateConsumer(
     private fun onColorChanged(pairs: Set<Pair<NodeModel, ColorModel>>) {
         pairs.forEach { (node, color) ->
             val nodeColor = when (color) {
-                ColorModel.White -> Color.White.copy(alpha = 0.8f)
-                ColorModel.Gray -> Color.Gray
-                ColorModel.Black -> Color.Black
+                ColorModel.White -> statusColor.undiscovered
+                ColorModel.Gray -> statusColor.discovered
+                ColorModel.Black -> statusColor.processed
             }
             graphController.changeNodeColor(id = node.id, color = nodeColor)
 

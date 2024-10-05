@@ -8,6 +8,7 @@ kotlin {
                 implementation(projects.feature.graphMst.domain)
                 implementation(projects.feature.graphMst.di)
                 implementation(projects.core.commonUi.graph)
+                implementation(projects.core.commonUi.commonUi)
             }
         }
         val commonTest by getting {

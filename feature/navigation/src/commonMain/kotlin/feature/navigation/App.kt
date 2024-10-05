@@ -16,19 +16,22 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.compose.AppTheme
+import dijkstra.ui.DijkstraSimulationScreen
 import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
-import graphbfs.ui.ui.BFSSimulation
 import graphtraversal.ui.DfsSimulation
 import kotlinx.coroutines.launch
+import mst.ui.PrimsSimulationScreen
 
 @Composable
 fun MyApplication() {
     AppTheme {
        //   NavHost()
       //  TreeSimulationScreen()
-      //  DfsSimulation()
-        BFSSimulation()
+        //DfsSimulation()
+       // BFSSimulation()
+      //  PrimsSimulationScreen()
+        DijkstraSimulationScreen()
 
 
     }
