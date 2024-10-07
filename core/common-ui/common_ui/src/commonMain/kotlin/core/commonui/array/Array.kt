@@ -1,26 +1,22 @@
+package core.commonui.array
+
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,51 +28,35 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import feature.navigation.array.controller.ControllerImpl
-import kotlinx.coroutines.launch
+import core.commonui.array.controller.VisualArrayController
+
 
 @Composable
-fun ArrayDemo() {
-    val controller = remember { ControllerImpl(listOf("10", "20", "30", "40")) }
-    var cnt by remember { mutableStateOf(0) }
-    val scope = rememberCoroutineScope()
-    Column {
-        Row {
-            Button(
-                onClick = {
-                    scope.launch {
-                        controller.swap(0, 3)
-                    }
-                }
-            ) {
-                Text("Swap")
-            }
-            Button(
-                onClick = {
-                    controller.movePointer((cnt++) % 4)
-                }
-            ) {
-                Text("Move")
-            }
-        }
-
-        _ArrayCells(controller)
-    }
+fun VisualArray(
+    modifier: Modifier = Modifier,
+    controller: VisualArrayController
+) {
+    _ArrayCells(
+        modifier=modifier,
+        controller = controller
+    )
 
 
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun _ArrayCells(controller: ControllerImpl) {
+private fun _ArrayCells(
+    modifier: Modifier = Modifier,
+    controller: VisualArrayController
+) {
 
     val cells = controller.cells.collectAsState().value
-    val allCellPlaced = controller.allCellPlaced.collectAsState().value
     val elements = controller.elements.collectAsState().value
 
-    Box {
+    Box(modifier = modifier) {
         FlowRow {
-            cells.forEachIndexed { index, cell ->
+            cells.forEachIndexed { index, _ ->
                 _Cell(
                     onPositionChanged = { position ->
                         controller.onCellPositionChanged(index, position.positionInParent())
@@ -88,22 +68,25 @@ private fun _ArrayCells(controller: ControllerImpl) {
         elements.forEach { element ->
             _Element(
                 label = element.label,
-                position = element.position
+                position = element.position,
+                color = element.color,
             )
         }
-        controller.pointerPosition.collectAsState().value?.let { position ->
-            _CellPointer(position = position)
-        }
+        controller.pointers.collectAsState().value.forEach { pointer ->
+                if (pointer.position != null)
+                    _CellPointer(label = pointer.label, position = pointer.position)
+            }
 
     }
 
-
 }
+
+
 
 @Composable
 private fun _CellPointer(
     cellSize: Dp = 64.dp,
-    label: String = "i",
+    label: String,
     position: Offset,
 ) {
     val offsetAnimation by animateOffsetAsState(position, label = "")
@@ -127,9 +110,10 @@ private fun _CellPointer(
 private fun _Element(
     label: String,
     size: Dp = 64.dp,
-    color: Color = MaterialTheme.colorScheme.tertiary,
+    color: Color,
     position: Offset,
 ) {
+    val backgroundColor= if (color==Color.Unspecified) MaterialTheme.colorScheme.tertiary else color
     val offsetAnimation by animateOffsetAsState(
         targetValue = position, label = label,
         animationSpec = tween(
@@ -145,10 +129,10 @@ private fun _Element(
             }
             .size(size)
             .clip(CircleShape)
-            .background(color),
+            .background(backgroundColor),
         contentAlignment = Alignment.Center
     ) {
-        Text(label)
+        Text(text = label, color = MaterialTheme.colorScheme.contentColorFor(backgroundColor))
     }
 }
 

@@ -52,7 +52,7 @@ fun TopBarControlSection(
     content: @Composable () -> Unit,
 ) {
     var autoPlayTimeInSeconds by rememberSaveable { mutableStateOf<Int?>(null) }
-    var inputTime by remember { mutableStateOf("") }
+    var inputTime by remember { mutableStateOf("1000") }//default=1 second
     var showDialog by remember { mutableStateOf(false) }
 
 

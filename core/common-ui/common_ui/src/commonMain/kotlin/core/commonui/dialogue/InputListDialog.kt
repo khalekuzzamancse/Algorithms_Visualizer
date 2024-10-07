@@ -24,49 +24,60 @@ import androidx.compose.ui.unit.dp
  */
 @Composable
 fun ArrayInputDialog(
-    showDialog: Boolean=true,
-    onDismiss: () -> Unit = {},
+    initialList: String = "10, 5, 4, 13, 8",
+    onDismiss: (List<Int>) -> Unit = {},
     onConfirm: (List<Int>) -> Unit
 ) {
-    if (showDialog) {
-        var text by rememberSaveable { mutableStateOf("10, 5, 4, 13, 8") }
-        val list = text.split("\\s*,\\s*|\\s+".toRegex()) // Split by comma or space
-        AlertDialog(
-            onDismissRequest = onDismiss,
-            title = { Text(text = "Enter List of Numbers") },
-            text = {
-                Column {
-                    TextField(
-                        label = { Text("List") },
-                        value = text,
-                        onValueChange = { text = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                    )
-
-                }
-
-
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        val numberList = list.mapNotNull { it.toIntOrNull() }
-                        try {
-                            onConfirm(numberList)
-                        } catch (_: Exception) {
-                        }
-                    }
-                ) {
-                    Text("OK")
-                }
-            },
-            dismissButton = {
-                Button(onClick = onDismiss) {
-                    Text("Cancel")
-                }
+    var text by rememberSaveable { mutableStateOf(initialList) }
+    val list = text.split("\\s*,\\s*|\\s+".toRegex()) // Split by comma or space
+    AlertDialog(
+        onDismissRequest = {
+            val numberList = list.mapNotNull { it.toIntOrNull() }
+            try {
+                onDismiss(numberList)
+            } catch (_: Exception) {
             }
-        )
-    }
+        },
+        title = { Text(text = "Enter List of Numbers") },
+        text = {
+            Column {
+                TextField(
+                    label = { Text("List") },
+                    value = text,
+                    onValueChange = { text = it.filter {char-> char.isDigit()||char==',' } },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+
+            }
+
+
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    val numberList = list.mapNotNull { it.toIntOrNull() }
+                    try {
+                        onConfirm(numberList)
+                    } catch (_: Exception) {
+                    }
+                }
+            ) {
+                Text("OK")
+            }
+        },
+        dismissButton = {
+            Button(onClick = {
+                val numberList = list.mapNotNull { it.toIntOrNull() }
+                try {
+                    onConfirm(numberList)
+                } catch (_: Exception) {
+                }
+            }) {
+                Text("Cancel")
+            }
+        }
+    )
+
 }
 
 

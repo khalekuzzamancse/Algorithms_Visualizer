@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import bubblesort.ui.BubbleSortRoute
 import com.example.compose.AppTheme
 import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
@@ -31,7 +32,7 @@ fun MyApplication() {
       //  PrimsSimulationScreen()
       //  DijkstraSimulationScreen()
        // TopologicalSortScreen()
-        ArrayDemo()
+        BubbleSortRoute()
 
 
     }

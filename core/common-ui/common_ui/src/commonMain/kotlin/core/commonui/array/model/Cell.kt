@@ -1,14 +1,15 @@
-package feature.navigation.array.model
+package core.commonui.array.model
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+
 /**
- * Represent the element of array
+ * Represent the cell state of an array
  * @property position is the topLeft coordinate
  */
-data class Element(
-    val id:Int,
+internal data class Cell(
+    val index: Int,
     val position: Offset = Offset.Zero,
+    val elementId: Int? = null,
     val color: Color = Color.Unspecified,
-    val label: String,
 )
