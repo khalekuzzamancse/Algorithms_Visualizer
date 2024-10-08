@@ -35,12 +35,16 @@ val coreModules = listOf(
     ":core:common-ui",":core:common-ui:array",":core:common-ui:common_ui", ":core:common-ui:graph",
 )
 
+val selectionSort=":feature:lineards-selection-sort"
+val insertionSort=":feature:lineards-insertion-sort"
 val featuresModules = listOf(
     ":feature",
 //    ":feature:linear_search",":feature:binary_search",
 //    ":feature:bubble_sort",":feature:selection_sort",":feature:insertion_sort",
     ":feature:navigation",
    // ":feature:admin_section",
+    selectionSort,"$selectionSort:domain","$selectionSort:ui","$selectionSort:di","$selectionSort:infrastructure",
+    insertionSort,"$insertionSort:domain","$insertionSort:ui","$insertionSort:di","$insertionSort:infrastructure",
     ":feature:lineards-bubble-sort",":feature:lineards-bubble-sort:domain",":feature:lineards-bubble-sort:ui",":feature:lineards-bubble-sort:di",":feature:lineards-bubble-sort:infrastructure",
     ":feature:graph-dijkstra",":feature:graph-dijkstra:domain",":feature:graph-dijkstra:ui",":feature:graph-dijkstra:di",":feature:graph-dijkstra:infrastructure",
     ":feature:graph-mst",":feature:graph-mst:domain",":feature:graph-mst:ui",":feature:graph-mst:di",":feature:graph-mst:infrastructure",

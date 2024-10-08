@@ -1,12 +1,12 @@
 @file:Suppress("functionName")
 
-package bubblesort.ui
+package insertionsort.ui
 
-import bubblesort.di.DiContainer
-import bubblesort.domain.model.DataModel
-import bubblesort.domain.model.SimulationState
-import bubblesort.domain.service.Simulator
-import bubblesort.presentationlogic.PresentationFactory.createAutoPlayer
+import insertionsort.di.DiContainer
+import insertionsort.domain.model.DataModel
+import insertionsort.domain.model.SimulationState
+import insertionsort.domain.service.Simulator
+import insertionsort.presentationlogic.PresentationFactory.createAutoPlayer
 import core.commonui.array.VisualArrayFactory
 import core.commonui.array.controller.VisualArrayController
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-internal class BubbleSortViewModel(
+internal class SimulationViewModel(
     private val color: StatusColor
 ) {
     private val _inputMode = MutableStateFlow(true)
@@ -25,6 +25,14 @@ internal class BubbleSortViewModel(
     private val list = _array.asStateFlow()
     private lateinit var simulator: Simulator<Int>
     private val scope = CoroutineScope(Dispatchers.Default)
+
+    companion object {
+        private const val POINTER_I = "i"
+        private const val POINTER_J = "j"
+        private const val POINTER_J_MINUS_1 = "j-1"
+    }
+
+    private val pointers = listOf(POINTER_I, POINTER_J, POINTER_J_MINUS_1)
 
     val inputMode = _inputMode.asStateFlow()
     val arrayController = MutableStateFlow<VisualArrayController?>(null)
@@ -46,27 +54,41 @@ internal class BubbleSortViewModel(
     fun onNext() {
         arrayController.value?.let { arrayController ->
             when (val state = simulator.next()) {
+                is SimulationState.BackwardPointerChanged -> {
+                    val (j, jPrev) = state
+                    arrayController.movePointer(label = POINTER_J, index = j)
+                    arrayController.movePointer(label = POINTER_J_MINUS_1, index = jPrev)
+                }
+
+                is SimulationState.ClearBackwardPointer -> {
+                    arrayController.hidePointer(POINTER_J)
+                    arrayController.hidePointer(POINTER_J_MINUS_1)
+                }
+
                 is SimulationState.PointerIChanged -> {
-                    val index=state.index
-                    arrayController.movePointer(label = "i", index =index)
-                    arrayController.changeElementColor(index,color.iPointerLocation)
-
+                    val i = state.index
+                    val sortedUpTo=state.sortedUpTo
+                    arrayController.movePointer(label = POINTER_I, index = i)
+                    arrayController.changeElementColor(i, color.iPointerLocation)
+                    arrayController.changeCellColorUpTo(sortedUpTo,color.sortedPortionColor)
                 }
-                is SimulationState.PointerJChanged -> {
-                    arrayController.movePointer(label = "j", index = state.index)
-                    arrayController.movePointer(label = "j+1", index = state.index + 1)
-                }
-
 
 
                 is SimulationState.Swap -> {
                     scope.launch {
-                        arrayController.swap(i = state.i, j = state.i + 1, delay = 100)
+                        arrayController.swap(i = state.i, j = state.j, delay = 100)
                     }
 
                 }
+
+
+                is SimulationState.Finished -> {
+                    arrayController.removePointers(listOf(POINTER_I,POINTER_J, POINTER_J_MINUS_1))
+
+                }
+
                 else -> {
-                    arrayController.removePointers(listOf("j","j+1"))
+
                 }
             }
         }
@@ -84,7 +106,7 @@ internal class BubbleSortViewModel(
     private fun _createController() {
         arrayController.value = VisualArrayFactory.createController(
             itemLabels = list.value.map { it.toString() },
-            pointersLabel = listOf("i", "j", "j+1")
+            pointersLabel = pointers
         )
         simulator = DiContainer.createSimulator(DataModel(array = list.value))
     }

@@ -1,7 +1,6 @@
 package feature.navigation
 
 
-import ArrayDemo
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -16,11 +15,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import bubblesort.ui.BubbleSortRoute
 import com.example.compose.AppTheme
 import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
+import insertionsort.ui.InsertionSortRoute
 import kotlinx.coroutines.launch
+import selectionsort.ui.SelectionSortRoute
 
 @Composable
 fun MyApplication() {
@@ -32,7 +32,9 @@ fun MyApplication() {
       //  PrimsSimulationScreen()
       //  DijkstraSimulationScreen()
        // TopologicalSortScreen()
-        BubbleSortRoute()
+       // BubbleSortRoute()
+       // SelectionSortRoute()
+        InsertionSortRoute()
 
 
     }

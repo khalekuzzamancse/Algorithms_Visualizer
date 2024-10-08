@@ -5,7 +5,6 @@ import androidx.compose.ui.graphics.Color
 import core.commonui.array.model.Cell
 import core.commonui.array.model.Element
 import core.commonui.array.model.Pointer
-import kotlinx.coroutines.Delay
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -26,8 +25,22 @@ abstract class VisualArrayController {
      */
     abstract suspend fun swap(i: Int, j: Int,delay: Long)
     abstract fun movePointer(label: String,index: Int)
+
+    /**
+     * Set the pointer position to null so that it not drawn,but it is not delete the pointer itself
+     */
+    abstract fun hidePointer(label: String)
     abstract fun changeElementColor(index: Int,color:Color)
-    abstract fun clearPointers(labels:List<String>)
+
+    /**
+     * delete the pointers permanently
+     */
+    abstract fun removePointers(labels:List<String>)
+
+    /**
+     * - Helpful for marking partitions such as sorted or unsorted in case of insertion sort
+     */
+    abstract fun changeCellColorUpTo(index: Int,color:Color)
 
 
 }

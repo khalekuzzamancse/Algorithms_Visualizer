@@ -56,8 +56,9 @@ private fun _ArrayCells(
 
     Box(modifier = modifier) {
         FlowRow {
-            cells.forEachIndexed { index, _ ->
+            cells.forEachIndexed { index, cell->
                 _Cell(
+                    color = cell.color,
                     onPositionChanged = { position ->
                         controller.onCellPositionChanged(index, position.positionInParent())
                     },
@@ -140,7 +141,7 @@ private fun _Element(
 private fun _Cell(
     modifier: Modifier = Modifier,
     size: Dp = 64.dp,
-    backgroundColor: Color = Color.Unspecified,
+    color: Color = Color.Unspecified,
     hideBorder: Boolean = false,
     onPositionChanged: (LayoutCoordinates) -> Unit,
 ) {
@@ -148,7 +149,7 @@ private fun _Cell(
         modifier = modifier
             .size(size)
             .border(width = if (hideBorder) 0.dp else 1.dp, color = Color.Black)
-            .background(backgroundColor)
+            .background(color)
             .onGloballyPositioned { position ->
                 onPositionChanged(position)
             }

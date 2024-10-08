@@ -65,6 +65,16 @@
             <option value="$PROJECT_DIR$/feature/lineards-bubble-sort/domain" />
             <option value="$PROJECT_DIR$/feature/lineards-bubble-sort/infrastructure" />
             <option value="$PROJECT_DIR$/feature/lineards-bubble-sort/ui" />
+            <option value="$PROJECT_DIR$/feature/lineards-insertion-sort" />
+            <option value="$PROJECT_DIR$/feature/lineards-insertion-sort/di" />
+            <option value="$PROJECT_DIR$/feature/lineards-insertion-sort/domain" />
+            <option value="$PROJECT_DIR$/feature/lineards-insertion-sort/infrastructure" />
+            <option value="$PROJECT_DIR$/feature/lineards-insertion-sort/ui" />
+            <option value="$PROJECT_DIR$/feature/lineards-selection-sort" />
+            <option value="$PROJECT_DIR$/feature/lineards-selection-sort/di" />
+            <option value="$PROJECT_DIR$/feature/lineards-selection-sort/domain" />
+            <option value="$PROJECT_DIR$/feature/lineards-selection-sort/infrastructure" />
+            <option value="$PROJECT_DIR$/feature/lineards-selection-sort/ui" />
             <option value="$PROJECT_DIR$/feature/navigation" />
             <option value="$PROJECT_DIR$/feature/tree-traversal" />
             <option value="$PROJECT_DIR$/feature/tree-traversal/di" />

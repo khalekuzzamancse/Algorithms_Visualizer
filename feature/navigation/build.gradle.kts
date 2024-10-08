@@ -15,6 +15,8 @@ kotlin {
                 implementation(projects.feature.graphBfs.ui)
                 implementation(projects.feature.graphTopologicalsort.ui)
                 implementation(projects.feature.lineardsBubbleSort.ui)
+                implementation(projects.feature.lineardsSelectionSort.ui)
+                implementation(projects.feature.lineardsInsertionSort.ui)
 
 
             }

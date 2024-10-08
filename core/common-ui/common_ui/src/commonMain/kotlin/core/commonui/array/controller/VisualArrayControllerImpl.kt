@@ -38,15 +38,18 @@ class VisualArrayControllerImpl internal constructor(
     override val pointers: StateFlow<List<Pointer>> = _pointers.asStateFlow()
 
     override fun movePointer(label: String, index: Int) {
-        _pointers.update { pointers ->
-            pointers.map { pointer ->
-                if (pointer.label == label)
-                    pointer.copy(position = cells.value[index].position)
-                else pointer
+        _try {
+            _pointers.update { pointers ->
+                pointers.map { pointer ->
+                    if (pointer.label == label)
+                        pointer.copy(position = cells.value[index].position)
+                    else pointer
+
+                }
 
             }
-
         }
+
     }
 
 
@@ -98,47 +101,68 @@ class VisualArrayControllerImpl internal constructor(
     }
 
     override suspend fun swap(i: Int, j: Int, delay: Long) {
-        val iTh = elements.value[i]
-        val jTh = elements.value[j]
-        //Need to change the position for visual nice animations
-        //Then after a while need to update the original list
-        //But we we do just update the list element without changing the position first then we don't get nice swapping animation
-        changeElementPosition(i, jTh.position)
-        changeElementPosition(j, iTh.position)
-        changeElementColor(i, jTh.color)
-        changeElementColor(j, iTh.color)
+        _trySuspend {
+            val iTh = elements.value[i]
+            val jTh = elements.value[j]
+            //Need to change the position for visual nice animations
+            //Then after a while need to update the original list
+            //But we we do just update the list element without changing the position first then we don't get nice swapping animation
+            changeElementPosition(i, jTh.position)
+            changeElementPosition(j, iTh.position)
+            changeElementColor(i, jTh.color)
+            changeElementColor(j, iTh.color)
 
 
-        delay(delay)//Mandatory for nice moving animations
+            delay(delay)//Mandatory for nice moving animations
 
-        val elements = elements.value.toList().toMutableList()//making copy for safety
-        val temp = elements[i]
-        elements[i] = _elements.value[j]
-        elements[j] = temp
+            val elements = elements.value.toList().toMutableList()//making copy for safety
+            val temp = elements[i]
+            elements[i] = _elements.value[j]
+            elements[j] = temp
 
-        _elements.update { elements }
+            _elements.update { elements }
+        }
+
 
     }
 
 
     override fun changeElementPosition(index: Int, position: Offset) {
-        _elements.update { elements ->
-            elements.mapIndexed { i, element ->
-                if (index == i)
-                    element.copy(position = position)
-                else element
-            }
+        _try {
+            _elements.update { elements ->
+                elements.mapIndexed { i, element ->
+                    if (index == i)
+                        element.copy(position = position)
+                    else element
+                }
 
+            }
         }
     }
 
     private fun changeCellPosition(index: Int, position: Offset) {
-        runIfValid(index) {
+        _try {
             _cells.update { cells ->
                 cells.mapIndexed { i, cell ->
                     if (index == i)
                         cell.copy(position = position)
                     else cell
+                }
+
+            }
+        }
+
+
+    }
+
+    override fun changeCellColorUpTo(index: Int, color: Color) {
+        _try {
+            _cells.update { cells ->
+                cells.mapIndexed { ind, cell ->
+                    if (ind <= index)
+                        cell.copy(color = color)
+                    else cell
+
                 }
 
             }
@@ -157,16 +181,37 @@ class VisualArrayControllerImpl internal constructor(
         }
     }
 
-    override fun clearPointers(labels: List<String>) {
+    override fun removePointers(labels: List<String>) {
         _pointers.update { pointers ->
             pointers.filter { pointer -> !(labels.contains(pointer.label)) }
         }
     }
 
-    private fun runIfValid(index: Int, block: () -> Unit) {
-        val isValid = index in itemLabels.indices
-        if (isValid) {
+    override fun hidePointer(label: String) {
+        _pointers.update { pointers ->
+            pointers.map { pointer ->
+                if (label == pointer.label)
+                    pointer.copy(position = null)
+                else pointer
+            }
+
+        }
+    }
+
+
+    private fun _try(block: () -> Unit) {
+        try {
             block()
+        } catch (_: Throwable) {
+
+        }
+    }
+
+    private suspend fun _trySuspend(block: suspend () -> Unit) {
+        try {
+            block()
+        } catch (_: Throwable) {
+
         }
     }
 
