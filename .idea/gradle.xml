@@ -60,6 +60,11 @@
             <option value="$PROJECT_DIR$/feature/graph-topologicalsort/domain" />
             <option value="$PROJECT_DIR$/feature/graph-topologicalsort/infrastructure" />
             <option value="$PROJECT_DIR$/feature/graph-topologicalsort/ui" />
+            <option value="$PROJECT_DIR$/feature/lineards-binary-search" />
+            <option value="$PROJECT_DIR$/feature/lineards-binary-search/di" />
+            <option value="$PROJECT_DIR$/feature/lineards-binary-search/domain" />
+            <option value="$PROJECT_DIR$/feature/lineards-binary-search/infrastructure" />
+            <option value="$PROJECT_DIR$/feature/lineards-binary-search/ui" />
             <option value="$PROJECT_DIR$/feature/lineards-bubble-sort" />
             <option value="$PROJECT_DIR$/feature/lineards-bubble-sort/di" />
             <option value="$PROJECT_DIR$/feature/lineards-bubble-sort/domain" />
@@ -70,6 +75,11 @@
             <option value="$PROJECT_DIR$/feature/lineards-insertion-sort/domain" />
             <option value="$PROJECT_DIR$/feature/lineards-insertion-sort/infrastructure" />
             <option value="$PROJECT_DIR$/feature/lineards-insertion-sort/ui" />
+            <option value="$PROJECT_DIR$/feature/lineards-linear-search" />
+            <option value="$PROJECT_DIR$/feature/lineards-linear-search/di" />
+            <option value="$PROJECT_DIR$/feature/lineards-linear-search/domain" />
+            <option value="$PROJECT_DIR$/feature/lineards-linear-search/infrastructure" />
+            <option value="$PROJECT_DIR$/feature/lineards-linear-search/ui" />
             <option value="$PROJECT_DIR$/feature/lineards-selection-sort" />
             <option value="$PROJECT_DIR$/feature/lineards-selection-sort/di" />
             <option value="$PROJECT_DIR$/feature/lineards-selection-sort/domain" />

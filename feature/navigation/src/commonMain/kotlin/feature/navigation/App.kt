@@ -15,27 +15,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import binarysearch.ui.BinarySearchRoute
 import com.example.compose.AppTheme
 import feature.navigation.home.HomeDestination
 import feature.navigation.home.dashboard.Destination
-import insertionsort.ui.InsertionSortRoute
 import kotlinx.coroutines.launch
-import selectionsort.ui.SelectionSortRoute
 
 @Composable
 fun MyApplication() {
     AppTheme {
-       //   NavHost()
-      //  TreeSimulationScreen()
+        //   NavHost()
+        //  TreeSimulationScreen()
         //DfsSimulation()
-       // BFSSimulation()
-      //  PrimsSimulationScreen()
-      //  DijkstraSimulationScreen()
-       // TopologicalSortScreen()
-       // BubbleSortRoute()
-       // SelectionSortRoute()
-        InsertionSortRoute()
-
+        // BFSSimulation()
+        //  PrimsSimulationScreen()
+        //  DijkstraSimulationScreen()
+        // TopologicalSortScreen()
+        // BubbleSortRoute()
+        // SelectionSortRoute()
+//        InsertionSortRoute()
+      //  LinearSearchRoute()
+        BinarySearchRoute()
 
     }
 

@@ -17,6 +17,8 @@ kotlin {
                 implementation(projects.feature.lineardsBubbleSort.ui)
                 implementation(projects.feature.lineardsSelectionSort.ui)
                 implementation(projects.feature.lineardsInsertionSort.ui)
+                implementation(projects.feature.lineardsLinearSearch.ui)
+                implementation(projects.feature.lineardsBinarySearch.ui)
 
 
             }
