@@ -33,14 +33,11 @@ import graph.graph.GraphFactory
 import graph.graph.editor.ui.GraphEditor
 import graph.graph.viewer.GraphViewer
 
-@Composable
-fun DfsSimulation() {
-    _DfsSimulation()
-}
+
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun _DfsSimulation() {
+fun DfsSimulation( navigationIcon: @Composable () -> Unit,) {
 
     val color = NodeStatusColor(
         undiscovered = MaterialTheme.colorScheme.secondaryContainer,
@@ -84,6 +81,7 @@ fun _DfsSimulation() {
             modifier = Modifier,
             state = state,
             resultSummary = { },
+            navigationIcon = navigationIcon,
             pseudoCode = { },
             visualization = {
                 FlowRow {

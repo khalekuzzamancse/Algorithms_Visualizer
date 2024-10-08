@@ -211,11 +211,6 @@ private fun _TopBar(
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     TopAppBar(
-        navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Filled.Menu, contentDescription = null)
-            }
-        },
         scrollBehavior = scrollBehavior,
         title = {
             Text(

@@ -19,7 +19,7 @@ import graph.tree.TreeEditor
 
 
 @Composable
-fun TreeSimulationScreen() {
+fun TreeSimulationScreen( navigationIcon: @Composable () -> Unit,) {
     val viewModel = remember { SimulationViewModel() }
     if (viewModel.isInputMode.collectAsState().value) {
         TreeEditor { result ->

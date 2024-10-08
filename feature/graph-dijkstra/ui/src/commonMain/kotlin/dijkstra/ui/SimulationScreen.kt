@@ -36,7 +36,7 @@ import graph.graph.viewer.GraphViewer
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun DijkstraSimulationScreen() {
+fun DijkstraSimulationScreen( navigationIcon: @Composable () -> Unit,) {
 
     val color = StatusColor(
         processingEdge = MaterialTheme.colorScheme.primary,
@@ -58,6 +58,7 @@ fun DijkstraSimulationScreen() {
             modifier = Modifier,
             state = state,
             resultSummary = { },
+            navigationIcon = navigationIcon,
             pseudoCode = { },
             visualization = {
                 FlowRow {

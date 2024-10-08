@@ -36,7 +36,7 @@ import graph.graph.viewer.GraphViewer
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun PrimsSimulationScreen() {
+fun PrimsSimulationScreen( navigationIcon: @Composable () -> Unit,) {
     val color = StatusColor(
         processingEdge = MaterialTheme.colorScheme.primary,
         processedNode = MaterialTheme.colorScheme.tertiary
@@ -58,6 +58,7 @@ fun PrimsSimulationScreen() {
             modifier = Modifier,
             state = state,
             resultSummary = { },
+            navigationIcon = navigationIcon,
             pseudoCode = { },
             visualization = {
                 FlowRow {

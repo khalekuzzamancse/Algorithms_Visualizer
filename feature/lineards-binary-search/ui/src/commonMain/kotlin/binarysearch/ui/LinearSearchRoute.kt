@@ -32,7 +32,7 @@ import core.commonui.dialogue.SearchInputDialog
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun BinarySearchRoute(modifier: Modifier = Modifier) {
+fun BinarySearchRoute(modifier: Modifier = Modifier, navigationIcon: @Composable () -> Unit,) {
     val color= StatusColor(
         visited = MaterialTheme.colorScheme.secondary,
         foundAt = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f)
@@ -53,6 +53,7 @@ fun BinarySearchRoute(modifier: Modifier = Modifier) {
         SimulationSlot(
             modifier = modifier,
             state = state,
+            navigationIcon = navigationIcon,
             resultSummary = { },
             pseudoCode = { },
             visualization = {

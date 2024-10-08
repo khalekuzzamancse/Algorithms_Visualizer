@@ -16,6 +16,8 @@ junit = "4.13.2"
 room = "2.7.0-alpha01"
 ksp = "1.9.23-1.0.19"
 sqlite = "2.5.0-SNAPSHOT"
+commonNavigationVer = "2.7.0-alpha07"
+commonViewmodelVer="2.8.0"
 [libraries]
 androidx-activity-compose= { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 ##Viewmodel
@@ -46,6 +48,10 @@ coil3-core = { module = "io.coil-kt.coil3:coil-core", version.ref = "coil3-io" }
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 compose-gradlePlugin = { module = "org.jetbrains.compose:org.jetbrains.compose.gradle.plugin", version.ref = "compose-plugin" }
+## Navigation for multiplatfrom
+common-navigation={module="org.jetbrains.androidx.navigation:navigation-compose",version.ref="commonNavigationVer"}
+##  Navigation for multiplatfrom
+common-viewmodel={module="org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose",version.ref="commonViewmodelVer"}
 ##ROOM
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-runtime-android = { module = "androidx.room:room-runtime-android", version.ref = "room" }

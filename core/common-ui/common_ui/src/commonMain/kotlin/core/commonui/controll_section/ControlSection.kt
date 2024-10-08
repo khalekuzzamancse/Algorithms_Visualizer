@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.CodeOff
 import androidx.compose.material.icons.filled.Replay
@@ -28,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import core.commonui.CustomTextField
@@ -42,13 +40,12 @@ import core.commonui.CustomTextField
 @Composable
 fun TopBarControlSection(
     modifier: Modifier = Modifier,
-    navigationIcon: ImageVector? = Icons.AutoMirrored.Filled.ArrowBack,
     showPseudocode: Boolean = false,
-    onNavIconClick: () -> Unit = {},
     onNext: () -> Unit = {},
     onResetRequest: () -> Unit = {},
     onAutoPlayRequest: (Int) -> Unit = {},  // Takes an Int as input for autoplay time
     onCodeVisibilityToggleRequest: () -> Unit = {},
+    navigationIcon: @Composable () -> Unit={},
     content: @Composable () -> Unit,
 ) {
     var autoPlayTimeInSeconds by rememberSaveable { mutableStateOf<Int?>(null) }
@@ -61,17 +58,7 @@ fun TopBarControlSection(
         topBar = {
             TopAppBar(
                 title = {},
-                navigationIcon = {
-                    if (navigationIcon != null) {
-                        IconButton(onClick = onNavIconClick) {
-                            Icon(
-                                navigationIcon,
-                                contentDescription = "navigation icon",
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }
-                },
+                navigationIcon =navigationIcon,
                 actions = {
                     TopBarActions(
                         showPseudocode = showPseudocode,

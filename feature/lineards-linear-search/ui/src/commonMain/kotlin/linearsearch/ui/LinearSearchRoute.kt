@@ -32,7 +32,10 @@ import core.commonui.dialogue.SearchInputDialog
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun LinearSearchRoute(modifier: Modifier = Modifier) {
+fun LinearSearchRoute(
+    modifier: Modifier = Modifier,
+    navigationIcon: @Composable () -> Unit,
+) {
     val color= StatusColor(
         iPointerLocation = MaterialTheme.colorScheme.secondary,
         foundAt = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f)
@@ -53,6 +56,7 @@ fun LinearSearchRoute(modifier: Modifier = Modifier) {
         SimulationSlot(
             modifier = modifier,
             state = state,
+            navigationIcon = navigationIcon,
             resultSummary = { },
             pseudoCode = { },
             visualization = {

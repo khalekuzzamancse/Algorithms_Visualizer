@@ -15,7 +15,7 @@ import core.commonui.decorators.SimulationSlot
 import core.commonui.dialogue.ArrayInputDialog
 
 @Composable
-fun SelectionSortRoute(modifier: Modifier = Modifier) {
+fun SelectionSortRoute(modifier: Modifier = Modifier, navigationIcon: @Composable () -> Unit,) {
     val color= StatusColor(iPointerLocation = MaterialTheme.colorScheme.secondary)
     val viewModel = remember { SimulationViewModel(color=color) }
 
@@ -33,6 +33,7 @@ fun SelectionSortRoute(modifier: Modifier = Modifier) {
         SimulationSlot(
             modifier = modifier,
             state = state,
+            navigationIcon = navigationIcon,
             resultSummary = { },
             pseudoCode = { },
             visualization = {

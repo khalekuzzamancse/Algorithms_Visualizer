@@ -33,14 +33,10 @@ import graph.graph.GraphFactory
 import graph.graph.editor.ui.GraphEditor
 import graph.graph.viewer.GraphViewer
 
-@Composable
-fun TopologicalSortScreen() {
-    _TopologicalSort()
-}
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun _TopologicalSort() {
+ fun TopologicalSort( navigationIcon: @Composable () -> Unit,) {
 
     val color = StatusColor(
         nodeUndiscovered = MaterialTheme.colorScheme.secondaryContainer,
@@ -89,6 +85,7 @@ private fun _TopologicalSort() {
             modifier = Modifier,
             state = state,
             resultSummary = { },
+            navigationIcon = navigationIcon,
             pseudoCode = { },
             visualization = {
                 FlowRow {

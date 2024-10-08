@@ -15,7 +15,7 @@ import core.commonui.decorators.SimulationSlot
 import core.commonui.dialogue.ArrayInputDialog
 
 @Composable
-fun BubbleSortRoute(modifier: Modifier = Modifier) {
+fun BubbleSortRoute(modifier: Modifier = Modifier, navigationIcon: @Composable () -> Unit,) {
     val color=StatusColor(iPointerLocation = MaterialTheme.colorScheme.secondary)
     val viewModel = remember { BubbleSortViewModel(color=color) }
 
@@ -34,6 +34,7 @@ fun BubbleSortRoute(modifier: Modifier = Modifier) {
             modifier = modifier,
             state = state,
             resultSummary = { },
+            navigationIcon = navigationIcon,
             pseudoCode = { },
             visualization = {
                 if (arrayController!=null){

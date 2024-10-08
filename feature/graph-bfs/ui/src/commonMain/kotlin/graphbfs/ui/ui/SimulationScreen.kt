@@ -33,14 +33,10 @@ import graph.graph.GraphFactory
 import graph.graph.editor.ui.GraphEditor
 import graph.graph.viewer.GraphViewer
 
-@Composable
-fun BFSSimulation() {
-    _BFSSimulation()
-}
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun _BFSSimulation() {
+ fun BFSSimulation( navigationIcon: @Composable () -> Unit,) {
 
     val color = NodeStatusColor(
         undiscovered = MaterialTheme.colorScheme.secondaryContainer,
@@ -86,6 +82,7 @@ private fun _BFSSimulation() {
             modifier = Modifier,
             state = state,
             resultSummary = { },
+            navigationIcon = navigationIcon,
             pseudoCode = { },
             visualization = {
                 FlowRow {

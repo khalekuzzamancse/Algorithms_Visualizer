@@ -26,6 +26,7 @@ fun SimulationSlot(
     modifier: Modifier = Modifier,
     state: SimulationScreenState,
     onEvent: (SimulationScreenEvent) -> Unit,
+    navigationIcon: @Composable () -> Unit={},
     resultSummary: @Composable ColumnScope.() -> Unit,
     pseudoCode: @Composable ColumnScope.() -> Unit,
     visualization: @Composable ColumnScope.() -> Unit,
@@ -33,7 +34,7 @@ fun SimulationSlot(
     TopBarControlSection(
         modifier = modifier,
         showPseudocode = state.showPseudocode,
-        onNavIconClick = { onEvent(SimulationScreenEvent.NavigationRequest) },
+        navigationIcon = navigationIcon,
         onNext = { onEvent(SimulationScreenEvent.NextRequest) },
         onResetRequest = { onEvent(SimulationScreenEvent.ResetRequest) },
         onAutoPlayRequest = { onEvent(SimulationScreenEvent.AutoPlayRequest(it)) },
