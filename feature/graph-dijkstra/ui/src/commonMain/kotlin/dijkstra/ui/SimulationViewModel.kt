@@ -14,7 +14,7 @@ import graph.graph.viewer.controller.GraphViewerController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import mst.presentationlogic.factory.AutoPlayerImpl
+import dijkstra.presentationlogic.factory.AutoPlayerImpl
 
 class SimulationViewModel (
     private val color: StatusColor

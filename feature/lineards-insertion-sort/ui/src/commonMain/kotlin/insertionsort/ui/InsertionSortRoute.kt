@@ -44,7 +44,8 @@ fun InsertionSortRoute(modifier: Modifier = Modifier, navigationIcon: @Composabl
     if (showInputDialog) {
         ArrayInputDialog(
             onDismiss = viewModel::onInputComplete,
-            onConfirm = viewModel::onInputComplete
+            onConfirm = viewModel::onInputComplete,
+            navigationIcon = navigationIcon
         )
     } else {
 

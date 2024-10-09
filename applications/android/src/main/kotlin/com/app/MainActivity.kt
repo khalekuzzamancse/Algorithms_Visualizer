@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
             AndroidAppThemes {
                 MyApplication()
             }
-            Icons.Filled.DeviceHub
+
 
 
         }

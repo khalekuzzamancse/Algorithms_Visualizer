@@ -1,4 +1,4 @@
-package mst.presentationlogic.model
+package dijkstra.presentationlogic.model
 
 data class NodeModel(
     val id: String,

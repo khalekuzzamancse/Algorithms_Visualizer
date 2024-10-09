@@ -36,7 +36,7 @@ import androidx.compose.ui.window.Dialog
 import graph.graph.editor.model.GraphType
 
 @Composable
-internal fun GraphTypeInput(
+internal fun GraphTypeInputDialog(
     onInputComplete: (GraphType) -> Unit,
 ) {
     val options = listOf(
@@ -124,25 +124,10 @@ private fun GraphTypeOptionRow(
             onClick = onSelect
         )
         Spacer(modifier = Modifier.width(4.dp))
-        Icon(
-            imageVector = optionIcon(option),
-            contentDescription = option.label
-        )
-        Spacer(modifier = Modifier.width(4.dp))
         Text(text = option.label)
     }
 }
 
-@Composable
-private fun optionIcon(option: GraphType): ImageVector {
-    return when (option) {
-        GraphType.Undirected -> Icons.Default.Share
-        GraphType.Directed -> Icons.AutoMirrored.Filled.ArrowForward
-        GraphType.UnDirectedWeighted -> Icons.Default.Scale
-        GraphType.DirectedWeighted -> Icons.AutoMirrored.Filled.TrendingUp
-        GraphType.Tree -> TODO()
-    }
-}
 
 @Composable
 private fun ConfirmButton(onConfirmClick: () -> Unit) {

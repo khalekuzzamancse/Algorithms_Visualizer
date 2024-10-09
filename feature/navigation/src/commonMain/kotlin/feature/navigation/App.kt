@@ -7,7 +7,6 @@ import com.example.compose.AppTheme
 @Composable
 fun MyApplication() {
     AppTheme {
-
         MainNavHost()
 
     }

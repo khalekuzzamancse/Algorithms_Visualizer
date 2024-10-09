@@ -29,7 +29,7 @@ fun DrawerHeader(
             .padding(
                 start = 4.dp,
                 top = 32.dp,
-                bottom =32.dp,
+                bottom =8.dp,
                 end = 8.dp
             )
     ) {
@@ -37,15 +37,12 @@ fun DrawerHeader(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AppName()
-
-
         }
         Spacer(Modifier.height(16.dp))
         HorizontalDivider(
             thickness = 2.dp,
             color = MaterialTheme.colorScheme.primary
         )
-        Spacer(Modifier.height(4.dp))
     }
 
 }

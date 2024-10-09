@@ -24,7 +24,8 @@ fun BubbleSortRoute(modifier: Modifier = Modifier, navigationIcon: @Composable (
     if (showInputDialog) {
         ArrayInputDialog(
             onDismiss = viewModel::onInputComplete,
-            onConfirm = viewModel::onInputComplete
+            onConfirm = viewModel::onInputComplete,
+            navigationIcon = navigationIcon
         )
     } else {
 

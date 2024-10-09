@@ -70,7 +70,8 @@ import graph.graph.viewer.GraphViewer
     }
     if (inputMode) {
         GraphEditor(
-            initialGraph = GraphFactory.getDFSDemoGraph()
+            initialGraph = GraphFactory.getDFSDemoGraph(),
+            navigationIcon = navigationIcon,
         ) { result ->
             viewModel.onGraphCreated(result)
             // println(result)

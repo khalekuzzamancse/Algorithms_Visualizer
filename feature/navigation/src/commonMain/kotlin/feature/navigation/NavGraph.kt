@@ -4,7 +4,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -27,18 +26,25 @@ import tree.ui.TreeSimulationScreen
 
 fun NavController.createNavGraph(
     isNavRailMode: Boolean,
-    openDrawerRequest:()->Unit,
+    openDrawerRequest: () -> Unit,
 ): NavGraph {
     return createGraph(startDestination = NavDestination.Home.route) {
         composable(NavDestination.Home.route) {
-            Text("Home is not implemented yet")
+            HomeRoute(
+                navigationIcon = {
+                    _DrawerIcon(
+                        isNavRailMode = isNavRailMode,
+                        onClick = openDrawerRequest
+                    )
+                }
+            )
         }
         composable(NavDestination.LinearSearch.route) {
             LinearSearchRoute(
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,
-                        onClick =openDrawerRequest
+                        onClick = openDrawerRequest
                     )
                 }
             )
@@ -49,7 +55,7 @@ fun NavController.createNavGraph(
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,
-                        onClick =openDrawerRequest
+                        onClick = openDrawerRequest
                     )
                 }
             )
@@ -59,7 +65,7 @@ fun NavController.createNavGraph(
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,
-                        onClick =openDrawerRequest
+                        onClick = openDrawerRequest
                     )
                 }
             )
@@ -70,7 +76,7 @@ fun NavController.createNavGraph(
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,
-                        onClick =openDrawerRequest
+                        onClick = openDrawerRequest
                     )
                 }
             )
@@ -81,7 +87,7 @@ fun NavController.createNavGraph(
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,
-                        onClick =openDrawerRequest
+                        onClick = openDrawerRequest
                     )
                 }
             )
@@ -91,7 +97,7 @@ fun NavController.createNavGraph(
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,
-                        onClick =openDrawerRequest
+                        onClick = openDrawerRequest
                     )
                 }
             )
@@ -101,7 +107,7 @@ fun NavController.createNavGraph(
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,
-                        onClick =openDrawerRequest
+                        onClick = openDrawerRequest
                     )
                 }
             )
@@ -111,7 +117,7 @@ fun NavController.createNavGraph(
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,
-                        onClick =openDrawerRequest
+                        onClick = openDrawerRequest
                     )
                 }
             )
@@ -121,7 +127,7 @@ fun NavController.createNavGraph(
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,
-                        onClick =openDrawerRequest
+                        onClick = openDrawerRequest
                     )
                 }
             )
@@ -132,7 +138,7 @@ fun NavController.createNavGraph(
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,
-                        onClick =openDrawerRequest
+                        onClick = openDrawerRequest
                     )
                 }
             )
@@ -142,13 +148,20 @@ fun NavController.createNavGraph(
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,
-                        onClick =openDrawerRequest
+                        onClick = openDrawerRequest
                     )
                 }
             )
         }
         composable(NavDestination.AboutUs.route) {
-            Text("Not implemented yet")
+            AboutUsPage(
+                navigationIcon = {
+                    _DrawerIcon(
+                        isNavRailMode = isNavRailMode,
+                        onClick = openDrawerRequest
+                    )
+                }
+            )
         }
     }
 

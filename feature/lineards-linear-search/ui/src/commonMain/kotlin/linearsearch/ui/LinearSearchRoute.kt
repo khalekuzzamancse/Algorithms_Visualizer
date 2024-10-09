@@ -47,7 +47,8 @@ fun LinearSearchRoute(
     if (showInputDialog) {
         SearchInputDialog(
             onDismiss = viewModel::onInputComplete,
-            onConfirm = viewModel::onInputComplete
+            onConfirm = viewModel::onInputComplete,
+            navigationIcon=navigationIcon
         )
     } else {
 

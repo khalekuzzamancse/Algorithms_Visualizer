@@ -44,7 +44,8 @@ fun BinarySearchRoute(modifier: Modifier = Modifier, navigationIcon: @Composable
     if (showInputDialog) {
         SearchInputDialog(
             onDismiss = viewModel::onInputComplete,
-            onConfirm = viewModel::onInputComplete
+            onConfirm = viewModel::onInputComplete,
+            navigationIcon=navigationIcon
         )
     } else {
 

@@ -4,15 +4,25 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Input
 import androidx.compose.material.icons.filled.AddCircleOutline
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.ArrowCircleRight
 import androidx.compose.material.icons.filled.Moving
-import androidx.compose.material.icons.filled.Print
 import androidx.compose.material.icons.filled.RemoveCircleOutline
-import androidx.compose.material.icons.filled.Save
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,29 +32,30 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import graph.graph.GraphFactory
-import graph.graph.editor.controller.GraphEditorController
-import graph.graph.editor.factory.GraphEditorControllerImpl
-import graph.graph.editor.ui.component.InputDialog
-import graph.graph.editor.ui.component.GraphTypeInput
 import graph.graph.common.drawEdge
 import graph.graph.common.drawNode
 import graph.graph.common.model.EditorEdgeMode
 import graph.graph.common.model.EditorNodeModel
 import graph.graph.common.model.GraphResult
+import graph.graph.editor.controller.GraphEditorController
+import graph.graph.editor.ui.component.GraphTypeInputDialog
+import graph.graph.editor.ui.component.InputDialog
 
 /**
  * @param hasDistance is the graph node has distance such as Node for Dijkstra algorithm. if the graph node has distance
@@ -61,7 +72,9 @@ fun GraphEditor(
         emptyList(),
         emptyList()
     ),
+    navigationIcon:@Composable ()->Unit,
     onDone: (GraphResult) -> Unit,
+
 ) {
     val hostState = remember { SnackbarHostState() }
     val controller: GraphEditorController = remember {
@@ -76,9 +89,7 @@ fun GraphEditor(
     val showNodeInputDialog = controller.inputController.takeNodeValueInput.collectAsState().value
     val nodeMinSizeDp = if (hasDistance) 64.dp else 48.dp
 
-    if (showGraphTypeInputDialog) {
-        GraphTypeInput(controller.inputController::onGraphTypeSelected)
-    }
+    val graphTypeHasTaken = controller.inputController.graphTypeHasTaken.collectAsState().value
 
 
     val textMeasurer = rememberTextMeasurer()
@@ -87,12 +98,11 @@ fun GraphEditor(
 
 
 
-
-
     Scaffold(
         snackbarHost = { SnackbarHost(hostState) },
         topBar = {
             _TopBar(
+                navigationIcon = navigationIcon,
                 enabledRemoveNode = controller.selectedNode.collectAsState().value != null
                         || controller.selectedEdge.collectAsState().value != null,
                 onAddNodeRequest = controller.inputController::onAddNodeRequest,
@@ -111,7 +121,8 @@ fun GraphEditor(
                     val result = controller.onGraphInputCompleted()
                     onDone(result)
                 },
-                onRemoveNodeRequest = { controller.onRemovalRequest() }
+                onRemoveNodeRequest = { controller.onRemovalRequest() },
+                disableAll = !(controller.inputController.graphTypeHasTaken.collectAsState().value)
             )
         }
     ) { scaffoldPadding ->
@@ -121,6 +132,20 @@ fun GraphEditor(
                 .fillMaxSize()
 
         ) {
+
+            if (showGraphTypeInputDialog) {
+                GraphTypeInputDialog(controller.inputController::onGraphTypeSelected)
+            }
+
+            if (!graphTypeHasTaken) {
+                Instruction(
+                    onGraphTypeInputRequest = {
+                        controller.inputController.enableInputMode()
+                    }
+                )
+            }
+
+
 
             if (showNodeInputDialog) {
                 InputDialog(
@@ -195,6 +220,105 @@ private fun Editor(
     }
 }
 
+@Composable
+private fun Instruction(
+    modifier: Modifier = Modifier,
+    onGraphTypeInputRequest: () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+        ,
+    ) {
+        // Input Instructions Title
+        Text(
+            text = "Instructions",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Instruction Details
+        Text(
+            text = "Follow these steps to build the graph:",
+            fontSize = 16.sp,
+            color = MaterialTheme.colorScheme.secondary
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        InstructionRow(
+            icon = Icons.AutoMirrored.Filled.Input,
+            text = "Select the Graph type first"
+        )
+        InstructionRow(
+            icon = Icons.Filled.AddCircleOutline,
+            text = "Add a node to the graph"
+        )
+        InstructionRow(
+            icon = Icons.Filled.Moving,
+            text = "Create an edge between nodes"
+        )
+        InstructionRow(
+            icon = Icons.Filled.RemoveCircleOutline,
+            text = "Remove a selected node or edge"
+        )
+        InstructionRow(
+            icon = Icons.Filled.ArrowCircleRight,
+            text = "Start Visualization"
+        )
+
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Button to Select Graph Type
+        Button(
+            onClick = onGraphTypeInputRequest,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            ),
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.Input,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "Choose Graph Type",
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+    }
+}
+
+@Composable
+private fun InstructionRow(
+    icon: ImageVector,
+    text: String
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(vertical = 4.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(24.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = text,
+            fontSize = 14.sp,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+    }
+}
 
 /*
 TODO: Top Bar Section -------------Top Bar Section -------  Top Bar Section
@@ -203,62 +327,67 @@ TODO: Top Bar Section -------------Top Bar Section -------  Top Bar Section
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun _TopBar(
+    disableAll: Boolean,
     enabledRemoveNode: Boolean,
     onAddNodeRequest: () -> Unit,
     onAddEdgeRequest: () -> Unit,
     onSaveRequest: () -> Unit,
     onRemoveNodeRequest: () -> Unit,
+    navigationIcon:@Composable ()->Unit,
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+
     TopAppBar(
-        scrollBehavior = scrollBehavior,
-        title = {
-            Text(
-                text = "Graph Editor",
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        },
+        title = {},
+        navigationIcon = navigationIcon,
         actions = {
-            IconButton(
+            // Add Node Button
+            TopBarIconButton(
+                enabled = !disableAll,
+                icon = Icons.Filled.AddCircleOutline,
                 onClick = onAddNodeRequest
-            ) {
-                Icon(imageVector = Icons.Filled.AddCircleOutline, null)
-            }
+            )
 
-            IconButton(
-                onClick = onAddEdgeRequest,
-            ) {
-                Icon(imageVector = Icons.Filled.Moving, null)
-            }
-            IconButton(
-                onClick = onRemoveNodeRequest,
-                enabled = enabledRemoveNode,
-            ) {
-                Icon(imageVector = Icons.Filled.RemoveCircleOutline, null)
+            // Add Edge Button
+            TopBarIconButton(
+                enabled = !disableAll,
+                icon = Icons.Filled.Moving,
+                onClick = onAddEdgeRequest
+            )
 
-            }
-            IconButton(
-                onClick = onSaveRequest,
-            ) {
-                Icon(imageVector = Icons.Filled.Save, null)
-            }
-            IconButton(
-                onClick = {
-                    //   printPdf = true
+            // Remove Node Button
+            TopBarIconButton(
+                enabled = !disableAll && enabledRemoveNode,
+                icon = Icons.Filled.RemoveCircleOutline,
+                onClick = onRemoveNodeRequest
+            )
 
-                },
-            ) {
-                Icon(imageVector = Icons.Filled.Print, null)
-            }
-        },
-        colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.primary,
-        )
-
+            //
+            TopBarIconButton(
+                enabled = !disableAll,
+                icon = Icons.Filled.ArrowCircleRight,
+                onClick = onSaveRequest
+            )
+        }
     )
+}
 
+@Composable
+private fun TopBarIconButton(
+    enabled: Boolean,
+    icon: ImageVector,
+    onClick: () -> Unit
+) {
+    IconButton(
+        onClick = onClick,
+        enabled = enabled
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = if (enabled) MaterialTheme.colorScheme.primary
+            else Color.Gray
+        )
+    }
 }
 
 /**

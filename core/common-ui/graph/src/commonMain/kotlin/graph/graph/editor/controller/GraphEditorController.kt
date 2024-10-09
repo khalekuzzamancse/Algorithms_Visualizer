@@ -15,6 +15,9 @@ internal interface GraphEditorController {
         val takeEdgeWeightInput: StateFlow<Boolean>
         val takeNodeValueInput: StateFlow<Boolean>
         val graphType:StateFlow<GraphType>
+        val graphTypeHasTaken: StateFlow<Boolean>
+        fun enableInputMode()
+        fun disableInputMode()
         fun isDirected():Boolean
         fun onAddNodeRequest()
         fun onAddEdgeRequest()

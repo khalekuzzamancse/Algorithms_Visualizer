@@ -1,5 +1,10 @@
 package feature.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -61,7 +66,34 @@ fun MainNavHost(modifier: Modifier = Modifier) {
                 modifier = modifier,
                 navController = navController,
                 graph = navController.createNavGraph(
-                    isNavRailMode = isNavRailMode, openDrawerRequest = viewModel::openDrawer)
+                    isNavRailMode = isNavRailMode, openDrawerRequest = viewModel::openDrawer),
+
+                enterTransition = {
+                    scaleIn(initialScale = 0.8f, animationSpec = tween(700)) + fadeIn(
+                        animationSpec = tween(
+                            700
+                        )
+                    )
+                },
+                exitTransition = {
+                    scaleOut(
+                        targetScale = 1.1f,
+                        animationSpec = tween(700)
+                    ) + fadeOut(animationSpec = tween(700))
+                },
+                popEnterTransition = {
+                    scaleIn(initialScale = 1.2f, animationSpec = tween(700)) + fadeIn(
+                        animationSpec = tween(
+                            700
+                        )
+                    )
+                },
+                popExitTransition = {
+                    scaleOut(
+                        targetScale = 0.8f,
+                        animationSpec = tween(700)
+                    ) + fadeOut(animationSpec = tween(700))
+                }
             )
         }
     )

@@ -74,6 +74,7 @@ import graph.graph.viewer.GraphViewer
     if (inputMode) {
         GraphEditor(
             initialGraph = GraphFactory.getTopologicalSortDemoGraph()
+            ,navigationIcon = navigationIcon,
         ) { result ->
             viewModel.onGraphCreated(result)
             // println(result)

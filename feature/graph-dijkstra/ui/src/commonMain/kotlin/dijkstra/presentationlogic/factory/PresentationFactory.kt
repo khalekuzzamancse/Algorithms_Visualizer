@@ -1,4 +1,4 @@
-package mst.presentationlogic.factory
+package dijkstra.presentationlogic.factory
 
 object PresentationFactory {
 

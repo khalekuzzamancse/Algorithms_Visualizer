@@ -47,6 +47,7 @@ fun PrimsSimulationScreen( navigationIcon: @Composable () -> Unit,) {
     if (viewModel.isInputMode.collectAsState().value) {
         GraphEditor(
             initialGraph = GraphFactory.getMSTDemoGraph()
+            ,navigationIcon = navigationIcon,
         ) { result ->
             viewModel.onGraphCreated(result)
             // println(result)

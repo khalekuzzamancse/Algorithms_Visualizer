@@ -1,4 +1,4 @@
-package mst.presentationlogic.controller
+package dijkstra.presentationlogic.controller
 
 /**
  * This layer should not depend on on any libraries or UI implementations such as GraphViewController

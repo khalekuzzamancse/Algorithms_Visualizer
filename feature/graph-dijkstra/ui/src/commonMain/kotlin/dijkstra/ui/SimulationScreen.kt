@@ -48,6 +48,7 @@ fun DijkstraSimulationScreen( navigationIcon: @Composable () -> Unit,) {
     if (viewModel.isInputMode.collectAsState().value) {
         GraphEditor(
             initialGraph = GraphFactory.getDijkstraDemoGraph()
+            ,navigationIcon = navigationIcon,
         ) { result ->
             viewModel.onGraphCreated(result)
         }

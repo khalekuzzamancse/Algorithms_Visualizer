@@ -1,6 +1,6 @@
-package mst.presentationlogic.factory
+package dijkstra.presentationlogic.factory
 
-import mst.presentationlogic.controller.Controller
+import dijkstra.presentationlogic.controller.Controller
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

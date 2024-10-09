@@ -70,6 +70,7 @@ fun DfsSimulation( navigationIcon: @Composable () -> Unit,) {
     if (inputMode) {
         GraphEditor(
             initialGraph = GraphFactory.getDFSDemoGraph()
+            ,navigationIcon = navigationIcon,
         ) { result ->
             viewModel.onGraphCreated(result)
             // println(result)

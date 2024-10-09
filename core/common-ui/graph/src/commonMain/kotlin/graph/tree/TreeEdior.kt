@@ -7,9 +7,12 @@ import graph.graph.editor.ui.GraphEditor
 
 @Composable
 fun TreeEditor(
+    navigationIcon:@Composable ()->Unit,
     onDone: (TreeResult) -> Unit,
+
 ){
     GraphEditor(
+        navigationIcon = navigationIcon,
         onDone = {result ->
             val root= buildTree(result)
             onDone(

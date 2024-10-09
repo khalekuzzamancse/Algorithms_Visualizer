@@ -3,6 +3,7 @@ package graph.graph.editor.factory
 import graph.graph.editor.controller.GraphEditorController
 import graph.graph.editor.model.GraphType
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
@@ -13,18 +14,27 @@ internal class InputControllerImpl(
 ) : GraphEditorController.InputController {
     //TODO:Related to node and edge input---------------------------
     //TODO:Related to node and edge input---------------------------
-    private val _takeGraphTypeInput = MutableStateFlow(true)
+    private val _takeGraphTypeInput = MutableStateFlow(false)
     private val _takeEdgeWeightInput = MutableStateFlow(false)
     private val _takeNodeLabelInput = MutableStateFlow(false)
+    private val _graphTypeHasTaken=MutableStateFlow(false)
 
     private var _isDirected = MutableStateFlow(false)
     private val _graphType = MutableStateFlow<GraphType>(GraphType.Directed)
 
+
     override val graphType = _graphType.asStateFlow()
+
+
+
+
     override val takeGraphTypeInput = _takeGraphTypeInput.asStateFlow()
     override val takeEdgeWeightInput = _takeEdgeWeightInput.asStateFlow()
     override val takeNodeValueInput = _takeNodeLabelInput.asStateFlow()
 
+    override fun enableInputMode()=_takeGraphTypeInput.update { true }
+    override fun disableInputMode()=_takeGraphTypeInput.update { false }
+    override val graphTypeHasTaken=_graphTypeHasTaken.asStateFlow()
 
     override fun onGraphTypeSelected(type: GraphType) {
         _graphType.update { type }
@@ -37,6 +47,7 @@ internal class InputControllerImpl(
 
         }
         _takeGraphTypeInput.update { false }
+        _graphTypeHasTaken.update { true }
         graphTypeObserver(type)
     }
 
@@ -48,6 +59,7 @@ internal class InputControllerImpl(
     }
 
     override fun onAddEdgeRequest() {
+
         if (_graphType.value == GraphType.UnDirectedWeighted || _graphType.value == GraphType.DirectedWeighted)
             _takeEdgeWeightInput.update { true }
         else
