@@ -38,8 +38,8 @@ internal data class GraphEditorControllerImpl(
     private var edgeId: Int = 1
 
     init {
-        inputController.addNodeObserver = ::_onAddNodeRequest
-        inputController.addEdgeRequestObserver = ::_onEdgeConstInput
+        inputController.drawNodeObserver = ::_onAddNodeRequest
+        inputController.addEdgeRequestObserver = this::_onDrawEdgeRequest
         inputController.graphTypeObserver = {
             setDemoGraph()
         }
@@ -56,7 +56,7 @@ internal data class GraphEditorControllerImpl(
     }
 
 
-    private fun _onEdgeConstInput(cost: String?) {
+    private fun _onDrawEdgeRequest(cost: String?) {
         operationMode = GraphEditorMode.EdgeAdd
         edgeManger.addEdge(
             EditorEdgeMode(

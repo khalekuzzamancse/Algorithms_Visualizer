@@ -11,16 +11,15 @@ internal interface GraphEditorController {
     val inputController: InputController
     /**Forcing to implement a separate controller to reduce responsible and code length*/
     interface InputController {
-        val takeGraphTypeInput: StateFlow<Boolean>
-        val takeEdgeWeightInput: StateFlow<Boolean>
-        val takeNodeValueInput: StateFlow<Boolean>
+        val showGraphTypeSelectionUi: StateFlow<Boolean>
+        val showEdgeCostInputUi: StateFlow<Boolean>
+        val showNodeInputUi: StateFlow<Boolean>
         val graphType:StateFlow<GraphType>
-        val graphTypeHasTaken: StateFlow<Boolean>
-        fun enableInputMode()
-        fun disableInputMode()
+        val graphTypeSelected: StateFlow<Boolean>
+        fun onGraphTypeSelectionRequest()
         fun isDirected():Boolean
-        fun onAddNodeRequest()
-        fun onAddEdgeRequest()
+        fun onNodeDrawRequest()
+        fun onEdgeDrawRequest()
         fun onAddNodeCancelRequest()
         fun onAddEdgeCancelRequest()
 
@@ -31,9 +30,9 @@ internal interface GraphEditorController {
             //TODO:Hide the graph type input form or dialog or ...
         }
 
-        var addNodeObserver: (label: String, nodeSizePx: Float) -> Unit
-        fun onAddNodeRequest(label: String, nodeSizePx: Float){
-            addNodeObserver(label,nodeSizePx)
+        var drawNodeObserver: (label: String, nodeSizePx: Float) -> Unit
+        fun onDrawNodeRequest(label: String, nodeSizePx: Float){
+            drawNodeObserver(label,nodeSizePx)
             //TODO:Hide the node input form or dialog or ...
         }
         var addEdgeRequestObserver:(cost: String?)->Unit

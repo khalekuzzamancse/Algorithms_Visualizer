@@ -26,7 +26,7 @@ object GraphFactory {
             density = density,
             initialGraph = initialGraph,
             inputController = InputControllerImpl(
-                addNodeObserver = { _, _ -> },
+                drawNodeObserver = { _, _ -> },
                 addEdgeRequestObserver = {},
                 graphTypeObserver = {}
             )

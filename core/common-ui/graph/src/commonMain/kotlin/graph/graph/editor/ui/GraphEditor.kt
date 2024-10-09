@@ -84,12 +84,12 @@ fun GraphEditor(
         )
     }
     val showGraphTypeInputDialog =
-        controller.inputController.takeGraphTypeInput.collectAsState().value
-    val showEdgeCostDialog = controller.inputController.takeEdgeWeightInput.collectAsState().value
-    val showNodeInputDialog = controller.inputController.takeNodeValueInput.collectAsState().value
+        controller.inputController.showGraphTypeSelectionUi.collectAsState().value
+    val showEdgeCostDialog = controller.inputController.showEdgeCostInputUi.collectAsState().value
+    val showNodeInputDialog = controller.inputController.showNodeInputUi.collectAsState().value
     val nodeMinSizeDp = if (hasDistance) 64.dp else 48.dp
 
-    val graphTypeHasTaken = controller.inputController.graphTypeHasTaken.collectAsState().value
+    val graphTypeHasTaken = controller.inputController.graphTypeSelected.collectAsState().value
 
 
     val textMeasurer = rememberTextMeasurer()
@@ -105,9 +105,9 @@ fun GraphEditor(
                 navigationIcon = navigationIcon,
                 enabledRemoveNode = controller.selectedNode.collectAsState().value != null
                         || controller.selectedEdge.collectAsState().value != null,
-                onAddNodeRequest = controller.inputController::onAddNodeRequest,
+                onAddNodeRequest = controller.inputController::onNodeDrawRequest,
                 onAddEdgeRequest = {
-                    controller.inputController.onAddEdgeRequest()
+                    controller.inputController.onEdgeDrawRequest()
 //                    if (isWightedGraph){
 //                        println("wegithed")
 //                        showEdgeWeightInputDialog = true
@@ -122,7 +122,7 @@ fun GraphEditor(
                     onDone(result)
                 },
                 onRemoveNodeRequest = { controller.onRemovalRequest() },
-                disableAll = !(controller.inputController.graphTypeHasTaken.collectAsState().value)
+                disableAll = !(controller.inputController.graphTypeSelected.collectAsState().value)
             )
         }
     ) { scaffoldPadding ->
@@ -140,7 +140,7 @@ fun GraphEditor(
             if (!graphTypeHasTaken) {
                 Instruction(
                     onGraphTypeInputRequest = {
-                        controller.inputController.enableInputMode()
+                        controller.inputController.onGraphTypeSelectionRequest()
                     }
                 )
             }
@@ -153,7 +153,7 @@ fun GraphEditor(
                     onDismissRequest = controller.inputController::onAddNodeCancelRequest
                 ) { inputtedText ->
                     val textSizePx = _calculateTextSizePx(inputtedText, textMeasurer)
-                    controller.inputController.onAddNodeRequest(
+                    controller.inputController.onDrawNodeRequest(
                         label = inputtedText,
                         nodeSizePx = maxOf(textSizePx, minNodeSizePx)
                     )
