@@ -11,9 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,7 +31,10 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeRoute(navigationIcon: @Composable () -> Unit) {
+fun HomeRoute(
+    onAboutUsRequest:()->Unit,
+    navigationIcon: @Composable () -> Unit
+) {
   Scaffold(
       topBar = {
           TopAppBar(
@@ -50,8 +56,10 @@ fun HomeRoute(navigationIcon: @Composable () -> Unit) {
           HomeIntroduction()
           Spacer(modifier = Modifier.height(24.dp))
           _Feature()
-//        Spacer(modifier = Modifier.height(24.dp))
-//        CallToActionButton()
+        Spacer(modifier = Modifier.height(24.dp))
+        CallToActionButton(
+            onClick = onAboutUsRequest
+        )
       }
   }
 }
@@ -88,13 +96,14 @@ fun _Feature(modifier: Modifier = Modifier) {
             title = "Current Features", features = listOf(
                 "✔ Visualize algorithms step-by-step",
                 "✔ Custom input for different data scenarios",
-                "✔ Interactive pseudocode execution"
+                "✔ Adjustable visualization speed",
+
             )
         )
         Spacer(modifier = Modifier.height(24.dp))
         FeaturesSection(
             title = "Upcoming Features", features = listOf(
-                "⏳ Adjustable visualization speed",
+                "⏳ Interactive pseudocode execution",
                 "⏳ Real-time complexity analysis",
                 "⏳ Detailed algorithm explanations"
             )
@@ -143,12 +152,16 @@ private fun FeatureItem(modifier: Modifier, text: String) {
 }
 
 @Composable
-private fun CallToActionButton() {
+private fun CallToActionButton(
+    onClick:()->Unit,
+) {
     Button(
-        onClick = { /* Navigate to visualizer */ },
+        onClick = onClick,
         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
         modifier = Modifier.padding(top = 16.dp)
     ) {
-        Text(text = "Start Exploring", color = MaterialTheme.colorScheme.onPrimary)
+        Icon(Icons.Outlined.Info, contentDescription = "about us")
+        Spacer(Modifier.width(4.dp))
+        Text(text = "More Information", color = MaterialTheme.colorScheme.onPrimary)
     }
 }

@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import feature.navigation.drawer.Destination
 import feature.navigation.drawer.DrawerHeader
 import feature.navigation.drawer.DrawerToNavRailDecorator
+import feature.navigation.drawer.NavDestination
 import feature.navigation.drawer.NavDestinationBuilder
 import feature.navigation.drawer.NavigationEvent
 import kotlinx.coroutines.launch
@@ -66,7 +67,12 @@ fun MainNavHost(modifier: Modifier = Modifier) {
                 modifier = modifier,
                 navController = navController,
                 graph = navController.createNavGraph(
-                    isNavRailMode = isNavRailMode, openDrawerRequest = viewModel::openDrawer),
+                    isNavRailMode = isNavRailMode,
+                    openDrawerRequest = viewModel::openDrawer,
+                    onAboutUsRequest = {
+                        scope.launch { navigator.navigate(NavDestination.AboutUs) }
+                    }
+                ),
 
                 enterTransition = {
                     scaleIn(initialScale = 0.8f, animationSpec = tween(700)) + fadeIn(

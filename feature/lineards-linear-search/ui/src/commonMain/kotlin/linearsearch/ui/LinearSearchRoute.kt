@@ -7,10 +7,13 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import core.commonui.array.VisualArray
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,10 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import core.commonui.decorators.SimulationScreenEvent
-import core.commonui.decorators.SimulationScreenState
-import core.commonui.decorators.SimulationSlot
-import core.commonui.dialogue.SearchInputDialog
+import core.commonui.SimulationScreenEvent
+import core.commonui.SimulationScreenState
+import core.commonui.SimulationSlot
+import core.commonui.SearchInputDialog
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -36,70 +39,67 @@ fun LinearSearchRoute(
     modifier: Modifier = Modifier,
     navigationIcon: @Composable () -> Unit,
 ) {
-    val color= StatusColor(
+    val color = StatusColor(
         iPointerLocation = MaterialTheme.colorScheme.secondary,
         foundAt = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f)
     )
-    val viewModel = remember { SimulationViewModel(color=color) }
+    val viewModel = remember { SimulationViewModel(color = color) }
 
     val showInputDialog = viewModel.inputMode.collectAsState().value
-    val arrayController=viewModel.arrayController.collectAsState().value
-    if (showInputDialog) {
-        SearchInputDialog(
-            onDismiss = viewModel::onInputComplete,
-            onConfirm = viewModel::onInputComplete,
-            navigationIcon=navigationIcon
-        )
-    } else {
+    val arrayController = viewModel.arrayController.collectAsState().value
 
-        var state by remember { mutableStateOf(SimulationScreenState()) }
+    var state by remember { mutableStateOf(SimulationScreenState()) }
 
-        SimulationSlot(
-            modifier = modifier,
-            state = state,
-            navigationIcon = navigationIcon,
-            resultSummary = { },
-            pseudoCode = { },
-            visualization = {
+    SimulationSlot(
+        modifier = modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
+        disableControls = showInputDialog,
+        state = state,
+        navigationIcon = navigationIcon,
+        resultSummary = { },
+        pseudoCode = { },
+        visualization = {
+            if (showInputDialog) {
+                SearchInputDialog(
+                    onConfirm = viewModel::onInputComplete
+                )
+            } else {
                 FlowRow {
-                    if (arrayController!=null){
+                    if (arrayController != null) {
                         VisualArray(
-                            controller =arrayController
+                            controller = arrayController
                         )
                     }
                     _StatusIndicator(color)
                 }
 
+            }
 
-
-            },
-            onEvent = { event ->
-                when (event) {
-                    is SimulationScreenEvent.AutoPlayRequest -> {
-                       viewModel.autoPlayer.autoPlayRequest(event.time)
-                    }
-
-                    SimulationScreenEvent.NextRequest -> viewModel.onNext()
-
-                    SimulationScreenEvent.NavigationRequest -> {}
-                    SimulationScreenEvent.ResetRequest -> {
-                        viewModel.onReset()
-                    }
-
-                    SimulationScreenEvent.CodeVisibilityToggleRequest -> {
-                        val isVisible = state.showPseudocode
-                        state = state.copy(showPseudocode = !isVisible)
-                    }
-
-                    SimulationScreenEvent.ToggleNavigationSection -> {
-
-                    }
+        },
+        onEvent = { event ->
+            when (event) {
+                is SimulationScreenEvent.AutoPlayRequest -> {
+                    viewModel.autoPlayer.autoPlayRequest(event.time)
                 }
 
-            },
-        )
+                SimulationScreenEvent.NextRequest -> viewModel.onNext()
 
-    }
+                SimulationScreenEvent.NavigationRequest -> {}
+                SimulationScreenEvent.ResetRequest -> {
+                    viewModel.onReset()
+                }
+
+                SimulationScreenEvent.CodeVisibilityToggleRequest -> {
+                    val isVisible = state.showPseudocode
+                    state = state.copy(showPseudocode = !isVisible)
+                }
+
+                SimulationScreenEvent.ToggleNavigationSection -> {
+
+                }
+            }
+
+        },
+    )
 
 
 }

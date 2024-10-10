@@ -27,6 +27,7 @@ import tree.ui.TreeSimulationScreen
 fun NavController.createNavGraph(
     isNavRailMode: Boolean,
     openDrawerRequest: () -> Unit,
+    onAboutUsRequest:()->Unit,
 ): NavGraph {
     return createGraph(startDestination = NavDestination.Home.route) {
         composable(NavDestination.Home.route) {
@@ -36,7 +37,8 @@ fun NavController.createNavGraph(
                         isNavRailMode = isNavRailMode,
                         onClick = openDrawerRequest
                     )
-                }
+                },
+                onAboutUsRequest = onAboutUsRequest
             )
         }
         composable(NavDestination.LinearSearch.route) {

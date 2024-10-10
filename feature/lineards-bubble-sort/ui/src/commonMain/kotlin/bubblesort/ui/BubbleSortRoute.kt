@@ -9,71 +9,69 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import core.commonui.decorators.SimulationScreenEvent
-import core.commonui.decorators.SimulationScreenState
-import core.commonui.decorators.SimulationSlot
-import core.commonui.dialogue.ArrayInputDialog
+import core.commonui.SimulationScreenEvent
+import core.commonui.SimulationScreenState
+import core.commonui.SimulationSlot
+import core.commonui.ArrayInputDialog
 
 @Composable
-fun BubbleSortRoute(modifier: Modifier = Modifier, navigationIcon: @Composable () -> Unit,) {
-    val color=StatusColor(iPointerLocation = MaterialTheme.colorScheme.secondary)
-    val viewModel = remember { BubbleSortViewModel(color=color) }
+fun BubbleSortRoute(modifier: Modifier = Modifier, navigationIcon: @Composable () -> Unit) {
+    val color = StatusColor(iPointerLocation = MaterialTheme.colorScheme.secondary)
+    val viewModel = remember { BubbleSortViewModel(color = color) }
 
     val showInputDialog = viewModel.inputMode.collectAsState().value
-    val arrayController=viewModel.arrayController.collectAsState().value
-    if (showInputDialog) {
-        ArrayInputDialog(
-            onDismiss = viewModel::onInputComplete,
-            onConfirm = viewModel::onInputComplete,
-            navigationIcon = navigationIcon
-        )
-    } else {
+    val arrayController = viewModel.arrayController.collectAsState().value
 
-        var state by remember { mutableStateOf(SimulationScreenState()) }
 
-        SimulationSlot(
-            modifier = modifier,
-            state = state,
-            resultSummary = { },
-            navigationIcon = navigationIcon,
-            pseudoCode = { },
-            visualization = {
-                if (arrayController!=null){
+    var state by remember { mutableStateOf(SimulationScreenState()) }
+
+    SimulationSlot(
+        modifier = modifier,
+        state = state,
+        disableControls =showInputDialog,
+        resultSummary = { },
+        navigationIcon = navigationIcon,
+        pseudoCode = { },
+        visualization = {
+            if (showInputDialog) {
+                ArrayInputDialog(
+                    onConfirm = viewModel::onInputComplete
+                )
+            } else {
+                if (arrayController != null) {
                     VisualArray(
-                        controller =arrayController
+                        controller = arrayController
                     )
                 }
 
+            }
 
-
-            },
-            onEvent = { event ->
-                when (event) {
-                    is SimulationScreenEvent.AutoPlayRequest -> {
-                       viewModel.autoPlayer.autoPlayRequest(event.time)
-                    }
-
-                    SimulationScreenEvent.NextRequest -> viewModel.onNext()
-
-                    SimulationScreenEvent.NavigationRequest -> {}
-                    SimulationScreenEvent.ResetRequest -> {
-                        viewModel.onReset()
-                    }
-
-                    SimulationScreenEvent.CodeVisibilityToggleRequest -> {
-                        val isVisible = state.showPseudocode
-                        state = state.copy(showPseudocode = !isVisible)
-                    }
-
-                    SimulationScreenEvent.ToggleNavigationSection -> {
-
-                    }
+        },
+        onEvent = { event ->
+            when (event) {
+                is SimulationScreenEvent.AutoPlayRequest -> {
+                    viewModel.autoPlayer.autoPlayRequest(event.time)
                 }
 
-            },
-        )
+                SimulationScreenEvent.NextRequest -> viewModel.onNext()
 
-    }
+                SimulationScreenEvent.NavigationRequest -> {}
+                SimulationScreenEvent.ResetRequest -> {
+                    viewModel.onReset()
+                }
+
+                SimulationScreenEvent.CodeVisibilityToggleRequest -> {
+                    val isVisible = state.showPseudocode
+                    state = state.copy(showPseudocode = !isVisible)
+                }
+
+                SimulationScreenEvent.ToggleNavigationSection -> {
+
+                }
+            }
+
+        },
+    )
 
 
 }

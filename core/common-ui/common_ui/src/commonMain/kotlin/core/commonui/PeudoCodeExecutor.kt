@@ -1,4 +1,4 @@
-package core.commonui.pseudocode
+package core.commonui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

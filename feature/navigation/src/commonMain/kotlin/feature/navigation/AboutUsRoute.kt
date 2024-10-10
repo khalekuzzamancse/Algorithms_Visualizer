@@ -1,4 +1,5 @@
 @file:Suppress("SpellCheckingInspection")
+
 package feature.navigation
 
 import algorithmvisualizer.feature.navigation.generated.resources.Res
@@ -108,6 +109,7 @@ private fun SupervisorSection() {
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.secondary
         )
+        DeptAndUniversity()
 
         Text(
             text = "B.Sc. (Engg.) & M.Sc. (Engg.) in CSE (JUST)",
@@ -148,19 +150,26 @@ private fun DeveloperSection() {
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
         )
-
         Text(
-            text = "Department of Computer Science and Engineering (CSE)",
-            fontSize = 14.sp,
-            color = MaterialTheme.colorScheme.onBackground
+            text = "Student",
+            fontSize = 16.sp,
+            color = MaterialTheme.colorScheme.secondary
         )
+        DeptAndUniversity()
 
+    }
+}
+
+@Composable
+fun DeptAndUniversity(modifier: Modifier = Modifier) {
+    Column() {
         Text(
-            text = "Jashore University of Science and Technology (JUST)",
+            text = "Department of  CSE at Jashore University of Science and Technology (JUST)",
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onBackground
         )
     }
+
 }
 
 @OptIn(ExperimentalResourceApi::class)
@@ -198,7 +207,7 @@ private fun CopyrightNotice() {
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
-            text = "Developed in the Department of CSE",
+            text = "Developed in the Department of Computer Science and Engineering(CSE)",
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.secondary,
             textAlign = TextAlign.Center

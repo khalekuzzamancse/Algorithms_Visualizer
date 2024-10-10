@@ -9,10 +9,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import core.commonui.decorators.SimulationScreenEvent
-import core.commonui.decorators.SimulationScreenState
-import core.commonui.decorators.SimulationSlot
-import core.commonui.dialogue.ArrayInputDialog
+import core.commonui.SimulationScreenEvent
+import core.commonui.SimulationScreenState
+import core.commonui.SimulationSlot
+import core.commonui.ArrayInputDialog
 
 @Composable
 fun SelectionSortRoute(modifier: Modifier = Modifier, navigationIcon: @Composable () -> Unit,) {
@@ -21,31 +21,31 @@ fun SelectionSortRoute(modifier: Modifier = Modifier, navigationIcon: @Composabl
 
     val showInputDialog = viewModel.inputMode.collectAsState().value
     val arrayController=viewModel.arrayController.collectAsState().value
-    if (showInputDialog) {
-        ArrayInputDialog(
-            onDismiss = viewModel::onInputComplete,
-            onConfirm = viewModel::onInputComplete,
-            navigationIcon = navigationIcon
-        )
-    } else {
+
 
         var state by remember { mutableStateOf(SimulationScreenState()) }
 
         SimulationSlot(
             modifier = modifier,
             state = state,
+            disableControls =showInputDialog,
             navigationIcon = navigationIcon,
             resultSummary = { },
             pseudoCode = { },
             visualization = {
-                if (arrayController!=null){
-                    VisualArray(
-                        controller =arrayController
+                if (showInputDialog) {
+                    ArrayInputDialog(
+                        onConfirm = viewModel::onInputComplete
                     )
+                } else {
+                    if (arrayController != null) {
+                        VisualArray(
+                            controller = arrayController
+                        )
+                    }
+
+
                 }
-
-
-
             },
             onEvent = { event ->
                 when (event) {
@@ -73,7 +73,7 @@ fun SelectionSortRoute(modifier: Modifier = Modifier, navigationIcon: @Composabl
             },
         )
 
-    }
+
 
 
 }

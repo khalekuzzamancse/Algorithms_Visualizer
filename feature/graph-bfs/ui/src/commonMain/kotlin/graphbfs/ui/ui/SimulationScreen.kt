@@ -26,9 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import core.commonui.decorators.SimulationScreenEvent
-import core.commonui.decorators.SimulationScreenState
-import core.commonui.decorators.SimulationSlot
+import core.commonui.SimulationScreenEvent
+import core.commonui.SimulationScreenState
+import core.commonui.SimulationSlot
 import graph.graph.GraphFactory
 import graph.graph.editor.ui.GraphEditor
 import graph.graph.viewer.GraphViewer
