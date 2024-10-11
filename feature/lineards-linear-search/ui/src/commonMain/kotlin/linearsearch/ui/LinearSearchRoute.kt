@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import core.commonui.CodeViewer
 import core.commonui.SimulationScreenEvent
 import core.commonui.SimulationScreenState
 import core.commonui.SimulationSlot
@@ -48,7 +49,7 @@ fun LinearSearchRoute(
     val showInputDialog = viewModel.inputMode.collectAsState().value
     val arrayController = viewModel.arrayController.collectAsState().value
 
-    var state by remember { mutableStateOf(SimulationScreenState()) }
+    var state by remember { mutableStateOf(SimulationScreenState(showPseudocode = true)) }
 
     SimulationSlot(
         modifier = modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
@@ -56,21 +57,30 @@ fun LinearSearchRoute(
         state = state,
         navigationIcon = navigationIcon,
         resultSummary = { },
-        pseudoCode = { },
+        pseudoCode = {
+            val code=viewModel.code.collectAsState().value
+            if(code != null)
+            CodeViewer(code=code)
+        },
         visualization = {
             if (showInputDialog) {
                 SearchInputDialog(
                     onConfirm = viewModel::onInputComplete
                 )
             } else {
-                FlowRow {
-                    if (arrayController != null) {
-                        VisualArray(
-                            controller = arrayController
-                        )
+                Column {
+                    FlowRow {
+                        if (arrayController != null) {
+                            VisualArray(
+                                controller = arrayController
+                            )
+                        }
+                        _StatusIndicator(color)
                     }
-                    _StatusIndicator(color)
+
+
                 }
+
 
             }
 

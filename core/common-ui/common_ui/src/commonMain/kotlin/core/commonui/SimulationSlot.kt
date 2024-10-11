@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SimulationSlot(
     modifier: Modifier = Modifier,
-    disableControls: Boolean=false,
+    disableControls: Boolean = false,
     state: SimulationScreenState,
     onEvent: (SimulationScreenEvent) -> Unit,
     navigationIcon: @Composable () -> Unit = {},
@@ -51,8 +51,9 @@ fun SimulationSlot(
 ) {
     TopBarControlSection(
         modifier = Modifier,
-        disableControls=disableControls,
+        disableControls = disableControls,
         showPseudocode = state.showPseudocode,
+        disablePseudocode = true,
         navigationIcon = navigationIcon,
         onNext = { onEvent(SimulationScreenEvent.NextRequest) },
         onResetRequest = { onEvent(SimulationScreenEvent.ResetRequest) },
@@ -101,12 +102,14 @@ sealed interface SimulationScreenEvent {
     data object CodeVisibilityToggleRequest : SimulationScreenEvent
     data class AutoPlayRequest(val time: Int) : SimulationScreenEvent
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarControlSection(
     modifier: Modifier = Modifier,
     disableControls: Boolean = false,
     showPseudocode: Boolean = false,
+    disablePseudocode: Boolean = true,
     onNext: () -> Unit = {},
     onResetRequest: () -> Unit = {},
     onAutoPlayRequest: (Int) -> Unit = {},
@@ -126,6 +129,7 @@ fun TopBarControlSection(
                 navigationIcon = navigationIcon,
                 actions = {
                     TopBarActions(
+                        disablePseudocode = true,
                         disableControls = disableControls,
                         showPseudocode = showPseudocode,
                         onNext = onNext,
@@ -195,6 +199,7 @@ private fun AutoPlayDialog(
 private fun TopBarActions(
     disableControls: Boolean,
     showPseudocode: Boolean,
+    disablePseudocode: Boolean,
     onNext: () -> Unit,
     onCodeVisibilityToggleRequest: () -> Unit,
     onResetRequest: () -> Unit,
@@ -207,12 +212,15 @@ private fun TopBarActions(
         enabled = !disableControls
     )
 
-    ControlIconButton(
-        onClick = onCodeVisibilityToggleRequest,
-        icon = if (showPseudocode) Icons.Default.CodeOff else Icons.Default.Code,
-        contentDescription = "Toggle Code Visibility",
-        enabled = !disableControls
-    )
+    if (!disablePseudocode) {
+        ControlIconButton(
+            onClick = onCodeVisibilityToggleRequest,
+            icon = if (showPseudocode) Icons.Default.CodeOff else Icons.Default.Code,
+            contentDescription = "Toggle Code Visibility",
+            enabled = !disableControls
+        )
+    }
+
 
     ControlIconButton(
         onClick = onResetRequest,

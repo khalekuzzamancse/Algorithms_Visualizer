@@ -18,13 +18,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,18 +38,26 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutUsPage(navigationIcon: @Composable () -> Unit) {
     Scaffold(
         topBar = {
-            navigationIcon()
+            TopAppBar(
+                title={},
+                navigationIcon = {
+                    navigationIcon()
+                },
+                modifier = Modifier.height(30.dp)
+            )
+
         }
     ) {
         Column(
             modifier = Modifier
                 .padding(it)
+                .padding(start = 8.dp,end=8.dp, bottom = 8.dp)
                 .fillMaxSize()
-                .padding(16.dp)
                 .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -162,7 +175,7 @@ private fun DeveloperSection() {
 
 @Composable
 fun DeptAndUniversity(modifier: Modifier = Modifier) {
-    Column() {
+    Column {
         Text(
             text = "Department of  CSE at Jashore University of Science and Technology (JUST)",
             fontSize = 14.sp,

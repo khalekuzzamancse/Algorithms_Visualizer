@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 
 internal class SimulationViewModel(
@@ -24,7 +25,8 @@ internal class SimulationViewModel(
     private val list = _array.asStateFlow()
     private lateinit var simulator: Simulator<Int>
     private val scope = CoroutineScope(Dispatchers.Default)
-
+    private val _code = MutableStateFlow<String?>(null)
+    val code = _code.asStateFlow()
 
     companion object {
         private const val POINTER_I = "i"
@@ -48,12 +50,22 @@ internal class SimulationViewModel(
         _array.update { inputData }
         _inputMode.update { false }
         _createController()
+        observeCode()
     }
 
+    private fun observeCode() {
+        scope.launch {
+
+        }
+    }
 
     fun onNext() {
         arrayController.value?.let { arrayController ->
-            when (val state = simulator.next()) {
+            val state = simulator.next()
+            _code.update { state.code }
+
+            when (state) {
+
                 is SimulationState.PointerI -> {
                     arrayController.movePointer(label = POINTER_I, index = state.index)
                 }

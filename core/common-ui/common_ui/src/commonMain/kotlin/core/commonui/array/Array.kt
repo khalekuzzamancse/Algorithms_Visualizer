@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +18,7 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,7 +43,6 @@ fun VisualArray(
         controller = controller
     )
 
-
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -53,12 +54,14 @@ private fun _ArrayCells(
 
     val cells = controller.cells.collectAsState().value
     val elements = controller.elements.collectAsState().value
+    val cellSize= remember { 64.dp }
 
     Box(modifier = modifier) {
         FlowRow {
             cells.forEachIndexed { index, cell->
                 _Cell(
                     color = cell.color,
+                    size = cellSize,
                     onPositionChanged = { position ->
                         controller.onCellPositionChanged(index, position.positionInParent())
                     },
@@ -71,11 +74,12 @@ private fun _ArrayCells(
                 label = element.label,
                 position = element.position,
                 color = element.color,
+                cellSize = cellSize
             )
         }
         controller.pointers.collectAsState().value.forEach { pointer ->
                 if (pointer.position != null)
-                    _CellPointer(label = pointer.label, position = pointer.position)
+                    _CellPointer(label = pointer.label, position = pointer.position, cellSize = cellSize)
             }
 
     }
@@ -86,7 +90,7 @@ private fun _ArrayCells(
 
 @Composable
 private fun _CellPointer(
-    cellSize: Dp = 64.dp,
+    cellSize: Dp,
     label: String,
     position: Offset,
 ) {
@@ -110,7 +114,7 @@ private fun _CellPointer(
 @Composable
 private fun _Element(
     label: String,
-    size: Dp = 64.dp,
+    cellSize: Dp,
     color: Color,
     position: Offset,
 ) {
@@ -128,7 +132,8 @@ private fun _Element(
             .offset {
                 IntOffset(offsetAnimation.x.toInt(), offsetAnimation.y.toInt())
             }
-            .size(size)
+            .size(cellSize)
+            .padding(2.dp)
             .clip(CircleShape)
             .background(backgroundColor),
         contentAlignment = Alignment.Center
@@ -140,7 +145,7 @@ private fun _Element(
 @Composable
 private fun _Cell(
     modifier: Modifier = Modifier,
-    size: Dp = 64.dp,
+    size: Dp,
     color: Color = Color.Unspecified,
     hideBorder: Boolean = false,
     onPositionChanged: (LayoutCoordinates) -> Unit,
