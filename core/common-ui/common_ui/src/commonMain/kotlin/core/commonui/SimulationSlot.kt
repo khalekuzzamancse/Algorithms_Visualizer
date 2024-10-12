@@ -46,7 +46,7 @@ fun SimulationSlot(
     onEvent: (SimulationScreenEvent) -> Unit,
     navigationIcon: @Composable () -> Unit = {},
     resultSummary: @Composable ColumnScope.() -> Unit,
-    pseudoCode: @Composable ColumnScope.() -> Unit,
+    pseudoCode: @Composable ColumnScope.(Modifier) -> Unit,
     visualization: @Composable ColumnScope.() -> Unit,
 ) {
     TopBarControlSection(
@@ -74,7 +74,7 @@ fun SimulationSlot(
                 Spacer(Modifier.height(16.dp))
             }
             AnimatedVisibility(state.showPseudocode) {
-                pseudoCode()
+                pseudoCode(Modifier.align(Alignment.Start))
             }
         }
 

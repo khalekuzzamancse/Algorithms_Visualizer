@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import core.commonui.array.VisualArray
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,10 +28,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import core.commonui.CodeViewer
+import core.commonui.SearchInputDialog
 import core.commonui.SimulationScreenEvent
 import core.commonui.SimulationScreenState
 import core.commonui.SimulationSlot
-import core.commonui.SearchInputDialog
+import core.commonui.Token
+import core.commonui.array.VisualArray
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -46,6 +47,7 @@ fun LinearSearchRoute(
     )
     val viewModel = remember { SimulationViewModel(color = color) }
 
+
     val showInputDialog = viewModel.inputMode.collectAsState().value
     val arrayController = viewModel.arrayController.collectAsState().value
 
@@ -57,10 +59,18 @@ fun LinearSearchRoute(
         state = state,
         navigationIcon = navigationIcon,
         resultSummary = { },
-        pseudoCode = {
-            val code=viewModel.code.collectAsState().value
-            if(code != null)
-            CodeViewer(code=code)
+        pseudoCode = { mod ->
+            val code = viewModel.code.collectAsState().value
+            if (code != null)
+                CodeViewer(
+                    modifier = mod,
+                    code = code,
+                    token = Token(
+                        literal = viewModel.token.literal,
+                        function = viewModel.token.function,
+                        identifier = viewModel.token.identifier
+                    )
+                )
         },
         visualization = {
             if (showInputDialog) {

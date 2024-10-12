@@ -24,6 +24,8 @@ internal class SimulationViewModel(
     private val list = _array.asStateFlow()
     private lateinit var simulator: Simulator<Int>
     private val scope = CoroutineScope(Dispatchers.Default)
+    private val _code = MutableStateFlow<String?>(null)
+    val code = _code.asStateFlow()
 
 
     companion object {
@@ -54,8 +56,11 @@ internal class SimulationViewModel(
 
 
     fun onNext() {
+        val state = simulator.next()
+        _code.update { state.code }
+
         arrayController.value?.let { arrayController ->
-            when (val state = simulator.next()) {
+            when (state) {
                 is SimulationState.PointerLow -> {
                     arrayController.movePointer(label = POINTER_LOW, index = state.index)
                     arrayController.changeElementColor(index = state.index, color = color.visited)

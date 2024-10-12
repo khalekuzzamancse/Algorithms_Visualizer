@@ -1,12 +1,6 @@
 package linearsearch.infrastructure
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import linearsearch.domain.model.PseudocodeModel
+import linearsearch.domain.model.CodeStateModel
 import linearsearch.domain.model.SimulationState
 import linearsearch.domain.service.PseudocodeGenerator
 
@@ -16,7 +10,7 @@ internal class Iterator<T : Comparable<T>>(
 ) {
 
     private val length = array.size
-    private var model = PseudocodeModel(len = length, target = "$target")
+    private var model = CodeStateModel(len = length, target = "$target")
 
     private fun generateCode() = PseudocodeGenerator.generate(model)
     private var isFound:Boolean=false

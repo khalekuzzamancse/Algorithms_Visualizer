@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import linearsearch.domain.service.PseudocodeGenerator
 
 
 internal class SimulationViewModel(
@@ -27,6 +28,7 @@ internal class SimulationViewModel(
     private val scope = CoroutineScope(Dispatchers.Default)
     private val _code = MutableStateFlow<String?>(null)
     val code = _code.asStateFlow()
+    val token= PseudocodeGenerator.token
 
     companion object {
         private const val POINTER_I = "i"

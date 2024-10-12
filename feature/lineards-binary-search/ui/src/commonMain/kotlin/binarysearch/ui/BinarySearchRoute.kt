@@ -25,10 +25,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import core.commonui.CodeViewer
 import core.commonui.SimulationScreenEvent
 import core.commonui.SimulationScreenState
 import core.commonui.SimulationSlot
 import core.commonui.SearchInputDialog
+import core.commonui.Token
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -51,7 +53,19 @@ fun BinarySearchRoute(modifier: Modifier = Modifier, navigationIcon: @Composable
         disableControls =showInputDialog ,
         navigationIcon = navigationIcon,
         resultSummary = { },
-        pseudoCode = { },
+        pseudoCode = {mod->
+            val code = viewModel.code.collectAsState().value
+            if (code != null)
+                CodeViewer(
+                    modifier = mod,
+                    code = code,
+                    token = Token(
+                        literal = emptyList(),
+                        function = emptyList(),
+                        identifier = emptyList()
+                    )
+                )
+        },
         visualization = {
             if (showInputDialog) {
                 SearchInputDialog(

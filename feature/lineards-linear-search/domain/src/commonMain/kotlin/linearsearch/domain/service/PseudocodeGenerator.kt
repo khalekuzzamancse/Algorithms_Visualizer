@@ -1,6 +1,7 @@
 package linearsearch.domain.service
 
-import linearsearch.domain.model.PseudocodeModel
+import linearsearch.domain.model.CodeStateModel
+import linearsearch.domain.model.TokenModel
 
 /**
  * - Defining in the domain layer because need to access from both data and ui layer
@@ -17,9 +18,14 @@ object PseudocodeGenerator {
         }
         return -1
     }
-    """
+    """.trimStart()
+    val token = TokenModel(
+        identifier = listOf("list", "target", "len", "current", "isFound"),
+        literal = listOf("-1"),
+        function = listOf("LinearSearch")
+    )
 
-    fun generate(model: PseudocodeModel): String {
+    fun generate(model: CodeStateModel): String {
         return with(model) {
             """
 LinearSearch(list, target) { //target: $target
@@ -32,7 +38,7 @@ LinearSearch(list, target) { //target: $target
     }
     return -1
 } ${returnIndex?.let { "//returned: $it" } ?: ""} 
-"""
+""".trimStart()
         }
     }
 

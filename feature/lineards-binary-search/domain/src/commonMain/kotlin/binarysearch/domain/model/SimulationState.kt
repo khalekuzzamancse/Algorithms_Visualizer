@@ -3,17 +3,17 @@
 package binarysearch.domain.model
 
 sealed interface SimulationState {
-    /**Represent the pointer `i`*/
-
-    data class PointerLow(val index: Int) : SimulationState
-    data class PointerHigh(val index: Int) : SimulationState
-    data class PointerMid(val index: Int) : SimulationState
+    val code: String
+    data class Start( override val code: String) : SimulationState
+    data class PointerLow(val index: Int,override val code: String) : SimulationState
+    data class PointerHigh(val index: Int,override val code: String) : SimulationState
+    data class PointerMid(val index: Int,override val code: String) : SimulationState
 
     /**
      * - When mid need to recreate or destroyed
      */
-    data object ClearMid : SimulationState
-    data class FoundAt(val index: Int): SimulationState
-    data object Finished : SimulationState
+    data class ClearMid(override val code: String) : SimulationState
+    data class FoundAt(val index: Int,override val code: String): SimulationState
+    data class Finished(override val code: String) : SimulationState
 
 }

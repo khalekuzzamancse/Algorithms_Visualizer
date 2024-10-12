@@ -4,7 +4,7 @@ package linearsearch.domain.model;
  * @param target can be T, that is why taking String
  *   @param current can be T, that is why taking String
  */
-data class PseudocodeModel(
+data class CodeStateModel(
     val len: Int,
     val target: String,
     val i:Int? = null,
