@@ -2,6 +2,7 @@ package insertionsort.infrastructure
 
 import insertionsort.domain.model.DataModel
 import insertionsort.domain.model.SimulationState
+import insertionsort.domain.service.PseudocodeGenerator
 import insertionsort.domain.service.Simulator
 
 class SimulatorImpl<T : Comparable<T>> internal constructor(model: DataModel<T>) : Simulator<T> {
@@ -21,6 +22,6 @@ class SimulatorImpl<T : Comparable<T>> internal constructor(model: DataModel<T>)
      * @throws NoSuchElementException if the simulation has finished and there are no more states.
      */
     override fun next(): SimulationState = if (iterator.hasNext()) iterator.next()
-    else SimulationState.Finished
+    else SimulationState.Finished(PseudocodeGenerator.rawCode)
 
 }

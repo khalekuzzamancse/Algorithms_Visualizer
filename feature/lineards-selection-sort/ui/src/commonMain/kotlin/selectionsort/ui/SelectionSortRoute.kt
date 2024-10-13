@@ -13,67 +13,81 @@ import core.commonui.SimulationScreenEvent
 import core.commonui.SimulationScreenState
 import core.commonui.SimulationSlot
 import core.commonui.ArrayInputDialog
+import core.commonui.CodeViewer
+import core.commonui.Token
 
 @Composable
-fun SelectionSortRoute(modifier: Modifier = Modifier, navigationIcon: @Composable () -> Unit,) {
-    val color= StatusColor(iPointerLocation = MaterialTheme.colorScheme.secondary)
-    val viewModel = remember { SimulationViewModel(color=color) }
+fun SelectionSortRoute(modifier: Modifier = Modifier, navigationIcon: @Composable () -> Unit) {
+    val color = StatusColor(iPointerLocation = MaterialTheme.colorScheme.secondary)
+    val viewModel = remember { SimulationViewModel(color = color) }
 
     val showInputDialog = viewModel.inputMode.collectAsState().value
-    val arrayController=viewModel.arrayController.collectAsState().value
+    val arrayController = viewModel.arrayController.collectAsState().value
 
 
-        var state by remember { mutableStateOf(SimulationScreenState()) }
+    var state by remember { mutableStateOf(SimulationScreenState()) }
 
-        SimulationSlot(
-            modifier = modifier,
-            state = state,
-            disableControls =showInputDialog,
-            navigationIcon = navigationIcon,
-            resultSummary = { },
-            pseudoCode = { },
-            visualization = {
-                if (showInputDialog) {
-                    ArrayInputDialog(
-                        onConfirm = viewModel::onInputComplete
+    SimulationSlot(
+        modifier = modifier,
+        state = state,
+        disableControls = showInputDialog,
+        navigationIcon = navigationIcon,
+        resultSummary = { },
+        pseudoCode = { mod ->
+            val code = viewModel.code.collectAsState().value
+            if (code != null)
+                CodeViewer(
+                    modifier = mod,
+                    code = code,
+                    token = Token(
+                        literal = emptyList(),
+                        function = emptyList(),
+                        identifier = emptyList()
                     )
-                } else {
-                    if (arrayController != null) {
-                        VisualArray(
-                            controller = arrayController
-                        )
-                    }
-
-
-                }
-            },
-            onEvent = { event ->
-                when (event) {
-                    is SimulationScreenEvent.AutoPlayRequest -> {
-                       viewModel.autoPlayer.autoPlayRequest(event.time)
-                    }
-
-                    SimulationScreenEvent.NextRequest -> viewModel.onNext()
-
-                    SimulationScreenEvent.NavigationRequest -> {}
-                    SimulationScreenEvent.ResetRequest -> {
-                        viewModel.onReset()
-                    }
-
-                    SimulationScreenEvent.CodeVisibilityToggleRequest -> {
-                        val isVisible = state.showPseudocode
-                        state = state.copy(showPseudocode = !isVisible)
-                    }
-
-                    SimulationScreenEvent.ToggleNavigationSection -> {
-
-                    }
+                )
+        },
+        visualization = {
+            if (showInputDialog) {
+                ArrayInputDialog(
+                    onConfirm = viewModel::onInputComplete
+                )
+            } else {
+                if (arrayController != null) {
+                    VisualArray(
+                        controller = arrayController
+                    )
                 }
 
-            },
-        )
 
+            }
+        },
+        onEvent = { event ->
+            when (event) {
+                is SimulationScreenEvent.AutoPlayRequest -> {
+                    viewModel.autoPlayer.autoPlayRequest(event.time)
+                }
 
+                SimulationScreenEvent.NextRequest -> viewModel.onNext()
+
+                SimulationScreenEvent.NavigationRequest -> {}
+                SimulationScreenEvent.ResetRequest -> {
+                    viewModel.onReset()
+                }
+
+                SimulationScreenEvent.CodeVisibilityToggleRequest -> {
+                    val isVisible = state.showPseudocode
+                    state = state.copy(showPseudocode = !isVisible)
+                }
+
+                SimulationScreenEvent.ToggleNavigationSection -> {
+
+                }
+
+                else -> {}
+            }
+
+        },
+    )
 
 
 }

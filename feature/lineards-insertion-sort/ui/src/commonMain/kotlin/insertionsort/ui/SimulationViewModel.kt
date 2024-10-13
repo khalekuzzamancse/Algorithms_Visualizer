@@ -25,7 +25,8 @@ internal class SimulationViewModel(
     private val list = _array.asStateFlow()
     private lateinit var simulator: Simulator<Int>
     private val scope = CoroutineScope(Dispatchers.Default)
-
+    private val _code = MutableStateFlow<String?>(null)
+    val code = _code.asStateFlow()
     companion object {
         private const val POINTER_I = "i"
         private const val POINTER_J = "j"
@@ -53,7 +54,9 @@ internal class SimulationViewModel(
 
     fun onNext() {
         arrayController.value?.let { arrayController ->
-            when (val state = simulator.next()) {
+            val state = simulator.next()
+            _code.update { state.code }
+            when (state) {
                 is SimulationState.BackwardPointerChanged -> {
                     val (j, jPrev) = state
                     arrayController.movePointer(label = POINTER_J, index = j)

@@ -1,11 +1,13 @@
 package bubblesort.domain.model
 
 sealed interface SimulationState {
+    val code: String
     /**Represent the pointer `i`*/
-    data class PointerIChanged(val index: Int) : SimulationState
+    data class Start( override val code: String) : SimulationState
+    data class PointerIChanged(val index: Int, override val code: String) : SimulationState
     /**Represent the pointer `j`*/
-    data class PointerJChanged(val index: Int) : SimulationState
-    data class Swap(val i: Int, val j: Int) : SimulationState
-    data object Finished : SimulationState
+    data class PointerJChanged(val index: Int, override val code: String) : SimulationState
+    data class Swap(val i: Int, val j: Int, override val code: String) : SimulationState
+    data class Finished( override val code: String) : SimulationState
 
 }

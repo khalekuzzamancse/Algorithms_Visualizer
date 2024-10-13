@@ -29,6 +29,8 @@ internal class BubbleSortViewModel(
     val inputMode = _inputMode.asStateFlow()
     val arrayController = MutableStateFlow<VisualArrayController?>(null)
     //Will be used for reset that is why observable
+    private val _code = MutableStateFlow<String?>(null)
+    val code = _code.asStateFlow()
 
     val autoPlayer = createAutoPlayer()
 
@@ -44,8 +46,10 @@ internal class BubbleSortViewModel(
 
 
     fun onNext() {
+        val state = simulator.next()
+        _code.update { state.code }
         arrayController.value?.let { arrayController ->
-            when (val state = simulator.next()) {
+            when (state) {
                 is SimulationState.PointerIChanged -> {
                     val index=state.index
                     arrayController.movePointer(label = "i", index =index)

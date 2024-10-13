@@ -1,6 +1,8 @@
 package selectionsort.infrastructure
 
+import selectionsort.domain.model.CodeStateModel
 import selectionsort.domain.model.SimulationState
+import selectionsort.domain.service.PseudocodeGenerator
 
 
 internal class Iterator<T : Comparable<T>>(array: List<T>) {
@@ -9,25 +11,33 @@ internal class Iterator<T : Comparable<T>>(array: List<T>) {
     private val length = array.size
     private val lastIndex = length - 1
     private val sortedList = array.toList().toMutableList()//copy-list
+    private var model = CodeStateModel(len = "$length", list = "$sortedList")
+    private fun CodeStateModel.toCode() = PseudocodeGenerator.generate(this)
+
     fun start() = sequence {
         i = 0
-        yield(SimulationState.PointerIChanged(index = i))
+        model = model.copy(i = "0", list = "$sortedList")
+        yield(SimulationState.PointerIChanged(index = i, model.toCode()))
 
         while (i < lastIndex) { //for ( i =0 ;i <length ; i++)
-
-            yield(SimulationState.PointerIChanged(index = i))
+            model = model.copy(i = "$i")
+            yield(SimulationState.PointerIChanged(index = i,model.toCode()))
 
             val minIndex = findMinimumIndex(i)
+            val isFound=isMinFound(i,minIndex)
 
-            yield(SimulationState.PointerMinIndexChanged(index = minIndex))
+            model = model.copy(minIndex = if (isFound)"$minIndex" else "null", isMinFound = "$isFound",list = "$sortedList")
+
+            yield(SimulationState.PointerMinIndexChanged(index = minIndex, code = model.toCode()))
 
             if (isMinFound(i, minIndex)) {
                 swap(i, minIndex)
-                yield(SimulationState.Swap(i = i, j = minIndex))
+                model = model.copy(swap = "swapped(${sortedList[i]},${sortedList[minIndex]})",list = "$sortedList")
+                yield(SimulationState.Swap(i = i, j = minIndex, code = model.toCode()))
             }
-
             i++
-            yield(SimulationState.ClearMinIndex)
+            model=model.minIndexDead().isMinFoundDead().swapDead()
+            yield(SimulationState.ClearMinIndex(model.toCode()))
         }
     }
 

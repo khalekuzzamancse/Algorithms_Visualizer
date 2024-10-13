@@ -29,6 +29,8 @@ import core.commonui.SimulationScreenEvent
 import core.commonui.SimulationScreenState
 import core.commonui.SimulationSlot
 import core.commonui.ArrayInputDialog
+import core.commonui.CodeViewer
+import core.commonui.Token
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -49,9 +51,21 @@ fun InsertionSortRoute(modifier: Modifier = Modifier, navigationIcon: @Composabl
         modifier = modifier,
         state = state,
         navigationIcon = navigationIcon,
-        disableControls =showInputDialog,
+        disableControls = showInputDialog,
         resultSummary = { },
-        pseudoCode = { },
+        pseudoCode = { mod ->
+            val code = viewModel.code.collectAsState().value
+            if (code != null)
+                CodeViewer(
+                    modifier = mod,
+                    code = code,
+                    token = Token(
+                        literal = emptyList(),
+                        function = emptyList(),
+                        identifier = emptyList()
+                    )
+                )
+        },
         visualization = {
             if (showInputDialog) {
                 ArrayInputDialog(
