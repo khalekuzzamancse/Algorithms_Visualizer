@@ -2,6 +2,7 @@ package graphbfs.infrastructure.factory
 
 import graphbfs.domain.model.GraphModel
 import graphbfs.domain.model.SimulationState
+import graphbfs.domain.service.PseudocodeGenerator
 import graphbfs.domain.service.Simulator
 import graphbfs.infrastructure.services.GraphImpl
 
@@ -10,11 +11,11 @@ class SimulatorImpl internal constructor(
     graphModel: GraphModel
 ) : Simulator {
 
-    private val iterator: Iterator<SimulationState>
+    private val iterator: kotlin.collections.Iterator<SimulationState>
 
 
     init {
-        val sequence = BFSSimulation(graph = GraphImpl(graphModel)).start()
+        val sequence = Iterator(graph = GraphImpl(graphModel)).start()
         iterator = sequence.iterator()
     }
 
@@ -28,7 +29,7 @@ class SimulatorImpl internal constructor(
         return if (iterator.hasNext()) {
             iterator.next()
         } else {
-            SimulationState.Finished
+            SimulationState.Finished(PseudocodeGenerator.rawCode)
         }
     }
 }

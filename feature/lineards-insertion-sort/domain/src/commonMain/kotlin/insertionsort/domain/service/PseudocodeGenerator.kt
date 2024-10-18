@@ -24,4 +24,6 @@ insertionSort(list) {
 """.trimStart()
         }
     }
+   private fun String?.showState()=this?.let { "//$it" } ?: ""
+
 }

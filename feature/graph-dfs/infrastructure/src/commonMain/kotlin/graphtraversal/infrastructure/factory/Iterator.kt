@@ -7,8 +7,26 @@ import graphtraversal.domain.model.SimulationState
 import graphtraversal.infrastructure.services.Graph
 import java.util.Stack
 
-
-class DFSSimulation internal constructor(
+/**
+ * DFS(graph,source){
+ *
+ * 	stack
+ * 	while(stack.isNotEmpty()){
+ * 	current=stack.peek()
+ * 	neihbour=getOneUnvisitedNeighborOf(current)
+ *
+ * 	allNeigbhorProcessed=(neighbor==null)
+ * 	if(allNeallNeigbhorProcessed)
+ * 		stack.pop()
+ * 	else
+ * 	  stack.push(neihbour)
+ *
+ * }
+ *
+ *
+ * }
+ */
+class Iterator internal constructor(
     private val graph: Graph
 ) {
     /**Stack of node id*/

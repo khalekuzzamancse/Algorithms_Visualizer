@@ -26,7 +26,6 @@ val applicationModules = listOf(
     ":applications:android",
     ":applications:desktop",
     ":applications:web",
-    ":applications:ios"
 )
 
 

@@ -102,6 +102,9 @@ private class _StateConsumer(
 ) {
 
     fun consume(state: SimulationState) {
+        val code=state.code
+        println("Code\n:$code")
+        println("-------------------------")
         when (state) {
             is SimulationState.ColorChanged -> onColorChanged(state.nodes)
             is SimulationState.ProcessingEdge -> handleProcessingEdge(state.id)
@@ -126,7 +129,7 @@ private class _StateConsumer(
                 handleControlAt(state.nodeId)
             }
 
-            SimulationState.Finished -> handleSimulationFinished()
+           is SimulationState.Finished -> handleSimulationFinished()
             else -> Unit // No action for other states
         }
     }
