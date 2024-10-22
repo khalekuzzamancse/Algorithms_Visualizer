@@ -26,9 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import core.commonui.CodeViewer
 import core.commonui.SimulationScreenEvent
 import core.commonui.SimulationScreenState
 import core.commonui.SimulationSlot
+import core.commonui.Token
 import graph.graph.GraphFactory
 import graph.graph.editor.ui.GraphEditor
 import graph.graph.viewer.GraphViewer
@@ -84,7 +86,20 @@ import graph.graph.viewer.GraphViewer
             state = state,
             resultSummary = { },
             navigationIcon = navigationIcon,
-            pseudoCode = { },
+            pseudoCode = {
+                    mod ->
+                val code = viewModel.code.collectAsState().value
+                if (code != null)
+                    CodeViewer(
+                        modifier = mod,
+                        code = code,
+                        token = Token(
+                            literal = emptyList(),
+                            function = emptyList(),
+                            identifier = emptyList()
+                        )
+                    )
+            },
             visualization = {
                 FlowRow {
                     GraphViewer(

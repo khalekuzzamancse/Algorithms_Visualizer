@@ -1,7 +1,9 @@
 package graphtraversal.infrastructure.factory
 
+import graphtraversal.domain.model.CodeStateModel
 import graphtraversal.domain.model.GraphModel
 import graphtraversal.domain.model.SimulationState
+import graphtraversal.domain.service.PseudocodeGenerator
 import graphtraversal.domain.service.Simulator
 import graphtraversal.infrastructure.services.GraphImpl
 
@@ -29,7 +31,7 @@ class SimulatorImpl internal constructor(
         return if (iterator.hasNext()) {
             iterator.next()
         } else {
-            SimulationState.Finished
+            SimulationState.Finished(PseudocodeGenerator.generate(CodeStateModel()))
         }
     }
 }

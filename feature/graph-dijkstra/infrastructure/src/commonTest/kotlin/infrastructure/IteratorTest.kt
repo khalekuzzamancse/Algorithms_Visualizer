@@ -9,7 +9,7 @@ import kotlin.test.Test
 import kotlinx.coroutines.*
 import kotlin.time.Duration.Companion.seconds
 
-class DijkstraSimulationTest {
+class IteratorTest {
 
     @Test
     fun test() = runBlocking {

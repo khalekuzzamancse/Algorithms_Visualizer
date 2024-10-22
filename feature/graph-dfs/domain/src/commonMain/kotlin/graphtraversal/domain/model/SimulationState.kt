@@ -1,17 +1,18 @@
 package graphtraversal.domain.model
 
-import kotlin.coroutines.Continuation
-
 sealed interface SimulationState {
-    data class ColorChanged(val nodes: Set<Pair<NodeModel, ColorModel>>) : SimulationState
-    data class ProcessingEdge(val id: String) : SimulationState
+    val code:String
+    data class Misc(override val code:String):SimulationState
+    data class ColorChanged(val nodes: Set<Pair<NodeModel, ColorModel>>,override val code:String) : SimulationState
+    data class ProcessingEdge(val id: String,override val code:String) : SimulationState
     data class NeighborSelection(
         val unvisitedNeighbors: List<String>,
-        val callback: (String) -> Unit
+        val callback: (String) -> Unit,
+        override val code:String
     ) : SimulationState
 
-    data class BackEdgeDetected(val edge: EdgeModel) : SimulationState
-    data object Finished : SimulationState
-    data class ExecutionAt(val nodeId: String) : SimulationState
+    data class BackEdgeDetected(val edge: EdgeModel,override val code:String) : SimulationState
+    data class Finished (override val code:String): SimulationState
+    data class ExecutionAt(val nodeId: String,override val code:String) : SimulationState
 
 }

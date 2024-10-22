@@ -2,65 +2,65 @@
 
 package graphtraversal.infrastructure.factory
 
+import graphtraversal.domain.model.CodeStateModel
 import graphtraversal.domain.model.ColorModel
 import graphtraversal.domain.model.SimulationState
+import graphtraversal.domain.service.PseudocodeGenerator
 import graphtraversal.infrastructure.services.Graph
 import java.util.Stack
 
-/**
- * DFS(graph,source){
- *
- * 	stack
- * 	while(stack.isNotEmpty()){
- * 	current=stack.peek()
- * 	neihbour=getOneUnvisitedNeighborOf(current)
- *
- * 	allNeigbhorProcessed=(neighbor==null)
- * 	if(allNeallNeigbhorProcessed)
- * 		stack.pop()
- * 	else
- * 	  stack.push(neihbour)
- *
- * }
- *
- *
- * }
- */
+
 class Iterator internal constructor(
     private val graph: Graph
 ) {
     /**Stack of node id*/
     private val stack = Stack<String>()
     private val source = graph.sourceNodeId
-
+    private var model = CodeStateModel()
+    private fun CodeStateModel._toCode() = PseudocodeGenerator.generate(this)
     fun start() = sequence {
-
         _initialize()
 
         stack.push(source)
         graph.updateColor(source, ColorModel.Gray)
-
         _onColorChanged(source, ColorModel.Gray)
+        model = model.copy(stack = "$stack")
+        yield(SimulationState.Misc(model._toCode()))//This pause is just for show the stack state
+
         while (stack.isNotEmpty()) {
             val current = stack.peek()
-            yield(SimulationState.ExecutionAt(current))
+            model = model.copy(stack = "$stack", current = current, stackIsNotEmpty = "true")
+
+            yield(SimulationState.ExecutionAt(current, code = model._toCode()))
             val unvisitedNeighbours = graph.getUnvisitedNeighbourOf(current)
 
             val hasAllNeighbourVisited = unvisitedNeighbours.isEmpty()
+            model = model.copy(hasAllNeighbourProcessed = "$hasAllNeighbourVisited")
+
             if (hasAllNeighbourVisited) {
                 stack.pop()
                 graph.updateColor(current, ColorModel.Black)
                 _onColorChanged(current, ColorModel.Black)
+                model =
+                    model.copy(stack = "$stack", current = current, oneUnvisitedNeighbour = "null")
             } else {
                 var selectedNeighbour = unvisitedNeighbours.first()
                 if (unvisitedNeighbours.size > 1) {
-                    yield(SimulationState.NeighborSelection(
-                        unvisitedNeighbors = unvisitedNeighbours,
-                        callback = {
-                            selectedNeighbour = it
-                        }
-                    ))
+                    yield(
+                        SimulationState.NeighborSelection(
+                            unvisitedNeighbors = unvisitedNeighbours,
+                            callback = {
+                                selectedNeighbour = it
+                            },
+                            code = model._toCode()
+                        ),
+                    )
                 }
+                model = model.copy(
+                    stack = "$stack",
+                    current = current,
+                    oneUnvisitedNeighbour = selectedNeighbour
+                )
 
                 graph.updateColor(selectedNeighbour, ColorModel.Gray)
                 stack.push(selectedNeighbour)
@@ -70,9 +70,14 @@ class Iterator internal constructor(
                 }
                 _onColorChanged(selectedNeighbour, ColorModel.Gray)
             }
+            model = model
+                .killCurrent()
+                .killOneUnvisitedNeighbour()
+                .killStackIsEmpty()
+                .killHasAllNeighbourProcessed()
+
         }
-
-
+        model = model.copy(stack = "$stack", stackIsNotEmpty = "false")
 
     }
 
@@ -91,8 +96,9 @@ class Iterator internal constructor(
             SimulationState.ColorChanged(
                 nodeIds.mapNotNull { nodeId ->
                     graph.getNode(nodeId)?.let { node -> Pair(node, color) }
-                }.toSet()
-            )
+                }.toSet(),
+                code = model._toCode()
+            ),
         )
     }
 
@@ -104,7 +110,8 @@ class Iterator internal constructor(
             SimulationState.ColorChanged(
                 setOfNotNull(
                     graph.getNode(nodeId)?.let { node -> Pair(node, color) }
-                )
+                ),
+                code = model._toCode()
             )
         )
     }
@@ -113,7 +120,7 @@ class Iterator internal constructor(
         edgeId: String,
     ) {
         yield(
-            SimulationState.ProcessingEdge(edgeId)
+            SimulationState.ProcessingEdge(edgeId, code = model._toCode())
         )
     }
 

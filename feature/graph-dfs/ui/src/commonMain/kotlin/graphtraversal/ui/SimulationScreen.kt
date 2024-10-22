@@ -26,18 +26,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import core.commonui.CodeViewer
 import core.commonui.SimulationScreenEvent
 import core.commonui.SimulationScreenState
 import core.commonui.SimulationSlot
+import core.commonui.Token
 import graph.graph.GraphFactory
 import graph.graph.editor.ui.GraphEditor
 import graph.graph.viewer.GraphViewer
 
 
-
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun DfsSimulation( navigationIcon: @Composable () -> Unit,) {
+fun DfsSimulation(navigationIcon: @Composable () -> Unit) {
 
     val color = NodeStatusColor(
         undiscovered = MaterialTheme.colorScheme.secondaryContainer,
@@ -50,9 +51,9 @@ fun DfsSimulation( navigationIcon: @Composable () -> Unit,) {
         )
     }
     val neighborSelector = viewModel.neighborSelector
-    val autoPlayer=viewModel.autoPlayer
+    val autoPlayer = viewModel.autoPlayer
     val showDialog = neighborSelector.neighbors.collectAsState().value.isNotEmpty()
-    val inputMode=viewModel.inputMode.collectAsState().value
+    val inputMode = viewModel.inputMode.collectAsState().value
 
     if (showDialog) {
         NodeSelectionDialog(
@@ -69,8 +70,8 @@ fun DfsSimulation( navigationIcon: @Composable () -> Unit,) {
     }
     if (inputMode) {
         GraphEditor(
-            initialGraph = GraphFactory.getDFSDemoGraph()
-            ,navigationIcon = navigationIcon,
+            initialGraph = GraphFactory.getDFSDemoGraph(),
+            navigationIcon = navigationIcon,
         ) { result ->
             viewModel.onGraphCreated(result)
             // println(result)
@@ -83,7 +84,19 @@ fun DfsSimulation( navigationIcon: @Composable () -> Unit,) {
             state = state,
             resultSummary = { },
             navigationIcon = navigationIcon,
-            pseudoCode = { },
+            pseudoCode = { mod ->
+                val code = viewModel.code.collectAsState().value
+                if (code != null)
+                    CodeViewer(
+                        modifier = mod,
+                        code = code,
+                        token = Token(
+                            literal = emptyList(),
+                            function = emptyList(),
+                            identifier = emptyList()
+                        )
+                    )
+            },
             visualization = {
                 FlowRow {
                     GraphViewer(
@@ -100,7 +113,7 @@ fun DfsSimulation( navigationIcon: @Composable () -> Unit,) {
                 when (event) {
                     is SimulationScreenEvent.AutoPlayRequest -> {
 
-                      autoPlayer.autoPlayRequest(event.time)
+                        autoPlayer.autoPlayRequest(event.time)
                     }
 
                     SimulationScreenEvent.NextRequest -> viewModel.onNext()

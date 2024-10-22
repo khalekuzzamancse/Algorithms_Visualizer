@@ -1,8 +1,10 @@
 package infrastructure.factory
 
+import domain.model.CodeStateModel
 import domain.model.NodeModel
 import domain.model.SimulationState
 import domain.service.Graph
+import domain.service.PseudocodeGenerator
 import domain.service.Simulator
 
 class SimulatorImpl internal  constructor(
@@ -10,14 +12,15 @@ class SimulatorImpl internal  constructor(
     startNode: NodeModel
 ) : Simulator {
 
-    private val iterator: Iterator<SimulationState>
+    private val iterator: kotlin.collections.Iterator<SimulationState>
 
 
     init {
         // Initialize the sequence and get its iterator
 
         println("startNode:$startNode")
-        val dijkstraSequence = DijkstraSimulation().runDijkstra(graph as GraphImpl, startNode)
+        val dijkstraSequence = Iterator()
+            .runDijkstra(graph as GraphImpl, startNode)
         iterator = dijkstraSequence.iterator()
     }
 
@@ -31,7 +34,7 @@ class SimulatorImpl internal  constructor(
         return if (iterator.hasNext()) {
             iterator.next()
         } else {
-            SimulationState.Finished // Return a finished state when there are no more steps
+            SimulationState.Finished(PseudocodeGenerator.generate(CodeStateModel())) // Return a finished state when there are no more steps
         }
     }
 }

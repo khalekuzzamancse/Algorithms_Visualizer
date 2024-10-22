@@ -32,6 +32,8 @@ class SimulationViewModel(
     lateinit var graphController: GraphViewerController
     val autoPlayer = AutoPlayerImpl(::onNext)
     val neighborSelector = NeighborSelectorImpl()
+    private val _code = MutableStateFlow<String?>(null)
+    val code = _code.asStateFlow()
 
 
     fun onGraphCreated(result: GraphResult) {
@@ -54,6 +56,7 @@ class SimulationViewModel(
 
     fun onNext() {
         val state = simulator.next()
+        _code.update { state.code }
         consumer.consume(state)
     }
 
@@ -103,8 +106,6 @@ private class _StateConsumer(
 
     fun consume(state: SimulationState) {
         val code=state.code
-        println("Code\n:$code")
-        println("-------------------------")
         when (state) {
             is SimulationState.ColorChanged -> onColorChanged(state.nodes)
             is SimulationState.ProcessingEdge -> handleProcessingEdge(state.id)

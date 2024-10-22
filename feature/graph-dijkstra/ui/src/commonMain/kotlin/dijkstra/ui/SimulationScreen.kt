@@ -26,9 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import core.commonui.CodeViewer
 import core.commonui.SimulationScreenEvent
 import core.commonui.SimulationScreenState
 import core.commonui.SimulationSlot
+import core.commonui.Token
 import graph.graph.GraphFactory
 import graph.graph.editor.ui.GraphEditor
 import graph.graph.viewer.GraphViewer
@@ -36,7 +38,7 @@ import graph.graph.viewer.GraphViewer
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun DijkstraSimulationScreen( navigationIcon: @Composable () -> Unit,) {
+fun DijkstraSimulationScreen(navigationIcon: @Composable () -> Unit) {
 
     val color = StatusColor(
         processingEdge = MaterialTheme.colorScheme.primary,
@@ -47,8 +49,8 @@ fun DijkstraSimulationScreen( navigationIcon: @Composable () -> Unit,) {
 
     if (viewModel.isInputMode.collectAsState().value) {
         GraphEditor(
-            initialGraph = GraphFactory.getDijkstraDemoGraph()
-            ,navigationIcon = navigationIcon,
+            initialGraph = GraphFactory.getDijkstraDemoGraph(),
+            navigationIcon = navigationIcon,
         ) { result ->
             viewModel.onGraphCreated(result)
         }
@@ -60,7 +62,19 @@ fun DijkstraSimulationScreen( navigationIcon: @Composable () -> Unit,) {
             state = state,
             resultSummary = { },
             navigationIcon = navigationIcon,
-            pseudoCode = { },
+            pseudoCode = { mod ->
+                val code = viewModel.code.collectAsState().value
+                if (code != null)
+                    CodeViewer(
+                        modifier = mod,
+                        code = code,
+                        token = Token(
+                            literal = emptyList(),
+                            function = emptyList(),
+                            identifier = emptyList()
+                        )
+                    )
+            },
             visualization = {
                 FlowRow {
                     GraphViewer(
@@ -71,7 +85,6 @@ fun DijkstraSimulationScreen( navigationIcon: @Composable () -> Unit,) {
 
                     _NodeStatusIndicator(color)
                 }
-
 
 
             },
@@ -108,8 +121,6 @@ fun DijkstraSimulationScreen( navigationIcon: @Composable () -> Unit,) {
 
 
 }
-
-
 
 
 @Composable

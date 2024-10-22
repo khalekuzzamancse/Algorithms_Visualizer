@@ -26,6 +26,9 @@ class SimulationViewModel (
 
     private val _isInputMode = MutableStateFlow(true)
     val isInputMode = _isInputMode.asStateFlow()
+    private val _code = MutableStateFlow<String?>(null)
+    val code = _code.asStateFlow()
+
 
 
 
@@ -37,11 +40,13 @@ class SimulationViewModel (
 
     }
     fun onNext() {
-        when (val state = simulator.next()) {
+        val state = simulator.next()
+        _code.update { state.code }
+        when ( state ) {
             is SimulationState.ProcessingNode -> handleProcessingNode(state.node)
             is SimulationState.ProcessingEdge -> handleProcessingEdge(state.edge)
             is SimulationState.DistanceUpdated -> handleDistanceUpdated(state.nodes)
-            SimulationState.Finished -> handleSimulationFinished()
+            is SimulationState.Finished -> handleSimulationFinished()
             else -> Unit // No action for other states
         }
     }
