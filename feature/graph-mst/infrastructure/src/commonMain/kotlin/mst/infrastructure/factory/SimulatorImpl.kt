@@ -3,6 +3,8 @@ package mst.infrastructure.factory
 import mst.domain.model.EdgeModel
 import mst.domain.model.NodeModel
 import mst.domain.model.SimulationState
+import mst.domain.service.CodeStateModel
+import mst.domain.service.PseudocodeGenerator
 import mst.domain.service.Simulator
 
 class SimulatorImpl internal  constructor(
@@ -11,11 +13,12 @@ class SimulatorImpl internal  constructor(
     startNode: NodeModel
 ) : Simulator {
 
-    private val iterator: Iterator<SimulationState>
+    private val iterator: kotlin.collections.Iterator<SimulationState>
 
 
     init {
-        val sequence = PrimSimulation(graph = GraphImpl(nodes,edges,startNode)).start()
+        val sequence = Iterator(graph = GraphImpl(nodes,edges,startNode))
+            .start()
         iterator = sequence.iterator()
     }
 
@@ -29,7 +32,7 @@ class SimulatorImpl internal  constructor(
         return if (iterator.hasNext()) {
             iterator.next()
         } else {
-            SimulationState.Finished // Return a finished state when there are no more steps
+            SimulationState.Finished(PseudocodeGenerator.generate(CodeStateModel())) // Return a finished state when there are no more steps
         }
     }
 }

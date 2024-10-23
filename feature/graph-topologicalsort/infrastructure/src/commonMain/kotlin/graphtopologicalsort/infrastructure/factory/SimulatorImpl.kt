@@ -10,11 +10,12 @@ class SimulatorImpl internal constructor(
     graphModel: GraphModel
 ) : Simulator {
 
-    private val iterator: Iterator<SimulationState>
+    private val iterator: kotlin.collections.Iterator<SimulationState>
 
 
     init {
-        val sequence = TopologicalSortSimulation(graph = GraphImpl(graphModel)).start()
+        val sequence = Iterator(graph = GraphImpl(graphModel))
+            .start()
         iterator = sequence.iterator()
     }
 

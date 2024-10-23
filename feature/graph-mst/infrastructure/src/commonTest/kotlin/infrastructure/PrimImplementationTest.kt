@@ -2,9 +2,8 @@ package infrastructure
 
 import mst.domain.model.EdgeModel
 import mst.domain.model.NodeModel
-import mst.domain.model.SimulationState
 import mst.infrastructure.factory.GraphImpl
-import mst.infrastructure.factory.PrimSimulation
+import mst.infrastructure.factory.Iterator
 import kotlin.test.Test
 import kotlin.test.fail
 
@@ -39,7 +38,7 @@ class PrimImplementationTest {
         )
 
         // Run Prim's algorithm starting from node A
-        PrimSimulation(graph, nodeA).start()
+        Iterator(graph, nodeA).start()
         fail()
         //when (state) {
 //                is SimulationState.ProcessingNode -> println("Processing node: ${state.node.label}")

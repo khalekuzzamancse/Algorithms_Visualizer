@@ -9,7 +9,7 @@ import graphtopologicalsort.infrastructure.services.Graph
 
 import java.util.*
 
-class TopologicalSortSimulation internal constructor(
+class Iterator internal constructor(
     private val graph: Graph
 ) {
     /** Stack for DFS traversal */

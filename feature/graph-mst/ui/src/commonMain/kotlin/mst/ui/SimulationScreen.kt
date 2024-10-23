@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,9 +28,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import core.commonui.CodeViewer
 import core.commonui.SimulationScreenEvent
 import core.commonui.SimulationScreenState
 import core.commonui.SimulationSlot
+import core.commonui.Token
 import graph.graph.GraphFactory
 import graph.graph.editor.ui.GraphEditor
 import graph.graph.viewer.GraphViewer
@@ -36,7 +40,7 @@ import graph.graph.viewer.GraphViewer
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun PrimsSimulationScreen( navigationIcon: @Composable () -> Unit,) {
+fun PrimsSimulationScreen(navigationIcon: @Composable () -> Unit) {
     val color = StatusColor(
         processingEdge = MaterialTheme.colorScheme.primary,
         processedNode = MaterialTheme.colorScheme.tertiary
@@ -46,8 +50,8 @@ fun PrimsSimulationScreen( navigationIcon: @Composable () -> Unit,) {
 
     if (viewModel.isInputMode.collectAsState().value) {
         GraphEditor(
-            initialGraph = GraphFactory.getMSTDemoGraph()
-            ,navigationIcon = navigationIcon,
+            initialGraph = GraphFactory.getMSTDemoGraph(),
+            navigationIcon = navigationIcon,
         ) { result ->
             viewModel.onGraphCreated(result)
             // println(result)
@@ -56,11 +60,23 @@ fun PrimsSimulationScreen( navigationIcon: @Composable () -> Unit,) {
         var state by remember { mutableStateOf(SimulationScreenState()) }
 
         SimulationSlot(
-            modifier = Modifier,
+            modifier = Modifier.verticalScroll(rememberScrollState()),
             state = state,
             resultSummary = { },
             navigationIcon = navigationIcon,
-            pseudoCode = { },
+            pseudoCode = { mod ->
+                val code = viewModel.code.collectAsState().value
+                if (code != null)
+                    CodeViewer(
+                        modifier = mod,
+                        code = code,
+                        token = Token(
+                            literal = emptyList(),
+                            function = emptyList(),
+                            identifier = emptyList()
+                        )
+                    )
+            },
             visualization = {
                 FlowRow {
                     GraphViewer(
@@ -71,7 +87,6 @@ fun PrimsSimulationScreen( navigationIcon: @Composable () -> Unit,) {
 
                     _NodeStatusIndicator(color)
                 }
-
 
 
             },
