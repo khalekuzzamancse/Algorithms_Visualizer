@@ -10,7 +10,15 @@ import graph.graph.editor.model.Range
 internal class EdgeSelectionControllerImpl(
     private val edges: List<EditorEdgeMode>,
     private val tappedPosition: Offset,
-) {
+
+    ) {
+    //These color works for both dark and white and need to scope of composable function that is why
+    //Defining here
+    private val turquoiseBlue = Color(0xFF00B8D4)
+    private val sunsetOrange = Color(0xFFFF7043)
+    private val limeGreen = Color(0xFFC0CA33)
+
+
     private var selectedEdge: EditorEdgeMode? = null
 
     init {
@@ -31,25 +39,24 @@ internal class EdgeSelectionControllerImpl(
             val highLightedEdge = when (point) {
                 EdgePoint.Start -> activeEdge.copy(
                     selectedPoint = EdgePoint.Start,
-                    pathColor = Color.Blue,
+                    pathColor =turquoiseBlue,
                     showSelectedPoint = true
                 )
 
                 EdgePoint.End -> activeEdge.copy(
                     selectedPoint = EdgePoint.End,
-                    pathColor = Color.Blue,
                     showSelectedPoint = true
                 )
 
                 EdgePoint.Control -> activeEdge.copy(
                     selectedPoint = EdgePoint.Control,
-                    pathColor = Color.Blue,
+                    pathColor =turquoiseBlue,
                     showSelectedPoint = true
                 )
 
                 else -> activeEdge.copy(
                     selectedPoint = EdgePoint.None,
-                    pathColor = Color.Black
+                    pathColor = sunsetOrange
                 )
             }
             var updatedEdges = edges - activeEdge
@@ -61,7 +68,7 @@ internal class EdgeSelectionControllerImpl(
     }
 
     private fun deSelectEdges() =
-        edges.map { it.copy(selectedPoint = EdgePoint.None, pathColor = Color.Black) }
+        edges.map { it.copy(selectedPoint = EdgePoint.None, pathColor = EditorEdgeMode.pathDefaultColor) }
 
 
     private fun findSelectedPoint(): EdgePoint {
@@ -92,20 +99,19 @@ internal class EdgeSelectionControllerImpl(
         target: Offset
     ): Boolean {
         //Can causes crash
-     return try {
-          val minTouchTargetPx = edge.minTouchTargetPx
-          return Range(
-              target.x - minTouchTargetPx / 2,
-              target.x + minTouchTargetPx / 2
-          ).contains(tappedPosition.x) &&
-                  Range(
-                      target.y - minTouchTargetPx / 2,
-                      target.y + minTouchTargetPx / 2
-                  ).contains(tappedPosition.y)
-      }
-      catch (e:Exception){
-          false
-      }
+        return try {
+            val minTouchTargetPx = edge.minTouchTargetPx
+            return Range(
+                target.x - minTouchTargetPx / 2,
+                target.x + minTouchTargetPx / 2
+            ).contains(tappedPosition.x) &&
+                    Range(
+                        target.y - minTouchTargetPx / 2,
+                        target.y + minTouchTargetPx / 2
+                    ).contains(tappedPosition.y)
+        } catch (e: Exception) {
+            false
+        }
     }
 
 //        return tappedPosition.x in Range(

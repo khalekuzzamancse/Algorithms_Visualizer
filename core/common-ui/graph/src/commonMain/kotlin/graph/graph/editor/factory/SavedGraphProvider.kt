@@ -16,35 +16,30 @@ internal object SavedGraphProvider {
                 label = "1",
                 topLeft = Offset(384.0f, 48.0f),
                 exactSizePx = 48.0f,
-                color = Color(1.0f, 0.0f, 0.0f, 1.0f)
             ),
             EditorNodeModel(
                 id = "4eb11290-f8e5-4329-9b0f-94ee6fe6590c",
                 label = "2",
                 topLeft = Offset(312.0f, 121.0f),
                 exactSizePx = 48.0f,
-                color = Color(1.0f, 0.0f, 0.0f, 1.0f)
             ),
             EditorNodeModel(
                 id = "3aeb3a6b-e8fc-4182-af07-c937f54c88aa",
                 label = "3",
                 topLeft = Offset(448.0f, 118.0f),
                 exactSizePx = 48.0f,
-                color = Color(1.0f, 0.0f, 0.0f, 1.0f)
             ),
             EditorNodeModel(
                 id = "41bb5ef6-d258-4f90-b618-d7a48ce5b4be",
                 label = "4",
                 topLeft = Offset(243.0f, 192.9f),
                 exactSizePx = 48.0f,
-                color = Color(1.0f, 0.0f, 0.0f, 1.0f)
             ),
             EditorNodeModel(
                 id = "1942ed99-cfa8-4e49-ac5b-d808b110e263",
                 label = "5",
                 topLeft = Offset(365.8f, 198.1f),
                 exactSizePx = 48.0f,
-                color = Color(1.0f, 0.0f, 0.0f, 1.0f)
             )
         )
         val edges = listOf(
@@ -97,56 +92,48 @@ internal object SavedGraphProvider {
                 label = "C",
                 topLeft = Offset(120.9f, 11.0f),
                 exactSizePx = 48.0f,
-                color = Color(1.0f, 0.0f, 0.0f, 1.0f)
             ),
             EditorNodeModel(
                 id = "00046efa-b70a-46ee-a427-ffed7f17632a",
                 label = "Java",
                 topLeft = Offset(121.3f, 108.0f),
                 exactSizePx = 48.0f,
-                color = Color(1.0f, 0.0f, 0.0f, 1.0f)
             ),
             EditorNodeModel(
                 id = "276fc056-4b8a-42a9-b92b-438fbf535ea5",
                 label = "DS",
                 topLeft = Offset(122.1f, 209.0f),
                 exactSizePx = 48.0f,
-                color = Color(1.0f, 0.0f, 0.0f, 1.0f)
             ),
             EditorNodeModel(
                 id = "bb901cf5-bed0-436f-8a99-d9e005c90a41",
                 label = "SE",
                 topLeft = Offset(20.8f, 286.9f),
                 exactSizePx = 48.0f,
-                color = Color(1.0f, 0.0f, 0.0f, 1.0f)
             ),
             EditorNodeModel(
                 id = "719078b9-4c8c-4288-a28b-27e05a856f6d",
                 label = "OS",
                 topLeft = Offset(117.2f, 288.9f),
                 exactSizePx = 48.0f,
-                color = Color(1.0f, 0.0f, 0.0f, 1.0f)
             ),
             EditorNodeModel(
                 id = "40d6b42a-eac6-4885-98e6-0ee0b1da80b6",
                 label = "Algo",
                 topLeft = Offset(200.1f, 290.1f),
                 exactSizePx = 48.0f,
-                color = Color(1.0f, 0.0f, 0.0f, 1.0f)
             ),
             EditorNodeModel(
                 id = "0ec44d60-3ffb-4967-9016-5e7f7208168a",
                 label = "DM",
                 topLeft = Offset(17.0f, 153.0f),
                 exactSizePx = 48.0f,
-                color = Color(1.0f, 0.0f, 0.0f, 1.0f)
             ),
             EditorNodeModel(
                 id = "6931ab72-1ed8-42e1-82a1-1e01c39f4f14",
                 label = "AI",
                 topLeft = Offset(114.2f, 383.9f),
                 exactSizePx = 48.0f,
-                color = Color(1.0f, 0.0f, 0.0f, 1.0f)
             )
         )
 
@@ -230,7 +217,6 @@ internal object SavedGraphProvider {
                 label = "C",
                 topLeft = Offset(360.0f, 49.9f),
                 exactSizePx = 48.0f,
-                color = Color(1.0f, 0.0f, 0.0f, 1.0f)
             ),
             EditorNodeModel(
                 id = "D",

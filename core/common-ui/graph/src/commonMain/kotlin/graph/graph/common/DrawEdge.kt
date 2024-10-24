@@ -6,8 +6,10 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.unit.Dp
+import core.commonui.colors
 import graph.graph.common.model.EditorEdgeMode
 import graph.graph.editor.model.EdgePoint
 
@@ -57,7 +59,12 @@ private fun DrawScope.drawEdgeCost(
             drawText(
                 text = cost,
                 topLeft = pathCenter - Offset(textHalfWidth.toFloat(), 0f),
-                textMeasurer = textMeasurer
+                textMeasurer = textMeasurer,
+                style = TextStyle(
+                    //This color work well in both dark and light theme,since edge cost make sense to use same color as edge
+                    color = EditorEdgeMode.pathDefaultColor
+                )
+
             )
         }
     }

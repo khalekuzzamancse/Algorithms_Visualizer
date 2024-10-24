@@ -4,17 +4,22 @@ package graph.graph.common.model
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+
 /**
-* - Only id,label,topLeft ,exactSizePx ,distance , need for drawing means for viewer
-*/
+ * - Only id,label,topLeft ,exactSizePx ,distance , need for drawing means for viewer
+ */
 data class EditorNodeModel(
     val id: String,
-    val distance:String?=null,
+    val distance: String? = null,
     val label: String,
-    val topLeft: Offset = Offset.Zero,
+    val topLeft: Offset,
     val exactSizePx: Float,
-    val color: Color = Color.Red,
+    val color: Color = defaultColor
 ) {
+    companion object {
+        /** limeGreen ,work both dark and light theme,can be used when reset such as deselect */
+        val defaultColor = Color(0xFFC0CA33)
+    }
 
     val bottomRight = Offset(topLeft.x + exactSizePx, topLeft.y + exactSizePx)
     fun isInsideNode(position: Offset): Boolean {
@@ -27,7 +32,11 @@ data class EditorNodeModel(
 
     // Custom toString implementation
     override fun toString(): String {
-        return """${this.javaClass.simpleName}(id="$id", label="$label", topLeft=${formatOffset(topLeft)}, exactSizePx=${exactSizePx}f)"""
+        return """${this.javaClass.simpleName}(id="$id", label="$label", topLeft=${
+            formatOffset(
+                topLeft
+            )
+        }, exactSizePx=${exactSizePx}f)"""
     }
 
     // Method to format Offset as Offset(xf, yf)

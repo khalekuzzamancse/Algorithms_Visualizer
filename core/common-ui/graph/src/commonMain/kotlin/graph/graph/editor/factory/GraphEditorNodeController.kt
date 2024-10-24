@@ -2,7 +2,6 @@ package graph.graph.editor.factory
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import graph.graph.common.model.EditorEdgeMode
 import graph.graph.common.model.EditorNodeModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +17,12 @@ internal data class GraphEditorNodeController(
     private val deviceDensity: Float,
 ) {
 
+    //These color works for both dark and white and need to scope of composable function that is why
+    //Defining here
+    private val turquoiseBlue = Color(0xFF00B8D4)
+    private val sunsetOrange = Color(0xFFFF7043)
 
+    private val selectedNodeColor = turquoiseBlue
     //    private val _nodes = MutableStateFlow(emptySet<VisualNode>())
     private val _nodes= MutableStateFlow<Set<EditorNodeModel>>(emptySet())
     val nodes = _nodes.asStateFlow()
@@ -57,17 +61,16 @@ internal data class GraphEditorNodeController(
 
     private fun deactivateAllNodes() {
         _selectedEditorNodeModel.value = null
-        val selectedNodeColor = Color.Blue
         _nodes.update { nodeSet ->
             nodeSet.map {
-                if (it.color == selectedNodeColor) it.copy(color = Color.Red)
+                if (it.color == selectedNodeColor) it.copy(color = EditorNodeModel.defaultColor)
                 else it
             }.toSet()
         }
     }
 
     private fun EditorNodeModel.makeActive(): EditorNodeModel {
-        val activeNodeColor = Color.Blue
+        val activeNodeColor =sunsetOrange
         return copy(color = activeNodeColor)
     }
 

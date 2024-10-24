@@ -11,6 +11,7 @@ import kotlin.math.atan2
 
 /**
  * - Only id,start,end,control,directed need for drawing means for viewer
+ * @property pathColor default is sunsetOrange
  */
 data class EditorEdgeMode internal constructor(
     val id: String,
@@ -19,8 +20,8 @@ data class EditorEdgeMode internal constructor(
     val control: Offset,
     val cost: String? = null,
     val directed: Boolean = false,
-    val pathColor: Color = Color.Black,
-    val selectedPointColor: Color = Color.Red,
+    val pathColor: Color =pathDefaultColor,
+    val selectedPointColor: Color = selectedPointDefaultColor,
     val showSelectedPoint: Boolean = false,
     val anchorPointRadius: Dp = 4.dp,
     internal val selectedPoint: EdgePoint = EdgePoint.None,
@@ -28,7 +29,15 @@ data class EditorEdgeMode internal constructor(
 ) {
     companion object {
         private val pathMeasurer = PathMeasure()
+        /**TurquoiseBlue work both dark and light theme, Used when select a point*/
+        val selectedPointDefaultColor = Color(0xFF00B8D4)
+
+        /**sunsetOrange work both dark and light theme,can be used when reset such as deselect*/
+        val pathDefaultColor = Color(0xFFFF7043)
     }
+
+
+
 
     val arrowHeadPosition: Offset
         get() {

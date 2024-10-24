@@ -49,7 +49,8 @@ internal data class GraphEditorControllerImpl(
         nextAddedEditorNodeModel = EditorNodeModel(
             id = label,//So that guaranteed to be unique
             label = label,
-            exactSizePx = nodeSizePx
+            exactSizePx = nodeSizePx,
+            topLeft = Offset.Zero//initially at origin
         )
         operationMode = GraphEditorMode.NodeAdd
 

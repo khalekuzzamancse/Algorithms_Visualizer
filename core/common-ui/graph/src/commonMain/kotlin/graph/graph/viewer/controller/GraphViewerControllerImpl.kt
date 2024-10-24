@@ -24,12 +24,17 @@ class GraphViewerControllerImpl internal constructor(
     nodes: Set<EditorNodeModel>,
     edges: Set<EditorEdgeMode>
 ) : GraphViewerController() {
+    //These color works for both dark and white and need to scope of composable function that is why
+    //Defining here
+    private val turquoiseBlue = Color(0xFF00B8D4)
+    private val sunsetOrange = Color(0xFFFF7043)
+    private val limeGreen = Color(0xFFC0CA33)
 
     private val canvasUtils = CanvasUtils(nodes, edges).trimExtraSpace().calculateCanvasSize()
     private val _nodes = MutableStateFlow(canvasUtils.nodes)
     private val _edges = MutableStateFlow(canvasUtils.edges)
-    private val nodColor = Color.Red
-    private val edgeColor = Color.Black
+    private val nodColor =limeGreen
+    private val edgeColor = sunsetOrange
     override val canvasSize = canvasUtils.canvasSize
     override val nodes: StateFlow<Set<EditorNodeModel>> = _nodes.asStateFlow()
     override val edges: StateFlow<Set<EditorEdgeMode>> = _edges.asStateFlow()
