@@ -9,7 +9,7 @@ import graph.graph.common.model.EditorNodeModel
 
 internal object SavedGraphProvider {
 
-    fun  getSampleGraph():Pair<List<EditorNodeModel>, List<EditorEdgeMode>>{
+    fun getSampleGraph(): Pair<List<EditorNodeModel>, List<EditorEdgeMode>> {
         val nodes = listOf(
             EditorNodeModel(
                 id = "c66097e1-0d1c-4c3d-b550-75c9787d054c",
@@ -80,9 +80,8 @@ internal object SavedGraphProvider {
                 minTouchTargetPx = 30.0f
             )
         )
-        return  Pair(nodes,edges)
+        return Pair(nodes, edges)
     }
-
 
 
     fun getTopologicalSortDemoGraph(): Pair<List<EditorNodeModel>, List<EditorEdgeMode>> {
@@ -454,8 +453,9 @@ internal object SavedGraphProvider {
         )
         return Pair(nodes, edges)
     }
-    fun getTree():Pair<List<EditorNodeModel>, List<EditorEdgeMode>>{
-        val nodes =listOf(
+
+    fun getTree(): Pair<List<EditorNodeModel>, List<EditorEdgeMode>> {
+        val nodes = listOf(
             EditorNodeModel(
                 id = "1",
                 label = "1",
@@ -487,37 +487,200 @@ internal object SavedGraphProvider {
                 exactSizePx = 48.0f
             )
         )
-       val edges=listOf(
-           EditorEdgeMode(
-               id = "1",
-               start = Offset(400.0f, 74.0f),
-               end = Offset(345.0f, 130.9f),
-               control = Offset(372.5f, 102.4f),
-               cost = null
-           ),
-           EditorEdgeMode(
-               id = "2",
-               start = Offset(323.0f, 150.0f),
-               end = Offset(276.1f, 203.0f),
-               control = Offset(299.6f, 176.5f),
-               cost = null
-           ),
-           EditorEdgeMode(
-               id = "3",
-               start = Offset(332.0f, 147.0f),
-               end = Offset(380.9f, 216.9f),
-               control = Offset(356.5f, 182.0f),
-               cost = null
-           ),
-           EditorEdgeMode(
-               id = "4",
-               start = Offset(413.0f, 68.0f),
-               end = Offset(467.0f, 131.9f),
-               control = Offset(440.0f, 99.9f),
-               cost = null
-           ))
-        return Pair(nodes,edges)
+        val edges = listOf(
+            EditorEdgeMode(
+                id = "1",
+                start = Offset(400.0f, 74.0f),
+                end = Offset(345.0f, 130.9f),
+                control = Offset(372.5f, 102.4f),
+                cost = null
+            ),
+            EditorEdgeMode(
+                id = "2",
+                start = Offset(323.0f, 150.0f),
+                end = Offset(276.1f, 203.0f),
+                control = Offset(299.6f, 176.5f),
+                cost = null
+            ),
+            EditorEdgeMode(
+                id = "3",
+                start = Offset(332.0f, 147.0f),
+                end = Offset(380.9f, 216.9f),
+                control = Offset(356.5f, 182.0f),
+                cost = null
+            ),
+            EditorEdgeMode(
+                id = "4",
+                start = Offset(413.0f, 68.0f),
+                end = Offset(467.0f, 131.9f),
+                control = Offset(440.0f, 99.9f),
+                cost = null
+            )
+        )
+        return Pair(nodes, edges)
     }
 
 
+}
+
+
+class GraphProvider(private val density: Float) {
+    val nodes = listOf(
+        EditorNodeModel(
+            id = "A",
+            label = "A",
+            topLeft = Offset(47.0f, 115.9f),
+            exactSizePx = 48.0f,
+        ),
+        EditorNodeModel(
+            id = "B",
+            label = "B",
+            topLeft = Offset(190.0f, 56.0f),
+            exactSizePx = 48.0f,
+        ),
+        EditorNodeModel(
+            id = "C",
+            label = "C",
+            topLeft = Offset(360.0f, 49.9f),
+            exactSizePx = 48.0f,
+        ),
+        EditorNodeModel(
+            id = "D",
+            label = "D",
+            topLeft = Offset(367.6f, 172.1f),
+            exactSizePx = 48.0f,
+        ),
+        EditorNodeModel(
+            id = "E",
+            label = "E",
+            topLeft = Offset(196.9f, 173.0f),
+            exactSizePx = 48.0f,
+        )
+    )
+    val edges = listOf(
+        // (A, B)
+        EditorEdgeMode(
+            id = "edge1",
+            start = Offset(87.0f, 131.0f),
+            end = Offset(190.9f, 89.0f),
+            control = Offset(140.9f, 110.0f),
+            cost = "10",
+        ),
+
+        // (A, E)
+        EditorEdgeMode(
+            id = "edge2",
+            start = Offset(81.0f, 155.0f),
+            end = Offset(198.9f, 190.9f),
+            control = Offset(141.0f, 173.0f),
+            cost = "5",
+            directed = false,
+        ),
+
+        // (B, E)
+        EditorEdgeMode(
+            id = "edge3",
+            start = Offset(208.0f, 176.0f),
+            end = Offset(206.0f, 90.1f),
+            control = Offset(187.1f, 139.1f),
+            cost = "3",
+            directed = false,
+        ),
+
+        // (E, B)
+        EditorEdgeMode(
+            id = "edge4",
+            start = Offset(222.0f, 94.0f),
+            end = Offset(229.0f, 185.9f),
+            control = Offset(255.5f, 131.6f),
+            cost = "2",
+            directed = false,
+        ),
+
+        // (C, D)
+        EditorEdgeMode(
+            id = "edge5",
+            start = Offset(370.0f, 90.0f),
+            end = Offset(380.0f, 177.9f),
+            control = Offset(344.6f, 137.9f),
+            cost = "4",
+            directed = false,
+        ),
+
+        // (D, C)
+        EditorEdgeMode(
+            id = "edge6",
+            start = Offset(397.0f, 177.0f),
+            end = Offset(396.0f, 92.1f),
+            control = Offset(430.4f, 133.1f),
+            cost = "6",
+            directed = false,
+        ),
+
+        // (E, C)
+        EditorEdgeMode(
+            id = "edge7",
+            start = Offset(234.0f, 186.0f),
+            end = Offset(360.9f, 83.0f),
+            control = Offset(300.4f, 134.5f),
+            cost = "9",
+            directed = false,
+        ),
+
+        // (B, E)
+        EditorEdgeMode(
+            id = "edge8",
+            start = Offset(239.0f, 195.0f),
+            end = Offset(370.9f, 190.0f),
+            control = Offset(302.4f, 195.0f),
+            cost = "2",
+            directed = false,
+        ),
+
+        // (D, A)
+        EditorEdgeMode(
+            id = "edge9",
+            start = Offset(375.0f, 183.0f),
+            end = Offset(95.1f, 141.0f),
+            control = Offset(228.1f, 163.5f),
+            cost = "7",
+            directed = false,
+        ),
+
+        // (B, C)
+        EditorEdgeMode(
+            id = "edge10",
+            start = Offset(233.9f, 78f),
+            end = Offset(360.6f, 77.2f),
+            control = Offset(298.0f, 77.7f),
+            cost = "1",
+            directed = false,
+        )
+    )
+
+    fun getDijkstraGraph(): Pair<List<EditorNodeModel>, List<EditorEdgeMode>> {
+//        println("DeviceDensity:$density")
+        //TODO:Convert value to DP first so that it works for any devices
+        //Then convert dp to px ,so final=density*currentOffset where current Offset will be treated as DP though it is in px
+        //But will works because we are taking the  density
+
+
+        return Pair(
+            nodes.map { node ->
+                node.copy(
+                    topLeft = node.topLeft * density,
+                    exactSizePx = node.exactSizePx * density
+                )
+            },
+            edges.map { edge ->
+                edge.copy(
+                    start = edge.start * density,
+                    end = edge.end * density,
+                    control = edge.control * density,
+                    minTouchTargetPx = edge.minTouchTargetPx * density
+                )
+            }
+        )
+
+    }
 }

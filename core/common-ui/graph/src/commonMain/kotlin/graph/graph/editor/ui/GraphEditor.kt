@@ -1,13 +1,13 @@
 package graph.graph.editor.ui
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -37,6 +37,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
@@ -66,16 +67,16 @@ import graph.graph.editor.ui.component.InputDialog
 
 @Composable
 fun GraphEditor(
-    density: Float = 1f,
+    density: Float = LocalDensity.current.density,
     hasDistance: Boolean = false,
     initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeMode>> = Pair(
         emptyList(),
         emptyList()
     ),
-    navigationIcon:@Composable ()->Unit,
+    navigationIcon: @Composable () -> Unit,
     onDone: (GraphResult) -> Unit,
 
-) {
+    ) {
     val hostState = remember { SnackbarHostState() }
     val controller: GraphEditorController = remember {
         GraphFactory.createGraphEditorController(
@@ -129,22 +130,22 @@ fun GraphEditor(
         Column(
             modifier = Modifier
                 .padding(scaffoldPadding)
-                .fillMaxSize()
-
         ) {
-
-            if (showGraphTypeInputDialog) {
-                GraphTypeInputDialog(controller.inputController::onGraphTypeSelected)
-            }
-
             if (!graphTypeHasTaken) {
                 Instruction(
                     onGraphTypeInputRequest = {
                         controller.inputController.onGraphTypeSelectionRequest()
                     }
                 )
+            } else {
+                _Editor(controller)
             }
 
+
+
+            if (showGraphTypeInputDialog) {
+                GraphTypeInputDialog(controller.inputController::onGraphTypeSelected)
+            }
 
 
             if (showNodeInputDialog) {
@@ -168,7 +169,7 @@ fun GraphEditor(
                     controller.inputController.onEdgeConstInput(it)
                 }
             }
-            Editor(controller)
+
         }
 
     }
@@ -177,47 +178,74 @@ fun GraphEditor(
 
 
 @Composable
-private fun Editor(
+private fun _Editor(
     controller: GraphEditorController,
 ) {
     val textMeasurer = rememberTextMeasurer() //
     val nodes = controller.nodes.collectAsState().value
     val edges = controller.edges.collectAsState().value
     val edgeWith = with(LocalDensity.current) { 1.dp.toPx() }
-    Canvas(
-        modifier = Modifier
-            .fillMaxSize()
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onTap = { touchedPosition ->
-                        controller.onTap(touchedPosition) //adding the node on tap
-                    })
-            }
-            .pointerInput(Unit) {
-                detectDragGestures(
-                    onDragStart = {
-                        controller.onDragStart(it)
-                    },
-                    onDrag = { _, dragAmount ->
+    /**
+     * We are drawing that affect only the draw phase not the layout phase so even if we drawing that cross the boundary
+     * using the scrollable modifier we can not use scrolling because scroll is layout modifier that affect the layout phase
+     * so solve this problem right now fill the spcace with empty transparent box so that it affect the layout phase and we can do
+     * scorllling
+     * Note that this is need only when we want to show a exisitng saved graph,so if we do not have to featue to saved graph
+     * then you can remove wrapping these boxes and direcly use the canvas only
+     */
 
-                        controller.onDrag(dragAmount)
-                    },
-                    onDragEnd = {
+    //TODO:find the required width and height to render the graph
+    //required width=maxOfAll(offset.x)
+    //if constraint.max width< required then show snackBar that window size does not find the saved Graph
+    //tell user to expand the size or
+    Box(
+        Modifier
+            .horizontalScroll(rememberScrollState()) //TODO:Scroll modifier appear first to enable scrolling touch device
+            .verticalScroll(rememberScrollState())
+            .size(1000.dp) //ToDO:It cause the problem since the client may show the pseudocode and the other thing
+            //so first calculate the saved passed graph required height and width to avoid take un-necessary space
+            .drawBehind {
+                try {
+                    //TODO:Since drawing, and can pass a saved graph but the device may have not space window to fit the drawing
+                    //in that case it will crash so avoid the app crashing,fix it later
 
-                        controller.dragEnd()
+                    edges.forEach {
+                        drawEdge(it, textMeasurer, width = edgeWith)
                     }
-                )
+                    nodes.forEach {
+                        drawNode(it, textMeasurer)
+                    }
+                } catch (_: Exception) {
+
+                }
             }
-    ) {
-        edges.forEach {
-            drawEdge(it, textMeasurer, width = edgeWith)
-        }
-        nodes.forEach {
-            drawNode(it, textMeasurer)
-        }
+        //TODO: In case  of touch screen the scroll detected and pointer are not possible to detect at a time,
+        //so fix it later or try to introduce a better way so that works with enable both dragging and scrolling
 
+//            .pointerInput(Unit) {
+//                detectTapGestures(
+//                    onTap = { touchedPosition ->
+//                        controller.onTap(touchedPosition) //adding the node on tap
+//                    })
+//            }
+//            .pointerInput(Unit) {
+//                detectDragGestures(
+//                    onDragStart = {
+//                        controller.onDragStart(it)
+//                    },
+//                    onDrag = { _, dragAmount ->
+//
+//                        controller.onDrag(dragAmount)
+//                    },
+//                    onDragEnd = {
+//
+//                        controller.dragEnd()
+//                    }
+//                )
+//            }
 
-    }
+    )
+
 }
 
 @Composable
@@ -229,8 +257,7 @@ private fun Instruction(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .verticalScroll(rememberScrollState())
-        ,
+            .verticalScroll(rememberScrollState()),
     ) {
         // Input Instructions Title
         Text(
@@ -333,7 +360,7 @@ private fun _TopBar(
     onAddEdgeRequest: () -> Unit,
     onSaveRequest: () -> Unit,
     onRemoveNodeRequest: () -> Unit,
-    navigationIcon:@Composable ()->Unit,
+    navigationIcon: @Composable () -> Unit,
 ) {
 
     TopAppBar(

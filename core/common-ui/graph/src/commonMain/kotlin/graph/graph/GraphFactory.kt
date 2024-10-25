@@ -6,6 +6,7 @@ import graph.graph.common.model.EditorEdgeMode
 import graph.graph.common.model.EditorNodeModel
 import graph.graph.editor.controller.GraphEditorController
 import graph.graph.editor.factory.GraphEditorControllerImpl
+import graph.graph.editor.factory.GraphProvider
 import graph.graph.editor.factory.InputControllerImpl
 import graph.graph.editor.factory.SavedGraphProvider
 import graph.graph.viewer.controller.GraphViewerController
@@ -20,7 +21,10 @@ object GraphFactory {
 
     internal fun createGraphEditorController(
         density: Float,
-          initialGraph:Pair<List<EditorNodeModel>, List<EditorEdgeMode>> =Pair(emptyList(), emptyList()),
+        initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeMode>> = Pair(
+            emptyList(),
+            emptyList()
+        ),
     ): GraphEditorController =
         GraphEditorControllerImpl(
             density = density,
@@ -32,6 +36,7 @@ object GraphFactory {
             )
         )
 
+    fun getDpGraph(density: Float) = GraphProvider(density).getDijkstraGraph()
     fun getDFSDemoGraph() = SavedGraphProvider.getDijkstraGraph()
     fun getMSTDemoGraph() = SavedGraphProvider.getMSTGraph()
     fun getDijkstraDemoGraph() = SavedGraphProvider.getDijkstraGraph()
