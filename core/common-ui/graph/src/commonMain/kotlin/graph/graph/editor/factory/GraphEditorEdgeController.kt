@@ -1,16 +1,20 @@
 package graph.graph.editor.factory
 
 import androidx.compose.ui.geometry.Offset
+import graph.graph.common.Constants
 import graph.graph.common.model.EditorEdgeMode
 import graph.graph.editor.model.EdgePoint
+import graph.graph.editor.model.Range
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 internal class GraphEditorEdgeController {
     private val _edges= MutableStateFlow<List<EditorEdgeMode>>(emptyList())
+    private val _selectedEdge = MutableStateFlow<EditorEdgeMode?>(null)
+    private var newlyAdding = false
 
-    // private val _edges: MutableStateFlow<List<VisualEdge>> = MutableStateFlow(emptyList())
+    val selectedEdge = _selectedEdge.asStateFlow()
     val edges = _edges.asStateFlow()
 
     fun setInitialEdge(edge: Set<EditorEdgeMode>) {
@@ -27,20 +31,17 @@ internal class GraphEditorEdgeController {
     Select a point of the edge to edit it.
     Select the edge to remove it.
      */
-
-    private val _selectedEdge = MutableStateFlow<EditorEdgeMode?>(null)
-    val selectedEdge = _selectedEdge.asStateFlow()
-    private var newlyAdding = false
-
-
     fun onTap(tappedPosition: Offset) {
         val tapListener = EdgeSelectionControllerImpl(_edges.value, tappedPosition)
-        _selectedEdge.value = tapListener.findSelectedEdge()
+        val tapped=tapListener.findSelectedEdgeOrNull()?:return
+
+        //remove selection that are already selected,if tapped on empty space selection will be removed
+         removeSelectedEdge()
+        _selectedEdge.update { tapped }
         _edges.update { tapListener.getEdgesWithSelection() }
     }
 
-    // Tapping handling done
-    //-----------Removing selected edge
+
     fun removeEdge() {
         _selectedEdge.value?.let { activeEdge ->
             _edges.update { edgeSet ->
@@ -69,7 +70,7 @@ internal class GraphEditorEdgeController {
 
     }
 
-    fun dragOngoing(dragAmount: Offset, position: Offset) {
+    fun dragOngoing(dragAmount: Offset) {
         _selectedEdge.value?.let { activeEdge ->
             _edges.update { edges ->
                 edges.map { edge ->
@@ -90,5 +91,124 @@ internal class GraphEditorEdgeController {
         _edges.update { edges }
     }
 
+     fun removeSelectedEdge() =_edges.update {edges->
+        _selectedEdge.update { null }
+        edges.map { it.copy(
+            selectedPoint = EdgePoint.None,
+            pathColor = Constants.edgeColor,
+            selectedPointColor = Constants.edgeColor
+        )
+        }
+    }
+
 }
 
+internal class EdgeSelectionControllerImpl(
+    private val edges: List<EditorEdgeMode>,
+    private val tappedPosition: Offset) {
+
+    private var selectedEdge: EditorEdgeMode? = null
+
+    init {
+        deSelectEdges()//remove if any node is already selected
+        selectedEdge = edges.find { edge -> isAnyControlTouched(edge) }
+    }
+
+    fun findSelectedEdgeOrNull()=selectedEdge
+
+    fun getEdgesWithSelection(): List<EditorEdgeMode> {
+        val point = findSelectedPoint()
+        return highLightPoint(point)
+    }
+
+    private fun highLightPoint(point: EdgePoint): List<EditorEdgeMode> {
+        selectedEdge?.let { activeEdge ->
+            val highLightedEdge = when (point) {
+                EdgePoint.Start -> activeEdge.copy(
+                    selectedPoint = EdgePoint.Start,
+                    pathColor = Constants.selectedEdgePointColor,
+                    showSelectedPoint = true
+                )
+
+                EdgePoint.End -> activeEdge.copy(
+                    selectedPoint = EdgePoint.End,
+                    showSelectedPoint = true
+                )
+
+                EdgePoint.Control -> activeEdge.copy(
+                    selectedPoint = EdgePoint.Control,
+                    pathColor =Constants.selectedEdgePointColor,
+                    showSelectedPoint = true
+                )
+
+                else -> activeEdge.copy(
+                    selectedPoint = EdgePoint.None,
+                    pathColor = Constants.edgeColor
+                )
+            }
+            var updatedEdges = edges - activeEdge
+            updatedEdges = updatedEdges + highLightedEdge
+            return updatedEdges
+
+        }
+        return deSelectEdges()
+    }
+
+    private fun deSelectEdges() =
+        edges.map { it.copy(selectedPoint = EdgePoint.None, pathColor = EditorEdgeMode.pathDefaultColor) }
+
+
+
+    private fun findSelectedPoint(): EdgePoint {
+        selectedEdge?.let { edge ->
+            return if (isStartTouched(edge)) EdgePoint.Start
+            else if (isEndTouched(edge)) EdgePoint.End
+            else if (isControlTouched(edge)) EdgePoint.Control else EdgePoint.None
+        }
+        return EdgePoint.None
+    }
+
+    private fun isAnyControlTouched(edge: EditorEdgeMode): Boolean {
+        return isStartTouched(edge) || isEndTouched(edge) || isControlTouched(edge)
+    }
+
+
+    private fun isControlTouched(edge: EditorEdgeMode) =
+        isTargetTouched(edge, edge.pathCenter)
+
+    private fun isStartTouched(edge: EditorEdgeMode) =
+        isTargetTouched(edge, edge.start)
+
+    private fun isEndTouched(edge: EditorEdgeMode) =
+        isTargetTouched(edge, edge.end)
+
+    private fun isTargetTouched(
+        edge: EditorEdgeMode,
+        target: Offset
+    ): Boolean {
+        //Can causes crash
+        return try {
+            val minTouchTargetPx = edge.minTouchTargetPx
+            return Range(
+                target.x - minTouchTargetPx / 2,
+                target.x + minTouchTargetPx / 2
+            ).contains(tappedPosition.x) &&
+                    Range(
+                        target.y - minTouchTargetPx / 2,
+                        target.y + minTouchTargetPx / 2
+                    ).contains(tappedPosition.y)
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+//        return tappedPosition.x in Range(
+//            target.x - minTouchTargetPx / 2,
+//            target.x + minTouchTargetPx / 2
+//        ) &&
+//                tappedPosition.y in Range(
+//            target.y - minTouchTargetPx / 2,
+//            target.y + minTouchTargetPx / 2
+//        )
+
+}

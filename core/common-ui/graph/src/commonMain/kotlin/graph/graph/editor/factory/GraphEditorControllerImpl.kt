@@ -128,6 +128,10 @@ internal data class GraphEditorControllerImpl(
     }
 
 
+    override fun onDoubleTap() {
+        nodeManger.resetSelection()
+        edgeManger.removeSelectedEdge()
+    }
     override fun onTap(tappedPosition: Offset) {
         nodeManger.observeCanvasTap(tappedPosition)
         when (operationMode) {
@@ -137,6 +141,7 @@ internal data class GraphEditorControllerImpl(
             }
 
             else -> {
+                //If an edge is tapped for selection
                 edgeManger.onTap(tappedPosition)
             }
         }
@@ -148,7 +153,7 @@ internal data class GraphEditorControllerImpl(
 
     override fun onDrag(dragAmount: Offset) {
         nodeManger.onDragging(dragAmount)
-        edgeManger.dragOngoing(dragAmount, dragAmount)
+        edgeManger.dragOngoing(dragAmount)
     }
 
     override fun dragEnd() = edgeManger.dragEnded()
@@ -201,20 +206,7 @@ internal data class GraphEditorControllerImpl(
         return _edges.toSet() //returning immutable copy,to avoid side effect
     }
 
-//    private fun EditorNodeModel._toDrawableNode() = ViewerNodeModel(
-//        id = id,
-//        label = label,
-//        topLeft = topLeft,
-//        sizePx = exactSizePx
-//    )
-//
-//    private fun EditorEdgeModel._toDrawableEdge() = ViewerEdgeModel(
-//        id = id,
-//        start = start,
-//        end = end,
-//        control = control,
-//        cost = cost
-//    )
+
 
     @Suppress("Unused")
     private fun log(message: String, methodName: String? = null) {

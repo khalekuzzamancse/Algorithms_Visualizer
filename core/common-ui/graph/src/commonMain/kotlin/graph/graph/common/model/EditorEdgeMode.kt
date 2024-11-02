@@ -4,8 +4,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathMeasure
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import graph.graph.common.Constants
 import graph.graph.editor.model.EdgePoint
 import kotlin.math.atan2
 
@@ -29,15 +31,9 @@ data class EditorEdgeMode internal constructor(
 ) {
     companion object {
         private val pathMeasurer = PathMeasure()
-        /**TurquoiseBlue work both dark and light theme, Used when select a point*/
-        val selectedPointDefaultColor = Color(0xFF00B8D4)
-
-        /**sunsetOrange work both dark and light theme,can be used when reset such as deselect*/
-        val pathDefaultColor = Color(0xFFFF7043)
+        val selectedPointDefaultColor = Constants.selectedEdgePointColor
+        val pathDefaultColor = Constants.edgeColor
     }
-
-
-
 
     val arrowHeadPosition: Offset
         get() {

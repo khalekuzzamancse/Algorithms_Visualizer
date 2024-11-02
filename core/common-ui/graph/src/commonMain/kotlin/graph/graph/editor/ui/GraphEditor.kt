@@ -38,8 +38,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextMeasurer
@@ -97,6 +101,18 @@ fun GraphEditor(
     //defining the min size of node,because node can be so small if it has small string in it label
     val minNodeSizePx = with(LocalDensity.current) { nodeMinSizeDp.toPx() }
 
+    val connection= remember {
+        object : NestedScrollConnection{
+            override fun onPreScroll(
+                available: Offset,
+                source: NestedScrollSource
+            ): Offset {
+
+                println("TESTX:ScrollingMode:$available")
+                return super.onPreScroll(available, source)
+            }
+        }
+    }
 
 
     Scaffold(
@@ -109,14 +125,6 @@ fun GraphEditor(
                 onAddNodeRequest = controller.inputController::onNodeDrawRequest,
                 onAddEdgeRequest = {
                     controller.inputController.onEdgeDrawRequest()
-//                    if (isWightedGraph){
-//                        println("wegithed")
-//                        showEdgeWeightInputDialog = true
-//                    }
-//                    else{
-//                        controller.onEdgeConstInput(cost = null)//Adding edge with null cost
-//                    }
-                    // controller.onEdgeConstInput(cost = null)
                 },
                 onSaveRequest = {
                     val result = controller.onGraphInputCompleted()
@@ -130,6 +138,9 @@ fun GraphEditor(
         Column(
             modifier = Modifier
                 .padding(scaffoldPadding)
+                .nestedScroll(
+                    connection = connection
+                )
         ) {
             if (!graphTypeHasTaken) {
                 Instruction(
@@ -146,7 +157,6 @@ fun GraphEditor(
             if (showGraphTypeInputDialog) {
                 GraphTypeInputDialog(controller.inputController::onGraphTypeSelected)
             }
-
 
             if (showNodeInputDialog) {
                 InputDialog(
@@ -185,12 +195,16 @@ private fun _Editor(
     val nodes = controller.nodes.collectAsState().value
     val edges = controller.edges.collectAsState().value
     val edgeWith = with(LocalDensity.current) { 1.dp.toPx() }
+    val selectionMode=controller.selectedNode.collectAsState().value!=null||controller.selectedEdge.collectAsState().value!=null
+
+    println("TESTX:SelectedMode:$selectionMode")
+
     /**
      * We are drawing that affect only the draw phase not the layout phase so even if we drawing that cross the boundary
      * using the scrollable modifier we can not use scrolling because scroll is layout modifier that affect the layout phase
-     * so solve this problem right now fill the spcace with empty transparent box so that it affect the layout phase and we can do
-     * scorllling
-     * Note that this is need only when we want to show a exisitng saved graph,so if we do not have to featue to saved graph
+     * so solve this problem right now fill the space with empty transparent box so that it affect the layout phase and we can do
+     * scrolling
+     * Note that this is need only when we want to show a existing saved graph,so if we do not have to featue to saved graph
      * then you can remove wrapping these boxes and direcly use the canvas only
      */
 
@@ -200,9 +214,40 @@ private fun _Editor(
     //tell user to expand the size or
     Box(
         Modifier
-            .horizontalScroll(rememberScrollState()) //TODO:Scroll modifier appear first to enable scrolling touch device
-            .verticalScroll(rememberScrollState())
-            .size(1000.dp) //ToDO:It cause the problem since the client may show the pseudocode and the other thing
+            .pointerInput(selectionMode){
+                detectTapGestures(
+                    onTap = { touchedPosition ->
+                        println("TESTX:DraggingMode:Tapping")
+                        controller.onTap(touchedPosition) //adding the node on tap
+                    },
+                    onDoubleTap = {
+                        controller.onDoubleTap()
+                    }
+                )
+            }
+            .then(
+                if (selectionMode)
+                    Modifier.pointerInput(selectionMode){
+                        detectDragGestures(
+                            onDragStart = {
+                                println("TESTX:DraggingMode:Start")
+                                controller.onDragStart(it)
+                            },
+                            onDrag = { _, dragAmount ->
+                                println("TESTX:DraggingMode:Dragging")
+                                controller.onDrag(dragAmount)
+                            },
+                            onDragEnd = {
+                                println("TESTX:DraggingMode:End")
+                                controller.dragEnd()
+                            }
+                        )
+                    }
+                else
+                Modifier.horizontalScroll(rememberScrollState()).verticalScroll(rememberScrollState())
+            )
+
+      .size(1000.dp) //ToDO:It cause the problem since the client may show the pseudocode and the other thing
             //so first calculate the saved passed graph required height and width to avoid take un-necessary space
             .drawBehind {
                 try {
@@ -222,27 +267,6 @@ private fun _Editor(
         //TODO: In case  of touch screen the scroll detected and pointer are not possible to detect at a time,
         //so fix it later or try to introduce a better way so that works with enable both dragging and scrolling
 
-//            .pointerInput(Unit) {
-//                detectTapGestures(
-//                    onTap = { touchedPosition ->
-//                        controller.onTap(touchedPosition) //adding the node on tap
-//                    })
-//            }
-//            .pointerInput(Unit) {
-//                detectDragGestures(
-//                    onDragStart = {
-//                        controller.onDragStart(it)
-//                    },
-//                    onDrag = { _, dragAmount ->
-//
-//                        controller.onDrag(dragAmount)
-//                    },
-//                    onDragEnd = {
-//
-//                        controller.dragEnd()
-//                    }
-//                )
-//            }
 
     )
 

@@ -52,6 +52,7 @@ internal interface GraphEditorController {
     fun onRemovalRequest()
     fun onGraphInputCompleted(): GraphResult
     fun onTap(tappedPosition: Offset)
+    fun onDoubleTap()
     fun onDragStart(startPosition: Offset)
     fun onDrag(dragAmount: Offset)
     fun dragEnd()
