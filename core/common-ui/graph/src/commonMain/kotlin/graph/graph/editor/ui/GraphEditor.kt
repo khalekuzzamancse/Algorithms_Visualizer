@@ -1,11 +1,9 @@
 package graph.graph.editor.ui
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -41,7 +39,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
@@ -59,9 +56,9 @@ import graph.graph.common.model.EditorEdgeMode
 import graph.graph.common.model.EditorNodeModel
 import graph.graph.common.model.GraphResult
 import graph.graph.editor.controller.GraphEditorController
+import graph.graph.editor.model.GraphType
 import graph.graph.editor.ui.component.GraphTypeInputDialog
 import graph.graph.editor.ui.component.InputDialog
-import graph.graph.viewer.controller.CanvasUtils
 
 /**
  * @param hasDistance is the graph node has distance such as Node for Dijkstra algorithm. if the graph node has distance
@@ -74,10 +71,13 @@ import graph.graph.viewer.controller.CanvasUtils
 fun GraphEditor(
     density: Float = LocalDensity.current.density,
     hasDistance: Boolean = false,
-    initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeMode>> = Pair(
-        emptyList(),
-        emptyList()
+    supportedType: List<GraphType> = listOf(
+        GraphType.Undirected,
+        GraphType.Directed,
+        GraphType.UnDirectedWeighted,
+        GraphType.DirectedWeighted
     ),
+    initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeMode>> = Pair(emptyList(), emptyList()),
     navigationIcon: @Composable () -> Unit,
     onDone: (GraphResult) -> Unit
 ) {
@@ -105,6 +105,7 @@ fun GraphEditor(
     Scaffold(
         snackbarHost = { SnackbarHost(hostState) },
         topBar = {
+            controller.inputController.graphType
             _TopBar(
                 navigationIcon = navigationIcon,
                 enabledRemoveNode = controller.selectedNode.collectAsState().value != null
@@ -134,12 +135,14 @@ fun GraphEditor(
                     }
                 )
             } else {
-
                 _Editor(controller)
             }
 
             if (showGraphTypeInputDialog) {
-                GraphTypeInputDialog(controller.inputController::onGraphTypeSelected)
+                GraphTypeInputDialog(
+                    supportedTypes = supportedType,
+                    controller.inputController::onGraphTypeSelected
+                )
             }
 
             if (showNodeInputDialog) {

@@ -30,6 +30,7 @@ import core.commonui.SimulationScreenEvent
 import core.commonui.SimulationScreenState
 import core.commonui.SimulationSlot
 import graph.graph.GraphFactory
+import graph.graph.editor.model.GraphType
 import graph.graph.editor.ui.GraphEditor
 import graph.graph.viewer.GraphViewer
 
@@ -73,6 +74,8 @@ import graph.graph.viewer.GraphViewer
     }
     if (inputMode) {
         GraphEditor(
+            //Topological short should not allow undirected
+            supportedType = listOf(GraphType.Directed, GraphType.DirectedWeighted),
             initialGraph = GraphFactory.getTopologicalSortDemoGraph()
             ,navigationIcon = navigationIcon,
         ) { result ->

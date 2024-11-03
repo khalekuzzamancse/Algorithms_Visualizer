@@ -34,6 +34,7 @@ import core.commonui.SimulationScreenState
 import core.commonui.SimulationSlot
 import core.commonui.Token
 import graph.graph.GraphFactory
+import graph.graph.editor.model.GraphType
 import graph.graph.editor.ui.GraphEditor
 import graph.graph.viewer.GraphViewer
 
@@ -50,6 +51,8 @@ fun PrimsSimulationScreen(navigationIcon: @Composable () -> Unit) {
 
     if (viewModel.isInputMode.collectAsState().value) {
         GraphEditor(
+            //MST should not allow unweighted
+            supportedType = listOf(GraphType.UnDirectedWeighted, GraphType.DirectedWeighted),
             initialGraph = GraphFactory.getMSTDemoGraph(),
             navigationIcon = navigationIcon,
         ) { result ->

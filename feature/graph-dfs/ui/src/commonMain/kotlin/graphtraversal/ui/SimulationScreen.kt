@@ -73,10 +73,7 @@ fun DfsSimulation(navigationIcon: @Composable () -> Unit) {
     }
     if (inputMode) {
         GraphEditor(
-            //TODO:Right now larger value causes crash because the device may not have enough space
-            // ,fix it later,until fix use hardcoded value >1 but <1.5
-            initialGraph = GraphFactory.getDpGraph(density),
-
+            initialGraph = GraphFactory.getDemoGraph(density),
             navigationIcon = navigationIcon,
         ) { result ->
             viewModel.onGraphCreated(result)

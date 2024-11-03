@@ -1,6 +1,7 @@
 package core.commonui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -8,13 +9,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.CodeOff
 import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material.icons.filled.SkipNext
-import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -33,7 +34,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 
@@ -49,6 +54,7 @@ fun SimulationSlot(
     pseudoCode: @Composable ColumnScope.(Modifier) -> Unit,
     visualization: @Composable ColumnScope.() -> Unit,
 ) {
+
     TopBarControlSection(
         modifier = Modifier,
         disableControls = disableControls,
@@ -60,8 +66,10 @@ fun SimulationSlot(
         onAutoPlayRequest = { onEvent(SimulationScreenEvent.AutoPlayRequest(it)) },
         onCodeVisibilityToggleRequest = { onEvent(SimulationScreenEvent.CodeVisibilityToggleRequest) }
     ) {
+
         Column(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AnimatedVisibility(state.showVisualization) {
@@ -120,7 +128,6 @@ fun TopBarControlSection(
     var autoPlayTimeInSeconds by rememberSaveable { mutableStateOf<Int?>(null) }
     var inputTime by remember { mutableStateOf("1000") }
     var showDialog by remember { mutableStateOf(false) }
-
     Scaffold(
         modifier = modifier,
         topBar = {

@@ -12,6 +12,7 @@ import graph.graph.common.model.EditorNodeModel
 import graph.graph.common.model.GraphResult
 import graph.graph.common.model.Node
 import graph.graph.editor.controller.GraphEditorController
+import graph.graph.editor.model.GraphType
 import graph.graph.viewer.controller.CanvasUtils
 import kotlinx.coroutines.flow.StateFlow
 
@@ -42,8 +43,8 @@ internal data class GraphEditorControllerImpl(
     init {
         inputController.drawNodeObserver = ::_onAddNodeRequest
         inputController.addEdgeRequestObserver = this::_onDrawEdgeRequest
-        inputController.graphTypeObserver = {
-            setDemoGraph()
+        inputController.graphTypeObserver = {type->
+            setDemoGraph(type)
         }
     }
 
@@ -115,18 +116,19 @@ internal data class GraphEditorControllerImpl(
     }
 
 
-    private fun setDemoGraph() {
+    private fun setDemoGraph(type:GraphType) {
+        val undirected=type==GraphType.Undirected||type==GraphType.UnDirectedWeighted
+        val unweighted=type==GraphType.Directed||type==GraphType.Undirected
+        var edges=initialGraph.second
+
+        if (undirected)
+            edges=edges.removeDirection()
+        if(unweighted)
+            edges=edges.removeWeight()
+
         nodeManger.setInitialNode(initialGraph.first.toSet())
-        edgeManger.setEdge(initialGraph.second)
-//        if (undirected){
-//            nodeManger.setInitialNode(SavedGraphProvider.nodes.toSet())
-//            edgeManger.setEdge(SavedGraphProvider.edges)
-//        }
-//        else{
-//            //for directed
-//            nodeManger.setInitialNode(SavedGraphProvider.getDijkstraGraph().first.toSet())
-//            edgeManger.setEdge(SavedGraphProvider.getDijkstraGraph().second)
-//        }
+        edgeManger.setEdge(edges)
+
     }
 
 
@@ -209,7 +211,8 @@ internal data class GraphEditorControllerImpl(
     }
 
 
-
+    private fun List<EditorEdgeMode>.removeDirection()=this.map { it.copy(directed =false)}
+    private fun List<EditorEdgeMode>.removeWeight()=this.map { it.copy(cost =null)}
     @Suppress("Unused")
     private fun log(message: String, methodName: String? = null) {
         val tag = "${this@GraphEditorControllerImpl::class.simpleName}Log:"

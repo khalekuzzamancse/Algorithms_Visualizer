@@ -36,10 +36,8 @@ object GraphFactory {
             )
         )
 
-    fun getDpGraph(density: Float) = GraphProvider(density).getDijkstraGraph()
-    fun getDFSDemoGraph() = SavedGraphProvider.getDijkstraGraph()
+    fun getDemoGraph(density: Float) = GraphProvider(density = density).getDemoGraph()
     fun getMSTDemoGraph() = SavedGraphProvider.getMSTGraph()
-    fun getDijkstraDemoGraph() = SavedGraphProvider.getDijkstraGraph()
     fun getTopologicalSortDemoGraph() = SavedGraphProvider.getTopologicalSortDemoGraph()
 
 }

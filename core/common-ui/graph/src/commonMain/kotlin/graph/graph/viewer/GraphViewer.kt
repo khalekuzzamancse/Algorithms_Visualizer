@@ -5,7 +5,6 @@ package graph.graph.viewer
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -30,15 +29,9 @@ fun GraphViewer(
     modifier: Modifier,
     controller: GraphViewerController
 ) {
-    val density = LocalDensity.current
-    val canvasHeight =
-        remember(controller) { with(density) { controller.canvasSize.height.toDp() } }
-    val canvasWidth = remember(controller) { with(density) { controller.canvasSize.width.toDp() } }
 
     Box(
         modifier = modifier
-            .width(canvasWidth) //TODO:Careful can causes crashes,directly use padding can cause crashes
-            .height(canvasHeight) //TODO:Careful can causes crashes
     ) {
         _GraphDrawer(
             nodes = controller.nodes.collectAsState().value,
@@ -59,7 +52,6 @@ private fun _GraphDrawer(
         getMaxXY(nodes = nodes.map { it.topLeft },
             starts = edges.map { it.start }, ends = edges.map { it.end },
             controls = edges.map { it.control })
-//        CanvasUtils(nodes, edges.toSet()).trimExtraSpace().calculateCanvasSize()
     }
     val density = LocalDensity.current
     val nodeMaxSize= remember { 64.dp }

@@ -3,7 +3,7 @@ package graph.graph.editor.model
 /**
  * - Using for type safety
  */
-internal sealed interface GraphType{
+ sealed interface GraphType{
     val label:String
 
     data object Directed: GraphType {

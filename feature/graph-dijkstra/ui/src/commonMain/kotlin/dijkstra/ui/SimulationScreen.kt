@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import core.commonui.CodeViewer
 import core.commonui.SimulationScreenEvent
@@ -32,6 +33,7 @@ import core.commonui.SimulationScreenState
 import core.commonui.SimulationSlot
 import core.commonui.Token
 import graph.graph.GraphFactory
+import graph.graph.editor.model.GraphType
 import graph.graph.editor.ui.GraphEditor
 import graph.graph.viewer.GraphViewer
 
@@ -39,7 +41,7 @@ import graph.graph.viewer.GraphViewer
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DijkstraSimulationScreen(navigationIcon: @Composable () -> Unit) {
-
+    val density = LocalDensity.current.density
     val color = StatusColor(
         processingEdge = MaterialTheme.colorScheme.primary,
         processedNode = MaterialTheme.colorScheme.tertiary
@@ -49,9 +51,10 @@ fun DijkstraSimulationScreen(navigationIcon: @Composable () -> Unit) {
 
     if (viewModel.isInputMode.collectAsState().value) {
         GraphEditor(
-            initialGraph = GraphFactory.getDijkstraDemoGraph(),
-            navigationIcon = navigationIcon,
-        ) { result ->
+            //Dijkstra should not allow unweighted graph
+            supportedType = listOf(GraphType.UnDirectedWeighted, GraphType.DirectedWeighted),
+            initialGraph = GraphFactory.getDemoGraph(density),
+            navigationIcon = navigationIcon) { result ->
             viewModel.onGraphCreated(result)
         }
     } else {

@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import core.commonui.CodeViewer
 import core.commonui.SimulationScreenEvent
@@ -39,7 +40,7 @@ import graph.graph.viewer.GraphViewer
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
  fun BFSSimulation( navigationIcon: @Composable () -> Unit,) {
-
+val density= LocalDensity.current
     val color = NodeStatusColor(
         undiscovered = MaterialTheme.colorScheme.secondaryContainer,
         discovered = MaterialTheme.colorScheme.secondary,
@@ -72,7 +73,7 @@ import graph.graph.viewer.GraphViewer
     }
     if (inputMode) {
         GraphEditor(
-            initialGraph = GraphFactory.getDFSDemoGraph(),
+            initialGraph = GraphFactory.getDemoGraph(density.density),
             navigationIcon = navigationIcon,
         ) { result ->
             viewModel.onGraphCreated(result)
