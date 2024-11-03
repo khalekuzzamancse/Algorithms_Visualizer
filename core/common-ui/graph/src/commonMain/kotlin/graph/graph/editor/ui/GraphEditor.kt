@@ -1,9 +1,11 @@
 package graph.graph.editor.ui
+
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -38,6 +40,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
@@ -70,9 +74,13 @@ import graph.graph.viewer.controller.CanvasUtils
 fun GraphEditor(
     density: Float = LocalDensity.current.density,
     hasDistance: Boolean = false,
-    initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeMode>> = Pair(emptyList(), emptyList()),
+    initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeMode>> = Pair(
+        emptyList(),
+        emptyList()
+    ),
     navigationIcon: @Composable () -> Unit,
-    onDone: (GraphResult) -> Unit) {
+    onDone: (GraphResult) -> Unit
+) {
     val hostState = remember { SnackbarHostState() }
     val controller: GraphEditorController = remember {
         GraphFactory.createGraphEditorController(
@@ -178,6 +186,7 @@ private fun _Editor(
     val edges = controller.edges.collectAsState().value
     val edgeWidth = with(LocalDensity.current) { 1.dp.toPx() }
 
+
     //In case of touch device at a time either scroll will detect or dragging
     //That is why need to manage scroll and drag separately
     //In order to use scrolling need to give a fix size to the canvas otherwise causes render issue
@@ -187,17 +196,27 @@ private fun _Editor(
     //This is helpful when there is initial graph set
     //Is there is already no edge or node in the graph the canvasUtils should return a default min size
     //so that graph can draw here..
-    val   canvasUtils = remember (nodes,edges){ CanvasUtils(nodes, edges.toSet()).trimExtraSpace().calculateCanvasSize() }
+    val canvasUtils = remember(nodes, edges) {
+        getMaxXY(nodes = nodes.map { it.topLeft },
+            starts = edges.map { it.start }, ends = edges.map { it.end },
+            controls = edges.map { it.control })
+//        CanvasUtils(nodes, edges.toSet()).trimExtraSpace().calculateCanvasSize()
+    }
     val density = LocalDensity.current
-    val canvasHeight = remember (nodes,edges) { with(density) { canvasUtils.canvasSize.height.toDp() } }
-    val canvasWidth =  remember (nodes,edges) { with(density) { canvasUtils.canvasSize.width.toDp()} }
+    val nodeMaxSize= remember { 64.dp }
+    val extra= remember { 20.dp }//possible that edge cost at end and after the node or control point
+    //Dealing with topLeft so need to add the node size to get the canvas exact size
+    val canvasHeight = remember(nodes, edges) { with(density) { canvasUtils.second.toDp()+nodeMaxSize +extra} }
+    val canvasWidth = remember(nodes, edges) { with(density) { canvasUtils.first.toDp() +nodeMaxSize+extra} }
 
-    val selectionMode=controller.selectedNode.collectAsState().value!=null||controller.selectedEdge.collectAsState().value!=null
+
+    val selectionMode =
+        controller.selectedNode.collectAsState().value != null || controller.selectedEdge.collectAsState().value != null
 
 
     Canvas(
         Modifier
-            .pointerInput(selectionMode){
+            .pointerInput(selectionMode) {
                 detectTapGestures(
                     onTap = { touchedPosition ->
                         controller.onTap(touchedPosition)
@@ -209,7 +228,7 @@ private fun _Editor(
             }
             .then(
                 if (selectionMode)
-                    Modifier.pointerInput(selectionMode){
+                    Modifier.pointerInput(selectionMode) {
                         detectDragGestures(
                             onDragStart = {
                                 controller.onDragStart(it)
@@ -223,15 +242,16 @@ private fun _Editor(
                         )
                     }
                 else
-                    //TODO:Find reason why graph not render if use size(height,weight) modifier before scroll modifier
-               Modifier.horizontalScroll(rememberScrollState()).verticalScroll(rememberScrollState())
+                //TODO:Find reason why graph not render if use size(height,weight) modifier before scroll modifier
+                    Modifier.horizontalScroll(rememberScrollState())
+                        .verticalScroll(rememberScrollState())
             )
             //TODO:Can cases crash if current window size is less than this size
             .width(canvasWidth) //TODO:Careful can may crashes,directly use padding can cause crashes
             .height(canvasHeight) //TODO:Careful may causes crashes
+          ///  .background(Color.Red)
+    ) {
 
-            .background(Color.Red)
-    ){
         try {
             //TODO:Since drawing, and can pass a saved graph but the device may have not space window to fit the drawing
             //in that case it will crash so avoid the app crashing,fix it later
@@ -321,6 +341,20 @@ private fun Instruction(
             )
         }
     }
+}
+
+fun getMaxXY(
+    nodes: List<Offset>,
+    starts: List<Offset>,
+    ends: List<Offset>,
+    controls: List<Offset>
+):
+        Pair<Float, Float> {
+    val allPoints = nodes + starts + ends + controls
+    val maxX = allPoints.maxOf { it.x }
+    val maxY = allPoints.maxOf { it.y }
+
+    return Pair(maxX, maxY)
 }
 
 @Composable

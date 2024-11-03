@@ -3,10 +3,13 @@
 package graph.graph.viewer
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
@@ -18,6 +21,7 @@ import graph.graph.common.drawEdge
 import graph.graph.common.drawNode
 import graph.graph.common.model.EditorEdgeMode
 import graph.graph.common.model.EditorNodeModel
+import graph.graph.editor.ui.getMaxXY
 import graph.graph.viewer.controller.GraphViewerController
 
 
@@ -51,14 +55,27 @@ private fun _GraphDrawer(
     nodes: Set<EditorNodeModel>,
     edges: Set<EditorEdgeMode>
 ) {
-
+    val canvasUtils = remember(nodes, edges) {
+        getMaxXY(nodes = nodes.map { it.topLeft },
+            starts = edges.map { it.start }, ends = edges.map { it.end },
+            controls = edges.map { it.control })
+//        CanvasUtils(nodes, edges.toSet()).trimExtraSpace().calculateCanvasSize()
+    }
+    val density = LocalDensity.current
+    val nodeMaxSize= remember { 64.dp }
+    val extra= remember { 20.dp }//possible that edge cost at end and after the node or control point
+    //Dealing with topLeft so need to add the node size to get the canvas exact size
+    val canvasHeight = remember(nodes, edges) { with(density) { canvasUtils.second.toDp()+nodeMaxSize +extra} }
+    val canvasWidth = remember(nodes, edges) { with(density) { canvasUtils.first.toDp() +nodeMaxSize+extra} }
 
     val textMeasurer = rememberTextMeasurer() //
     val edgeWith = with(LocalDensity.current) { 1.dp.toPx() }
-
+    //TODO:Find reason why graph not render if use size(height,weight) modifier before scroll modifier
     Canvas(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.horizontalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState())
+            .width(canvasWidth) //TODO:Careful can may crashes,directly use padding can cause crashes
+            .height(canvasHeight) //TODO:Careful may causes crashes
     ) {
         edges.forEach {
             drawEdge(

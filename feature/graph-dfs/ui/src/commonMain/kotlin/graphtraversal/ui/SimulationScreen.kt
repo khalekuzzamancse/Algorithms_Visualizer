@@ -40,6 +40,7 @@ import graph.graph.viewer.GraphViewer
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DfsSimulation(navigationIcon: @Composable () -> Unit) {
+//    val density = LocalDensity.current.density
     val density = LocalDensity.current.density
 
     val color = NodeStatusColor(
@@ -72,7 +73,8 @@ fun DfsSimulation(navigationIcon: @Composable () -> Unit) {
     }
     if (inputMode) {
         GraphEditor(
-            //TODO:Right now larger value causes crash because the device may not have enough space,fix it later,until fix use hardcoded value >1 but <1.5
+            //TODO:Right now larger value causes crash because the device may not have enough space
+            // ,fix it later,until fix use hardcoded value >1 but <1.5
             initialGraph = GraphFactory.getDpGraph(density),
 
             navigationIcon = navigationIcon,

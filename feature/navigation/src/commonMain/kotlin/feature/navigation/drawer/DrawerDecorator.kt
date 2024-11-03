@@ -151,7 +151,10 @@ private fun DrawerToNavRailDecorator(
 
     AnimatedContent(windowSize) { window ->
         when (window) {
-            compact -> {
+                      //In this app space is important to draw the graph or other thing
+                      //that is why allowing drawer to save extra space
+                      //however by default the drawer is opened but it closable
+            compact,medium -> {
                 onEvent(NavigationEvent.DrawerNavigationMode)
                 _ModalDrawerDecorator(
                     groups = groups,
@@ -164,7 +167,7 @@ private fun DrawerToNavRailDecorator(
                 )
             }
 
-            medium, expanded -> {
+             expanded -> {
                 onEvent(NavigationEvent.NavRailNavigationMode)
                 NavRailLayout(
                     modifier = modifier,
