@@ -1,9 +1,9 @@
 package graph.graph.viewer.controller
 
 import androidx.compose.ui.graphics.Color
+import graph.graph.common.Constants
 import graph.graph.common.model.EditorEdgeMode
 import graph.graph.common.model.EditorNodeModel
-import graph.graph.common.model.Node
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -24,17 +24,13 @@ class GraphViewerControllerImpl internal constructor(
     nodes: Set<EditorNodeModel>,
     edges: Set<EditorEdgeMode>
 ) : GraphViewerController() {
-    //These color works for both dark and white and need to scope of composable function that is why
-    //Defining here
-    private val turquoiseBlue = Color(0xFF00B8D4)
-    private val sunsetOrange = Color(0xFFFF7043)
-    private val limeGreen = Color(0xFFC0CA33)
+
 
     private val canvasUtils = CanvasUtils(nodes, edges).trimExtraSpace().calculateCanvasSize()
     private val _nodes = MutableStateFlow(canvasUtils.nodes)
     private val _edges = MutableStateFlow(canvasUtils.edges)
-    private val nodColor =limeGreen
-    private val edgeColor = sunsetOrange
+    private val nodColor =Constants.nodeColor
+    private val edgeColor = Constants.edgeColor
     override val canvasSize = canvasUtils.canvasSize
     override val nodes: StateFlow<Set<EditorNodeModel>> = _nodes.asStateFlow()
     override val edges: StateFlow<Set<EditorEdgeMode>> = _edges.asStateFlow()

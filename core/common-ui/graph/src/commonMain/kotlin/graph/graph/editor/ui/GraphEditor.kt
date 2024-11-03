@@ -1,13 +1,14 @@
 package graph.graph.editor.ui
-
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -37,13 +38,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextMeasurer
@@ -61,6 +57,7 @@ import graph.graph.common.model.GraphResult
 import graph.graph.editor.controller.GraphEditorController
 import graph.graph.editor.ui.component.GraphTypeInputDialog
 import graph.graph.editor.ui.component.InputDialog
+import graph.graph.viewer.controller.CanvasUtils
 
 /**
  * @param hasDistance is the graph node has distance such as Node for Dijkstra algorithm. if the graph node has distance
@@ -73,14 +70,9 @@ import graph.graph.editor.ui.component.InputDialog
 fun GraphEditor(
     density: Float = LocalDensity.current.density,
     hasDistance: Boolean = false,
-    initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeMode>> = Pair(
-        emptyList(),
-        emptyList()
-    ),
+    initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeMode>> = Pair(emptyList(), emptyList()),
     navigationIcon: @Composable () -> Unit,
-    onDone: (GraphResult) -> Unit,
-
-    ) {
+    onDone: (GraphResult) -> Unit) {
     val hostState = remember { SnackbarHostState() }
     val controller: GraphEditorController = remember {
         GraphFactory.createGraphEditorController(
@@ -100,19 +92,6 @@ fun GraphEditor(
     val textMeasurer = rememberTextMeasurer()
     //defining the min size of node,because node can be so small if it has small string in it label
     val minNodeSizePx = with(LocalDensity.current) { nodeMinSizeDp.toPx() }
-
-    val connection= remember {
-        object : NestedScrollConnection{
-            override fun onPreScroll(
-                available: Offset,
-                source: NestedScrollSource
-            ): Offset {
-
-                println("TESTX:ScrollingMode:$available")
-                return super.onPreScroll(available, source)
-            }
-        }
-    }
 
 
     Scaffold(
@@ -138,9 +117,7 @@ fun GraphEditor(
         Column(
             modifier = Modifier
                 .padding(scaffoldPadding)
-                .nestedScroll(
-                    connection = connection
-                )
+                .fillMaxSize()
         ) {
             if (!graphTypeHasTaken) {
                 Instruction(
@@ -149,10 +126,9 @@ fun GraphEditor(
                     }
                 )
             } else {
+
                 _Editor(controller)
             }
-
-
 
             if (showGraphTypeInputDialog) {
                 GraphTypeInputDialog(controller.inputController::onGraphTypeSelected)
@@ -187,38 +163,44 @@ fun GraphEditor(
 }
 
 
+/**
+ * # Caution
+ * -  Manage it own scroller so consumer should handle the nested scrolling otherwise can causes crash
+ */
 @Composable
 private fun _Editor(
     controller: GraphEditorController,
 ) {
-    val textMeasurer = rememberTextMeasurer() //
+
+
+    val textMeasurer = rememberTextMeasurer()
     val nodes = controller.nodes.collectAsState().value
     val edges = controller.edges.collectAsState().value
-    val edgeWith = with(LocalDensity.current) { 1.dp.toPx() }
+    val edgeWidth = with(LocalDensity.current) { 1.dp.toPx() }
+
+    //In case of touch device at a time either scroll will detect or dragging
+    //That is why need to manage scroll and drag separately
+    //In order to use scrolling need to give a fix size to the canvas otherwise causes render issue
+    //Because these drawing are not affecting the layout phase , they are affecting only drawing phase
+
+    //Calculating exact size that need to render the node and parent
+    //This is helpful when there is initial graph set
+    //Is there is already no edge or node in the graph the canvasUtils should return a default min size
+    //so that graph can draw here..
+    val   canvasUtils = remember (nodes,edges){ CanvasUtils(nodes, edges.toSet()).trimExtraSpace().calculateCanvasSize() }
+    val density = LocalDensity.current
+    val canvasHeight = remember (nodes,edges) { with(density) { canvasUtils.canvasSize.height.toDp() } }
+    val canvasWidth =  remember (nodes,edges) { with(density) { canvasUtils.canvasSize.width.toDp()} }
+
     val selectionMode=controller.selectedNode.collectAsState().value!=null||controller.selectedEdge.collectAsState().value!=null
 
-    println("TESTX:SelectedMode:$selectionMode")
 
-    /**
-     * We are drawing that affect only the draw phase not the layout phase so even if we drawing that cross the boundary
-     * using the scrollable modifier we can not use scrolling because scroll is layout modifier that affect the layout phase
-     * so solve this problem right now fill the space with empty transparent box so that it affect the layout phase and we can do
-     * scrolling
-     * Note that this is need only when we want to show a existing saved graph,so if we do not have to featue to saved graph
-     * then you can remove wrapping these boxes and direcly use the canvas only
-     */
-
-    //TODO:find the required width and height to render the graph
-    //required width=maxOfAll(offset.x)
-    //if constraint.max width< required then show snackBar that window size does not find the saved Graph
-    //tell user to expand the size or
-    Box(
+    Canvas(
         Modifier
             .pointerInput(selectionMode){
                 detectTapGestures(
                     onTap = { touchedPosition ->
-                        println("TESTX:DraggingMode:Tapping")
-                        controller.onTap(touchedPosition) //adding the node on tap
+                        controller.onTap(touchedPosition)
                     },
                     onDoubleTap = {
                         controller.onDoubleTap()
@@ -230,46 +212,40 @@ private fun _Editor(
                     Modifier.pointerInput(selectionMode){
                         detectDragGestures(
                             onDragStart = {
-                                println("TESTX:DraggingMode:Start")
                                 controller.onDragStart(it)
                             },
                             onDrag = { _, dragAmount ->
-                                println("TESTX:DraggingMode:Dragging")
                                 controller.onDrag(dragAmount)
                             },
                             onDragEnd = {
-                                println("TESTX:DraggingMode:End")
                                 controller.dragEnd()
                             }
                         )
                     }
                 else
-                Modifier.horizontalScroll(rememberScrollState()).verticalScroll(rememberScrollState())
+                    //TODO:Find reason why graph not render if use size(height,weight) modifier before scroll modifier
+               Modifier.horizontalScroll(rememberScrollState()).verticalScroll(rememberScrollState())
             )
+            //TODO:Can cases crash if current window size is less than this size
+            .width(canvasWidth) //TODO:Careful can may crashes,directly use padding can cause crashes
+            .height(canvasHeight) //TODO:Careful may causes crashes
 
-      .size(1000.dp) //ToDO:It cause the problem since the client may show the pseudocode and the other thing
-            //so first calculate the saved passed graph required height and width to avoid take un-necessary space
-            .drawBehind {
-                try {
-                    //TODO:Since drawing, and can pass a saved graph but the device may have not space window to fit the drawing
-                    //in that case it will crash so avoid the app crashing,fix it later
+            .background(Color.Red)
+    ){
+        try {
+            //TODO:Since drawing, and can pass a saved graph but the device may have not space window to fit the drawing
+            //in that case it will crash so avoid the app crashing,fix it later
 
-                    edges.forEach {
-                        drawEdge(it, textMeasurer, width = edgeWith)
-                    }
-                    nodes.forEach {
-                        drawNode(it, textMeasurer)
-                    }
-                } catch (_: Exception) {
-
-                }
+            edges.forEach {
+                drawEdge(it, textMeasurer, width = edgeWidth)
             }
-        //TODO: In case  of touch screen the scroll detected and pointer are not possible to detect at a time,
-        //so fix it later or try to introduce a better way so that works with enable both dragging and scrolling
+            nodes.forEach {
+                drawNode(it, textMeasurer)
+            }
+        } catch (_: Exception) {
 
-
-    )
-
+        }
+    }
 }
 
 @Composable

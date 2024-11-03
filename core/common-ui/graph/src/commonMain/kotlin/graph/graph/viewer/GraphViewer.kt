@@ -35,7 +35,6 @@ fun GraphViewer(
         modifier = modifier
             .width(canvasWidth) //TODO:Careful can causes crashes,directly use padding can cause crashes
             .height(canvasHeight) //TODO:Careful can causes crashes
-
     ) {
         _GraphDrawer(
             nodes = controller.nodes.collectAsState().value,

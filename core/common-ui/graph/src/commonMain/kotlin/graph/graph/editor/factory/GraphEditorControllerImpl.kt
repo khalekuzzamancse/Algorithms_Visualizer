@@ -12,6 +12,7 @@ import graph.graph.common.model.EditorNodeModel
 import graph.graph.common.model.GraphResult
 import graph.graph.common.model.Node
 import graph.graph.editor.controller.GraphEditorController
+import graph.graph.viewer.controller.CanvasUtils
 import kotlinx.coroutines.flow.StateFlow
 
 
@@ -36,6 +37,7 @@ internal data class GraphEditorControllerImpl(
     private val nodeManger = GraphEditorNodeController(density)
     private val edgeManger = GraphEditorEdgeController()
     private var edgeId: Int = 1
+
 
     init {
         inputController.drawNodeObserver = ::_onAddNodeRequest
