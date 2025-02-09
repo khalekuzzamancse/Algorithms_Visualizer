@@ -8,6 +8,7 @@ kotlin {
             dependencies {
                 implementation(compose.materialIconsExtended)
                 implementation(projects.core.commonUi.commonUi)
+                implementation(projects.core.lang)
 
             }
         }

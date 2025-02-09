@@ -1,7 +1,5 @@
 @file:Suppress("functionName", "className")
-
 package graphtopologicalsort.ui
-
 import graphtopologicalsort.di.DiContainer
 import graph.graph.common.model.GraphResult
 import graph.graph.common.model.Node
@@ -19,7 +17,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-
 class SimulationViewModel(
     private val color: StatusColor
 ) {
@@ -31,6 +28,8 @@ class SimulationViewModel(
     lateinit var graphController: GraphViewerController
     val autoPlayer = AutoPlayerImpl(::onNext)
     val neighborSelector = NeighborSelectorImpl()
+    private val _code = MutableStateFlow<String?>(null)
+    val code = _code.asStateFlow()
 
     fun onGraphCreated(result: GraphResult) {
         this.result = result
@@ -50,6 +49,7 @@ class SimulationViewModel(
 
     fun onNext() {
         val state = simulator.next()
+        _code.update { state.code }
         consumer.consume(state)
     }
 
@@ -97,7 +97,7 @@ private class _StateConsumer(
             is SimulationState.StartingNode -> handleStartingNode(state.nodeId)
             is SimulationState.TraversingEdge -> handleTraversingEdge(state.id)
             is SimulationState.TopologicalOrder -> handleTopologicalOrder(state.order)
-            SimulationState.Finished -> handleSimulationFinished()
+           is  SimulationState.Finished -> handleSimulationFinished()
             else -> Unit // No action for other states
         }
     }

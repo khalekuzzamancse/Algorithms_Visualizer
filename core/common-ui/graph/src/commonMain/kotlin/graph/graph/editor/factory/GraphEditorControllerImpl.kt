@@ -13,7 +13,6 @@ import graph.graph.common.model.GraphResult
 import graph.graph.common.model.Node
 import graph.graph.editor.controller.GraphEditorController
 import graph.graph.editor.model.GraphType
-import graph.graph.viewer.controller.CanvasUtils
 import kotlinx.coroutines.flow.StateFlow
 
 
@@ -134,7 +133,7 @@ internal data class GraphEditorControllerImpl(
 
     override fun onDoubleTap() {
         nodeManger.resetSelection()
-        edgeManger.removeSelectedEdge()
+        edgeManger.clearSelection()
     }
     override fun onTap(tappedPosition: Offset) {
         nodeManger.observeCanvasTap(tappedPosition)
@@ -161,6 +160,10 @@ internal data class GraphEditorControllerImpl(
     }
 
     override fun dragEnd() = edgeManger.dragEnded()
+    override fun clearSelection() {
+       nodeManger.resetSelection()
+        edgeManger.clearSelection()
+    }
 
 
     private fun addNode(position: Offset) {

@@ -2,6 +2,8 @@ package tree.domain.model
 
 
 sealed interface SimulationState {
-    data class ProcessingNode(val node: TreeNode): SimulationState
-    data object Finished : SimulationState
+    val code:String
+    data class ProcessingNode(val node: TreeNode, override val code: String): SimulationState
+    data class Finished(override val code: String) : SimulationState
+    data class  Misc(override val code: String):SimulationState
 }

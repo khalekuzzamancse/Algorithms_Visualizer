@@ -1,18 +1,24 @@
 package graph.tree
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import core.lang.Logger
 import graph.graph.common.model.GraphResult
 import graph.graph.common.model.Node
+import graph.graph.editor.factory.SavedGraphProvider
+import graph.graph.editor.model.GraphType
 import graph.graph.editor.ui.GraphEditor
 
 @Composable
 fun TreeEditor(
     navigationIcon:@Composable ()->Unit,
     onDone: (TreeResult) -> Unit,
-
 ){
+    val  tag= remember { "TreeEditor" }
     GraphEditor(
         navigationIcon = navigationIcon,
+        graphType = GraphType.Undirected,//Tree's are undirected Graph
+        initialGraph = SavedGraphProvider.getTree(),
         onDone = {result ->
             val root= buildTree(result)
             onDone(
@@ -21,11 +27,10 @@ fun TreeEditor(
                     root = root
                 )
             )
+            Logger.always(tag,"Tree:$root")
         }
     )
 }
-
-
 
 
 fun buildTree(graphResult: GraphResult): TreeNode {

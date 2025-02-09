@@ -3,35 +3,47 @@
 package tree.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import graph.graph.viewer.controller.GraphViewerController
+import core.commonui.CodeViewer
+import core.commonui.SimulationScreenEvent
+import core.commonui.SimulationScreenState
+import core.commonui.SimulationSlot
+import core.commonui.Token
 import graph.graph.viewer.GraphViewer
+import graph.graph.viewer.controller.GraphViewerController
 import graph.tree.TreeEditor
 
-
 @Composable
-fun TreeSimulationScreen( navigationIcon: @Composable () -> Unit,) {
+fun TreeSimulationScreen(navigationIcon: @Composable () -> Unit) {
     val viewModel = remember { SimulationViewModel() }
+    val showTypeInputDialog=viewModel.traversalType.collectAsState().value==null
+
     if (viewModel.isInputMode.collectAsState().value) {
         TreeEditor(
             navigationIcon = navigationIcon,
         ) { result ->
             viewModel.onGraphCreated(result)
-           // println(result)
+
         }
     } else {
+        if(showTypeInputDialog){
+            TypeInputDialog {type->
+                viewModel.selectTraversalType(type)
+            }
+        }
         _GraphViewer(
-            onNext = viewModel::onNext,
-            graphController = viewModel.graphController
+            viewModel = viewModel,
+            graphController = viewModel.graphController,
+            navigationIcon = navigationIcon
         )
 
     }
@@ -43,22 +55,65 @@ fun TreeSimulationScreen( navigationIcon: @Composable () -> Unit,) {
 private fun _GraphViewer(
     modifier: Modifier = Modifier,
     graphController: GraphViewerController,
-    onNext:() -> Unit
+    navigationIcon: @Composable () -> Unit,
+    viewModel: SimulationViewModel,
 ) {
-    Column(modifier) {
-        Button(
-            onClick =onNext
-        ) {
-            Text("Next")
-        }
 
-        GraphViewer(
-            modifier = Modifier
-                .background(Color.Gray)
-                .padding(16.dp),
-            controller = graphController
-        )
-    }
+    var state by remember { mutableStateOf(SimulationScreenState()) }
+    val autoPlayer=viewModel.autoPlayer
+    SimulationSlot(
+        modifier = modifier,
+        state = state,
+        resultSummary = { },
+        navigationIcon =navigationIcon,
+        pseudoCode = { mod ->
+            val code = viewModel.code.collectAsState().value
+            if (code != null)
+                CodeViewer(
+                    modifier = mod,
+                    code = code,
+                    token = Token(
+                        literal = emptyList(),
+                        function = emptyList(),
+                        identifier = emptyList()
+                    )
+                )
+        },
+        visualization = {
+            GraphViewer(
+                modifier = Modifier
+                    .background(Color.Gray)
+                    .padding(16.dp),
+                controller = graphController
+            )
+        },
+        onEvent = { event ->
+            when (event) {
+                is SimulationScreenEvent.AutoPlayRequest -> {
+                   autoPlayer.autoPlayRequest(event.time)
+                }
+
+                SimulationScreenEvent.NextRequest -> viewModel.onNext()
+
+                SimulationScreenEvent.NavigationRequest -> {}
+                SimulationScreenEvent.ResetRequest -> {
+                    viewModel.reset()
+                }
+
+                SimulationScreenEvent.CodeVisibilityToggleRequest -> {
+                    val isVisible = state.showPseudocode
+                    state = state.copy(showPseudocode = !isVisible)
+                }
+
+                SimulationScreenEvent.ToggleNavigationSection -> {
+                    val isVisible = state.showNavTabs
+                    state = state.copy(showNavTabs = !isVisible)
+                }
+            }
+
+        },
+    )
+
 }
 
 

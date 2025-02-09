@@ -56,4 +56,5 @@ internal interface GraphEditorController {
     fun onDragStart(startPosition: Offset)
     fun onDrag(dragAmount: Offset)
     fun dragEnd()
+    fun clearSelection()
 }

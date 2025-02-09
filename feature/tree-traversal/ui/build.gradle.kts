@@ -8,6 +8,8 @@ kotlin {
                 implementation(projects.feature.treeTraversal.domain)
                 implementation(projects.feature.treeTraversal.di)
                 implementation(projects.core.commonUi.graph)
+                implementation(projects.core.lang)
+                implementation(projects.core.commonUi.commonUi)
             }
         }
         val commonTest by getting {

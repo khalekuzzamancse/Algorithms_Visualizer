@@ -30,7 +30,7 @@ val applicationModules = listOf(
 
 
 val coreModules = listOf(
-    ":core", ":core:database",
+    ":core", ":core:database",":core:lang",
     ":core:common-ui",":core:common-ui:array",":core:common-ui:common_ui", ":core:common-ui:graph",
 )
 

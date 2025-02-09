@@ -2,6 +2,7 @@ package graphtopologicalsort.infrastructure.factory
 
 import graphtopologicalsort.domain.model.GraphModel
 import graphtopologicalsort.domain.model.SimulationState
+import graphtopologicalsort.domain.service.PseudocodeGenerator
 import graphtopologicalsort.domain.service.Simulator
 import graphtopologicalsort.infrastructure.services.GraphImpl
 
@@ -29,7 +30,7 @@ class SimulatorImpl internal constructor(
         return if (iterator.hasNext()) {
             iterator.next()
         } else {
-            SimulationState.Finished
+            SimulationState.Finished(PseudocodeGenerator.generate())
         }
     }
 }

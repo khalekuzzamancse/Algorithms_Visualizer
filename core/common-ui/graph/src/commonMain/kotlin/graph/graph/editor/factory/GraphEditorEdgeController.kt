@@ -36,7 +36,7 @@ internal class GraphEditorEdgeController {
         val tapped=tapListener.findSelectedEdgeOrNull()?:return
 
         //remove selection that are already selected,if tapped on empty space selection will be removed
-         removeSelectedEdge()
+         clearSelection()
         _selectedEdge.update { tapped }
         _edges.update { tapListener.getEdgesWithSelection() }
     }
@@ -91,7 +91,7 @@ internal class GraphEditorEdgeController {
         _edges.update { edges }
     }
 
-     fun removeSelectedEdge() =_edges.update {edges->
+     fun clearSelection() =_edges.update { edges->
         _selectedEdge.update { null }
         edges.map { it.copy(
             selectedPoint = EdgePoint.None,

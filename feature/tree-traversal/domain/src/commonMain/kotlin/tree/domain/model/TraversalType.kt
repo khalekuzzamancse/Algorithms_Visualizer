@@ -1,7 +1,7 @@
 package tree.domain.model // Enum for traversal type selection
-    enum class TraversalType {
-      BFS,
+    enum class TraversalType(val label:String) {
+      BFS("BFS"),
         /**Also represent the inorder*/
-        DFS,
-        PRE_ORDER, POST_ORDER
+        DFS("DFS/InOrder"),
+        PRE_ORDER("PreOrder"), POST_ORDER("PostOrder")
     }

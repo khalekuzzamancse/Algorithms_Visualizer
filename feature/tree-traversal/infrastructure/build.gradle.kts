@@ -6,6 +6,7 @@ kotlin {
         val commonMain by getting{
             dependencies {
                 implementation(projects.feature.treeTraversal.domain)
+                implementation(projects.core.lang)
             }
 
         }

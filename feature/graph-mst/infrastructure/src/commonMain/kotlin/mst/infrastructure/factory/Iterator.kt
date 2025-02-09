@@ -11,7 +11,7 @@ class Iterator(
     private val graph: GraphImpl
 ) {
     private var model=CodeStateModel()
-    fun  CodeStateModel.toCode()=PseudocodeGenerator.generate(this)
+    private fun  CodeStateModel.toCode()=PseudocodeGenerator.generate(this)
     private val notAddedToMST = mutableListOf<String>()
 
     init {
@@ -27,7 +27,7 @@ class Iterator(
             graph.updateDistanceOf(it.nodeId, it.edgeCost)
             graph.updateParentOf(it.nodeId, startNodeId)
         }
-        model=model.copy(pendingNodes = "$notAddedToMST", source = "$startNodeId")
+        model=model.copy(pendingNodes = "$notAddedToMST", source = startNodeId)
 
         yield(SimulationState.Misc(model.toCode()))
 

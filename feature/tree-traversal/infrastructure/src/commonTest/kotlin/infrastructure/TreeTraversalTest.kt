@@ -2,7 +2,7 @@ package infrastructure
 
 import tree.domain.model.TraversalType
 import tree.domain.model.TreeNode
-import tree.infrastructure.factory.DFSTraversal
+import tree.infrastructure.factory.Traversal
 import kotlin.test.Test
 import kotlin.test.fail
 
@@ -19,9 +19,9 @@ class TreeTraversalTest {
         nodeB.children.add(nodeD)
         nodeC.children.add(nodeE)
 
-        val dfsTraversal = DFSTraversal(nodeA,TraversalType.DFS)
+        val traversal = Traversal(nodeA,TraversalType.DFS)
 
-        val visitedOrder = dfsTraversal.traverse()
+        val visitedOrder = traversal.traverse()
         for (node in visitedOrder) {
             println(node.id)
         }

@@ -20,7 +20,7 @@ import graph.graph.common.drawEdge
 import graph.graph.common.drawNode
 import graph.graph.common.model.EditorEdgeMode
 import graph.graph.common.model.EditorNodeModel
-import graph.graph.editor.ui.getMaxXY
+import graph.graph.editor.ui.component.getMaxXY
 import graph.graph.viewer.controller.GraphViewerController
 
 
@@ -64,8 +64,9 @@ private fun _GraphDrawer(
     val edgeWith = with(LocalDensity.current) { 1.dp.toPx() }
     //TODO:Find reason why graph not render if use size(height,weight) modifier before scroll modifier
     Canvas(
-        modifier = Modifier.horizontalScroll(rememberScrollState())
-            .verticalScroll(rememberScrollState())
+        modifier = Modifier
+            //.horizontalScroll(rememberScrollState())
+         //   .verticalScroll(rememberScrollState())
             .width(canvasWidth) //TODO:Careful can may crashes,directly use padding can cause crashes
             .height(canvasHeight) //TODO:Careful may causes crashes
     ) {
