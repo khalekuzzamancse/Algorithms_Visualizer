@@ -4,8 +4,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
@@ -63,10 +61,10 @@ internal fun Editor(
 
     val modifier=  Modifier.pointerInput(selectionMode){
         if(!selectionMode){
-            Logger.temp(tag,"Non Selection mode")
+            Logger.on(tag,"Non Selection mode")
             detectTapGestures(
                 onTap = { touchedPosition ->
-                    Logger.temp(tag,"onTap")
+                    Logger.on(tag,"onTap")
                     controller.onTap(touchedPosition)
 
                 },
@@ -77,7 +75,7 @@ internal fun Editor(
             )
         }
         else{
-            Logger.temp(tag," Selection mode")
+            Logger.on(tag," Selection mode")
             detectDragGestures(
                 onDragStart = {
                     Logger.always(tag,"onDragStart")

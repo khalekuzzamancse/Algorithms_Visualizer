@@ -81,6 +81,7 @@
             <option value="$PROJECT_DIR$/feature/lineards-linear-search/domain" />
             <option value="$PROJECT_DIR$/feature/lineards-linear-search/infrastructure" />
             <option value="$PROJECT_DIR$/feature/lineards-linear-search/ui" />
+            <option value="$PROJECT_DIR$/feature/lineards-quick-sort" />
             <option value="$PROJECT_DIR$/feature/lineards-selection-sort" />
             <option value="$PROJECT_DIR$/feature/lineards-selection-sort/di" />
             <option value="$PROJECT_DIR$/feature/lineards-selection-sort/domain" />

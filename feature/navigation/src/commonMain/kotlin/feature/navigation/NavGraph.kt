@@ -20,6 +20,7 @@ import graphtraversal.ui.DfsSimulation
 import insertionsort.ui.InsertionSortRoute
 import linearsearch.ui.LinearSearchRoute
 import mst.ui.PrimsSimulationScreen
+import quick_sort.ui.QuickSortScreen
 import selectionsort.ui.SelectionSortRoute
 import tree.ui.TreeSimulationScreen
 
@@ -86,6 +87,16 @@ fun NavController.createNavGraph(
         }
         composable(NavDestination.InsertionSort.route) {
             InsertionSortRoute(
+                navigationIcon = {
+                    _DrawerIcon(
+                        isNavRailMode = isNavRailMode,
+                        onClick = openDrawerRequest
+                    )
+                }
+            )
+        }
+        composable(NavDestination.QuickSort.route) {
+            QuickSortScreen(
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,

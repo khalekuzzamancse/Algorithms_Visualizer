@@ -1,8 +1,8 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="quick_sort-desktop">
-    <output-path>$PROJECT_DIR$/feature/quick_sort/build/libs</output-path>
-    <root id="archive" name="quick_sort-desktop.jar">
-      <element id="module-output" name="AlgorithmVisualizer.feature.quick_sort.desktopMain" />
+  <artifact type="jar" name="quick-sort-desktop">
+    <output-path>$PROJECT_DIR$/feature/quick-sort/build/libs</output-path>
+    <root id="archive" name="quick-sort-desktop.jar">
+      <element id="module-output" name="AlgorithmVisualizer.feature.quick-sort.desktopMain" />
     </root>
   </artifact>
 </component>

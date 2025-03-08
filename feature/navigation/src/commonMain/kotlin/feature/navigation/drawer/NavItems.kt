@@ -41,6 +41,10 @@ sealed interface NavDestination : Destination {
         override val route = "InsertionSort"
     }
 
+    data object QuickSort : NavDestination {
+        override val route = "QuickSort"
+    }
+
     data object BreadthFirstSearch : NavDestination {
         override val route = "BreadthFirstSearch"
     }
@@ -125,6 +129,12 @@ object NavDestinationBuilder {
                 unFocusedIcon = Icons.AutoMirrored.Outlined.Sort,
                 focusedIcon = Icons.AutoMirrored.Filled.Sort,
                 destination = NavDestination.InsertionSort
+            ),
+            NavigationItem(
+                label = "Quick Sort",
+                unFocusedIcon = Icons.AutoMirrored.Outlined.Sort,
+                focusedIcon = Icons.AutoMirrored.Filled.Sort,
+                destination = NavDestination.QuickSort
             )
         )
     )

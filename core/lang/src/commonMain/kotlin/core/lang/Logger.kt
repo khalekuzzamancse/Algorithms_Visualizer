@@ -1,7 +1,7 @@
 package core.lang
 @Suppress("functionName","unused")
 object Logger {
-    fun temp(tag: String, msg: String) {
+    fun on(tag: String, msg: String) {
         _log(tag,msg)
     }
     fun always(tag: String, msg: String) {
