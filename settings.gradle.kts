@@ -55,7 +55,7 @@ val featuresModules = listOf(
     ":feature:graph-dfs",":feature:graph-dfs:domain",":feature:graph-dfs:ui",":feature:graph-dfs:di",":feature:graph-dfs:infrastructure",
     ":feature:graph-dfs",":feature:graph-bfs:domain",":feature:graph-bfs:ui",":feature:graph-bfs:di",":feature:graph-bfs:infrastructure",
     ":feature:graph-topologicalsort",":feature:graph-topologicalsort:domain",":feature:graph-topologicalsort:ui",":feature:graph-topologicalsort:di",":feature:graph-topologicalsort:infrastructure",
-    ":feature:lineards-quick-sort"
+    ":feature:lineards-quick-sort",   ":feature:tree-binary"
 )
 
 rootProject.name = "AlgorithmVisualizer"

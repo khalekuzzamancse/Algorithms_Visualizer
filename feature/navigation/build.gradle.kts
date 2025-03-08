@@ -22,6 +22,8 @@ kotlin {
                 implementation(projects.feature.lineardsLinearSearch.ui)
                 implementation(projects.feature.lineardsBinarySearch.ui)
                 implementation(projects.feature.lineardsQuickSort)
+                implementation(projects.feature.treeBinary)
+
 
 
             }

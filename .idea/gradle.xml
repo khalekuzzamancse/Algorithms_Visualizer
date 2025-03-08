@@ -88,6 +88,7 @@
             <option value="$PROJECT_DIR$/feature/lineards-selection-sort/infrastructure" />
             <option value="$PROJECT_DIR$/feature/lineards-selection-sort/ui" />
             <option value="$PROJECT_DIR$/feature/navigation" />
+            <option value="$PROJECT_DIR$/feature/tree-binary" />
             <option value="$PROJECT_DIR$/feature/tree-traversal" />
             <option value="$PROJECT_DIR$/feature/tree-traversal/di" />
             <option value="$PROJECT_DIR$/feature/tree-traversal/domain" />
