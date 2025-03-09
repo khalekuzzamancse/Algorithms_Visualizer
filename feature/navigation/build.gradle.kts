@@ -23,6 +23,7 @@ kotlin {
                 implementation(projects.feature.lineardsBinarySearch.ui)
                 implementation(projects.feature.lineardsQuickSort)
                 implementation(projects.feature.treeBinary)
+                implementation(projects.feature.treeBinary)
 
 
 

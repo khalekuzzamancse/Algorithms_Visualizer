@@ -68,6 +68,9 @@ sealed interface NavDestination : Destination {
     data object TreeTraversals : NavDestination {
         override val route = "TreeTraversals"
     }
+    data object BinarySearchTree : NavDestination {
+        override val route = "BinarySearchTree"
+    }
 
     data object AboutUs : NavDestination {
         override val route = "AboutUs"
@@ -181,6 +184,12 @@ object NavDestinationBuilder {
                 unFocusedIcon = Icons.Outlined.DeviceHub,
                 focusedIcon = Icons.Filled.DeviceHub,
                 destination = NavDestination.TreeTraversals
+            ),
+            NavigationItem(
+                label = "Binary Search Tree",
+                unFocusedIcon = Icons.Outlined.DeviceHub,
+                focusedIcon = Icons.Filled.DeviceHub,
+                destination = NavDestination.BinarySearchTree
             )
         )
     )

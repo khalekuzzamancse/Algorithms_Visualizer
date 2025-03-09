@@ -33,7 +33,7 @@ import tree.binary.tree_view.TreeViewController
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun BinaryTree() {
+fun BinarySearchTree(navigationIcon: @Composable () -> Unit={}) {
     val tree = remember { TreeViewController.create<Int>() }
     var list by remember { mutableStateOf(emptyList<Int>()) }
     val scope = rememberCoroutineScope()
