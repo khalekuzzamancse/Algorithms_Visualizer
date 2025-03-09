@@ -1,4 +1,5 @@
 package tree.binary
+
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.padding
@@ -17,11 +18,10 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.max
 
 
-
 @Composable
 fun <T> TreeView(tree: Node<T>) {
-    val treeUtil= remember { TreeUtil(tree) }
-    val  textMeasurer= rememberTextMeasurer()
+    val treeUtil = remember(tree) { TreeUtil(tree) }
+    val textMeasurer = rememberTextMeasurer()
 
     BoxWithConstraints(Modifier.padding(20.dp).size(400.dp)) {
         val canvasWidth = constraints.maxWidth.toFloat()
@@ -43,59 +43,111 @@ fun <T> TreeView(tree: Node<T>) {
             }
 
             // Then draw nodes on top
-            nodes.forEach {node ->
-                drawNode(center=node.center, label =node.label , measurer = textMeasurer)
+            nodes.forEach { node ->
+                drawNode(center = node.center, label = node.label, measurer = textMeasurer)
             }
         }
     }
 }
-private fun DrawScope.drawNode(center: Offset,label:String,measurer: TextMeasurer) {
-    drawCircle(
-        color = Color.Blue,
-        radius = 20f,
-        center = center
-    )
-    val move=Offset(  measurer.measure(label).size.width/2f,  measurer.measure(label).size.height/2f)
 
-    drawText(
-        textMeasurer = measurer,
-        text = label,
-        topLeft = center-move,
-        style = TextStyle(color = Color.White)
-    )
+private fun DrawScope.drawNode(center: Offset, label: String, measurer: TextMeasurer) {
+    
+        drawCircle(
+            color = Color.Blue,
+            radius = 20f,
+            center = center
+        )
+        val move = Offset(
+            measurer.measure(label).size.width / 2f,
+            measurer.measure(label).size.height / 2f
+        )
+        drawText(
+            textMeasurer = measurer,
+            text = label,
+            topLeft = center - move,
+            style = TextStyle(color = Color.White)
+        )
+
+
 }
 
 
-
-
 private typealias Line = Pair<Offset, Offset>
-class Node<T>(data: T) {
-    var left: Node<T>? = null
-    var right: Node<T>? = null
+//TODO: Need at least two nodes otherwise causes exception, need to handle that edge case
+class BST<T : Comparable<T>>( val root: Node<T>?) {
+
+    fun insert(value: T): BST<T> {
+        return BST(insertRecursive(root, value))
+    }
+
+    private fun insertRecursive(node: Node<T>?, value: T): Node<T> {
+        return when {
+            node == null -> Node(value) // Create a new node if null
+            value < node.data -> Node(node.data, insertRecursive(node.left, value), node.right) // Copy with left update
+            value > node.data -> Node(node.data, node.left, insertRecursive(node.right, value)) // Copy with right update
+            else -> node // Return same node if value already exists
+        }
+    }
+}
+data class Node<T>(val data: T,   val left: Node<T>? = null,val right: Node<T>? = null) {
 
     fun getDepth(): Int {
         val leftDepth = left?.getDepth() ?: 0
         val rightDepth = right?.getDepth() ?: 0
         return 1 + max(leftDepth, rightDepth)
     }
-    val label="$data"
+
+    val label = "$data"
 }
 
- data class NodeLayout(val center: Offset, val label: String)
+data class NodeLayout(val center: Offset, val label: String)
+
 /**
  * Donald Knuth's binary tree drawing algorithm.
  * https://gist.github.com/deepankarb/4ae7c2a88ed6e9a8a1c636e0c1062f07
+ * https://llimllib.github.io/pymag-trees/
+ * Example:
+ * ```kotlin
+ * fun createTree(): Node<Int> {
+ *     val root = Node(0)
+ *     root.left = Node(1).apply {
+ *         left = Node(3).apply {
+ *             left = Node(7)
+ *             right = Node(8)
+ *         }
+ *         right = Node(4).apply {
+ *             left = Node(7)
+ *             right = Node(8)
+ *         }
+ *     }
+ *     root.right = Node(2).apply {
+ *         left = Node(5).apply {
+ *             left = Node(9)
+ *             right = Node(10)
+ *         }
+ *         right = Node(6).apply {
+ *             left = Node(7)
+ *             right = Node(8)
+ *         }
+ *     }
+ *     return root
+ * }
+ *
+ *  TreeView(createTree())
+ * ```
  */
+//TODO: Need at least two nodes otherwise causes exception, need to handle that edge case
 
 class TreeUtil<T>(
-    val  tree:Node<T>
-){
+    val tree: Node<T>
+) {
 
     private fun countNodes(node: Node<T>?): Int {
         if (node == null) return 0
         return 1 + countNodes(node.left) + countNodes(node.right)
     }
-     fun calculateTreeLayout(
+
+    fun calculateTreeLayout(
         root: Node<T>,
         width: Float,
         height: Float
