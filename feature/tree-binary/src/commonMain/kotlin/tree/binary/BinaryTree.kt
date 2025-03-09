@@ -1,3 +1,4 @@
+@file:Suppress("unUsed")
 package tree.binary
 
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +31,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tree.binary.tree_view.TreeView
 import tree.binary.tree_view.TreeViewController
+
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -74,7 +76,7 @@ fun BinarySearchTree(navigationIcon: @Composable () -> Unit={}) {
                     }
                 }
             )
-            _Button(
+            Button(
                 label = "Min"
             ) {
                 scope.launch {
@@ -82,7 +84,7 @@ fun BinarySearchTree(navigationIcon: @Composable () -> Unit={}) {
                 }
             }
             SpacerHorizontal(16)
-            _Button(
+            Button(
                 label = "Max"
             ) {
                 scope.launch {
@@ -108,7 +110,7 @@ fun BinarySearchTree(navigationIcon: @Composable () -> Unit={}) {
                     }
                 }
             )
-            _Button(
+            Button(
                 label = "Reset"
             ) {
                 scope.launch {
@@ -138,7 +140,7 @@ fun SpacerVertical(height: Int) = Spacer(Modifier.height(height.dp))
 
 
 @Composable
-fun _Button(modifier: Modifier = Modifier, label: String, onClick: () -> Unit) {
+ fun Button(modifier: Modifier = Modifier, label: String, onClick: () -> Unit) {
     Button(
         modifier = modifier,
         onClick = onClick
@@ -148,7 +150,7 @@ fun _Button(modifier: Modifier = Modifier, label: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun _InputButton(
+private fun _InputButton(
     modifier: Modifier = Modifier,
     label: String,
     title:String="Enter a number",

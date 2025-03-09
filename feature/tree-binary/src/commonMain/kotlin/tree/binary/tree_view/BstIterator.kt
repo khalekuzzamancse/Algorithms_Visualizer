@@ -154,7 +154,6 @@ private class BstIteratorImpl<T : Comparable<T>>(override val root: Node<T>?) : 
         yield(State.TargetReached(current.id)) // Found maximum value
     }
 
-
     override fun findSuccessor(value: T): Sequence<State> = sequence {
         var current = root
         var successor: Node<T>? = null
@@ -199,8 +198,6 @@ private class BstIteratorImpl<T : Comparable<T>>(override val root: Node<T>?) : 
         }
     }
 
-
-
     override fun findPredecessor(value: T): Sequence<State> = sequence {
         var current = root
         var predecessor: Node<T>? = null
@@ -244,8 +241,5 @@ private class BstIteratorImpl<T : Comparable<T>>(override val root: Node<T>?) : 
             yield(State.Finish) // No predecessor exists (lowest value node)
         }
     }
-
-
-
 
 }

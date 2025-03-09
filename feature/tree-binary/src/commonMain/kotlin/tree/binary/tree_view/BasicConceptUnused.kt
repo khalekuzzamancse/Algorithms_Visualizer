@@ -34,7 +34,7 @@ import java.util.Stack
 import kotlin.math.max
 
 @Composable
-fun <T : Comparable<T>> TreeViewOld(tree: Node<T>) {
+fun <T> TreeViewOld(tree: Node<T>) {
     val treeUtil = remember(tree) { _TreeUtil(tree) }
     val density = LocalDensity.current
     val size = 50.dp
@@ -71,7 +71,7 @@ fun <T : Comparable<T>> TreeViewOld(tree: Node<T>) {
  * Has a bug, so at least two nodes required for drawing
  */
 @Composable
-private fun <T> TreeViewBasic(tree: Node<T>) {
+ fun <T> TreeViewBasic(tree: Node<T>) {
     val treeUtil = remember(tree) { _TreeUtil(tree) }
     val textMeasurer = rememberTextMeasurer()
 

@@ -169,12 +169,12 @@ fun NavController.createNavGraph(
         }
         composable(NavDestination.BinarySearchTree.route) {
             BinarySearchTree(
-                navigationIcon = {
-                    _DrawerIcon(
-                        isNavRailMode = isNavRailMode,
-                        onClick = openDrawerRequest
-                    )
-                }
+//                navigationIcon = {
+//                    _DrawerIcon(
+//                        isNavRailMode = isNavRailMode,
+//                        onClick = openDrawerRequest
+//                    )
+//                }
             )
         }
         composable(NavDestination.AboutUs.route) {
