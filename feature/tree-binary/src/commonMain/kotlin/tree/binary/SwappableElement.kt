@@ -26,6 +26,7 @@ fun SwappableElement(
     label:String,
     size: Dp = 50.dp,
     offset: Offset= Offset.Zero,
+    color: Color=Color.Blue
 ) {
     //val offsetAnimation by animateOffsetAsState(offset, label = "")
     val padding = 8.dp
@@ -42,7 +43,7 @@ fun SwappableElement(
             modifier = Modifier
                 .padding(padding)
                 .clip(CircleShape)
-                .background(Color.Blue)
+                .background(color)
                 .fillMaxSize()
                 .wrapContentSize(Alignment.Center)
         )

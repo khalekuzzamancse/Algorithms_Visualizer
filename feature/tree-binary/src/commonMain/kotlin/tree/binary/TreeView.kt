@@ -1,4 +1,5 @@
 @file:Suppress("unused")
+
 package tree.binary
 
 import androidx.compose.foundation.Canvas
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -18,17 +20,120 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlin.math.max
 
+class TreeViewController<T : Comparable<T>> {
+    private var canvasWidth: Float=0f
+    private var canvasHeight: Float=0f
+    private val _root = MutableStateFlow<Node<T>?>(null)
+    private val _nodes = MutableStateFlow<List<NodeLayout>>(emptyList())
+    private val _lines = MutableStateFlow<List<Line>>(emptyList())
+    val nodes = _nodes.asStateFlow()
+    val lines = _lines.asStateFlow()
+    fun onCanvasSizeChanged(canvasWidth: Float, canvasHeight: Float) {
+        val root = _root.value
+        this.canvasWidth=canvasWidth
+        this.canvasHeight=canvasHeight
+        if (root != null) {
+            treeUtil = TreeUtil(root)
+            treeUtil.calculateTreeLayout(root, canvasWidth, canvasHeight)
+        }
+
+    }
+
+    private lateinit var treeUtil: TreeUtil<T>
+    private  var bst: BST<T> =BST(null)
+    suspend fun insert(value: T) {
+        bst = bst.insert(value)
+        val newRoot = bst.root
+        _root.update { newRoot }
+        if (newRoot != null) {
+            updateTree(newRoot, newNodeId = "$value")
+        }
+    }
+
+    private suspend fun updateTree(root: Node<T>, newNodeId:String?=null) {
+            treeUtil = TreeUtil(root)
+            val newTree=treeUtil.calculateTreeLayout(root, canvasWidth, canvasHeight)
+            var  nodes=newTree.first
+            val  lines=newTree.second
+            if(newNodeId!=null){
+                nodes=nodes.map {
+                    if(newNodeId==it.id) it.copy(color = Color.Red)
+                    else it.copy(color = Color.Blue)
+                }
+            }
+            _nodes.update {nodes }
+            _lines.update { lines }
+            delay(2000)
+            _nodes.update {existingNode->
+                existingNode.map { it.copy(color = Color.Blue) }
+            }
+
+    }
+
+}
 
 @Composable
-fun <T> TreeView(tree: Node<T>) {
+fun <T : Comparable<T>> TreeView(
+    size: Dp = 50.dp,
+    controller: TreeViewController<T>
+) {
+    val density = LocalDensity.current
+    val offset = with(density) {
+        Offset(size.toPx(), size.toPx()).div(2f)
+    }
+
+    BoxWithConstraints(Modifier.padding(20.dp).size(400.dp)) {
+        val canvasWidth = constraints.maxWidth.toFloat()
+        val canvasHeight = constraints.maxHeight.toFloat()
+        controller.onCanvasSizeChanged(canvasWidth, canvasHeight)
+        val nodes=controller.nodes.collectAsState().value
+        val  lines=controller.lines.collectAsState().value
+
+//        val (nodes, lines) = remember(tree, canvasWidth, canvasHeight) {
+//            treeUtil.calculateTreeLayout(tree, canvasWidth, canvasHeight)
+//        }
+        Box(Modifier.size(400.dp).drawBehind {
+            lines.forEach { (start, end) ->
+                drawLine(
+                    color = Color.Black,
+                    start = start,
+                    end = end,
+                    strokeWidth = 2f
+                )
+            }
+        }) {
+            nodes.forEach { node ->
+                SwappableElement(
+                    label = node.label,
+                    size = size,
+                    offset = node.center - offset,
+                    color = node.color
+                )
+            }
+
+        }
+    }
+}
+
+@Composable
+fun <T : Comparable<T>> TreeViewOld(tree: Node<T>) {
     val treeUtil = remember(tree) { TreeUtil(tree) }
-    val  density= LocalDensity.current
-    val size=50.dp
-    val  offset= with(density){
-        Offset(size.toPx(),size.toPx()).div(2f)
+    val density = LocalDensity.current
+    var controller: TreeViewController<T>? = remember { null }
+    val size = 50.dp
+    val offset = with(density) {
+        Offset(size.toPx(), size.toPx()).div(2f)
     }
 
     BoxWithConstraints(Modifier.padding(20.dp).size(400.dp)) {
@@ -47,15 +152,14 @@ fun <T> TreeView(tree: Node<T>) {
                     strokeWidth = 2f
                 )
             }
-        }){
+        }) {
             nodes.forEach { node ->
-                SwappableElement(label = node.label,size=size,offset = node.center-offset)
+                SwappableElement(label = node.label, size = size, offset = node.center - offset)
             }
 
         }
     }
 }
-
 
 /**
  * Has a bug, so at least two nodes required for drawing
@@ -81,14 +185,6 @@ private fun <T> TreeViewBasic(tree: Node<T>) {
                     strokeWidth = 2f
                 )
             }
-                lines.forEach { (start, end) ->
-                    drawLine(
-                        color = Color.Black,
-                        start = start,
-                        end = end,
-                        strokeWidth = 2f
-                    )
-                }
             // Then draw nodes on top
             nodes.forEach { node ->
                 drawNode(center = node.center, label = node.label, measurer = textMeasurer)
@@ -99,31 +195,35 @@ private fun <T> TreeViewBasic(tree: Node<T>) {
 }
 
 private fun DrawScope.drawNode(center: Offset, label: String, measurer: TextMeasurer) {
-    
-        drawCircle(
-            color = Color.Blue,
-            radius = 20f,
-            center = center
-        )
-        val move = Offset(
-            measurer.measure(label).size.width / 2f,
-            measurer.measure(label).size.height / 2f
-        )
 
-        drawText(
-            textMeasurer = measurer,
-            text = label,
-            topLeft = center - move,
-            style = TextStyle(color = Color.White)
-        )
+    drawCircle(
+        color = Color.Blue,
+        radius = 20f,
+        center = center
+    )
+    val move = Offset(
+        measurer.measure(label).size.width / 2f,
+        measurer.measure(label).size.height / 2f
+    )
+
+    drawText(
+        textMeasurer = measurer,
+        text = label,
+        topLeft = center - move,
+        style = TextStyle(color = Color.White)
+    )
 
 
 }
 
+data class Line(
+    val first: Offset,
+    val second: Offset
+)
 
-private typealias Line = Pair<Offset, Offset>
+//private typealias Line = Pair<Offset, Offset>
 //TODO: Need at least two nodes otherwise causes exception, need to handle that edge case
-class BST<T : Comparable<T>>( val root: Node<T>?) {
+class BST<T : Comparable<T>>(val root: Node<T>?) {
 
     fun insert(value: T): BST<T> {
         return BST(insertRecursive(root, value))
@@ -132,13 +232,22 @@ class BST<T : Comparable<T>>( val root: Node<T>?) {
     private fun insertRecursive(node: Node<T>?, value: T): Node<T> {
         return when {
             node == null -> Node(value) // Create a new node if null
-            value < node.data -> Node(node.data, insertRecursive(node.left, value), node.right) // Copy with left update
-            value > node.data -> Node(node.data, node.left, insertRecursive(node.right, value)) // Copy with right update
+            value < node.data -> Node(
+                node.data,
+                insertRecursive(node.left, value),
+                node.right
+            ) // Copy with left update
+            value > node.data -> Node(
+                node.data,
+                node.left,
+                insertRecursive(node.right, value)
+            ) // Copy with right update
             else -> node // Return same node if value already exists
         }
     }
 }
-data class Node<T>(val data: T,   val left: Node<T>? = null,val right: Node<T>? = null) {
+
+data class Node<T>(val data: T, val left: Node<T>? = null, val right: Node<T>? = null,val id:String="$data") {
 
     fun getDepth(): Int {
         val leftDepth = left?.getDepth() ?: 0
@@ -149,7 +258,7 @@ data class Node<T>(val data: T,   val left: Node<T>? = null,val right: Node<T>? 
     val label = "$data"
 }
 
-data class NodeLayout(val center: Offset, val label: String)
+data class NodeLayout(val center: Offset, val label: String,val id:String,val color:Color=Color.Blue)
 
 /**
  * Donald Knuth's binary tree drawing algorithm.
@@ -216,7 +325,7 @@ class TreeUtil<T>(
             node.left?.let {
                 val (leftStart, leftEnd) = traverse(it, depth + 1)
                 leftPos = leftEnd
-                lines.add(leftStart to leftEnd)
+                lines.add(Line(leftStart, leftEnd))
             }
 
             // Calculate current position
@@ -234,14 +343,14 @@ class TreeUtil<T>(
             node.right?.let {
                 val (rightStart, rightEnd) = traverse(it, depth + 1)
                 rightPos = rightEnd
-                lines.add(rightStart to rightEnd)
+                lines.add(Line(rightStart, rightEnd))
             }
 
             // Add connecting lines
-            leftPos?.let { lines.add(currentPos to it) }
-            rightPos?.let { lines.add(currentPos to it) }
+            leftPos?.let { lines.add(Line(currentPos, it)) }
+            rightPos?.let { lines.add(Line(currentPos, it)) }
 
-            nodes.add(NodeLayout(currentPos, node.label))
+            nodes.add(NodeLayout(currentPos, node.label,node.id))
             return currentPos to currentPos
         }
 

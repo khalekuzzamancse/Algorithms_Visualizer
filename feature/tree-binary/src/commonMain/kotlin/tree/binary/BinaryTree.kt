@@ -10,13 +10,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
+import kotlinx.coroutines.launch
 
 @Composable
 fun BinaryTree() {
-    var tree by  remember {  mutableStateOf(BST<Int>(null)) }
+    val tree =  remember { TreeViewController<Int>() }
     var showDialog by remember { mutableStateOf(false) }
+    val  scope= rememberCoroutineScope()
 
     Column {
         Button(onClick = {
@@ -29,16 +32,14 @@ fun BinaryTree() {
         }
         if (showDialog){
             InputDialog(onAdded = {value->
-              tree=tree.insert(value)
-
+                scope.launch {
+                    tree.insert(value)
+                }
             }){
                 showDialog=false
             }
         }
-
-        tree.root?.let {
-            TreeView(it)
-        }
+            TreeView(controller = tree)
 
     }
 }
@@ -85,38 +86,3 @@ fun InputDialog(
     )
 }
 
-
-
-//
-//class Tree<T : Comparable<T>>(val root: Node<T>?) {
-//
-//    constructor() : this(null)
-//
-//    fun add(value: T): Tree<T> {
-//        return Tree(insert(root, value))
-//    }
-//
-//    private fun insert(node: Node<T>?, value: T): Node<T> {
-//        if (node == null) return Node(value)
-//
-//        return if (value < node.data) {
-//            Node(node.data).apply {
-//                left = insert(node.left, value)
-//                right = node.right
-//            }
-//        } else if (value > node.data) {
-//            Node(node.data).apply {
-//                right = insert(node.right, value)
-//                left = node.left
-//            }
-//        } else {
-//            node // No duplicate insertion
-//        }
-//    }
-//
-//    override fun toString(): String = inorderTraversal(root).joinToString(", ")
-//
-//    private fun inorderTraversal(node: Node<T>?): List<T> {
-//        return node?.let { inorderTraversal(it.left) + it.data + inorderTraversal(it.right) } ?: emptyList()
-//    }
-//}
