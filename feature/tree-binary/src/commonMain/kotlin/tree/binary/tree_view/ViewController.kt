@@ -1,4 +1,5 @@
-@file:Suppress("unused","className","functionName")
+@file:Suppress("unused", "className", "functionName")
+
 package tree.binary.tree_view
 
 import androidx.compose.ui.geometry.Offset
@@ -14,18 +15,23 @@ interface TreeViewController<T : Comparable<T>> {
     val lines: StateFlow<List<VisualLine>>
     fun onCanvasSizeChanged(canvasWidth: Float, canvasHeight: Float)
     suspend fun insert(value: T)
-   companion object{
-       fun <T : Comparable<T>> create(): TreeViewController<T> {
-           return TreeViewControllerImpl(LayoutAlgorithm.create())
-       }
-   }
+    suspend fun search(value: T)
+    suspend fun findMin()
+    suspend fun findMax()
+    suspend fun findSuccessor(value: T)
+    suspend fun findPredecessor(value: T)
+    suspend fun resetColor()
+
+    companion object {
+        fun <T : Comparable<T>> create(): TreeViewController<T> {
+            return TreeViewControllerImpl(LayoutAlgorithm.create())
+        }
+    }
 }
 
 
-
-
- class TreeViewControllerImpl<T : Comparable<T>> internal
- constructor(private val layoutAlgorithm: LayoutAlgorithm<T>) :TreeViewController<T> {
+class TreeViewControllerImpl<T : Comparable<T>> internal
+constructor(private val layoutAlgorithm: LayoutAlgorithm<T>) : TreeViewController<T> {
 
     private var canvasWidth: Float = 0f
     private var canvasHeight: Float = 0f
@@ -45,19 +51,31 @@ interface TreeViewController<T : Comparable<T>> {
         }
 
     }
-    private var bst: BinarySearchTree<T> = BinarySearchTree.create()
+
+    override suspend fun findMin() = _handleState(bst.findMin().iterator())
+    override suspend fun findMax() = _handleState(bst.findMax().iterator())
+
+
+    override suspend fun findSuccessor(value: T) =
+        _handleState(bst.findSuccessor(value).iterator())
+
+    override suspend fun findPredecessor(value: T) =
+        _handleState(bst.findPredecessor(value).iterator())
+
+
+    private var bst: BstIterator<T> = BstIterator.create()
 
     override suspend fun insert(value: T) {
         val iterator = bst.insert(value).iterator()
         while (iterator.hasNext()) {
             val state = iterator.next()
             if (state is State.ProcessingNode) {
-                highLightProcessingNode(state.id)
+                _highLightNode(state.id)
                 delay(1000)
             }
             if (state is State.NewTree<*>) {
                 try {
-                    bst = state.tree as BinarySearchTree<T>
+                    bst = state.tree as BstIterator<T>
                     val newRoot = bst.root
                     _root.update { newRoot }
                     if (newRoot != null) {
@@ -73,11 +91,48 @@ interface TreeViewController<T : Comparable<T>> {
 
     }
 
-    private fun highLightProcessingNode(id: String) {
+    override suspend fun search(value: T) {
+        val iterator = bst.search(value).iterator()
+        _handleState(iterator)
+    }
+
+    private suspend fun _handleState(iterator: Iterator<State>) {
+        while (iterator.hasNext()) {
+            val state = iterator.next()
+            if (state is State.ProcessingNode) {
+                _highLightNode(state.id)
+                delay(1000)
+            }
+            if (state is State.TargetReached) {
+                _changeColor(state.id, Color.Red)
+            }
+
+        }
+    }
+
+
+    private fun _highLightNode(id: String) {
         _nodes.update { all ->
             all.map { node ->
                 if (node.id == id) node.copy(color = Color.Cyan)
                 else node
+            }
+        }
+    }
+
+    private fun _changeColor(id: String, color: Color) {
+        _nodes.update { all ->
+            all.map { node ->
+                if (node.id == id) node.copy(color = color)
+                else node
+            }
+        }
+    }
+
+    override suspend fun resetColor() {
+        _nodes.update { all ->
+            all.map { node ->
+                node.copy(color = Color.Blue)
             }
         }
     }
@@ -104,12 +159,5 @@ interface TreeViewController<T : Comparable<T>> {
 }
 
 
-
-data class VisualTree(val nodes: List<NodeLayout>, val edges:List<VisualLine>)
+data class VisualTree(val nodes: List<NodeLayout>, val edges: List<VisualLine>)
 data class VisualLine(val first: Offset, val second: Offset)
-
-interface State {
-    data class ProcessingNode(val id: String) : State
-    data class NewTree<T : Comparable<T>>(val tree: BinarySearchTree<T>) : State
-}
-
