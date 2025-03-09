@@ -14,10 +14,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import kotlinx.coroutines.launch
+import tree.binary.tree_view.TreeView
+import tree.binary.tree_view.TreeViewController
 
 @Composable
 fun BinaryTree() {
-    val tree =  remember { TreeViewController<Int>() }
+    val tree =  remember { TreeViewController.create<Int>() }
     var showDialog by remember { mutableStateOf(false) }
     val  scope= rememberCoroutineScope()
 
