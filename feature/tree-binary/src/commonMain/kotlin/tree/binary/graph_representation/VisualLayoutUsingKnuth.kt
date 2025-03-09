@@ -92,7 +92,7 @@ private fun LayoutTreeKnuth(
     SwappableElement(
         size = size,
         label = "${node.value}",
-        currentOffset = node.coordinates.value
+        offset = node.coordinates.value
     )
     LayoutTreeKnuth(node.leftChild, size)
     LayoutTreeKnuth(node.rightChild, size)

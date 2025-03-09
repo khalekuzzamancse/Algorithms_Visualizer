@@ -1,6 +1,5 @@
 package tree.binary
 
-import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,16 +24,16 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SwappableElement(
     label:String,
-    size: Dp = 100.dp,
-    currentOffset: Offset= Offset.Zero,
+    size: Dp = 50.dp,
+    offset: Offset= Offset.Zero,
 ) {
-    val offsetAnimation by animateOffsetAsState(currentOffset, label = "")
+    //val offsetAnimation by animateOffsetAsState(offset, label = "")
     val padding = 8.dp
     Box(
         modifier = Modifier
             .size(size)
             .offset {
-                IntOffset(offsetAnimation.x.toInt(), offsetAnimation.y.toInt())
+                IntOffset(offset.x.toInt(), offset.y.toInt())
             }
     ) {
         Text(
@@ -44,7 +42,7 @@ fun SwappableElement(
             modifier = Modifier
                 .padding(padding)
                 .clip(CircleShape)
-                .background(Color.Red)
+                .background(Color.Blue)
                 .fillMaxSize()
                 .wrapContentSize(Alignment.Center)
         )

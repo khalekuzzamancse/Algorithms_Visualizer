@@ -1,15 +1,19 @@
+@file:Suppress("unused")
 package tree.binary
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
@@ -21,6 +25,44 @@ import kotlin.math.max
 @Composable
 fun <T> TreeView(tree: Node<T>) {
     val treeUtil = remember(tree) { TreeUtil(tree) }
+    val  density= LocalDensity.current
+    val size=50.dp
+    val  offset= with(density){
+        Offset(size.toPx(),size.toPx()).div(2f)
+    }
+
+    BoxWithConstraints(Modifier.padding(20.dp).size(400.dp)) {
+        val canvasWidth = constraints.maxWidth.toFloat()
+        val canvasHeight = constraints.maxHeight.toFloat()
+
+        val (nodes, lines) = remember(tree, canvasWidth, canvasHeight) {
+            treeUtil.calculateTreeLayout(tree, canvasWidth, canvasHeight)
+        }
+        Box(Modifier.size(400.dp).drawBehind {
+            lines.forEach { (start, end) ->
+                drawLine(
+                    color = Color.Black,
+                    start = start,
+                    end = end,
+                    strokeWidth = 2f
+                )
+            }
+        }){
+            nodes.forEach { node ->
+                SwappableElement(label = node.label,size=size,offset = node.center-offset)
+            }
+
+        }
+    }
+}
+
+
+/**
+ * Has a bug, so at least two nodes required for drawing
+ */
+@Composable
+private fun <T> TreeViewBasic(tree: Node<T>) {
+    val treeUtil = remember(tree) { TreeUtil(tree) }
     val textMeasurer = rememberTextMeasurer()
 
     BoxWithConstraints(Modifier.padding(20.dp).size(400.dp)) {
@@ -30,9 +72,7 @@ fun <T> TreeView(tree: Node<T>) {
         val (nodes, lines) = remember(tree, canvasWidth, canvasHeight) {
             treeUtil.calculateTreeLayout(tree, canvasWidth, canvasHeight)
         }
-
         Canvas(Modifier.size(400.dp)) {
-            // Draw connecting lines first
             lines.forEach { (start, end) ->
                 drawLine(
                     color = Color.Black,
@@ -41,13 +81,21 @@ fun <T> TreeView(tree: Node<T>) {
                     strokeWidth = 2f
                 )
             }
-
+                lines.forEach { (start, end) ->
+                    drawLine(
+                        color = Color.Black,
+                        start = start,
+                        end = end,
+                        strokeWidth = 2f
+                    )
+                }
             // Then draw nodes on top
             nodes.forEach { node ->
                 drawNode(center = node.center, label = node.label, measurer = textMeasurer)
             }
         }
     }
+
 }
 
 private fun DrawScope.drawNode(center: Offset, label: String, measurer: TextMeasurer) {
@@ -61,6 +109,7 @@ private fun DrawScope.drawNode(center: Offset, label: String, measurer: TextMeas
             measurer.measure(label).size.width / 2f,
             measurer.measure(label).size.height / 2f
         )
+
         drawText(
             textMeasurer = measurer,
             text = label,

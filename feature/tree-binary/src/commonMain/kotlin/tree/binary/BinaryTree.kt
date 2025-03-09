@@ -15,7 +15,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 
 @Composable
 fun BinaryTree() {
-    var tree by  remember {  mutableStateOf(BST<Int>(null).insert(0).insert(1)) }
+    var tree by  remember {  mutableStateOf(BST<Int>(null)) }
     var showDialog by remember { mutableStateOf(false) }
 
     Column {
