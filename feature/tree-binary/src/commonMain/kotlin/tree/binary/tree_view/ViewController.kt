@@ -4,18 +4,20 @@ package tree.binary.tree_view
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import core.lang.VoidCallback
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import tree.binary.core.ThemeInfo
 
 interface TreeViewController<T : Comparable<T>> {
     val nodes: StateFlow<List<NodeLayout>>
     val lines: StateFlow<List<VisualLine>>
     fun onCanvasSizeChanged(canvasWidth: Float, canvasHeight: Float)
-    suspend fun insert(value: T,onInserting:()->Unit={},onFinish:()->Unit={})
-    suspend fun search(value: T)
+    suspend fun insert(value: T, onRunning: VoidCallback = {}, onFinish: VoidCallback = {})
+    suspend fun search(value: T, onRunning: VoidCallback = {}, onFinish: VoidCallback = {})
     suspend fun findMin()
     suspend fun findMax()
     suspend fun findSuccessor(value: T)
@@ -35,11 +37,13 @@ constructor(private val layoutAlgorithm: LayoutAlgorithm<T>) : TreeViewControlle
 
     private var canvasWidth: Float = 0f
     private var canvasHeight: Float = 0f
+    private var bst: BstIterator<T> = BstIterator.create()
     private val _root = MutableStateFlow<Node<T>?>(null)
     private val _nodes = MutableStateFlow<List<NodeLayout>>(emptyList())
     private val _lines = MutableStateFlow<List<VisualLine>>(emptyList())
     override val nodes = _nodes.asStateFlow()
     override val lines = _lines.asStateFlow()
+
 
     override fun onCanvasSizeChanged(canvasWidth: Float, canvasHeight: Float) {
         val root = _root.value
@@ -52,35 +56,84 @@ constructor(private val layoutAlgorithm: LayoutAlgorithm<T>) : TreeViewControlle
 
     }
 
-    override suspend fun findMin() = _handleState(bst.findMin().iterator())
-    override suspend fun findMax() = _handleState(bst.findMax().iterator())
+    override suspend fun findMin() = _withStateMachine(bst.findMin().iterator())
+    override suspend fun findMax() = _withStateMachine(bst.findMax().iterator())
+    override suspend fun findSuccessor(value: T) = _withStateMachine(bst.findSuccessor(value).iterator())
+    override suspend fun findPredecessor(value: T) = _withStateMachine(bst.findPredecessor(value).iterator())
+
+    override suspend fun insert(value: T, onRunning: VoidCallback, onFinish: VoidCallback) =
+        _withStateMachine(
+            bst.insert(value).iterator(),
+            insertionNode = value,
+            onRunning = onRunning,
+            onFinish = onFinish
+        )
+
+    override suspend fun search(value: T, onRunning: VoidCallback, onFinish: VoidCallback) =
+        _withStateMachine(
+            iterator = bst.search(value).iterator(),
+            onRunning = onRunning,
+            onFinish = onFinish
+        )
+
+    override suspend fun resetColor() = _nodes.update { all ->
+        all.map { node -> node.copy(color = ThemeInfo.nodeColor) }
+    }
 
 
-    override suspend fun findSuccessor(value: T) =
-        _handleState(bst.findSuccessor(value).iterator())
+    private suspend fun _updateTree(root: Node<T>, newlyAddedNodeId: String? = null) {
+        val newTree = layoutAlgorithm.calculateTreeLayout(root, canvasWidth, canvasHeight)
+        var nodes = newTree.nodes
+        val lines = newTree.edges
 
-    override suspend fun findPredecessor(value: T) =
-        _handleState(bst.findPredecessor(value).iterator())
+        if (newlyAddedNodeId != null) {
+            _highLightTarget(newlyAddedNodeId)
+            nodes = _getUpdatedNodes(newTree, newlyAddedNodeId, ThemeInfo.tagetItemColor)
+        }
+        _nodes.update { nodes }
+        _lines.update { lines }
+        delay(2000)
+        resetColor()
+
+    }
+
+    private fun _getUpdatedNodes(
+        newTree: VisualTree,
+        newlyAddedNodeId: String,
+        newlyAddedNodeColor: Color
+    ) =
+        newTree.nodes.map { node ->
+            if (newlyAddedNodeId == node.id) node.copy(color = newlyAddedNodeColor)
+            else node
+        }
 
 
-    private var bst: BstIterator<T> = BstIterator.create()
-
-    override suspend fun insert(value: T,onInserting:()->Unit,onFinish:()->Unit) {
-        val iterator = bst.insert(value).iterator()
+    /**
+     * @param insertionNode , if used for adding a node pass the value of it, such as for insertion operation
+     * pass the value that want to insert
+     */
+    private suspend fun _withStateMachine(
+        iterator: Iterator<State>,
+        insertionNode: T? = null,
+        onRunning: VoidCallback = {},
+        onFinish: VoidCallback = {}
+    ) {
         while (iterator.hasNext()) {
-            onInserting()
+            onRunning()
             val state = iterator.next()
-            if (state is State.ProcessingNode) {
-                _highLightNode(state.id)
-                delay(1000)
-            }
+            if (state is State.ProcessingNode)
+                _onProcessing(state.id)
+            if (state is State.TargetReached)
+                _highLightTarget(state.id)
+            //TODO:this state emit when the tree is modified such as added a new node
+            //so consume it if needed
             if (state is State.NewTree<*>) {
                 try {
                     bst = state.tree as BstIterator<T>
                     val newRoot = bst.root
                     _root.update { newRoot }
                     if (newRoot != null) {
-                        updateTree(newRoot, newNodeId = "$value")
+                        _updateTree(newRoot, newlyAddedNodeId = "$insertionNode")
                     }
                 } catch (_: Exception) {
                 }
@@ -89,77 +142,24 @@ constructor(private val layoutAlgorithm: LayoutAlgorithm<T>) : TreeViewControlle
 
         }
         onFinish()
-
-
-    }
-
-    override suspend fun search(value: T) {
-        val iterator = bst.search(value).iterator()
-        _handleState(iterator)
-    }
-
-    private suspend fun _handleState(iterator: Iterator<State>) {
-        while (iterator.hasNext()) {
-            val state = iterator.next()
-            if (state is State.ProcessingNode) {
-                _highLightNode(state.id)
-                delay(1000)
-            }
-            if (state is State.TargetReached) {
-                _changeColor(state.id, Color.Red)
-            }
-
-        }
     }
 
 
-    private fun _highLightNode(id: String) {
-        _nodes.update { all ->
-            all.map { node ->
-                if (node.id == id) node.copy(color = Color.Cyan)
-                else node
-            }
-        }
+    private fun _highLightTarget(nodeId: String) = _changeColor(nodeId, ThemeInfo.tagetItemColor)
+
+    private suspend fun _onProcessing(nodeId: String) {
+        _changeColor(nodeId, ThemeInfo.processingNodeColor)
+        delay(1000)
     }
 
-    private fun _changeColor(id: String, color: Color) {
-        _nodes.update { all ->
-            all.map { node ->
-                if (node.id == id) node.copy(color = color)
-                else node
-            }
+    private fun _changeColor(id: String, color: Color) = _nodes.update { all ->
+        all.map { node ->
+            if (node.id == id) node.copy(color = color)
+            else node
         }
-    }
-
-    override suspend fun resetColor() {
-        _nodes.update { all ->
-            all.map { node ->
-                node.copy(color = Color.Blue)
-            }
-        }
-    }
-
-    private suspend fun updateTree(root: Node<T>, newNodeId: String? = null) {
-        val newTree = layoutAlgorithm.calculateTreeLayout(root, canvasWidth, canvasHeight)
-        var nodes = newTree.nodes
-        val lines = newTree.edges
-        if (newNodeId != null) {
-            nodes = nodes.map {
-                if (newNodeId == it.id) it.copy(color = Color.Red)
-                else it.copy(color = Color.Blue)
-            }
-        }
-        _nodes.update { nodes }
-        _lines.update { lines }
-        delay(2000)
-        _nodes.update { existingNode ->
-            existingNode.map { it.copy(color = Color.Blue) }
-        }
-
     }
 
 }
-
 
 data class VisualTree(val nodes: List<NodeLayout>, val edges: List<VisualLine>)
 data class VisualLine(val first: Offset, val second: Offset)

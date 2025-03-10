@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,13 +25,10 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,27 +37,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.toolingGraphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import core.commonui.CustomTextField
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import tree.binary.core.SpacerHorizontal
+import tree.binary.core.SpacerVertical
+import tree.binary.core.ThemeInfo
+import tree.binary.core.contentColor
 import tree.binary.tree_view.TreeView
 import tree.binary.tree_view.TreeViewController
 
@@ -73,6 +59,8 @@ fun BinarySearchTree(navigationIcon: @Composable () -> Unit = {}) {
     var list by remember { mutableStateOf(emptyList<Int>()) }
     var highLight  by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
+
+
 
 
     Column(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
@@ -94,7 +82,7 @@ fun BinarySearchTree(navigationIcon: @Composable () -> Unit = {}) {
                         values.forEach { value ->
                             controller.insert(
                                 value = value,
-                                onInserting = {
+                                onRunning = {
                                     highLight="$value"
                                 },
                                 onFinish = {
@@ -119,7 +107,15 @@ fun BinarySearchTree(navigationIcon: @Composable () -> Unit = {}) {
                 icon = Icons.Outlined.Search,
                 onSingleAdded = { value ->
                     scope.launch {
-                        controller.search(value)
+                        controller.search(
+                            value=value,
+                            onRunning = {
+                                highLight="$value"
+                            },
+                            onFinish = {
+                                highLight=null
+                            }
+                        )
                     }
                 }
             )
@@ -185,14 +181,13 @@ fun BinarySearchTree(navigationIcon: @Composable () -> Unit = {}) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun Items(modifier: Modifier = Modifier,item:List<String>,highLight:String?=null) {
-
     FlowRow (
         modifier=modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ){
         item.forEach { value->
-            val background=if(value==highLight)  Color.Red else MaterialTheme.colorScheme.tertiary
+            val background=if(value==highLight) ThemeInfo.tagetItemColor else ThemeInfo.normalItemColor
             Box (
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.background(
@@ -200,8 +195,7 @@ fun Items(modifier: Modifier = Modifier,item:List<String>,highLight:String?=null
                     shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp, topStart = 2.dp, topEnd = 2.dp)
                 )
             ){
-                val labelColor=  if(background.luminance()<0.5f)Color.White else Color.White
-                Text(modifier = Modifier.padding(8.dp), text = value, color = labelColor, fontSize = 20.sp)
+                Text(modifier = Modifier.padding(8.dp), text = value, color = background.contentColor(), fontSize = 20.sp)
             }
         }
 
@@ -209,11 +203,6 @@ fun Items(modifier: Modifier = Modifier,item:List<String>,highLight:String?=null
 }
 
 
-@Composable
-fun SpacerHorizontal(width: Int) = Spacer(Modifier.width(width.dp))
-
-@Composable
-fun SpacerVertical(height: Int) = Spacer(Modifier.height(height.dp))
 
 
 @Composable
@@ -227,7 +216,7 @@ fun Button(modifier: Modifier = Modifier, label: String, onClick: () -> Unit) {
 }
 
 @Composable
-private fun _InputButton(
+internal fun _InputButton(
     modifier: Modifier = Modifier,
     label: String,
     title: String = "Enter a number",
@@ -260,7 +249,7 @@ private fun _InputButton(
 }
 
 @Composable
-private fun _InputDialog(
+internal fun _InputDialog(
     title: String,
     initialValue: String = "",
     onAdded: (Int) -> Unit,
@@ -323,24 +312,25 @@ private fun _InputDialog(
 
 @Composable
 fun CustomButton(modifier: Modifier = Modifier, label: String, icon: ImageVector,onClick: () -> Unit) {
-    val iconBackground = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
-    val buttonColor = iconBackground
-    val labelColor = if (buttonColor.luminance() < 0.5f) Color.White else Color.Black
-    val iconColor = if (iconBackground.luminance() < 0.5f) Color.White else Color.Black
+    val iconBackground = ThemeInfo.operationActionColor.copy(alpha = 0.8f)
     val height = 40.dp
     val shape = RoundedCornerShape(size = 8.dp)
     Surface(
         shadowElevation = 8.dp,
         shape = shape,
-        modifier = modifier.height(height).background(shape = shape, color = buttonColor)
+        modifier = modifier.height(height).background(shape = shape, color = iconBackground)
     ) {
         Row(
             modifier = Modifier
-                .background(shape = shape, color = buttonColor)
+                .background(shape = shape, color = iconBackground)
                 .clickable {onClick()}
         ) {
             SpacerHorizontal(16)
-            Text(text = label, color = labelColor, modifier = Modifier.padding(vertical = 8.dp))
+            Text(
+                text = label,
+                color = iconBackground.contentColor(),
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
             SpacerHorizontal(8)
             Box(
                 modifier = Modifier.height(height)
@@ -349,9 +339,9 @@ fun CustomButton(modifier: Modifier = Modifier, label: String, icon: ImageVector
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    icon = icon,
+                    imageVector = icon,
                     contentDescription = label,
-                    tint = iconColor,
+                    tint = iconBackground.contentColor(),
                     modifier = Modifier
                 )
             }
@@ -361,61 +351,3 @@ fun CustomButton(modifier: Modifier = Modifier, label: String, icon: ImageVector
 
 }
 
-
-@Composable
-fun Icon(
-    icon: ImageVector,
-    contentDescription: String?,
-    modifier: Modifier = Modifier,
-    tint: Color = LocalContentColor.current
-) {
-    Icon(
-        painter = rememberVectorPainter(icon),
-        contentDescription = contentDescription,
-        modifier = modifier,
-        tint = tint
-    )
-}
-
-@Composable
-fun Icon(
-    bitmap: ImageBitmap,
-    contentDescription: String?,
-    modifier: Modifier = Modifier,
-    tint: Color = LocalContentColor.current
-) {
-    val painter = remember(bitmap) { BitmapPainter(bitmap) }
-    Icon(
-        painter = painter,
-        contentDescription = contentDescription,
-        modifier = modifier,
-        tint = tint
-    )
-}
-
-@Composable
-fun Icon(
-    painter: Painter,
-    contentDescription: String?,
-    modifier: Modifier = Modifier,
-    tint: Color = LocalContentColor.current
-) {
-    val colorFilter = remember(tint) {
-        if (tint == Color.Unspecified) null else ColorFilter.tint(tint)
-    }
-    val semantics =
-        if (contentDescription != null) {
-            Modifier.semantics {
-                this.contentDescription = contentDescription
-                this.role = Role.Image
-            }
-        } else {
-            Modifier
-        }
-    Box(
-        modifier
-            .toolingGraphicsLayer()
-            .paint(painter, colorFilter = colorFilter, contentScale = ContentScale.Fit)
-            .then(semantics)
-    )
-}

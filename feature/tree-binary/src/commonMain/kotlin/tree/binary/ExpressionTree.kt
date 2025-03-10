@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -22,6 +21,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import core.commonui.CustomTextField
 import kotlinx.coroutines.flow.MutableStateFlow
+import tree.binary.core.SpacerVertical
 import tree.binary.expression_tree.ExpressionTreeBuilder
 import tree.binary.tree_view.Node
 import tree.binary.tree_view.TreeViewOld
@@ -55,7 +55,7 @@ fun ExpressionTree() {
     if (expression==null||inputMode){
         _InputDialog(
             title = "",
-            initialValue = "3 + 5 * ( 2 - 1 )",
+            initial = "3 + 5 * ( 2 - 1 )",
             onAdded = {exp->
                 expression=exp
                controller= ExpressionTreeController(exp)
@@ -114,12 +114,12 @@ class ExpressionTreeController(
 @Composable
 private fun _InputDialog(
     title:String,
-    initialValue: String = "",
+    initial: String = "",
     onAdded: (String) -> Unit,
     leadingIcon: ImageVector = Icons.Outlined.Search,
     onDismiss: () -> Unit
 ) {
-    var text by rememberSaveable { mutableStateOf(initialValue) }
+    var text by rememberSaveable { mutableStateOf(initial) }
 
 
     AlertDialog(
