@@ -9,9 +9,9 @@ import tree.binary.ExpressionTree
 @Composable
 fun MyApplication() {
     AppTheme {
-       //MainNavHost()
-       //BinarySearchTree()
-        ExpressionTree()
+     //  MainNavHost()
+       BinarySearchTree()
+        //ExpressionTree()
     }
 
 

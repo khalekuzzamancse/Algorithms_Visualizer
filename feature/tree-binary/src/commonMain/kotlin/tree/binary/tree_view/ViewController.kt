@@ -14,7 +14,7 @@ interface TreeViewController<T : Comparable<T>> {
     val nodes: StateFlow<List<NodeLayout>>
     val lines: StateFlow<List<VisualLine>>
     fun onCanvasSizeChanged(canvasWidth: Float, canvasHeight: Float)
-    suspend fun insert(value: T)
+    suspend fun insert(value: T,onInserting:()->Unit={},onFinish:()->Unit={})
     suspend fun search(value: T)
     suspend fun findMin()
     suspend fun findMax()
@@ -65,9 +65,10 @@ constructor(private val layoutAlgorithm: LayoutAlgorithm<T>) : TreeViewControlle
 
     private var bst: BstIterator<T> = BstIterator.create()
 
-    override suspend fun insert(value: T) {
+    override suspend fun insert(value: T,onInserting:()->Unit,onFinish:()->Unit) {
         val iterator = bst.insert(value).iterator()
         while (iterator.hasNext()) {
+            onInserting()
             val state = iterator.next()
             if (state is State.ProcessingNode) {
                 _highLightNode(state.id)
@@ -87,6 +88,7 @@ constructor(private val layoutAlgorithm: LayoutAlgorithm<T>) : TreeViewControlle
             }
 
         }
+        onFinish()
 
 
     }

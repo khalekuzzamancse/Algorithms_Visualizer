@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
@@ -87,7 +88,7 @@ private fun _VisualNode(
     ) {
         Text(
             text = label,
-            style = TextStyle(color = Color.White),
+            style = TextStyle(color = if(color.luminance()<0.6f )Color.White else Color.Black),
             modifier = Modifier
                 .padding(padding)
                 .clip(CircleShape)
