@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun <T : Comparable<T>> TreeView(
+    modifier: Modifier=Modifier,
     size: Dp = 50.dp,
     controller: TreeViewController<T>
 ) {
@@ -39,7 +40,7 @@ fun <T : Comparable<T>> TreeView(
         Offset(size.toPx(), size.toPx()).div(2f)
     }
 
-    BoxWithConstraints(Modifier.padding(20.dp).size(400.dp)) {
+    BoxWithConstraints(modifier=modifier) {
         val canvasWidth = constraints.maxWidth.toFloat()
         val canvasHeight = constraints.maxHeight.toFloat()
         controller.onCanvasSizeChanged(canvasWidth, canvasHeight)

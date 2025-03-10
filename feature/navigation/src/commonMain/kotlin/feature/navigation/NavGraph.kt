@@ -22,7 +22,7 @@ import linearsearch.ui.LinearSearchRoute
 import mst.ui.PrimsSimulationScreen
 import quick_sort.ui.QuickSortScreen
 import selectionsort.ui.SelectionSortRoute
-import tree.binary.BinarySearchTree
+import tree.binary.BSTView
 import tree.ui.TreeSimulationScreen
 
 
@@ -168,13 +168,13 @@ fun NavController.createNavGraph(
             )
         }
         composable(NavDestination.BinarySearchTree.route) {
-            BinarySearchTree(
-//                navigationIcon = {
-//                    _DrawerIcon(
-//                        isNavRailMode = isNavRailMode,
-//                        onClick = openDrawerRequest
-//                    )
-//                }
+            BSTView(
+                navigationIcon = {
+                    _DrawerIcon(
+                        isNavRailMode = isNavRailMode,
+                        onClick = openDrawerRequest
+                    )
+                }
             )
         }
         composable(NavDestination.AboutUs.route) {

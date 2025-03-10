@@ -46,18 +46,22 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SimulationSlot(
     modifier: Modifier = Modifier,
-    disableControls: Boolean = false,
+    disableControls: Boolean=false,
+    enableNext:Boolean=true,
     state: SimulationScreenState,
     onEvent: (SimulationScreenEvent) -> Unit,
     navigationIcon: @Composable () -> Unit = {},
-    resultSummary: @Composable ColumnScope.() -> Unit,
-    pseudoCode: @Composable ColumnScope.(Modifier) -> Unit,
+    extraActions: (@Composable (Modifier) -> Unit)?=null,
+    resultSummary:( @Composable ColumnScope.() -> Unit)?=null,
+    pseudoCode: (@Composable ColumnScope.(Modifier) -> Unit)?=null,
     visualization: @Composable ColumnScope.() -> Unit,
 ) {
 
     TopBarControlSection(
+        enableNext = enableNext,
         modifier = Modifier,
         disableControls = disableControls,
+        extraActions = extraActions,
         showPseudocode = state.showPseudocode,
         disablePseudocode = true,
         navigationIcon = navigationIcon,
@@ -74,15 +78,19 @@ fun SimulationSlot(
         ) {
             AnimatedVisibility(state.showVisualization) {
                 visualization()
-                Spacer(Modifier.height(16.dp))
             }
-
             AnimatedVisibility(state.showResultSummary) {
-                resultSummary()
-                Spacer(Modifier.height(16.dp))
+                if (resultSummary != null) {
+                    Spacer(Modifier.height(16.dp))
+                    resultSummary()
+                }
             }
+            if (resultSummary!=null)
+                Spacer(Modifier.height(16.dp))
             AnimatedVisibility(state.showPseudocode) {
-                pseudoCode(Modifier.align(Alignment.Start))
+                if (pseudoCode != null) {
+                    pseudoCode(Modifier.align(Alignment.Start))
+                }
             }
         }
 
@@ -115,9 +123,11 @@ sealed interface SimulationScreenEvent {
 @Composable
 fun TopBarControlSection(
     modifier: Modifier = Modifier,
-    disableControls: Boolean = false,
+    disableControls: Boolean,
     showPseudocode: Boolean = false,
+    enableNext:Boolean,
     disablePseudocode: Boolean = true,
+    extraActions: (@Composable (Modifier) -> Unit)?=null,
     onNext: () -> Unit = {},
     onResetRequest: () -> Unit = {},
     onAutoPlayRequest: (Int) -> Unit = {},
@@ -137,6 +147,7 @@ fun TopBarControlSection(
                 actions = {
                     TopBarActions(
                         disablePseudocode = true,
+                        enableNext = enableNext,
                         disableControls = disableControls,
                         showPseudocode = showPseudocode,
                         onNext = onNext,
@@ -144,6 +155,8 @@ fun TopBarControlSection(
                         onResetRequest = onResetRequest,
                         onAutoPlayRequest = { showDialog = true }
                     )
+                    if (extraActions!=null)
+                        extraActions(Modifier)
                 }
             )
         }
@@ -205,6 +218,7 @@ private fun AutoPlayDialog(
 @Composable
 private fun TopBarActions(
     disableControls: Boolean,
+    enableNext:Boolean,
     showPseudocode: Boolean,
     disablePseudocode: Boolean,
     onNext: () -> Unit,
@@ -216,7 +230,7 @@ private fun TopBarActions(
         onClick = onNext,
         icon = Icons.Filled.SkipNext,
         contentDescription = "Next",
-        enabled = !disableControls
+        enabled =enableNext
     )
 
     if (!disablePseudocode) {
@@ -242,10 +256,11 @@ private fun TopBarActions(
         contentDescription = "Autoplay",
         enabled = !disableControls
     )
+
 }
 
 @Composable
-private fun ControlIconButton(
+ fun ControlIconButton(
     onClick: () -> Unit,
     icon: ImageVector,
     contentDescription: String?,

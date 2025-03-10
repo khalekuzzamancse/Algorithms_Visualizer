@@ -25,15 +25,26 @@ interface TreeViewController<T : Comparable<T>> {
     suspend fun resetColor()
 
     companion object {
-        fun <T : Comparable<T>> create(): TreeViewController<T> {
-            return TreeViewControllerImpl(LayoutAlgorithm.create())
+        fun <T : Comparable<T>> create( delayOnInsertionComplete:Long, processingTime:Long): TreeViewController<T> {
+            return TreeViewControllerImpl(
+                algorithm = LayoutAlgorithm.create(),
+                delayOnInsertionComplete = delayOnInsertionComplete,
+                processingTime = processingTime
+            )
         }
     }
 }
 
-
+/**
+ * @param delayOnInsertionComplete pass time in ms
+ * @param processingTime pass time is ms
+ */
 class TreeViewControllerImpl<T : Comparable<T>> internal
-constructor(private val layoutAlgorithm: LayoutAlgorithm<T>) : TreeViewController<T> {
+constructor(
+    private val algorithm: LayoutAlgorithm<T>,
+    private val delayOnInsertionComplete:Long,
+    private  val processingTime:Long
+) : TreeViewController<T> {
 
     private var canvasWidth: Float = 0f
     private var canvasHeight: Float = 0f
@@ -46,12 +57,16 @@ constructor(private val layoutAlgorithm: LayoutAlgorithm<T>) : TreeViewControlle
 
 
     override fun onCanvasSizeChanged(canvasWidth: Float, canvasHeight: Float) {
+        //TODO: Avoid unnecessary relayout to avoid side effect
+        if(canvasWidth==this.canvasWidth&&canvasHeight==this.canvasHeight)
+            return
         val root = _root.value
         this.canvasWidth = canvasWidth
         this.canvasHeight = canvasHeight
         if (root != null) {
-//            layoutAlgorithm = LayoutAlgorithm.create()
-            layoutAlgorithm.calculateTreeLayout(root, canvasWidth, canvasHeight)
+          val (nodes,lines) = algorithm.calculateTreeLayout(root, canvasWidth, canvasHeight)
+            _nodes.update { nodes }
+            _lines.update { lines }
         }
 
     }
@@ -82,7 +97,7 @@ constructor(private val layoutAlgorithm: LayoutAlgorithm<T>) : TreeViewControlle
 
 
     private suspend fun _updateTree(root: Node<T>, newlyAddedNodeId: String? = null) {
-        val newTree = layoutAlgorithm.calculateTreeLayout(root, canvasWidth, canvasHeight)
+        val newTree = algorithm.calculateTreeLayout(root, canvasWidth, canvasHeight)
         var nodes = newTree.nodes
         val lines = newTree.edges
 
@@ -92,7 +107,7 @@ constructor(private val layoutAlgorithm: LayoutAlgorithm<T>) : TreeViewControlle
         }
         _nodes.update { nodes }
         _lines.update { lines }
-        delay(2000)
+        delay(delayOnInsertionComplete)
         resetColor()
 
     }
@@ -149,7 +164,7 @@ constructor(private val layoutAlgorithm: LayoutAlgorithm<T>) : TreeViewControlle
 
     private suspend fun _onProcessing(nodeId: String) {
         _changeColor(nodeId, ThemeInfo.processingNodeColor)
-        delay(1000)
+        delay(processingTime)
     }
 
     private fun _changeColor(id: String, color: Color) = _nodes.update { all ->
