@@ -1,6 +1,7 @@
 package tree.binary.expression_tree
 
 import core.lang.Logger
+import tree.binary.core.BaseNode
 import tree.binary.tree_view.Node
 import java.util.Stack
 
@@ -32,6 +33,7 @@ class ExpressionTreeIterator {
 }
 interface ExpressionTreeBuilder {
     fun buildTree(expression: String): Node<String>?
+    fun buildTree2(expression: String):BaseNode?
     fun buildPostfix(expression: String):List<String>
     fun buildInfix(expression: String):List<String>
 
@@ -51,6 +53,13 @@ private class ExpressionTreeBuilderImpl:ExpressionTreeBuilder {
         val tokens = tokenize(expression)
         val postfix = infixToPostfix(tokens)
         val tree= buildExpressionTree(postfix)
+        return  tree
+    }
+
+    override fun buildTree2(expression: String): BaseNode? {
+        val tokens = tokenize(expression)
+        val postfix = infixToPostfix(tokens)
+        val tree= buildExpressionTree2(postfix)
         return  tree
     }
 
@@ -119,6 +128,19 @@ private class ExpressionTreeBuilderImpl:ExpressionTreeBuilder {
         return output
     }
 
+    private fun buildExpressionTree2(postfix: List<String>): BaseNode? {
+        val stack = Stack<BaseNode>()
+        for (token in postfix) {
+            if (isOperator(token)) {
+                val right = stack.removeLastOrNull() ?: return null
+                val left = stack.removeLastOrNull() ?: return null
+                stack.push(BaseNode(label = token, left = left, right = right))
+            } else {
+                stack.push(BaseNode(label = token, left = null,right = null))
+            }
+        }
+        return stack.peek()
+    }
     private fun buildExpressionTree(postfix: List<String>): Node<String>? {
         val stack = Stack<Node<String>>()
         for (token in postfix) {

@@ -38,7 +38,7 @@ data class Node<T>(
     val left: Node<T>? = null,
     val right: Node<T>? = null,
     val id: String = "$data",
-    val  center: Offset=Offset.Zero
+    var center: Offset=Offset.Zero
 ) {
 
     fun getDepth(): Int {
