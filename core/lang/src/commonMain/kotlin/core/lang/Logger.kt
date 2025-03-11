@@ -4,7 +4,7 @@ object Logger {
     fun on(tag: String, msg: String) {
         _log(tag,msg)
     }
-    fun always(tag: String, msg: String) {
+    fun off(tag: String, msg: String) {
         //_log(tag,msg)
     }
 

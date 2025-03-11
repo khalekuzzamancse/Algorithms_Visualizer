@@ -1,10 +1,39 @@
 package tree.binary.expression_tree
 
+import core.lang.Logger
 import tree.binary.tree_view.Node
+import java.util.Stack
 
+class ExpressionTreeIterator {
+    private val builder: ExpressionTreeBuilder = ExpressionTreeBuilder.create()
 
+    fun buildIterator(expression: String)=buildExpressionTree(expression).iterator()
+    /**Takes postfix tree*/
+    private fun buildExpressionTree(expression: String): Sequence<Node<String>?> = sequence {
+        val postfix=builder.buildPostfix(expression)
+        val stack = Stack<Node<String>>()
+        for (token in postfix) {
+            val node = if (isOperator(token)) {
+                val right = stack.removeLastOrNull() ?: return@sequence
+                yield(Node(data = token, right = right))
+                val left = stack.removeLastOrNull() ?: return@sequence
+                Node(data = token, left = left, right = right)
+            } else {
+                Node(data = token, left = null, right = null)
+            }
+            stack.push(node)
+            yield(node)
+        }
+        yield(stack.lastOrNull()) //Peek or Null
+        return@sequence
+    }
+
+    private fun isOperator(token: String): Boolean = token in setOf("+", "-", "*", "/", "^")
+}
 interface ExpressionTreeBuilder {
     fun buildTree(expression: String): Node<String>?
+    fun buildPostfix(expression: String):List<String>
+    fun buildInfix(expression: String):List<String>
 
     companion object{
         fun   create():ExpressionTreeBuilder=ExpressionTreeBuilderImpl()
@@ -21,7 +50,17 @@ private class ExpressionTreeBuilderImpl:ExpressionTreeBuilder {
     override fun buildTree(expression: String): Node<String>? {
         val tokens = tokenize(expression)
         val postfix = infixToPostfix(tokens)
-        return buildExpressionTree(postfix)
+        val tree= buildExpressionTree(postfix)
+        return  tree
+    }
+
+    override fun buildPostfix(expression: String): List<String> {
+        val tokens = tokenize(expression)
+       return infixToPostfix(tokens)
+    }
+
+    override fun buildInfix(expression: String): List<String> {
+        return  tokenize(expression)
     }
 
     private fun tokenize(expression: String): List<String> {
@@ -81,17 +120,17 @@ private class ExpressionTreeBuilderImpl:ExpressionTreeBuilder {
     }
 
     private fun buildExpressionTree(postfix: List<String>): Node<String>? {
-        val stack = ArrayDeque<Node<String>>()
+        val stack = Stack<Node<String>>()
         for (token in postfix) {
             if (isOperator(token)) {
                 val right = stack.removeLastOrNull() ?: return null
                 val left = stack.removeLastOrNull() ?: return null
-                stack.addLast(Node(token, left, right))
+                stack.push(Node(data = token, left = left, right = right))
             } else {
-                stack.addLast(Node(token))
+                stack.push(Node(data = token, left = null,right = null))
             }
         }
-        return stack.lastOrNull()
+        return stack.peek()
     }
 
     private fun isOperator(token: String): Boolean = token in setOf("+", "-", "*", "/", "^")

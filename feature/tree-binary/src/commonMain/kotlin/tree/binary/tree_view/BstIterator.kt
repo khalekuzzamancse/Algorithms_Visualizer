@@ -33,7 +33,13 @@ interface BstIterator<T : Comparable<T>> {
 }
 
 
-data class Node<T>(val data: T, val left: Node<T>? = null, val right: Node<T>? = null, val id: String = "$data") {
+data class Node<T>(
+    val data: T,
+    val left: Node<T>? = null,
+    val right: Node<T>? = null,
+    val id: String = "$data",
+    val  center: Offset=Offset.Zero
+) {
 
     fun getDepth(): Int {
         val leftDepth = left?.getDepth() ?: 0
@@ -49,7 +55,17 @@ data class NodeLayout(
     val label: String,
     val id: String,
     val color: Color = Color.Blue
-)
+) {
+    /**
+     * For comparing use this method, because if we override hashcode and equal then
+     * it will cause unwanted behaviour in case of copy, because the VM will ignore the other filed
+     * that did not mention in the hashcode
+     */
+    fun  isSame(other:NodeLayout)=other.id==this.id
+    override fun toString(): String {
+        return "NodeLayout($label,${center.x},${center.y})"
+    }
+}
 
 
 

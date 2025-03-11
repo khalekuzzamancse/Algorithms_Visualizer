@@ -68,6 +68,60 @@ private class DonaldKnuthAlgorithm<T:Comparable<T>> :LayoutAlgorithm<T>{
     }
 
 }
+class DonaldKnuthAlgorithm2<T:Comparable<T>>{
+     fun calculateTreeLayout(root: Node<T>, width: Float, height: Float): List<Node<T>> {
+        val maxDepth = root.getDepth()
+        val nodeRadius = 10f
+        val verticalSpacing = if (maxDepth > 0) (height - 2 * nodeRadius) / maxDepth else 0f
+        var horizontalSpacing = 0f
 
+        val nodes = mutableListOf<Node<T>>()
+        val visualLines = mutableListOf<VisualLine>()
+        var xIndex = 0
 
+        fun traverse(node: Node<T>, depth: Int): Pair<Offset, Offset> {
+            // Traverse left
+            var leftPos: Offset? = null
+            node.left?.let {
+                val (leftStart, leftEnd) = traverse(it, depth + 1)
+                leftPos = leftEnd
+                visualLines.add(VisualLine(leftStart, leftEnd))
+            }
+
+            // Calculate current position
+            if (horizontalSpacing == 0f) {
+                val totalWidthNodes = countNodes(root).toFloat()
+                horizontalSpacing = (width - 2 * nodeRadius) / (totalWidthNodes - 1)
+            }
+            val x = nodeRadius + xIndex * horizontalSpacing
+            val y = nodeRadius + depth * verticalSpacing
+            val currentPos = Offset(x, y)
+            xIndex++
+
+            // Traverse right
+            var rightPos: Offset? = null
+            node.right?.let {
+                val (rightStart, rightEnd) = traverse(it, depth + 1)
+                rightPos = rightEnd
+                visualLines.add(VisualLine(rightStart, rightEnd))
+            }
+
+            // Add connecting lines
+            leftPos?.let { visualLines.add(VisualLine(currentPos, it)) }
+            rightPos?.let { visualLines.add(VisualLine(currentPos, it)) }
+
+            nodes.add(node.copy(center = currentPos))
+            return currentPos to currentPos
+        }
+
+        traverse(root, 0)
+        return  nodes
+    }
+
+    private fun countNodes(node: Node<T>?): Int {
+        if (node == null) return 0
+        return 1 + countNodes(node.left) + countNodes(node.right)
+    }
+
+}
 

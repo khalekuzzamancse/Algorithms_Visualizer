@@ -2,6 +2,7 @@
 
 package tree.binary.tree_view
 
+import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,7 +60,7 @@ fun <T : Comparable<T>> TreeView(
             }
         }) {
             nodes.forEach { node ->
-                _VisualNode(
+                VisualNode(
                     label = node.label,
                     size = size,
                     offset = node.center - offset,
@@ -72,19 +74,22 @@ fun <T : Comparable<T>> TreeView(
 
 
 @Composable
-private fun _VisualNode(
+ fun VisualNode(
     label:String,
     size: Dp = 50.dp,
     offset: Offset= Offset.Zero,
     color: Color=Color.Blue
 ) {
-    //val offsetAnimation by animateOffsetAsState(offset, label = "")
+    val x= if(offset.x.isNaN()) 0f else offset.x
+    val y=if(offset.y.isNaN()) 0f else offset.y
+    val offsetAnimation by animateOffsetAsState(Offset(x,y), label = "")
     val padding = 8.dp
     Box(
         modifier = Modifier
             .size(size)
             .offset {
-                IntOffset(offset.x.toInt(), offset.y.toInt())
+               // IntOffset(offsetAnimation.x.toInt(), offsetAnimation.y.toInt())
+               IntOffset(offset.x.toInt(), offset.y.toInt())
             }
     ) {
         Text(

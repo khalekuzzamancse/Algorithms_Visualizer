@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import core.lang.Logger
 import graph.graph.common.model.GraphResult
-import graph.graph.common.model.Node
 import graph.graph.editor.factory.SavedGraphProvider
 import graph.graph.editor.model.GraphType
 import graph.graph.editor.ui.GraphEditor
@@ -27,7 +26,7 @@ fun TreeEditor(
                     root = root
                 )
             )
-            Logger.always(tag,"Tree:$root")
+            Logger.off(tag,"Tree:$root")
         }
     )
 }

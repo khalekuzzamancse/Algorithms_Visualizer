@@ -69,7 +69,7 @@ internal fun Editor(
 
                 },
                 onDoubleTap = {
-                    Logger.always(tag,"onDoubleTap")
+                    Logger.off(tag,"onDoubleTap")
                     controller.onDoubleTap()
                 }
             )
@@ -78,15 +78,15 @@ internal fun Editor(
             Logger.on(tag," Selection mode")
             detectDragGestures(
                 onDragStart = {
-                    Logger.always(tag,"onDragStart")
+                    Logger.off(tag,"onDragStart")
                     controller.onDragStart(it)
                 },
                 onDrag = { _, dragAmount ->
-                    Logger.always(tag,"onDrag")
+                    Logger.off(tag,"onDrag")
                     controller.onDrag(dragAmount)
                 },
                 onDragEnd = {
-                    Logger.always(tag,"onDragEnd")
+                    Logger.off(tag,"onDragEnd")
                     controller.dragEnd()
                 }
             )
