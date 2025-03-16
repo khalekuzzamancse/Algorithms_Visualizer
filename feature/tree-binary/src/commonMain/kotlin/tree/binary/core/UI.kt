@@ -20,13 +20,17 @@ data class BaseNode(
     val label:String,
     val id: String=label,
     var center: Offset?= Offset.Zero,
-    val color: Color=Color.Blue
+    val color: Color=Color.Blue,
 ) {
 
     fun getDepth(): Int {
         val leftDepth = left?.getDepth() ?: 0
         val rightDepth = right?.getDepth() ?: 0
         return 1 + max(leftDepth, rightDepth)
+    }
+
+    override fun toString(): String {
+        return  "($id:$id)"
     }
 
 }

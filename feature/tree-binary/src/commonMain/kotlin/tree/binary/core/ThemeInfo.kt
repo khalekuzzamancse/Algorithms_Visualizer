@@ -10,7 +10,7 @@ internal object ThemeInfo {
     val operationActionColor = Color(-16750968)
     //Color of MaterialTheme.colorScheme.tertiary.toArgb()
     val normalItemColor=Color(-12490474)
-    val tagetItemColor=Color.Red
+    val targetItemColor=Color.Red
     val nodeColor=Color.Blue
     val processingNodeColor=Color.Yellow
 }

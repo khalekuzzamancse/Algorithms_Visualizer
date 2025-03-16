@@ -25,9 +25,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.input.KeyboardType
@@ -44,18 +44,27 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import tree.binary.Items
+import tree.binary.PostFixItem
 import tree.binary.core.BaseNode
 import tree.binary.core.SpacerVertical
+import tree.binary.core.ThemeInfo
+import tree.binary.core.contentColor
 import tree.binary.tree_view.DonaldKnuthAlgorithm3
 import tree.binary.tree_view.LayoutAlgorithm
 import tree.binary.tree_view.Node
 import tree.binary.tree_view.VisualTree
 
+data class PostFixItem(
+    val label: String,
+    /** Id is unique, because there can be repeated number or operator]*/
+    val id: String,
+    val isDrawnInTree: Boolean = false
+)
+
 class ExpressionTreeViewController {
-    private val scope = CoroutineScope(Dispatchers.Default)
     private val tag = this.javaClass.simpleName
 
     //Visual tree is just set of nodes and edges that's it
@@ -63,132 +72,101 @@ class ExpressionTreeViewController {
     private val _inputMode = MutableStateFlow(true)
     private var canvasWidth: Float = 0f
     private var canvasHeight: Float = 0f
-    private var _root: Node<String>? = null
-    private val algorithm = LayoutAlgorithm.create<String>()
     private val autoPlayer = createAutoPlayer(::next)
     private val _showControls = MutableStateFlow(true)
     private val _infix = MutableStateFlow<List<String>>(emptyList())
-    private val _postFix = MutableStateFlow<List<String>>(emptyList())
+    private val _postFix = MutableStateFlow<List<PostFixItem>>(emptyList())
     private var _expression = ""
     private val _enableNext = MutableStateFlow(true)
     val enableNext = _enableNext.asStateFlow()
-    private var _isInserting = false
     private var preCalculation = emptyList<BaseNode>()
     val infix = _infix.asStateFlow()
     val postFix = _postFix.asStateFlow()
     private val _nodes = MutableStateFlow<List<BaseNode>>(emptyList())
     val nodes = _nodes.asStateFlow()
+    private var count = 0
 
-    init {
-        onInputComplete("3 + 5 * ( 2 - 1 )")
-    }
+    /** Used data class for node as result there can be copy of same node,as result
+     * updating the one instance may not updated the tree parent-child properly that is why
+     * need to maintain single source of truth to determine which node are drawn
+     * */
+    private var _drawn = mutableSetOf<String>()
 
     val showControls = _showControls.asStateFlow()
     fun autoPlayRequest(delay: Int) = autoPlayer.autoPlayRequest(delay)
     fun toggleControlsVisibility() = _showControls.update { !it }
     fun reset() {
         autoPlayer.dismiss()
-        _root = null
-        iterator = ExpressionTreeIterator().buildIterator(_expression)
-
+        _nodes.update { emptyList() }
+        _drawn.clear()
+        _postFix.update { items->items.map { it.copy(isDrawnInTree = false) } }
+        initialize()
+        count=0
     }
 
     val inputMode = _inputMode.asStateFlow()
-    var count = 0
+
     fun next() {
         try {
             val node = preCalculation[count]
-            _nodes.update { nodes ->
-                nodes.map {
-                    if (it.id == node.id) it.copy(center = node.center) else it
-                }
-
-            }
+            _drawn.add(node.id)
+            _nodes.update { it + node }
             count++
         } catch (_: Exception) {
         }
 
-//        if (_isInserting) return
-//
-//        scope.launch {
-//            _isInserting = true
-//            _enableNext.update { false }
-//            try {
-//                _root = iterator.next()
-//                _root?.let { root ->
-//
-//                    val (measuredNodes, measuredLines) = algorithm.calculateTreeLayout(
-//                        root,
-//                        canvasWidth,
-//                        canvasHeight
-//                    )
-////                    _nodes.value = measuredNodes.map { node ->
-////                        val finalPosition = preCalculation.nodes.find { it.id == node.id }!!.center
-////                        node.copy(center = finalPosition)
-////                    }
-////                    val changes = measuredNodes.filter {new->
-////                        val notExits= _nodes.value.find { old->new.id==old.id }==null
-////                        notExits
-////                    }
-////                    _nodes.value = measuredNodes.map { node ->
-////                        val newlyAdded=changes.find { it.isSame(node) }!=null
-////                        if (newlyAdded) node.copy(color = Color.Red) else node
-////                    }
-////                    Logger.on(tag,"changes:$changes")
-////                    _lines.value = measuredLines
-////                    delay(1000)
-////                    _nodes.value =_nodes.value.map { node ->
-////                        node.copy(color = Color.Blue)
-////                    }
-//
-//                }
-//
-//            } catch (_: Exception) {
-//            }
-//            _isInserting = false
-//            _enableNext.update { true }
-//        }
 
     }
 
     fun onInputComplete(expression: String) {
-        _expression = expression
-        iterator = ExpressionTreeIterator().buildIterator(expression)
         _inputMode.update { false }
-        val builder = ExpressionTreeBuilder.create()
-        _infix.update { builder.buildInfix(expression) }
-        _postFix.update { builder.buildPostfix(expression) }
+        _expression = expression
+        initialize()
+    }
+    private fun  initialize(){
+        iterator = ExpressionTreeIterator().buildIterator(_expression)
 
-        ExpressionTreeBuilder.create().buildTree2(expression)?.let { root ->
-            val nodes = DonaldKnuthAlgorithm3().calculateTreeLayout(root, 400f, 400f)
-            preCalculation = nodes
-            _nodes.update {
-                nodes.map { it.copy(center = null) }
+        val builder = ExpressionTreeBuilder.create()
+        _infix.update { builder.buildInfix(_expression) }
+        _postFix.update {
+            builder.buildPostfix(_expression).mapIndexed { index, item ->
+                PostFixItem(
+                    label = item, id = "$index"
+                )
             }
         }
 
-
-    }
-
-    fun onCanvasSizeChanged(canvasWidth: Float, canvasHeight: Float) {
-        //TODO: Avoid unnecessary relayout to avoid side effect
-        if (canvasWidth == this.canvasWidth && canvasHeight == this.canvasHeight)
-            return
-        val root = _root
-        this.canvasWidth = canvasWidth
-        this.canvasHeight = canvasHeight
-        if (root != null) {
-            updateVisualTree(tree = algorithm.calculateTreeLayout(root, canvasWidth, canvasHeight))
+        ExpressionTreeBuilder.create().buildTree2(_expression)?.let { root ->
+            val nodes = DonaldKnuthAlgorithm3().calculateTreeLayout(root, 400f, 400f)
+            preCalculation = nodes
         }
-
     }
 
-    private fun updateVisualTree(tree: VisualTree) {
-        //  _nodes.update { tree.nodes }
+    fun onDrawn(id: String) {
+        _drawn.add(id)
 
+        //The ExpressionTreeBuilder::buildTree2 made the postfix index as the node id
+        _postFix.update { items ->
+            items.map { item ->
+                if (item.id == id) item.copy(isDrawnInTree = true)
+                else item
+            }
+
+        }
     }
+
+    fun isDrawn(node: BaseNode) = _drawn.contains(node.id)
+
 }
 
+/***
+ * The material component is complex layout and extra property such as click etc,
+ * which has complex layout and drawing phase, that is why for app performance direct use the
+ * Skia command in the draws cope.
+ * that is why directly using the drawCircle,draw line...etc since we do not listen
+ * click and other event, we just want  to draw
+ *
+ */
 
 @Composable
 fun ExpressionTree(modifier: Modifier = Modifier) {
@@ -241,7 +219,7 @@ fun ExpressionTree(modifier: Modifier = Modifier) {
                             SpacerVertical(8)
                             Title(text = "PostFix")
                             SpacerVertical(8)
-                            Items(item = postFix.map { it })
+                            PostFixItem( item = postFix)
                             SpacerVertical(8)
                             HorizontalDivider()
                         }
@@ -283,62 +261,86 @@ fun Title(modifier: Modifier = Modifier, text: String) {
     Text(modifier = modifier, text = text, fontSize = 18.sp)
 }
 
+
 @Composable
 fun _TreeView(modifier: Modifier = Modifier, controller: ExpressionTreeViewController) {
     val nodes = controller.nodes.collectAsState().value
-    val textMeasurer= rememberTextMeasurer()
-
+    val textMeasurer = rememberTextMeasurer()
     Canvas(modifier
         .size(400.dp)
         .drawBehind {
+            val tag = "drawBehind"
             nodes.forEach { parent ->
-                var parentCenter = parent.center
-                if (parentCenter != null) {
-                    val x = if (parentCenter.x.isNaN()) 0f else parentCenter.x
-                    val y = if (parentCenter.y.isNaN()) 0f else parentCenter.y
-                    parentCenter = Offset(x, y)
-                    parent.left?.let { child ->
-                        val childCenter = child.center
-                        if (childCenter != null)
-                            drawLine(
-                                color = Color.Black,
-                                start = parentCenter,
-                                end = childCenter,
-                                strokeWidth = 2f
-                            )
-                    }
-                    parent.right?.let { child ->
-                        val childCenter = child.center
-                        if (childCenter != null)
-                            drawLine(
-                                color = Color.Black,
-                                start = parentCenter,
-                                end = childCenter,
-                                strokeWidth = 2f
-                            )
-                    }
-                }
+                val leftChild = parent.left
+                val rightChild = parent.right
+
+                if (leftChild != null && controller.isDrawn(leftChild))
+                    drawEdgeOrSkip(parent, leftChild)
+
+                if (rightChild != null && controller.isDrawn(rightChild))
+                    drawEdgeOrSkip(parent, rightChild)
             }
         }
     ) {
         nodes.forEach { parent ->
-            val parentCenter=parent.center
-            if(parentCenter!=null){
-                val x = if (parentCenter.x.isNaN()) 0f else parentCenter.x
-                val y = if (parentCenter.y.isNaN()) 0f else parentCenter.y
-                drawCircle(color = Color.Blue, center = Offset(x, y), radius = 20f)
-                drawText(
-                    textMeasurer=textMeasurer,
-                    style = TextStyle(color = Color.White),
-                    text=parent.label,
-                    topLeft=parentCenter-Offset(10f,10f)
-                )
-            }
-
+            val drawnNode = drawNode(parent, textMeasurer)
+            if (drawnNode != null)
+                controller.onDrawn(drawnNode.id)
         }
 
     }
 
+
+}
+
+fun DrawScope.drawEdgeOrSkip(parent: BaseNode, child: BaseNode) {
+    var parentCenter = parent.center
+    val childCenter = child.center
+    val color = ThemeInfo.processingNodeColor
+    if (parentCenter != null && childCenter != null) {
+        val x = if (parentCenter.x.isNaN()) 0f else parentCenter.x
+        val y = if (parentCenter.y.isNaN()) 0f else parentCenter.y
+        parentCenter = Offset(x, y)
+        drawLine(
+            color = color,
+            start = parentCenter,
+            end = childCenter,
+            strokeWidth = 2f
+        )
+    }
+
+}
+
+fun DrawScope.drawNode(node: BaseNode, textMeasurer: TextMeasurer): BaseNode? {
+    val parentCenter = node.center
+    val label = node.label
+    val radius = 20f
+    val textWidth = textMeasurer.measure(label).size.width
+    val textHeight = textMeasurer.measure(label).size.height
+    val move = Offset(textWidth / 2f, textHeight / 2f)
+    val color = ThemeInfo.nodeColor
+    //Catch edge cases such as Nan or other
+    try {
+        if (parentCenter != null) {
+            val x = if (parentCenter.x.isNaN()) 0f else parentCenter.x
+            val y = if (parentCenter.y.isNaN()) 0f else parentCenter.y
+            drawCircle(color = color, center = Offset(x, y), radius = radius)
+            val textOffset = parentCenter - move
+
+            drawText(
+                textMeasurer = textMeasurer,
+                style = TextStyle(color = color.contentColor()),
+                text = label,
+                topLeft = textOffset
+            )
+            //Execution is here means drawn successfully
+            return node
+        }
+
+    } catch (_: Exception) {
+
+    }
+    return null
 
 }
 

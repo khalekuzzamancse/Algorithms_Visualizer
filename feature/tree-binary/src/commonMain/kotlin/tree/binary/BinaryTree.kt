@@ -54,7 +54,6 @@ import core.commonui.controller.ControllerFactory.createAutoPlayer
 import core.lang.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -63,6 +62,7 @@ import tree.binary.core.SpacerHorizontal
 import tree.binary.core.SpacerVertical
 import tree.binary.core.ThemeInfo
 import tree.binary.core.contentColor
+import tree.binary.expression_tree.PostFixItem
 import tree.binary.tree_view.TreeView
 import tree.binary.tree_view.TreeViewController
 
@@ -299,6 +299,20 @@ fun _Operations(
     }
 
 }
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun PostFixItem(modifier: Modifier = Modifier, item: List<PostFixItem>) {
+    FlowRow(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        item.forEach { value ->
+            Item(value=value.label, shouldHighLight =value.isDrawnInTree)
+        }
+
+    }
+}
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -309,30 +323,35 @@ fun Items(modifier: Modifier = Modifier, item: List<String>, highLight: String? 
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         item.forEach { value ->
-            val background =
-                if (value == highLight) ThemeInfo.tagetItemColor else ThemeInfo.normalItemColor
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.background(
-                    color = background,
-                    shape = RoundedCornerShape(
-                        bottomStart = 16.dp,
-                        bottomEnd = 16.dp,
-                        topStart = 2.dp,
-                        topEnd = 2.dp
-                    )
-                )
-            ) {
-                Text(
-                    modifier = Modifier.padding(8.dp),
-                    text = value,
-                    color = background.contentColor(),
-                    fontSize = 20.sp
-                )
-            }
+            Item(value=value, shouldHighLight = value==highLight)
         }
 
     }
+}
+
+@Composable
+fun Item(modifier: Modifier = Modifier,value:String,shouldHighLight:Boolean=false) {
+    val background = if (shouldHighLight) ThemeInfo.targetItemColor else ThemeInfo.normalItemColor
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.background(
+            color = background,
+            shape = RoundedCornerShape(
+                bottomStart = 16.dp,
+                bottomEnd = 16.dp,
+                topStart = 2.dp,
+                topEnd = 2.dp
+            )
+        )
+    ) {
+        Text(
+            modifier = Modifier.padding(8.dp),
+            text = value,
+            color = background.contentColor(),
+            fontSize = 20.sp
+        )
+    }
+
 }
 
 

@@ -17,7 +17,7 @@ fun main() {
         state.size= DpSize(width = 500.dp, height =700.dp)
         Window(
             state=state,
-            title = "Compose Desktop",
+            title = "Algorithms Visualizer",
             onCloseRequest = ::exitApplication
         ) {
             MaterialTheme {

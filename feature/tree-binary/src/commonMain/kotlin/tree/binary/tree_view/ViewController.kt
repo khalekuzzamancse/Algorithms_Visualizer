@@ -103,7 +103,7 @@ constructor(
 
         if (newlyAddedNodeId != null) {
             _highLightTarget(newlyAddedNodeId)
-            nodes = _getUpdatedNodes(newTree, newlyAddedNodeId, ThemeInfo.tagetItemColor)
+            nodes = _getUpdatedNodes(newTree, newlyAddedNodeId, ThemeInfo.targetItemColor)
         }
         _nodes.update { nodes }
         _lines.update { lines }
@@ -160,7 +160,7 @@ constructor(
     }
 
 
-    private fun _highLightTarget(nodeId: String) = _changeColor(nodeId, ThemeInfo.tagetItemColor)
+    private fun _highLightTarget(nodeId: String) = _changeColor(nodeId, ThemeInfo.targetItemColor)
 
     private suspend fun _onProcessing(nodeId: String) {
         _changeColor(nodeId, ThemeInfo.processingNodeColor)
