@@ -2,11 +2,14 @@ package tree.binary.expression_tree
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Visibility
@@ -27,6 +30,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
@@ -40,11 +44,8 @@ import core.commonui.SimulationScreenEvent
 import core.commonui.SimulationScreenState
 import core.commonui.SimulationSlot
 import core.commonui.controller.ControllerFactory.createAutoPlayer
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import tree.binary.Items
 import tree.binary.PostFixItem
@@ -53,9 +54,7 @@ import tree.binary.core.SpacerVertical
 import tree.binary.core.ThemeInfo
 import tree.binary.core.contentColor
 import tree.binary.tree_view.DonaldKnuthAlgorithm3
-import tree.binary.tree_view.LayoutAlgorithm
 import tree.binary.tree_view.Node
-import tree.binary.tree_view.VisualTree
 
 data class PostFixItem(
     val label: String,
@@ -70,8 +69,8 @@ class ExpressionTreeViewController {
     //Visual tree is just set of nodes and edges that's it
     private lateinit var iterator: Iterator<Node<String>?>
     private val _inputMode = MutableStateFlow(true)
-    private var canvasWidth: Float = 0f
-    private var canvasHeight: Float = 0f
+    private var canvasWidth: Float = 100f
+    private var canvasHeight: Float = 100f
     private val autoPlayer = createAutoPlayer(::next)
     private val _showControls = MutableStateFlow(true)
     private val _infix = MutableStateFlow<List<String>>(emptyList())
@@ -96,12 +95,9 @@ class ExpressionTreeViewController {
     fun autoPlayRequest(delay: Int) = autoPlayer.autoPlayRequest(delay)
     fun toggleControlsVisibility() = _showControls.update { !it }
     fun reset() {
-        autoPlayer.dismiss()
-        _nodes.update { emptyList() }
-        _drawn.clear()
-        _postFix.update { items->items.map { it.copy(isDrawnInTree = false) } }
+
         initialize()
-        count=0
+
     }
 
     val inputMode = _inputMode.asStateFlow()
@@ -124,6 +120,12 @@ class ExpressionTreeViewController {
         initialize()
     }
     private fun  initialize(){
+        autoPlayer.dismiss()
+        _nodes.update { emptyList() }
+        _drawn.clear()
+        _postFix.update { items->items.map { it.copy(isDrawnInTree = false) } }
+        count=0
+        ///
         iterator = ExpressionTreeIterator().buildIterator(_expression)
 
         val builder = ExpressionTreeBuilder.create()
@@ -137,14 +139,17 @@ class ExpressionTreeViewController {
         }
 
         ExpressionTreeBuilder.create().buildTree2(_expression)?.let { root ->
-            val nodes = DonaldKnuthAlgorithm3().calculateTreeLayout(root, 400f, 400f)
+            val nodes = DonaldKnuthAlgorithm3().calculateTreeLayout(root, canvasWidth, canvasHeight)
             preCalculation = nodes
         }
     }
 
+    fun onCanvasSizeChanged(width:Float,height:Float){
+        canvasHeight=height
+        canvasWidth=width
+    }
     fun onDrawn(id: String) {
         _drawn.add(id)
-
         //The ExpressionTreeBuilder::buildTree2 made the postfix index as the node id
         _postFix.update { items ->
             items.map { item ->
@@ -177,11 +182,10 @@ fun ExpressionTree(modifier: Modifier = Modifier) {
     val infix = controller.infix.collectAsState().value
     val postFix = controller.postFix.collectAsState().value
 
-
     if (showInputDialog) {
         _InputDialog(
             title = "",
-            initial = "3 + 5 * ( 2 - 1 )",
+            initial = "3 + 5 * ( ( 4 - 2 ) + ( 6 / 3 ) - ( 2 - 1 ) )",
             onAdded = controller::onInputComplete
         ) {
 
@@ -204,7 +208,9 @@ fun ExpressionTree(modifier: Modifier = Modifier) {
         },
         visualization = {
             Column(
-                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth().verticalScroll(
+                    rememberScrollState()
+                )
             ) {
                 AnimatedVisibility(showControls) {
                     Column(Modifier.fillMaxWidth()) {
@@ -226,8 +232,9 @@ fun ExpressionTree(modifier: Modifier = Modifier) {
                     }
                 }
                 SpacerVertical(16)
+
                 _TreeView(
-                    modifier = Modifier.fillMaxWidth().height(400.dp),
+                    modifier = Modifier.padding(16.dp).height(350.dp).fillMaxWidth(),
                     controller = controller
                 )
             }
@@ -266,29 +273,39 @@ fun Title(modifier: Modifier = Modifier, text: String) {
 fun _TreeView(modifier: Modifier = Modifier, controller: ExpressionTreeViewController) {
     val nodes = controller.nodes.collectAsState().value
     val textMeasurer = rememberTextMeasurer()
-    Canvas(modifier
-        .size(400.dp)
-        .drawBehind {
-            val tag = "drawBehind"
-            nodes.forEach { parent ->
-                val leftChild = parent.left
-                val rightChild = parent.right
-
-                if (leftChild != null && controller.isDrawn(leftChild))
-                    drawEdgeOrSkip(parent, leftChild)
-
-                if (rightChild != null && controller.isDrawn(rightChild))
-                    drawEdgeOrSkip(parent, rightChild)
-            }
+    val  density= LocalDensity.current
+    BoxWithConstraints(modifier=modifier) {
+        val width=maxWidth
+        val height=maxHeight
+        with(density){
+            controller.onCanvasSizeChanged(width.toPx(),height.toPx())
         }
-    ) {
-        nodes.forEach { parent ->
-            val drawnNode = drawNode(parent, textMeasurer)
-            if (drawnNode != null)
-                controller.onDrawn(drawnNode.id)
+
+        Canvas(Modifier.fillMaxSize()
+            .drawBehind {
+                val tag = "drawBehind"
+                nodes.forEach { parent ->
+                    val leftChild = parent.left
+                    val rightChild = parent.right
+
+                    if (leftChild != null && controller.isDrawn(leftChild))
+                        drawEdgeOrSkip(parent, leftChild)
+
+                    if (rightChild != null && controller.isDrawn(rightChild))
+                        drawEdgeOrSkip(parent, rightChild)
+                }
+            }
+        ) {
+            nodes.forEach { parent ->
+                val drawnNode = drawNode(parent, textMeasurer)
+                if (drawnNode != null)
+                    controller.onDrawn(drawnNode.id)
+            }
+
         }
 
     }
+
 
 
 }
