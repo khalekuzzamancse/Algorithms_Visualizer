@@ -4,6 +4,7 @@ package core_ui.core.array.controller
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import core_ui.ArrayColor
 import core_ui.core.array.model.Cell
 import core_ui.core.array.model.Element
 import core_ui.core.array.model.Pointer
@@ -62,7 +63,8 @@ class VisualArrayControllerImpl internal constructor(
 
     private fun _createEmptyCell(index: Int) = Cell(
         index = index,
-        position = Offset.Zero
+        position = Offset.Zero,
+        color = ArrayColor.CELL_COLOR
     )
 
     override val numberOfElements: Int
@@ -70,7 +72,8 @@ class VisualArrayControllerImpl internal constructor(
 
     private fun _createEmptyElement(index: Int, label: String) = Element(
         position = Offset.Zero,
-        label = label
+        label = label,
+        color = ArrayColor.ELEMENT
     )
 
     init {
@@ -168,6 +171,20 @@ class VisualArrayControllerImpl internal constructor(
             }
         }
 
+    }
+
+    override fun changeCellColor(index: Int, color: Color) {
+        _try {
+            _cells.update { cells ->
+                cells.mapIndexed { ind, cell ->
+                    if (ind == index)
+                        cell.copy(color = color)
+                    else cell
+
+                }
+
+            }
+        }
     }
 
     override fun changeElementColor(index: Int, color: Color) {

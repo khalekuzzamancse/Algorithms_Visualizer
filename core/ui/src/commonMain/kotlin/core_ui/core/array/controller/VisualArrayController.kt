@@ -41,6 +41,6 @@ abstract class VisualArrayController {
      * - Helpful for marking partitions such as sorted or unsorted in case of insertion sort
      */
     abstract fun changeCellColorUpTo(index: Int,color:Color)
-
+    abstract fun changeCellColor(index: Int,color:Color)
 
 }

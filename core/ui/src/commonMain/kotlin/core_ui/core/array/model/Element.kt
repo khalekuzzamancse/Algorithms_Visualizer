@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
  */
 data class Element(
     val position: Offset = Offset.Zero,
-    val color: Color = Color.Unspecified,
+    val color: Color,
     val label: String,
 ) {
     override fun toString() = " ( $label:${position.x},${position.y} )"

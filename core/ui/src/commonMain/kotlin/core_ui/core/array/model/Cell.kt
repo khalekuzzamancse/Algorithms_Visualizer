@@ -11,5 +11,5 @@ internal data class Cell(
     val index: Int,
     val position: Offset = Offset.Zero,
     val elementId: Int? = null,
-    val color: Color = Color.Unspecified,
+    val color: Color,
 )

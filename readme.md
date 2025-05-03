@@ -1,4 +1,20 @@
 
+
+Linear search:
+Array Cell color single source
+Array Border color single source
+Array Element color single source
+Array element text dymanic based of cell color
+Array pointer color dymaic
+Pesuodcolor text size automatiac
+Pesudocode text color single source
+when algorithms finished disable the next so that user can understand it
+once reset the pseudocode and other should be clear with state clear
+if already finished then show a friendly message
+
+code viewer  design with font changble
+
+
 #Define a global theme start it all place,
 later can provide own theme for each if need to ovveride
 

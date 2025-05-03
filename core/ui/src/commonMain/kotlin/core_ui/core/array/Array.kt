@@ -30,7 +30,9 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import core_ui.ArrayColor
 import core_ui.core.array.controller.VisualArrayController
+import core_ui.textColor
 
 
 @Composable
@@ -40,7 +42,8 @@ fun VisualArray(
 ) {
     _ArrayCells(
         modifier=modifier,
-        controller = controller
+        controller = controller,
+        borderColor = ArrayColor.CELL_BORDER,
     )
 
 }
@@ -49,7 +52,8 @@ fun VisualArray(
 @Composable
 private fun _ArrayCells(
     modifier: Modifier = Modifier,
-    controller: VisualArrayController
+    controller: VisualArrayController,
+    borderColor: Color?,
 ) {
 
     val cells = controller.cells.collectAsState().value
@@ -60,8 +64,9 @@ private fun _ArrayCells(
         FlowRow {
             cells.forEachIndexed { index, cell->
                 _Cell(
-                    color = cell.color,
+                    color =cell.color,
                     size = cellSize,
+                    borderColor =borderColor ,
                     onPositionChanged = { position ->
                         controller.onCellPositionChanged(index, position.positionInParent())
                     },
@@ -79,7 +84,12 @@ private fun _ArrayCells(
         }
         controller.pointers.collectAsState().value.forEach { pointer ->
                 if (pointer.position != null)
-                    _CellPointer(label = pointer.label, position = pointer.position, cellSize = cellSize)
+                    _CellPointer(
+                        color =ArrayColor.POINTER_1,
+                        label = pointer.label,
+                        position = pointer.position,
+                        cellSize = cellSize
+                    )
             }
 
     }
@@ -92,6 +102,7 @@ private fun _ArrayCells(
 private fun _CellPointer(
     cellSize: Dp,
     label: String,
+    color: Color,
     position: Offset,
 ) {
     val offsetAnimation by animateOffsetAsState(position, label = "")
@@ -106,7 +117,7 @@ private fun _CellPointer(
         Text(
             text = label,
             modifier = Modifier,
-            color = MaterialTheme.colorScheme.onTertiaryContainer
+            color = color
         )
     }
 }
@@ -138,22 +149,26 @@ private fun _Element(
             .background(backgroundColor),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = label, color = MaterialTheme.colorScheme.contentColorFor(backgroundColor))
+        Text(text = label, color = color.textColor())
     }
 }
 
+/**
+ * @param borderColor is null that means hide the border
+ */
 @Composable
 private fun _Cell(
     modifier: Modifier = Modifier,
     size: Dp,
-    color: Color = Color.Unspecified,
-    hideBorder: Boolean = false,
+    color: Color,
+    borderColor:Color?,
     onPositionChanged: (LayoutCoordinates) -> Unit,
 ) {
+    val hideBorder=borderColor==null;
     Box(
         modifier = modifier
             .size(size)
-            .border(width = if (hideBorder) 0.dp else 1.dp, color = Color.Black)
+            .border(width = if (hideBorder) 0.dp else 1.dp, color = borderColor?:Color.Unspecified)
             .background(color)
             .onGloballyPositioned { position ->
                 onPositionChanged(position)

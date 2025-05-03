@@ -38,7 +38,11 @@ data class Token(
 )
 
 @Composable
-fun CodeViewer(modifier: Modifier = Modifier, code: String, token: Token) {
+fun CodeViewer(modifier: Modifier = Modifier, code: String, token: Token=Token(
+    literal = emptyList(),
+    function = emptyList(),
+    identifier = emptyList()
+)) {
     val lines = code.lines()
     val annotatedStringBuilder = AnnotatedString.Builder()
 

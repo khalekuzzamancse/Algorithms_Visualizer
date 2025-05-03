@@ -11,14 +11,14 @@ class SimulatorImpl<T : Comparable<T>> internal constructor(
 ) : Simulator<T> {
 
     private val iterator: kotlin.collections.Iterator<SimulationState>
-
-
     init {
         val sequence = Iterator(model.array, model.target)
         iterator = sequence.start().iterator()
 
 
     }
+
+    override fun isFinished()=!iterator.hasNext()
 
 
     /**
