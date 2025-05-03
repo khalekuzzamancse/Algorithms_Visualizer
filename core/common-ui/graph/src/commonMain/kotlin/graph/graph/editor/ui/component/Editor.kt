@@ -59,7 +59,9 @@ internal fun Editor(
     //that is why need to use the select mode
     //if a node or edge is selected in that case tap(single or double) will not work so to clear the selection use a difference approach
 
-    val modifier=  Modifier.pointerInput(selectionMode){
+    val modifier=  Modifier
+        .fillMaxSize()
+        .pointerInput(selectionMode){
         if(!selectionMode){
             Logger.on(tag,"Non Selection mode")
             detectTapGestures(
@@ -69,7 +71,7 @@ internal fun Editor(
 
                 },
                 onDoubleTap = {
-                    Logger.off(tag,"onDoubleTap")
+                    Logger.on(tag,"onDoubleTap")
                     controller.onDoubleTap()
                 }
             )
@@ -97,13 +99,21 @@ internal fun Editor(
     }
 
 
-    Canvas(modifier = Modifier
+    Canvas(modifier =
+    Modifier
         .fillMaxSize()
         .pointerInput(Unit) {
             detectTapGestures(
                 onTap = { touchedPosition ->
+                    Logger.on(tag,"onTap")
                     controller.onTap(touchedPosition) //adding the node on tap
-                })
+                },
+                onDoubleTap = {
+                    Logger.on(tag,"onDoubleTap")
+                    controller.onDoubleTap()
+                }
+
+                )
         }
         .pointerInput(Unit) {
             detectDragGestures(
@@ -133,7 +143,7 @@ internal fun Editor(
             //TODO:Since drawing, and can pass a saved graph but the device may have not space window to fit the drawing
             //in that case it will crash so avoid the app crashing,fix it later
             edges.forEach {
-                drawEdge(it, textMeasurer, width = edgeWidth)
+                drawEdge(hideControllerPoints = false,it, textMeasurer, width = edgeWidth)
             }
             nodes.forEach {
                 drawNode(it, textMeasurer)

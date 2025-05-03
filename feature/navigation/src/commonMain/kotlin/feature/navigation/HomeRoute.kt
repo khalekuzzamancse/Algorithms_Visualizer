@@ -100,14 +100,13 @@ fun _Feature(modifier: Modifier = Modifier) {
 
             )
         )
-        Spacer(modifier = Modifier.height(24.dp))
-        FeaturesSection(
-            title = "Upcoming Features", features = listOf(
-                "⏳ Interactive pseudocode execution",
-                "⏳ Real-time complexity analysis",
-                "⏳ Detailed algorithm explanations"
-            )
-        )
+//        Spacer(modifier = Modifier.height(24.dp))
+//        FeaturesSection(
+//            title = "Upcoming Features", features = listOf(
+//                "⏳ Interactive pseudocode execution",
+//                "⏳ Detailed algorithm explanations"
+//            )
+//        )
     }
 
 }

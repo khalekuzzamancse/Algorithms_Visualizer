@@ -4,6 +4,7 @@ package graph.graph.editor.factory
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
+import core.lang.Logger
 import graph.graph.editor.model.GraphEditorMode
 import graph.graph.GraphFactory
 import graph.graph.common.model.Edge
@@ -37,6 +38,7 @@ internal data class GraphEditorControllerImpl(
     private val nodeManger = GraphEditorNodeController(density)
     private val edgeManger = GraphEditorEdgeController()
     private var edgeId: Int = 1
+    val tag=this.javaClass.simpleName
 
 
     init {
@@ -61,9 +63,11 @@ internal data class GraphEditorControllerImpl(
 
     private fun _onDrawEdgeRequest(cost: String?) {
         operationMode = GraphEditorMode.EdgeAdd
+        ///TODO make sure the id are unique
+        val id=(edgeManger.edges.value.size+1).toString()
         edgeManger.addEdge(
             EditorEdgeMode(
-                id = edgeId++.toString(),
+                id = id,
                 start = Offset.Zero,
                 end = Offset.Zero,
                 control = Offset.Zero,
@@ -132,6 +136,7 @@ internal data class GraphEditorControllerImpl(
 
 
     override fun onDoubleTap() {
+        Logger.on("$tag::onDoubleTap","on double tap")
         nodeManger.resetSelection()
         edgeManger.clearSelection()
     }

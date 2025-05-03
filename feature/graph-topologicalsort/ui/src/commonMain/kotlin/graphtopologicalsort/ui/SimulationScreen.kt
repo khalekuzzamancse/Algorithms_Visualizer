@@ -92,16 +92,16 @@ import graph.graph.viewer.GraphViewer
             navigationIcon = navigationIcon,
             pseudoCode = { mod ->
                 val code = viewModel.code.collectAsState().value
-//                if (code != null)
-//                    CodeViewer(
-//                        modifier = mod,
-//                        code = code,
-//                        token = Token(
-//                            literal = emptyList(),
-//                            function = emptyList(),
-//                            identifier = emptyList()
-//                        )
-//                    )
+                if (code != null)
+                    CodeViewer(
+                        modifier = mod,
+                        code = code,
+                        token = Token(
+                            literal = emptyList(),
+                            function = emptyList(),
+                            identifier = emptyList()
+                        )
+                    )
             },
             visualization = {
                 FlowRow {

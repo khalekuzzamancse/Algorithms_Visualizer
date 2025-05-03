@@ -15,6 +15,7 @@ import graph.graph.editor.model.EdgePoint
 
 
 internal fun DrawScope.drawEdge(
+    hideControllerPoints: Boolean,
     edge: EditorEdgeMode,
     textMeasurer: TextMeasurer? = null,
     width:Float,
@@ -22,6 +23,16 @@ internal fun DrawScope.drawEdge(
 
     //drawEdge
     drawPath(path = edge.path, color = edge.pathColor, style = Stroke(width))
+
+    //TODO: Edge are thin and hard to select show the controll point always to select it, but do it only in the view mode
+    //but this causes some other bugs
+//    if(!hideControllerPoints){
+//        drawControlPoints(edge.selectedPointColor, edge.anchorPointRadius, edge.start)
+//        drawControlPoints(edge.selectedPointColor, edge.anchorPointRadius, edge.end)
+//        drawControlPoints(edge.selectedPointColor, edge.anchorPointRadius, edge.pathCenter)
+//    }
+
+
     //draw anchor point
     when (edge.selectedPoint) {
         EdgePoint.Start ->
@@ -34,7 +45,7 @@ internal fun DrawScope.drawEdge(
             drawControlPoints(edge.selectedPointColor, edge.anchorPointRadius, edge.pathCenter)
 
         else -> {}
-    }
+}
     //draw edge cost
     if (textMeasurer != null) {
         edge.cost?.let { text ->

@@ -66,7 +66,7 @@ internal fun TypeInputDialog(
 @Composable
 private fun _TitleText() {
     Text(
-        text = "Select Graph Type",
+        text = "Select Traversal Type",
         style = MaterialTheme.typography.titleMedium,
         modifier = Modifier.padding(bottom = 8.dp)
     )

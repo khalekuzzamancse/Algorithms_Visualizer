@@ -82,7 +82,7 @@ private fun _GraphViewer(
         visualization = {
             GraphViewer(
                 modifier = Modifier
-                    .background(Color.Gray)
+//                    .background(Color.Gray)
                     .padding(16.dp),
                 controller = graphController
             )

@@ -7,9 +7,9 @@ import tree.binary.expression_tree.ExpressionTree
 @Composable
 fun MyApplication() {
     AppTheme {
-     // MainNavHost()
+      MainNavHost()
       // BSTView()
-    ExpressionTree()
+
     }
 
 

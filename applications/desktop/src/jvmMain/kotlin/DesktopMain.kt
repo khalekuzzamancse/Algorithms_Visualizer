@@ -12,9 +12,9 @@ import feature.navigation.MyApplication
 fun main() {
     application {
         val state= remember { WindowState(
-            position = WindowPosition(850.dp, 0.dp),
+            position = WindowPosition(0.dp, 0.dp),
         ) }
-        state.size= DpSize(width = 500.dp, height =700.dp)
+        state.size= DpSize(width = 1366.dp, height =730.dp)
         Window(
             state=state,
             title = "Algorithms Visualizer",

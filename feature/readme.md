@@ -1,11 +1,23 @@
+# Bug
+Prime and Tree drawing new edge [bug]
+Why edge is not unselected or try to use a method for unselected
+Since under the hood using the graph editor in the Tre editor that means problem is in the
+Graph editor
+IN case of tree the state is not saved means the new node can not added
+------------
+Make the edge selection easier with a tools or swipe because edge are less thin and takes times to select it
+Or show the controll point with click-able so that can select a edge if a controll point is clicked 
+
+In case of edge drawing why the edge are not drawing correcly?
+show a state that edge are connected,
+Why adding new graph or node is not working???
+
 
 # Next TODO:
+Theme Fix and Color fix
+
 Expression Tree:
-Merge the postfix stack or highlight the stack status
-
-
-
-
+Simulate the calculation result of the tree by replacing the tree
 
 
 ## Implementing the Pseudocode Executor

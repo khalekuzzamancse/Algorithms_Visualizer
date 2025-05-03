@@ -54,7 +54,7 @@ fun CodeViewer(modifier: Modifier = Modifier, code: String, token: Token) {
             // Append comment part with reduced font size and opacity
             annotatedStringBuilder.withStyle(
                 style = SpanStyle(
-                    fontSize = 10.sp,
+                    fontSize = 13.sp,
                     color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f)
                 )
             ) {
@@ -72,7 +72,7 @@ fun CodeViewer(modifier: Modifier = Modifier, code: String, token: Token) {
         modifier = modifier,
         text = annotatedStringBuilder.toAnnotatedString(),
         style = androidx.compose.ui.text.TextStyle(
-            fontSize = 12.sp,
+            fontSize = 15.sp,
             fontFamily = FontFamily.Monospace,
             color = MaterialTheme.colorScheme.primary
         )

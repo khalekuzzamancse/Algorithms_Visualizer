@@ -23,6 +23,7 @@ import mst.ui.PrimsSimulationScreen
 import quick_sort.ui.QuickSortScreen
 import selectionsort.ui.SelectionSortRoute
 import tree.binary.BSTView
+import tree.binary.expression_tree.ExpressionTree
 import tree.ui.TreeSimulationScreen
 
 
@@ -176,6 +177,21 @@ fun NavController.createNavGraph(
                     )
                 }
             )
+        }
+        composable(NavDestination.ExpressionSearchTree.route) {
+            ExpressionTree(
+                onNavBack = {
+                    popBackStack()
+                }
+            )
+//            BSTView(
+//                navigationIcon = {
+//                    _DrawerIcon(
+//                        isNavRailMode = isNavRailMode,
+//                        onClick = openDrawerRequest
+//                    )
+//                }
+//            )
         }
         composable(NavDestination.AboutUs.route) {
             AboutUsPage(

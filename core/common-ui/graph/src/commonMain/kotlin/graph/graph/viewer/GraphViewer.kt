@@ -72,6 +72,7 @@ private fun _GraphDrawer(
     ) {
         edges.forEach {
             drawEdge(
+                hideControllerPoints = true,
                 edge = it, textMeasurer = textMeasurer,
                 width = edgeWith
             )

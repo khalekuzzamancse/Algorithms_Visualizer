@@ -12,7 +12,7 @@ internal object ThemeInfo {
     val normalItemColor=Color(-12490474)
     val targetItemColor=Color.Red
     val nodeColor=Color.Blue
-    val processingNodeColor=Color.Yellow
+    val processingNodeColor=Color.Black
 }
 
 /**

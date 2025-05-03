@@ -174,7 +174,7 @@ class ExpressionTreeViewController {
  */
 
 @Composable
-fun ExpressionTree(modifier: Modifier = Modifier) {
+fun ExpressionTree(modifier: Modifier = Modifier,  onNavBack: () -> Unit) {
     val controller = remember { ExpressionTreeViewController() }
     val state by remember { mutableStateOf(SimulationScreenState()) }
     val showControls = controller.showControls.collectAsState().value
@@ -186,10 +186,9 @@ fun ExpressionTree(modifier: Modifier = Modifier) {
         _InputDialog(
             title = "",
             initial = "3 + 5 * ( ( 4 - 2 ) + ( 6 / 3 ) - ( 2 - 1 ) )",
-            onAdded = controller::onInputComplete
-        ) {
-
-        }
+            onAdded = controller::onInputComplete,
+            onDismiss =   onNavBack,
+        )
     }
 
     SimulationSlot(
@@ -391,7 +390,7 @@ private fun _InputDialog(
             TextButton(
                 onClick = {
                     onAdded(text.trim())
-                    onDismiss()
+                  //  onDismiss()
                 }
             ) {
                 Text("Add")

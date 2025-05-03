@@ -7,6 +7,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -59,10 +60,17 @@ fun GraphEditor(
             initialGraph = initialGraph
         )
     }
-    //if graphTypeDecided
-    if (graphType != null) {
-        controller.inputController.onGraphTypeSelected(graphType)
+    //Just do one time for the graph input to avoid
+    LaunchedEffect(Unit){
+        //if graphTypeDecided
+        if (graphType != null) {
+            controller.inputController.onGraphTypeSelected(graphType)
+        }
     }
+//    if (graphType != null) {
+//        controller.inputController.onGraphTypeSelected(graphType)
+//    }
+
     val showGraphTypeInputDialog = controller.inputController.showGraphTypeSelectionUi.collectAsState().value
     val showEdgeCostDialog = controller.inputController.showEdgeCostInputUi.collectAsState().value
     val showNodeInputDialog = controller.inputController.showNodeInputUi.collectAsState().value
