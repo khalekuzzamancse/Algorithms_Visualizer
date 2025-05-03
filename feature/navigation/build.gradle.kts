@@ -6,8 +6,7 @@ kotlin {
     sourceSets{
         val commonMain by getting{
             dependencies {
-                implementation(project(":core:common-ui:graph"))
-                implementation(project(":core:common-ui:common_ui"))
+                implementation(projects.core.ui)
                 implementation(libs.common.navigation)
                 implementation(libs.common.viewmodel)
                 implementation(projects.feature.graphDijkstra.ui)
@@ -19,7 +18,7 @@ kotlin {
                 implementation(projects.feature.lineardsBubbleSort.ui)
                 implementation(projects.feature.lineardsSelectionSort.ui)
                 implementation(projects.feature.lineardsInsertionSort.ui)
-                implementation(projects.feature.lineardsLinearSearch.ui)
+                implementation(projects.feature.lineardsLinearSearch)
                 implementation(projects.feature.lineardsBinarySearch.ui)
                 implementation(projects.feature.lineardsQuickSort)
                 implementation(projects.feature.treeBinary)

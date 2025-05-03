@@ -4,9 +4,9 @@ package graphtraversal.ui
 
 import DiContainer
 import androidx.compose.ui.graphics.Color
-import graph.graph.common.model.GraphResult
-import graph.graph.common.model.Node
-import graph.graph.viewer.controller.GraphViewerController
+import core_ui.graph.common.model.GraphResult
+import core_ui.graph.common.model.Node
+import core_ui.graph.viewer.controller.GraphViewerController
 import graphtraversal.domain.model.ColorModel
 import graphtraversal.domain.model.EdgeModel
 import graphtraversal.domain.model.GraphModel

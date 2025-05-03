@@ -1,9 +1,9 @@
 @file:Suppress("functionName")
 package tree.ui
 import androidx.compose.ui.graphics.Color
-import core.commonui.controller.ControllerFactory
-import graph.graph.viewer.controller.GraphViewerController
-import graph.tree.TreeResult
+import core_ui.core.controller.ControllerFactory
+import core_ui.graph.viewer.controller.GraphViewerController
+import core_ui.tree.TreeResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -68,7 +68,7 @@ class SimulationViewModel {
     }
 
 
-    private fun mapToSimpleTreeNode(node: graph.tree.TreeNode): TreeNode {
+    private fun mapToSimpleTreeNode(node: core_ui.tree.TreeNode): TreeNode {
         val simpleNode = TreeNode(node.node.id)
 
         // Recursively map children
@@ -80,7 +80,7 @@ class SimulationViewModel {
     }
 
 
-    private fun graph.tree.TreeNode._toNodeModel() = TreeNode(
+    private fun core_ui.tree.TreeNode._toNodeModel() = TreeNode(
         id = this.node.id,
     )
 

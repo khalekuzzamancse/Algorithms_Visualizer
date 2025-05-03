@@ -7,7 +7,7 @@ kotlin {
             dependencies {
                 implementation(projects.feature.lineardsBinarySearch.domain)
                 implementation(projects.feature.lineardsBinarySearch.di)
-                implementation(projects.core.commonUi.commonUi)
+                implementation(projects.core.ui)
             }
         }
         val commonTest by getting {

@@ -1,6 +1,9 @@
 @file:Suppress("functionName")
 package dijkstra.ui
 
+import core_ui.graph.common.model.GraphResult
+import core_ui.graph.common.model.Node
+import core_ui.graph.viewer.controller.GraphViewerController
 import di.DiContainer
 import domain.model.DijkstraGraphModel
 import domain.model.EdgeModel
@@ -8,9 +11,6 @@ import domain.model.NodeModel
 import domain.model.NodeModel.Companion.INFINITY
 import domain.model.SimulationState
 import domain.service.Simulator
-import graph.graph.common.model.GraphResult
-import graph.graph.common.model.Node
-import graph.graph.viewer.controller.GraphViewerController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

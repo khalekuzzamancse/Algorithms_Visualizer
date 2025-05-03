@@ -7,8 +7,8 @@ import binarysearch.domain.model.DataModel
 import binarysearch.domain.model.SimulationState
 import binarysearch.domain.service.Simulator
 import binarysearch.presentationlogic.PresentationFactory.createAutoPlayer
-import core.commonui.array.VisualArrayFactory
-import core.commonui.array.controller.VisualArrayController
+import core_ui.core.array.VisualArrayFactory
+import core_ui.core.array.controller.VisualArrayController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

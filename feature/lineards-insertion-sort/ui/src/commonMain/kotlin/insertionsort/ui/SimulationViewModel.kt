@@ -2,13 +2,13 @@
 
 package insertionsort.ui
 
+import core_ui.core.array.VisualArrayFactory
+import core_ui.core.array.controller.VisualArrayController
 import insertionsort.di.DiContainer
 import insertionsort.domain.model.DataModel
 import insertionsort.domain.model.SimulationState
 import insertionsort.domain.service.Simulator
 import insertionsort.presentationlogic.PresentationFactory.createAutoPlayer
-import core.commonui.array.VisualArrayFactory
-import core.commonui.array.controller.VisualArrayController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

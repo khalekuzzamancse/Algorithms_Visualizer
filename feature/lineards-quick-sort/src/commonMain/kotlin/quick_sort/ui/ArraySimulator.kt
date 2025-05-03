@@ -1,13 +1,14 @@
 package quick_sort.ui
 
-import core.commonui.array.VisualArrayFactory
-import core.commonui.array.controller.VisualArrayController
+
+import core_ui.core.array.VisualArrayFactory
+import core_ui.core.array.controller.VisualArrayController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 interface ArraySimulator {
-    val arrayController:VisualArrayController
+    val arrayController: VisualArrayController
     fun movePointerI(index: Int?)
     fun movePointerJ(index: Int?)
     fun onPivotChange(index: Int)

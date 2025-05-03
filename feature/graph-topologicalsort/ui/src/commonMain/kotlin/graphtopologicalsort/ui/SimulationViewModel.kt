@@ -1,9 +1,9 @@
 @file:Suppress("functionName", "className")
 package graphtopologicalsort.ui
+import core_ui.graph.common.model.GraphResult
+import core_ui.graph.common.model.Node
+import core_ui.graph.viewer.controller.GraphViewerController
 import graphtopologicalsort.di.DiContainer
-import graph.graph.common.model.GraphResult
-import graph.graph.common.model.Node
-import graph.graph.viewer.controller.GraphViewerController
 import graphtopologicalsort.domain.model.ColorModel
 import graphtopologicalsort.domain.model.EdgeModel
 import graphtopologicalsort.domain.model.GraphModel

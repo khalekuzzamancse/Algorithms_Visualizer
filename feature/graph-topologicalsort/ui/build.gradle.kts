@@ -7,8 +7,7 @@ kotlin {
             dependencies {
                 implementation(projects.feature.graphTopologicalsort.domain)
                 implementation(projects.feature.graphTopologicalsort.di)
-                implementation(projects.core.commonUi.graph)
-                implementation(projects.core.commonUi.commonUi)
+                implementation(projects.core.ui)
             }
         }
         val commonTest by getting {

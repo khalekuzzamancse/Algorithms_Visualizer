@@ -31,7 +31,7 @@ val applicationModules = listOf(
 
 val coreModules = listOf(
     ":core", ":core:database",":core:lang",
-    ":core:common-ui",":core:common-ui:array",":core:common-ui:common_ui", ":core:common-ui:graph",
+    ":core:ui",
 )
 
 val selectionSort=":feature:lineards-selection-sort"
@@ -44,7 +44,9 @@ val featuresModules = listOf(
 //    ":feature:bubble_sort",":feature:selection_sort",":feature:insertion_sort",
     ":feature:navigation",
    // ":feature:admin_section",
-    linearSearch,"$linearSearch:domain","$linearSearch:ui","$linearSearch:di","$linearSearch:infrastructure",
+    linearSearch
+//    ,"$linearSearch:domain","$linearSearch:ui","$linearSearch:di","$linearSearch:infrastructure",
+            ,
     binarySearch,"$binarySearch:domain","$binarySearch:ui","$binarySearch:di","$binarySearch:infrastructure",
     selectionSort,"$selectionSort:domain","$selectionSort:ui","$selectionSort:di","$selectionSort:infrastructure",
     insertionSort,"$insertionSort:domain","$insertionSort:ui","$insertionSort:di","$insertionSort:infrastructure",

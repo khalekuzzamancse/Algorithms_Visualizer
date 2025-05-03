@@ -7,7 +7,7 @@ kotlin {
             dependencies {
                 implementation(projects.feature.lineardsSelectionSort.domain)
                 implementation(projects.feature.lineardsSelectionSort.di)
-                implementation(projects.core.commonUi.commonUi)
+                implementation(projects.core.ui)
             }
         }
         val commonTest by getting {

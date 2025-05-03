@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import graph.graph.editor.model.GraphType
 import tree.domain.model.TraversalType
 
 @Composable

@@ -2,10 +2,9 @@
 
 package mst.ui
 
-import androidx.compose.ui.graphics.Color
-import graph.graph.common.model.GraphResult
-import graph.graph.common.model.Node
-import graph.graph.viewer.controller.GraphViewerController
+import core_ui.graph.common.model.GraphResult
+import core_ui.graph.common.model.Node
+import core_ui.graph.viewer.controller.GraphViewerController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

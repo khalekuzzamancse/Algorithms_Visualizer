@@ -1,7 +1,7 @@
 package quick_sort.ui
 
-import core.commonui.array.controller.VisualArrayController
-import core.commonui.controller.ControllerFactory.createAutoPlayer
+import core_ui.core.array.controller.VisualArrayController
+import core_ui.core.controller.ControllerFactory.createAutoPlayer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

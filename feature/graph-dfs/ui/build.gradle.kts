@@ -7,8 +7,7 @@ kotlin {
             dependencies {
                 implementation(projects.feature.graphDfs.domain)
                 implementation(projects.feature.graphDfs.di)
-                implementation(projects.core.commonUi.graph)
-                implementation(projects.core.commonUi.commonUi)
+                implementation(projects.core.ui)
             }
         }
         val commonTest by getting {

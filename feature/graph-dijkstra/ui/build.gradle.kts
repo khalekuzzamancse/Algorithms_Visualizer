@@ -7,8 +7,7 @@ kotlin {
             dependencies {
                 implementation(projects.feature.graphDijkstra.domain)
                 implementation(projects.feature.graphDijkstra.di)
-                implementation(projects.core.commonUi.graph)
-                implementation(projects.core.commonUi.commonUi)
+                implementation(projects.core.ui)
             }
         }
         val commonTest by getting {

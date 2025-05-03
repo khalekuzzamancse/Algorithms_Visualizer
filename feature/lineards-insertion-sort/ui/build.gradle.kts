@@ -7,7 +7,7 @@ kotlin {
             dependencies {
                 implementation(projects.feature.lineardsInsertionSort.domain)
                 implementation(projects.feature.lineardsInsertionSort.di)
-                implementation(projects.core.commonUi.commonUi)
+                implementation(projects.core.ui)
             }
         }
         val commonTest by getting {

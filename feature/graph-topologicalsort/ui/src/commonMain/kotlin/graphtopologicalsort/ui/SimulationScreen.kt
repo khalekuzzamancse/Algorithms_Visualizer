@@ -24,15 +24,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import core.commonui.CodeViewer
-import core.commonui.SimulationScreenEvent
-import core.commonui.SimulationScreenState
-import core.commonui.SimulationSlot
-import core.commonui.Token
-import graph.graph.GraphFactory
-import graph.graph.editor.model.GraphType
-import graph.graph.editor.ui.GraphEditor
-import graph.graph.viewer.GraphViewer
+import core_ui.core.CodeViewer
+import core_ui.core.SimulationScreenEvent
+import core_ui.core.SimulationScreenState
+import core_ui.core.SimulationSlot
+import core_ui.core.Token
+import core_ui.graph.GraphFactory
+import core_ui.graph.editor.model.GraphType
+import core_ui.graph.editor.ui.GraphEditor
+import core_ui.graph.viewer.GraphViewer
 
 
 @OptIn(ExperimentalLayoutApi::class)

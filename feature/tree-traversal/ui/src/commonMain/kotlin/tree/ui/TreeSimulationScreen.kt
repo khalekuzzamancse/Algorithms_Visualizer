@@ -2,7 +2,6 @@
 
 package tree.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -11,16 +10,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import core.commonui.CodeViewer
-import core.commonui.SimulationScreenEvent
-import core.commonui.SimulationScreenState
-import core.commonui.SimulationSlot
-import core.commonui.Token
-import graph.graph.viewer.GraphViewer
-import graph.graph.viewer.controller.GraphViewerController
-import graph.tree.TreeEditor
+import core_ui.core.CodeViewer
+import core_ui.core.SimulationScreenEvent
+import core_ui.core.SimulationScreenState
+import core_ui.core.SimulationSlot
+import core_ui.core.Token
+import core_ui.graph.viewer.GraphViewer
+import core_ui.graph.viewer.controller.GraphViewerController
+import core_ui.tree.TreeEditor
 
 @Composable
 fun TreeSimulationScreen(navigationIcon: @Composable () -> Unit) {

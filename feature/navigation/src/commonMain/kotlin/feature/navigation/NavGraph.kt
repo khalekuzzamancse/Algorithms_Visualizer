@@ -18,7 +18,7 @@ import graphbfs.ui.ui.BFSSimulation
 import graphtopologicalsort.ui.TopologicalSort
 import graphtraversal.ui.DfsSimulation
 import insertionsort.ui.InsertionSortRoute
-import linearsearch.ui.LinearSearchRoute
+import linearsearch.ui.ui.LinearSearchRoute
 import mst.ui.PrimsSimulationScreen
 import quick_sort.ui.QuickSortScreen
 import selectionsort.ui.SelectionSortRoute

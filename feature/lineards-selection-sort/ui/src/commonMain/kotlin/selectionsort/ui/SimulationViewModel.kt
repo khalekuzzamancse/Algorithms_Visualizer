@@ -2,13 +2,13 @@
 
 package selectionsort.ui
 
+import core_ui.core.array.VisualArrayFactory
 import selectionsort.di.DiContainer
 import selectionsort.domain.model.DataModel
 import selectionsort.domain.model.SimulationState
 import selectionsort.domain.service.Simulator
 import selectionsort.presentationlogic.PresentationFactory.createAutoPlayer
-import core.commonui.array.VisualArrayFactory
-import core.commonui.array.controller.VisualArrayController
+import core_ui.core.array.controller.VisualArrayController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

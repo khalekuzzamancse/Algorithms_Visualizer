@@ -7,8 +7,9 @@ import bubblesort.domain.model.DataModel
 import bubblesort.domain.model.SimulationState
 import bubblesort.domain.service.Simulator
 import bubblesort.presentationlogic.PresentationFactory.createAutoPlayer
-import core.commonui.array.VisualArrayFactory
-import core.commonui.array.controller.VisualArrayController
+import core_ui.core.array.VisualArrayFactory
+import core_ui.core.array.controller.VisualArrayController
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
