@@ -18,5 +18,5 @@ kotlin {
 
 }
 android {
-    namespace = "graph_editor"
+    namespace = "core.ui"
 }
