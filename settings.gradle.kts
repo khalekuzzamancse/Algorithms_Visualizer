@@ -36,18 +36,11 @@ val coreModules = listOf(
 
 val selectionSort=":feature:lineards-selection-sort"
 val insertionSort=":feature:lineards-insertion-sort"
-val linearSearch=":feature:lineards-linear-search"
 val binarySearch=":feature:lineards-binary-search"
 val featuresModules = listOf(
     ":feature",
-//    ":feature:linear_search",":feature:binary_search",
-//    ":feature:bubble_sort",":feature:selection_sort",":feature:insertion_sort",
+    "feature:linear-ds-search",
     ":feature:navigation",
-   // ":feature:admin_section",
-    linearSearch
-//    ,"$linearSearch:domain","$linearSearch:ui","$linearSearch:di","$linearSearch:infrastructure",
-            ,
-    binarySearch,"$binarySearch:domain","$binarySearch:ui","$binarySearch:di","$binarySearch:infrastructure",
     selectionSort,"$selectionSort:domain","$selectionSort:ui","$selectionSort:di","$selectionSort:infrastructure",
     insertionSort,"$insertionSort:domain","$insertionSort:ui","$insertionSort:di","$insertionSort:infrastructure",
     ":feature:lineards-bubble-sort",":feature:lineards-bubble-sort:domain",":feature:lineards-bubble-sort:ui",":feature:lineards-bubble-sort:di",":feature:lineards-bubble-sort:infrastructure",

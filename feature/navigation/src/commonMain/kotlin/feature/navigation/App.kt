@@ -1,15 +1,13 @@
 package feature.navigation
 
-import androidx.compose.material3.Label
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import core_ui.GlobalMessenger
-import linearsearch.ui.ui.LinearSearchRoute
+import lineards.binary_search.presentation.BinarySearchRoute
 
 
 @Composable
@@ -32,11 +30,12 @@ fun MyApplication() {
             },
         ) {
             // MainNavHost()
-            LinearSearchRoute(
-                navigationIcon = {
-
-                }
-            )
+            BinarySearchRoute{}
+//            LinearSearchRoute(
+//                navigationIcon = {
+//
+//                }
+//            )
         }
 
 

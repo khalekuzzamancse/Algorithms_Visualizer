@@ -31,6 +31,7 @@ object ArrayColor {
     val POINTER_1= Color.White
     val CURRENT_ELEMENT=GlobalColors.sunsetOrange
     val FOUND_ELEMENT_COLOR=GlobalColors.turquoiseBlue
+    val VISITED_ELEMENT_COLOR=GlobalColors.sunsetOrange
 }
 
 // Define a data class representing a theme for the CodeViewer

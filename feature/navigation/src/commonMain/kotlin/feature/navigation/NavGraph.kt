@@ -10,7 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.compose.composable
 import androidx.navigation.createGraph
-import binarysearch.ui.BinarySearchRoute
+import lineards.binary_search.presentation.BinarySearchRoute
 import bubblesort.ui.BubbleSortRoute
 import dijkstra.ui.DijkstraSimulationScreen
 import feature.navigation.drawer.NavDestination
@@ -18,7 +18,7 @@ import graphbfs.ui.ui.BFSSimulation
 import graphtopologicalsort.ui.TopologicalSort
 import graphtraversal.ui.DfsSimulation
 import insertionsort.ui.InsertionSortRoute
-import linearsearch.ui.ui.LinearSearchRoute
+import lineards.linear_search.presentation.LinearSearchRoute
 import mst.ui.PrimsSimulationScreen
 import quick_sort.ui.QuickSortScreen
 import selectionsort.ui.SelectionSortRoute
@@ -45,7 +45,7 @@ fun NavController.createNavGraph(
             )
         }
         composable(NavDestination.LinearSearch.route) {
-            LinearSearchRoute(
+            LinearSearchRoute (
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,
