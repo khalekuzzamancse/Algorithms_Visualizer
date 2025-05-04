@@ -5,8 +5,6 @@ kotlin {
     sourceSets{
         val commonMain by getting{
             dependencies {
-                implementation(projects.feature.lineardsSelectionSort.domain)
-                implementation(projects.feature.lineardsSelectionSort.di)
                 implementation(projects.core.lang)
                 implementation(projects.core.ui)
             }

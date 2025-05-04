@@ -39,18 +39,15 @@ val insertionSort=":feature:lineards-insertion-sort"
 val binarySearch=":feature:lineards-binary-search"
 val featuresModules = listOf(
     ":feature",
-    "feature:linear-ds-search",
+    "feature:linear-datastructures",
     ":feature:navigation",
-    selectionSort,"$selectionSort:domain","$selectionSort:ui","$selectionSort:di","$selectionSort:infrastructure",
-    insertionSort,"$insertionSort:domain","$insertionSort:ui","$insertionSort:di","$insertionSort:infrastructure",
-    ":feature:lineards-bubble-sort",":feature:lineards-bubble-sort:domain",":feature:lineards-bubble-sort:ui",":feature:lineards-bubble-sort:di",":feature:lineards-bubble-sort:infrastructure",
     ":feature:graph-dijkstra",":feature:graph-dijkstra:domain",":feature:graph-dijkstra:ui",":feature:graph-dijkstra:di",":feature:graph-dijkstra:infrastructure",
     ":feature:graph-mst",":feature:graph-mst:domain",":feature:graph-mst:ui",":feature:graph-mst:di",":feature:graph-mst:infrastructure",
     ":feature:tree-traversal",":feature:tree-traversal:domain",":feature:tree-traversal:ui",":feature:tree-traversal:di",":feature:tree-traversal:infrastructure",
     ":feature:graph-dfs",":feature:graph-dfs:domain",":feature:graph-dfs:ui",":feature:graph-dfs:di",":feature:graph-dfs:infrastructure",
     ":feature:graph-dfs",":feature:graph-bfs:domain",":feature:graph-bfs:ui",":feature:graph-bfs:di",":feature:graph-bfs:infrastructure",
     ":feature:graph-topologicalsort",":feature:graph-topologicalsort:domain",":feature:graph-topologicalsort:ui",":feature:graph-topologicalsort:di",":feature:graph-topologicalsort:infrastructure",
-    ":feature:lineards-quick-sort",   ":feature:tree-binary"
+       ":feature:tree-binary"
 )
 
 rootProject.name = "AlgorithmVisualizer"

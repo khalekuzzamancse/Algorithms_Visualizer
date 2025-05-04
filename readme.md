@@ -23,6 +23,8 @@ later can provide own theme for each if need to ovveride
 support different theme
 
 
+## convention
+name with _ used to use internal such asp package _ should not be used by outer module
 
 # Bug
 Prime and Tree drawing new edge [bug]
