@@ -1,5 +1,5 @@
-package graphtopologicalsort.domain.service
-object PseudocodeGenerator {
+package graph.topological_sort.domain
+object TopologicalCodeGenerator {
     fun generate(model: CodeStateModel=CodeStateModel()) = with(model) { """
  Prims(graph, source) {
    initDistances()

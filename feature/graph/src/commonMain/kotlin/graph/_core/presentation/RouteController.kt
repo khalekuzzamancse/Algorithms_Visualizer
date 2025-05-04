@@ -2,11 +2,14 @@
 
 package graph._core.presentation
 
+import androidx.compose.ui.graphics.Color
+import core_ui.GlobalColors
 import core_ui.GlobalMessenger
 import core_ui.core.SimulationScreenState
 import core_ui.graph.common.model.GraphResult
 import core_ui.graph.common.model.Node
 import core_ui.graph.viewer.controller.GraphViewerController
+import graph._core.domain.ColorModel
 import graph._core.domain.EdgeModel
 import graph._core.domain.GraphModel
 import graph._core.domain.NodeModel
@@ -81,7 +84,31 @@ internal abstract class BaseRouteController : RouteController {
     }
 
     private fun Node._toNodeModel() = NodeModel(id = id)
+    protected fun onColorChanged(pairs: Set<Pair<NodeModel, ColorModel>>) {
+        pairs.forEach { (node, color) ->
+            val nodeColor = when (color) {
+                ColorModel.White -> GlobalColors.GraphColor.UNDISCOVERED
+                ColorModel.Gray -> GlobalColors.GraphColor.DISCOVERED
+                ColorModel.Black -> GlobalColors.GraphColor.PROCESSED
+            }
+            graphController.changeNodeColor(id = node.id, color = nodeColor)
 
+        }
+
+    }
+    protected fun handleControlAt(nodeId: String) {
+        graphController.blinkNode(nodeId)
+    }
+
+    protected fun handleProcessingEdge(id: String) {
+        graphController.changeEdgeColor(id = id, color = Color.Green)
+    }
+
+
+    protected fun handleSimulationFinished() {
+        graphController.stopBlinkAll()
+        autoPlayer.dismiss()
+    }
 
 }
 

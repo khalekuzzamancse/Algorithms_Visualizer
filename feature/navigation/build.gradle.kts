@@ -14,11 +14,8 @@ kotlin {
                 implementation(projects.feature.treeTraversal.ui)
                 implementation(projects.feature.linearDatastructures)
                 implementation(projects.feature.graph)
-                implementation(projects.feature.graphTopologicalsort.ui)
                 implementation(projects.feature.treeBinary)
                 implementation(projects.feature.treeBinary)
-
-
 
             }
         }

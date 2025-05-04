@@ -24,9 +24,10 @@ fun Color.textColor()=if(this.luminance()<0.5f) Color.White else Color.Black
     val nodeColor= limeGreen
 
     object GraphColor {
-        val UNDISCOVERD=turquoiseBlue
+        val UNDISCOVERED=turquoiseBlue
         val DISCOVERED=Color.Gray
-        val PROCCED=sunsetOrange
+        val PROCESSED=sunsetOrange
+        val TRAVERSING_EDGE=Color.Blue
 
     }
 }

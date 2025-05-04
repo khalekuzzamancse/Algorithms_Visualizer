@@ -23,7 +23,7 @@ import core_ui.GlobalColors
  fun _NodeStatusIndicator() {
     Column(modifier = Modifier.padding(16.dp)) {
         _StatusIndicatorBox(
-            color = GlobalColors.GraphColor.UNDISCOVERD,
+            color = GlobalColors.GraphColor.UNDISCOVERED,
             label = "Undiscovered"
         )
         _StatusIndicatorBox(
@@ -31,7 +31,7 @@ import core_ui.GlobalColors
             label = "Discovered"
         )
         _StatusIndicatorBox(
-            color = GlobalColors.GraphColor.PROCCED,
+            color = GlobalColors.GraphColor.PROCESSED,
             label = "Processed"
         )
     }

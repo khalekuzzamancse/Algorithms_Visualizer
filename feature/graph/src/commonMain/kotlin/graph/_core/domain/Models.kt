@@ -11,14 +11,14 @@ enum class ColorModel {
 }
 data class EdgeModel(
     val id: String,
-    val u: graph._core.domain.NodeModel,
-    val v: graph._core.domain.NodeModel,
+    val u: NodeModel,
+    val v: NodeModel,
 )
 data class GraphModel(
     val isDirected: Boolean,
-    val nodes: Set<graph._core.domain.NodeModel>,
+    val nodes: Set<NodeModel>,
     val edges:Set<EdgeModel>,
-    val source: graph._core.domain.NodeModel
+    val source: NodeModel
 )
 /**
  * - Do not need to unnecessary information such label

@@ -14,7 +14,7 @@ import dijkstra.ui.DijkstraSimulationScreen
 import feature.navigation.drawer.NavDestination
 import graph.bfs.presentation.BFSSimulation
 import graph.dfs.presentation.DFSSimulation
-import graphtopologicalsort.ui.TopologicalSort
+import graph.topological_sort.presentation.TopologicalSort
 import lineards.binary_search.presentation.BinarySearchRoute
 import lineards.bubble_sort.presentation.BubbleSortRoute
 import lineards.insertion_sort.presentation.InsertionSortRoute
