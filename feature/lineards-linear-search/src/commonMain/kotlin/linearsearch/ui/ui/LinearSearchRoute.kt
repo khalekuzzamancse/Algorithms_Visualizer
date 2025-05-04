@@ -13,7 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import core_ui.core.CodeViewer
+import core_ui.CodeViewer
 import core_ui.core.SearchInputDialog
 import core_ui.core.SimulationScreenEvent
 import core_ui.core.SimulationScreenState

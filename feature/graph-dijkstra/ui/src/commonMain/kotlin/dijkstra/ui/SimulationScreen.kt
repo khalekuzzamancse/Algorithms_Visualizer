@@ -27,11 +27,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import core_ui.core.CodeViewer
+import core_ui.CodeViewer
 import core_ui.core.SimulationScreenEvent
 import core_ui.core.SimulationScreenState
 import core_ui.core.SimulationSlot
-import core_ui.core.Token
 import core_ui.graph.GraphFactory
 import core_ui.graph.editor.model.GraphType
 import core_ui.graph.editor.ui.GraphEditor
@@ -71,11 +70,6 @@ fun DijkstraSimulationScreen(navigationIcon: @Composable () -> Unit) {
                     CodeViewer(
                         modifier = mod,
                         code = code,
-                        token = Token(
-                            literal = emptyList(),
-                            function = emptyList(),
-                            identifier = emptyList()
-                        )
                     )
             },
             visualization = {

@@ -11,14 +11,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import core_ui.core.CodeViewer
+import core_ui.CodeViewer
+import core_ui.TreeEditor
 import core_ui.core.SimulationScreenEvent
 import core_ui.core.SimulationScreenState
 import core_ui.core.SimulationSlot
-import core_ui.core.Token
+
 import core_ui.graph.viewer.GraphViewer
 import core_ui.graph.viewer.controller.GraphViewerController
-import core_ui.tree.TreeEditor
+
 
 @Composable
 fun TreeSimulationScreen(navigationIcon: @Composable () -> Unit) {
@@ -70,11 +71,6 @@ private fun _GraphViewer(
                 CodeViewer(
                     modifier = mod,
                     code = code,
-                    token = Token(
-                        literal = emptyList(),
-                        function = emptyList(),
-                        identifier = emptyList()
-                    )
                 )
         },
         visualization = {

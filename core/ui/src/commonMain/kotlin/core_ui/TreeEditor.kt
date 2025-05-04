@@ -1,12 +1,15 @@
-package core_ui.tree
+package core_ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import core.lang.Logger
 import core_ui.graph.common.model.GraphResult
+import core_ui.graph.common.model.Node
 import core_ui.graph.editor.factory.SavedGraphProvider
 import core_ui.graph.editor.model.GraphType
 import core_ui.graph.editor.ui.GraphEditor
+import core_ui.graph.viewer.controller.GraphViewerController
+
 
 @Composable
 fun TreeEditor(
@@ -17,7 +20,7 @@ fun TreeEditor(
     GraphEditor(
         navigationIcon = navigationIcon,
         graphType = GraphType.Undirected,//Tree's are undirected Graph
-     initialGraph = SavedGraphProvider.getTree(),
+        initialGraph = SavedGraphProvider.getTree(),
         onDone = {result ->
             val root= buildTree(result)
             onDone(
@@ -59,3 +62,16 @@ fun buildTree(graphResult: GraphResult): TreeNode {
     // Return the corresponding TreeNode
     return treeNodeMap[rootNode.id]!!
 }
+
+/**
+ * - This is just transfer the edited graph result to the client module
+ * - Client module should not use it own purpose that is why constructor is internal
+ */
+data class TreeResult internal constructor(
+    val controller: GraphViewerController,
+    val root: TreeNode
+)
+data class TreeNode(
+    val node: Node,
+    val children: MutableList<TreeNode> = mutableListOf()
+)

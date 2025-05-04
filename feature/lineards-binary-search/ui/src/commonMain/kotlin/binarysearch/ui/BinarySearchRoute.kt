@@ -24,12 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import core_ui.core.CodeViewer
+import core_ui.CodeViewer
 import core_ui.core.SearchInputDialog
 import core_ui.core.SimulationScreenEvent
 import core_ui.core.SimulationScreenState
 import core_ui.core.SimulationSlot
-import core_ui.core.Token
 import core_ui.core.array.VisualArray
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -59,11 +58,7 @@ fun BinarySearchRoute(modifier: Modifier = Modifier, navigationIcon: @Composable
                 CodeViewer(
                     modifier = mod,
                     code = code,
-                    token = Token(
-                        literal = emptyList(),
-                        function = emptyList(),
-                        identifier = emptyList()
-                    )
+
                 )
         },
         visualization = {

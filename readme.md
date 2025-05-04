@@ -12,13 +12,15 @@ when algorithms finished disable the next so that user can understand it
 once reset the pseudocode and other should be clear with state clear
 if already finished then show a friendly message
 
-code viewer  design with font changble
-
+code viewer  design with font changeable
+# Code Viewer
+Look Like a Viewer such as Theme, Border, Copy
+Text size should changeable
+Code should be copied
 
 #Define a global theme start it all place,
 later can provide own theme for each if need to ovveride
-
-
+support different theme
 
 
 

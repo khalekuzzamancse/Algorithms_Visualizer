@@ -8,12 +8,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import core_ui.CodeViewer
 import core_ui.core.ArrayInputDialog
-import core_ui.core.CodeViewer
+
 import core_ui.core.SimulationScreenEvent
 import core_ui.core.SimulationScreenState
 import core_ui.core.SimulationSlot
-import core_ui.core.Token
+
 import core_ui.core.array.VisualArray
 
 
@@ -40,11 +41,7 @@ fun BubbleSortRoute(modifier: Modifier = Modifier, navigationIcon: @Composable (
                 CodeViewer(
                     modifier = mod,
                     code = code,
-                    token = Token(
-                        literal = emptyList(),
-                        function = emptyList(),
-                        identifier = emptyList()
-                    )
+
                 )
         },
         visualization = {
