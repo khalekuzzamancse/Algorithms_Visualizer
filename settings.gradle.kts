@@ -40,12 +40,11 @@ val binarySearch=":feature:lineards-binary-search"
 val featuresModules = listOf(
     ":feature",
     "feature:linear-datastructures",
+    ":feature:graph",
     ":feature:navigation",
     ":feature:graph-dijkstra",":feature:graph-dijkstra:domain",":feature:graph-dijkstra:ui",":feature:graph-dijkstra:di",":feature:graph-dijkstra:infrastructure",
     ":feature:graph-mst",":feature:graph-mst:domain",":feature:graph-mst:ui",":feature:graph-mst:di",":feature:graph-mst:infrastructure",
     ":feature:tree-traversal",":feature:tree-traversal:domain",":feature:tree-traversal:ui",":feature:tree-traversal:di",":feature:tree-traversal:infrastructure",
-    ":feature:graph-dfs",":feature:graph-dfs:domain",":feature:graph-dfs:ui",":feature:graph-dfs:di",":feature:graph-dfs:infrastructure",
-    ":feature:graph-dfs",":feature:graph-bfs:domain",":feature:graph-bfs:ui",":feature:graph-bfs:di",":feature:graph-bfs:infrastructure",
     ":feature:graph-topologicalsort",":feature:graph-topologicalsort:domain",":feature:graph-topologicalsort:ui",":feature:graph-topologicalsort:di",":feature:graph-topologicalsort:infrastructure",
        ":feature:tree-binary"
 )

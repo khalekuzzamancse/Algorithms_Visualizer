@@ -23,7 +23,14 @@ fun Color.textColor()=if(this.luminance()<0.5f) Color.White else Color.Black
     private val limeGreen = Color(0xFFC0CA33)
     val nodeColor= limeGreen
 
+    object GraphColor {
+        val UNDISCOVERD=turquoiseBlue
+        val DISCOVERED=Color.Gray
+        val PROCCED=sunsetOrange
+
+    }
 }
+
 object ArrayColor {
     val CELL_COLOR=Color.Transparent
     val CELL_BORDER=GlobalColors.turquoiseBlue

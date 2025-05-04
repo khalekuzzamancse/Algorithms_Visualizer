@@ -1,4 +1,4 @@
-@file:Suppress("functionName","propertyName","unused")
+@file:Suppress("functionName", "propertyName", "unused")
 
 package lineards._core
 
@@ -23,14 +23,15 @@ internal interface RouteController {
 }
 
 
-internal interface SearchRouteController:RouteController{
+internal interface SearchRouteController : RouteController {
     /**
      * *In case of sort algorithms just ignore or un-used it
      * In case of search call it before the list input or do not forget to call it
      * */
     fun onTargetInputted(target: Int)
 }
-internal interface SortRouteController:RouteController
+
+internal interface SortRouteController : RouteController
 internal abstract class BaseRouteController : RouteController {
     protected val _inputMode = MutableStateFlow(true)
     override val inputMode = _inputMode.asStateFlow()
@@ -81,6 +82,7 @@ internal abstract class SearchRouteControllerBase : BaseRouteController(), Searc
         this.target = target
     }
 }
+
 internal abstract class SortRouteControllerBase : BaseRouteController(), SortRouteController
 
 

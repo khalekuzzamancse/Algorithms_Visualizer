@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import core_ui.GlobalMessenger
+import graph.bfs.presentation.BFSSimulation
 
 
 @Composable
@@ -28,7 +29,9 @@ fun MyApplication() {
                 SnackbarHost(hostState = hostState)
             },
         ) {
-            MainNavHost()
+           BFSSimulation{}
+           // DFSSimulation{}
+           // MainNavHost()
           //BubbleSortRoute{}
        //     BinarySearchRoute{}
 //            LinearSearchRoute(

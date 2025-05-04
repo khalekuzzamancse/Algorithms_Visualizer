@@ -12,18 +12,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.createGraph
 import dijkstra.ui.DijkstraSimulationScreen
 import feature.navigation.drawer.NavDestination
-import graphbfs.ui.ui.BFSSimulation
+import graph.bfs.presentation.BFSSimulation
+import graph.dfs.presentation.DFSSimulation
 import graphtopologicalsort.ui.TopologicalSort
-import graphtraversal.ui.DfsSimulation
-
 import lineards.binary_search.presentation.BinarySearchRoute
 import lineards.bubble_sort.presentation.BubbleSortRoute
 import lineards.insertion_sort.presentation.InsertionSortRoute
 import lineards.linear_search.presentation.LinearSearchRoute
-import lineards.quick_sort.ui.QuickSortScreen
+import lineards.quick_sort.presentation.QuickSortScreen
 import lineards.selection_sort.presenation.SelectionSortRoute
 import mst.ui.PrimsSimulationScreen
-
 import tree.binary.BSTView
 import tree.binary.expression_tree.ExpressionTree
 import tree.ui.TreeSimulationScreen
@@ -120,7 +118,7 @@ fun NavController.createNavGraph(
             )
         }
         composable(NavDestination.DepthFirstSearch.route) {
-            DfsSimulation(
+            DFSSimulation(
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,
