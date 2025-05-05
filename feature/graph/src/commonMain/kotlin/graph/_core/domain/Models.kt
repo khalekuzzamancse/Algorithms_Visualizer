@@ -14,7 +14,7 @@ data class EdgeModel(
     val u: DomainNodeModel,
     val v: DomainNodeModel,
     val cost: Int?=null //in case of Prims and Dijkstra cost is required
-)
+){}
 
 data class GraphModel(
     val isDirected: Boolean,

@@ -1,18 +1,18 @@
 package graph.prims.inf
 
-import graph.prims.domain.model.DijstraSimulationState
-import graph.prims.domain.service.DijkstraCodeStateModel
-import graph.prims.domain.service.DijkstraPseudocodeGenerator
+import graph.prims.domain.model.PrimsSimulationState
+import graph.prims.domain.service.PrimsCodeGenerator
+import graph.prims.domain.service.PrimsCodeStateModel
 
 
 /**
  * - It is prime algorithm
  */
 class Iterator(
-    private val graph: DijkstraGraphImpl
+    private val graph: PrimsGraphImpl
 ) {
-    private var model= DijkstraCodeStateModel()
-    private fun DijkstraCodeStateModel.toCode()= DijkstraPseudocodeGenerator.generate(this)
+    private var model= PrimsCodeStateModel()
+    private fun PrimsCodeStateModel.toCode()= PrimsCodeGenerator.generate(this)
     private val notAddedToMST = mutableListOf<String>()
 
     init {
@@ -30,7 +30,7 @@ class Iterator(
         }
         model=model.copy(pendingNodes = "$notAddedToMST", source = startNodeId)
 
-        yield(DijstraSimulationState.Misc(model.toCode()))
+        yield(PrimsSimulationState.Misc(model.toCode()))
 
         while (notAddedToMST.isNotEmpty()) {
             model=model.copy(pendingNodes = "$notAddedToMST", pendingIsNotEmpty = "true")
@@ -39,11 +39,11 @@ class Iterator(
             model=model.copy(pendingNodes = "$notAddedToMST", processing = "$processingId")
             graph.getParent(processingId)?.let { parentNode ->
                 graph.findEdge(processingId, parentNode.id)?.let { edge ->
-                    yield(DijstraSimulationState.ProcessingEdge(edge,model.toCode()))
+                    yield(PrimsSimulationState.ProcessingEdge(edge,model.toCode()))
                 }
             }
 
-            yield(DijstraSimulationState.ProcessingNode(graph.getNode(processingId)!!,model.toCode()))
+            yield(PrimsSimulationState.ProcessingNode(graph.getNode(processingId)!!,model.toCode()))
 
 
             val pendingNeighbours=  graph
@@ -51,7 +51,7 @@ class Iterator(
                 .filter { neighborInfo -> neighborInfo.nodeId in notAddedToMST }
 
             model=model.copy(pendingNeighbours="${pendingNeighbours.map { it.nodeId }}")
-            yield(DijstraSimulationState.Misc(model.toCode()))//Just for show the pending neighbour in pseudocode
+            yield(PrimsSimulationState.Misc(model.toCode()))//Just for show the pending neighbour in pseudocode
 
            pendingNeighbours
                 .forEach { neighborInfo ->
@@ -67,6 +67,6 @@ class Iterator(
             model=model.copy(pendingNodes = "$notAddedToMST").killProcessing().killPendingNeighbours()
         }
         model=model.copy(pendingNodes = "[]", pendingIsNotEmpty = "false")
-        yield(DijstraSimulationState.Finished(model.toCode()))
+        yield(PrimsSimulationState.Finished(model.toCode()))
     }
 }

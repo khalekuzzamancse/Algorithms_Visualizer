@@ -9,10 +9,9 @@ kotlin {
                 implementation(projects.core.ui)
                 implementation(libs.common.navigation)
                 implementation(libs.common.viewmodel)
-                implementation(projects.feature.graphDijkstra.ui)
-                implementation(projects.feature.treeTraversal.ui)
                 implementation(projects.feature.linearDatastructures)
                 implementation(projects.feature.graph)
+                implementation(projects.feature.treeTraversal)
                 implementation(projects.feature.treeBinary)
                 implementation(projects.feature.treeBinary)
 
@@ -26,5 +25,4 @@ kotlin {
 }
 android {
     namespace = "navigation"
-
 }

@@ -10,10 +10,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.compose.composable
 import androidx.navigation.createGraph
-import dijkstra.ui.DijkstraSimulationScreen
 import feature.navigation.drawer.NavDestination
 import graph.bfs.presentation.BFSSimulation
 import graph.dfs.presentation.DFSSimulation
+import graph.djkstra.presentation.DijkstraSimulationScreen
 import graph.prims.presentation.PrimsSimulationScreen
 import graph.topological_sort.presentation.TopologicalSort
 import lineards.binary_search.presentation.BinarySearchRoute
@@ -24,7 +24,7 @@ import lineards.quick_sort.presentation.QuickSortScreen
 import lineards.selection_sort.presenation.SelectionSortRoute
 import tree.binary.BSTView
 import tree.binary.expression_tree.ExpressionTree
-import tree.ui.TreeSimulationScreen
+import tree_traversal.presentation.TreeSimulationScreen
 
 
 fun NavController.createNavGraph(

@@ -42,9 +42,7 @@ val featuresModules = listOf(
     "feature:linear-datastructures",
     ":feature:graph",
     ":feature:navigation",
-    ":feature:graph-dijkstra",":feature:graph-dijkstra:domain",":feature:graph-dijkstra:ui",":feature:graph-dijkstra:di",":feature:graph-dijkstra:infrastructure",
-    ":feature:tree-traversal",":feature:tree-traversal:domain",":feature:tree-traversal:ui",":feature:tree-traversal:di",":feature:tree-traversal:infrastructure",
-       ":feature:tree-binary"
+    ":feature:tree-traversal", ":feature:tree-binary"
 )
 
 rootProject.name = "AlgorithmVisualizer"

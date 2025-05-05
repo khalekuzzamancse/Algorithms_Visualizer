@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import core_ui.GlobalMessenger
-import graph.prims.presentation.PrimsSimulationScreen
+import tree_traversal.presentation.TreeSimulationScreen
 
 
 @Composable
@@ -29,7 +29,9 @@ fun MyApplication() {
                 SnackbarHost(hostState = hostState)
             },
         ) {
-            PrimsSimulationScreen{}
+            TreeSimulationScreen{}
+           // DijkstraSimulationScreen{}
+           // PrimsSimulationScreen{}
           // BFSSimulation{}
            // TopologicalSort{}
            // DFSSimulation{}
