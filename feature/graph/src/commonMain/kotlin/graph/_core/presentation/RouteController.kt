@@ -2,7 +2,6 @@
 
 package graph._core.presentation
 
-import androidx.compose.ui.graphics.Color
 import core_ui.GlobalColors
 import core_ui.GlobalMessenger
 import core_ui.core.SimulationScreenState
@@ -10,9 +9,9 @@ import core_ui.graph.common.model.GraphResult
 import core_ui.graph.common.model.Node
 import core_ui.graph.viewer.controller.GraphViewerController
 import graph._core.domain.ColorModel
+import graph._core.domain.DomainNodeModel
 import graph._core.domain.EdgeModel
 import graph._core.domain.GraphModel
-import graph._core.domain.NodeModel
 import graph.bfs.domain.PseudocodeGenerator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,13 +39,13 @@ internal abstract class BaseRouteController : RouteController {
     private val _array = MutableStateFlow(listOf(10, 5, 4, 13, 8))
     protected val list = _array.asStateFlow()
     protected val _code = MutableStateFlow<String?>(null)
-    override  lateinit var graphController: GraphViewerController
+    override lateinit var graphController: GraphViewerController
     override val code = _code.asStateFlow()
     private val _state = MutableStateFlow(SimulationScreenState(showPseudocode = true))
     override val state = _state.asStateFlow()
     override val autoPlayer = AutoPlayerImpl(::onNext)
-    private lateinit var result: GraphResult
-    override val neighborSelector=NeighborSelectorImpl()
+    lateinit var result: GraphResult
+    override val neighborSelector = NeighborSelectorImpl()
 
     override fun onReset() {
         graphController.reset()
@@ -69,10 +68,12 @@ internal abstract class BaseRouteController : RouteController {
     protected fun _createGraph(): GraphModel {
         val nodeModels = result.nodes.map { it._toNodeModel() }.toSet()
         val edgeModels = result.edges.map {
+            val cost = it.cost?.toIntOrNull()
             EdgeModel(
                 id = it.id,
                 u = it.from._toNodeModel(),
                 v = it.to._toNodeModel(),
+                cost = cost
             )
         }.toSet()
         return GraphModel(
@@ -83,8 +84,8 @@ internal abstract class BaseRouteController : RouteController {
         )
     }
 
-    private fun Node._toNodeModel() = NodeModel(id = id)
-    protected fun onColorChanged(pairs: Set<Pair<NodeModel, ColorModel>>) {
+    private fun Node._toNodeModel() = DomainNodeModel(id = id)
+    protected fun onColorChanged(pairs: Set<Pair<DomainNodeModel, ColorModel>>) {
         pairs.forEach { (node, color) ->
             val nodeColor = when (color) {
                 ColorModel.White -> GlobalColors.GraphColor.UNDISCOVERED
@@ -96,16 +97,23 @@ internal abstract class BaseRouteController : RouteController {
         }
 
     }
-    protected fun handleControlAt(nodeId: String) {
+
+    protected fun blinkNode(nodeId: String) {
         graphController.blinkNode(nodeId)
     }
 
-    protected fun handleProcessingEdge(id: String) {
-        graphController.changeEdgeColor(id = id, color = Color.Green)
+    protected fun changeEdgeColor(id: String) {
+        graphController.changeEdgeColor(id = id, color = GlobalColors.GraphColor.TRAVERSING_EDGE)
     }
 
+    protected fun changeNodeColor(id: String) {
+        graphController.changeNodeColor(
+            id = id,
+            color = GlobalColors.GraphColor.TRAVERSING_EDGE
+        )
+    }
 
-    protected fun handleSimulationFinished() {
+    protected open fun handleSimulationFinished() {
         graphController.stopBlinkAll()
         autoPlayer.dismiss()
     }

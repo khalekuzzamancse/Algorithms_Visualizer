@@ -14,6 +14,7 @@ import dijkstra.ui.DijkstraSimulationScreen
 import feature.navigation.drawer.NavDestination
 import graph.bfs.presentation.BFSSimulation
 import graph.dfs.presentation.DFSSimulation
+import graph.prims.presentation.PrimsSimulationScreen
 import graph.topological_sort.presentation.TopologicalSort
 import lineards.binary_search.presentation.BinarySearchRoute
 import lineards.bubble_sort.presentation.BubbleSortRoute
@@ -21,7 +22,6 @@ import lineards.insertion_sort.presentation.InsertionSortRoute
 import lineards.linear_search.presentation.LinearSearchRoute
 import lineards.quick_sort.presentation.QuickSortScreen
 import lineards.selection_sort.presenation.SelectionSortRoute
-import mst.ui.PrimsSimulationScreen
 import tree.binary.BSTView
 import tree.binary.expression_tree.ExpressionTree
 import tree.ui.TreeSimulationScreen

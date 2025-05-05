@@ -11,21 +11,24 @@ enum class ColorModel {
 }
 data class EdgeModel(
     val id: String,
-    val u: NodeModel,
-    val v: NodeModel,
+    val u: DomainNodeModel,
+    val v: DomainNodeModel,
+    val cost: Int?=null //in case of Prims and Dijkstra cost is required
 )
+
 data class GraphModel(
     val isDirected: Boolean,
-    val nodes: Set<NodeModel>,
+    val nodes: Set<DomainNodeModel>,
     val edges:Set<EdgeModel>,
-    val source: NodeModel
+    val source: DomainNodeModel
 )
 /**
  * - Do not need to unnecessary information such label
  * - In case of MST need to keep any distance for node
  */
-data class NodeModel(
-    val id: String
+data class DomainNodeModel(
+    val id: String,
+  //  val label:String=id ///need in case of MST
 )
 
 

@@ -10,7 +10,6 @@ kotlin {
                 implementation(libs.common.navigation)
                 implementation(libs.common.viewmodel)
                 implementation(projects.feature.graphDijkstra.ui)
-                implementation(projects.feature.graphMst.ui)
                 implementation(projects.feature.treeTraversal.ui)
                 implementation(projects.feature.linearDatastructures)
                 implementation(projects.feature.graph)

@@ -22,7 +22,7 @@ internal abstract  class TraversalRouteController : BaseRouteController(){
         _code.update { state.code }
         when (state) {
             is TraversalSimulationState.ColorChanged -> onColorChanged(state.nodes)
-            is TraversalSimulationState.ProcessingEdge -> handleProcessingEdge(state.id)
+            is TraversalSimulationState.ProcessingEdge -> changeEdgeColor(state.id)
             is TraversalSimulationState.NeighborSelection -> {
                 val neighbourIds: List<String> = state.unvisitedNeighbors
                 val neighbours = graphController.getNodesById(neighbourIds)
@@ -32,9 +32,8 @@ internal abstract  class TraversalRouteController : BaseRouteController(){
             }
 
             is TraversalSimulationState.ExecutionAt -> {
-                handleControlAt(state.nodeId)
+                blinkNode(state.nodeId)
             }
-
             is TraversalSimulationState.Finished -> handleSimulationFinished()
             else -> Unit // No action for other states
         }
@@ -44,8 +43,6 @@ internal abstract  class TraversalRouteController : BaseRouteController(){
         super.onReset()
         traversalSimulator = DiContainer.createBFSSimulator(_createGraph())
     }
-
-
 
 
 }

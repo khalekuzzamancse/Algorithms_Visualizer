@@ -3,13 +3,13 @@ package graph._core.inf
 import graph._core.domain.ColorModel
 import graph._core.domain.EdgeModel
 import graph._core.domain.GraphModel
-import graph._core.domain.NodeModel
+import graph._core.domain.DomainNodeModel
 
 class GraphImpl(
     private val graph: GraphModel
 ) : Graph {
 
-    private val adjacency: Map<String, NodeModel> = graph.nodes.associateBy { it.id }
+    private val adjacency: Map<String, DomainNodeModel> = graph.nodes.associateBy { it.id }
     private val colors: MutableMap<String, ColorModel> = mutableMapOf()
 
     override fun getAllNodeIds(): Set<String> {
@@ -46,11 +46,11 @@ class GraphImpl(
         parent[nodeId] = parentId
     }
 
-    override fun getNode(nodeId: String): NodeModel? {
+    override fun getNode(nodeId: String): DomainNodeModel? {
         return adjacency[nodeId]
     }
 
-    override fun getParent(nodeId: String): NodeModel? {
+    override fun getParent(nodeId: String): DomainNodeModel? {
         val parentId = parent[nodeId]
         return if (parentId != null) adjacency[parentId] else null
     }

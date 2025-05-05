@@ -2,7 +2,7 @@ package graph._core.inf
 
 import graph._core.domain.ColorModel
 import graph._core.domain.EdgeModel
-import graph._core.domain.NodeModel
+import graph._core.domain.DomainNodeModel
 
 
 /**
@@ -23,9 +23,9 @@ interface Graph {
     val sourceNodeId: String
     fun getAllNodeIds(): Set<String>
     fun updateParentOf(nodeId: String, parentId: String)
-    fun getNode(nodeId: String): NodeModel?
+    fun getNode(nodeId: String): DomainNodeModel?
     fun getNeighborsOf(nodeId: String): List<String>
-    fun getParent(nodeId: String): NodeModel?
+    fun getParent(nodeId: String): DomainNodeModel?
     fun findEdge(uId: String, vId: String): EdgeModel?
     fun updateColor(nodeId: String,color: ColorModel)
     fun getOneUnvisitedNeighbourOf(nodeId: String): String?

@@ -12,7 +12,7 @@ internal class TopologicalRouteController: BaseRouteController() {
     private lateinit var simulator: TopologicalSortSimulator
     override fun onGraphCreated(result: GraphResult) {
         super.onGraphCreated(result)
-        simulator=DiContainer.createSimulator(_createGraph())
+        simulator=DiContainer.createTopologicalSimulator(_createGraph())
     }
     override fun onNext() {
       val state=simulator.next()
@@ -21,7 +21,7 @@ internal class TopologicalRouteController: BaseRouteController() {
     private fun consume(state: TopologicalSortState) {
         when (state) {
             is TopologicalSortState.ColorChanged -> onColorChanged(state.nodeColors)
-            is TopologicalSortState.ProcessingEdge -> handleProcessingEdge(state.edgeId)
+            is TopologicalSortState.ProcessingEdge -> changeEdgeColor(state.edgeId)
             is TopologicalSortState.ExecutionAt -> handleExecutionAt(state.nodeId)
             is TopologicalSortState.NodeProcessed -> handleNodeProcessed(state.nodeId)
             is TopologicalSortState.StartingNode -> handleStartingNode(state.nodeId)
@@ -34,7 +34,7 @@ internal class TopologicalRouteController: BaseRouteController() {
 
     override fun onReset() {
       super.onReset()
-        simulator=DiContainer.createSimulator(_createGraph())
+        simulator=DiContainer.createTopologicalSimulator(_createGraph())
     }
 
 

@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import core_ui.GlobalMessenger
-import graph.topological_sort.presentation.TopologicalSort
+import graph.prims.presentation.PrimsSimulationScreen
 
 
 @Composable
@@ -29,8 +29,9 @@ fun MyApplication() {
                 SnackbarHost(hostState = hostState)
             },
         ) {
+            PrimsSimulationScreen{}
           // BFSSimulation{}
-            TopologicalSort{}
+           // TopologicalSort{}
            // DFSSimulation{}
            // MainNavHost()
           //BubbleSortRoute{}
