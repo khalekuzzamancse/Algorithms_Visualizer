@@ -1,3 +1,6 @@
+Linear search:
+Show initial pseudocode
+Handle the smaller screen
 
 
 Linear search:

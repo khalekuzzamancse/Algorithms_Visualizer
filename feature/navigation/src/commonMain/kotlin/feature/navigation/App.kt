@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import core_ui.GlobalMessenger
-import tree_traversal.presentation.TreeSimulationScreen
+import lineards.linear_search.presentation.LinearSearchRoute
 
 
 @Composable
@@ -29,7 +29,7 @@ fun MyApplication() {
                 SnackbarHost(hostState = hostState)
             },
         ) {
-            TreeSimulationScreen{}
+           // TreeSimulationScreen{}
            // DijkstraSimulationScreen{}
            // PrimsSimulationScreen{}
           // BFSSimulation{}
@@ -38,11 +38,11 @@ fun MyApplication() {
            // MainNavHost()
           //BubbleSortRoute{}
        //     BinarySearchRoute{}
-//            LinearSearchRoute(
-//                navigationIcon = {
-//
-//                }
-//            )
+            LinearSearchRoute(
+                navigationIcon = {
+
+                }
+       )
         }
 
 

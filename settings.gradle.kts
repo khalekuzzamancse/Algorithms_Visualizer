@@ -30,8 +30,7 @@ val applicationModules = listOf(
 
 
 val coreModules = listOf(
-    ":core", ":core:database",":core:lang",
-    ":core:ui",
+    ":core",":core:lang", ":core:ui",
 )
 
 val selectionSort=":feature:lineards-selection-sort"
