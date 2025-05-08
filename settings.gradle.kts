@@ -5,25 +5,36 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
-    includeBuild("build-logic")//build-logic as a Composite Build, for convention plugin
+ //  includeBuild("build-logic")//build-logic as a Composite Build, for convention plugin
 
     repositories {
-        google()
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
         mavenCentral()
         gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        google()
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
         mavenCentral()
     }
 }
 
 val applicationModules = listOf(
     ":applications",
-    ":applications:android",
+//    ":applications:android",
     ":applications:desktop",
     ":applications:web",
 )
@@ -43,4 +54,4 @@ val featuresModules = listOf(
 )
 
 rootProject.name = "AlgorithmVisualizer"
-include(applicationModules+coreModules+featuresModules)
+include(applicationModules)

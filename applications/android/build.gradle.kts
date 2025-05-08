@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     kotlin("android")
-    alias(libs.plugins.jetbrainsCompose)
+    //alias(libs.plugins.jetbrainsCompose)
  //   alias(libs.plugins.realm)
 }
 

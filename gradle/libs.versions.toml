@@ -1,83 +1,39 @@
 [versions]
-agp = "8.2.2"
-androidx-activityCompose = "1.8.2"
-coroutines = "1.7.3"
-compose-plugin = "1.6.0"
-kotlin = "1.9.21"
-voyager = "1.0.0"
-coil3-io = "3.0.0-alpha02"
-ktor = "2.3.7"
-realmVersion = "1.13.0"
-sqlDelightVersion = "2.0.1"
-lifecycleVersion = "2.8.0-alpha03"
-lifecycleViewmodelCompose = "2.7.0"
+agp = "8.5.2"
+android-compileSdk = "35"
+android-minSdk = "24"
+android-targetSdk = "35"
+androidx-activityCompose = "1.10.1"
+androidx-appcompat = "1.7.0"
+androidx-constraintlayout = "2.2.1"
+androidx-core-ktx = "1.16.0"
+androidx-espresso-core = "3.6.1"
+androidx-lifecycle = "2.8.4"
+androidx-material = "1.12.0"
+androidx-test-junit = "1.2.1"
+compose-multiplatform = "1.7.3"
 junit = "4.13.2"
-## For room database
-room = "2.7.0-alpha01"
-ksp = "1.9.23-1.0.19"
-sqlite = "2.5.0-SNAPSHOT"
-commonNavigationVer = "2.7.0-alpha07"
-commonViewmodelVer="2.8.0"
+kotlin = "2.1.20"
+kotlinx-coroutines = "1.10.2"
+
 [libraries]
-androidx-activity-compose= { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
-##Viewmodel
-viewmodel-ktx={module="androidx.lifecycle:lifecycle-viewmodel-ktx",version.ref="lifecycleVersion"}
-viewmodel-compose={module="androidx.lifecycle:lifecycle-viewmodel-compose",version.ref="lifecycleVersion"}
-
-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
-kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version = "1.8.0" }
-
-ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
-ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
-ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
-
-#Test
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-#
-windowSize = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform",version="0.3.1"}
-
-coil3 = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3-io" }
-coil3-network = { module = "io.coil-kt.coil3:coil-network", version.ref = "coil3-io" }
-coil3-core = { module = "io.coil-kt.coil3:coil-core", version.ref = "coil3-io" }
-
-##For convention plugin building needs them
-android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-compose-gradlePlugin = { module = "org.jetbrains.compose:org.jetbrains.compose.gradle.plugin", version.ref = "compose-plugin" }
-## Navigation for multiplatfrom
-common-navigation={module="org.jetbrains.androidx.navigation:navigation-compose",version.ref="commonNavigationVer"}
-##  Navigation for multiplatfrom
-common-viewmodel={module="org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose",version.ref="commonViewmodelVer"}
-##ROOM
-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
-room-runtime-android = { module = "androidx.room:room-runtime-android", version.ref = "room" }
-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
+androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
+androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
-jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-realm={id="io.realm.kotlin", version.ref = "realmVersion"}
-kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-sqlDelight= { id = "app.cash.sqldelight",version.ref="sqlDelightVersion"}
-##For Room
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-room = { id = "androidx.room", version.ref = "room" }
-
-#TODO:Convention plugin
-convention-composeMultiplatfrom={id="convention.composeMultiplatform",version="unspecified"}
-convention-kotlinMultiplatform={id="convention.kotlinMultiplatform",version="unspecified"}
-convention-domainModulePlugin={id="convention.DomainModulePlugin",version="unspecified"}
-convention-dataModulePlugin={id="convention.dataModulePlugin",version="unspecified"}
-
-[bundles]
-test = ["kotlin-test", "kotlin-test-junit"]
-ktorClient=["ktor-client-core","ktor-client-okhttp","ktor-client-content-negotiation","ktor-serialization-kotlinx-json"]
-coil=["coil3-core","coil3-network","coil3"]
-

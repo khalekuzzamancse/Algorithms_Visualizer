@@ -1,21 +1,16 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose")
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
 }
 
 kotlin {
-    jvm {
-        jvmToolchain(17)
-        withJava()
-    }
+    jvm("desktop")
     sourceSets {
-        val jvmMain by getting {
+        val desktopMain by getting {
             dependencies {
-                implementation(compose.desktop.common)
                 implementation(compose.desktop.currentOs)
-                implementation(projects.feature.navigation)
                 implementation(libs.kotlinx.coroutines.swing)
             }
         }
@@ -26,7 +21,6 @@ compose.desktop {
     application {
         mainClass = "DesktopMainKt"
         nativeDistributions {
-            targetFormats(TargetFormat.Exe)
             packageName = "desktopApp"
             version = "1.0.0"
         }
