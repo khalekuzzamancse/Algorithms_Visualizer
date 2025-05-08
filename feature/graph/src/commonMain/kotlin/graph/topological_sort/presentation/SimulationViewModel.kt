@@ -1,7 +1,6 @@
 package graph.topological_sort.presentation
-
-import core_ui.GlobalColors
-import core_ui.graph.common.model.GraphResult
+import core.ui.GlobalColors
+import core.ui.graph.common.model.GraphResult
 import graph.DiContainer
 import graph._core.presentation.BaseRouteController
 import graph.topological_sort.domain.TopologicalSortSimulator

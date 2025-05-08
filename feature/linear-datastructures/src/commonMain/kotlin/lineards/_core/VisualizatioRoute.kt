@@ -9,12 +9,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import core_ui.CodeViewer
-import core_ui.core.ArrayInputDialog
-import core_ui.core.SearchInputDialog
-import core_ui.core.SimulationScreenEvent
-import core_ui.core.SimulationSlot
-import core_ui.core.array.VisualArray
+import core.ui.CodeViewer
+import core.ui.core.ArrayInputDialog
+import core.ui.core.SearchInputDialog
+import core.ui.core.SimulationScreenEvent
+import core.ui.core.SimulationSlot
+import core.ui.core.array.VisualArray
 
 
 @OptIn(ExperimentalLayoutApi::class)

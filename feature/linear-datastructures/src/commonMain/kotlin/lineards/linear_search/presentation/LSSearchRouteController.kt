@@ -1,8 +1,9 @@
 package lineards.linear_search.presentation
 
-import core_ui.ArrayColor
-import core_ui.core.array.VisualArrayFactory
-import core_ui.core.array.controller.VisualArrayController
+
+import core.ui.ArrayColor
+import core.ui.core.array.VisualArrayFactory
+import core.ui.core.array.controller.VisualArrayController
 import kotlinx.coroutines.flow.update
 import lineards._core.SearchRouteControllerBase
 import lineards.linear_search.DiContainer

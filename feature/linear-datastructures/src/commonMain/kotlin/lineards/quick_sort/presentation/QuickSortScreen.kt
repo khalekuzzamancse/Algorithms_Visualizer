@@ -9,14 +9,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import core_ui.CodeViewer
-import core_ui.core.ArrayInputDialog
+import core.ui.CodeViewer
+import core.ui.core.ArrayInputDialog
+import core.ui.core.SimulationScreenEvent
+import core.ui.core.SimulationScreenState
+import core.ui.core.SimulationSlot
+import core.ui.core.array.VisualArray
 
-import core_ui.core.SimulationScreenEvent
-import core_ui.core.SimulationScreenState
-import core_ui.core.SimulationSlot
-
-import core_ui.core.array.VisualArray
 
 @Composable
 fun QuickSortScreen(modifier: Modifier = Modifier, navigationIcon: @Composable () -> Unit) {

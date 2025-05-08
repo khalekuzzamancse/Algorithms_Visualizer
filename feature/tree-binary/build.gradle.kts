@@ -5,8 +5,7 @@ kotlin {
     sourceSets{
         val commonMain by getting{
             dependencies {
-                implementation(projects.core.lang)
-                implementation(projects.core.ui)
+                implementation(projects.core)
             }
         }
         val commonTest by getting {

@@ -2,9 +2,9 @@
 
 package lineards.insertion_sort.presentation
 
-import core_ui.ArrayColor
-import core_ui.core.array.VisualArrayFactory
-import core_ui.core.array.controller.VisualArrayController
+import core.ui.ArrayColor
+import core.ui.core.array.VisualArrayFactory
+import core.ui.core.array.controller.VisualArrayController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
@@ -51,7 +51,7 @@ internal class SimulationViewModel: SortRouteControllerBase() {
                     val sortedUpTo=state.sortedUpTo
                     arrayController.movePointer(label = POINTER_I, index = i)
                     arrayController.changeElementColor(i, ArrayColor.CURRENT_ELEMENT)
-                    arrayController.changeCellColorUpTo(sortedUpTo,ArrayColor.VISITED_ELEMENT_COLOR)
+                    arrayController.changeCellColorUpTo(sortedUpTo, ArrayColor.VISITED_ELEMENT_COLOR)
                 }
 
 

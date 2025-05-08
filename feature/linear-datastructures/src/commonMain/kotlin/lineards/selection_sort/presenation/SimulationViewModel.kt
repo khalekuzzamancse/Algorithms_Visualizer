@@ -2,9 +2,9 @@
 
 package lineards.selection_sort.presenation
 
-import core_ui.ArrayColor
-import core_ui.core.array.VisualArrayFactory
-import core_ui.core.array.controller.VisualArrayController
+import core.ui.ArrayColor
+import core.ui.core.array.VisualArrayFactory
+import core.ui.core.array.controller.VisualArrayController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update

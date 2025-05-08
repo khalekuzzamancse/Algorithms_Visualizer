@@ -1,8 +1,7 @@
 package lineards.quick_sort.presentation
 
-
-import core_ui.core.array.VisualArrayFactory
-import core_ui.core.array.controller.VisualArrayController
+import core.ui.core.array.VisualArrayFactory
+import core.ui.core.array.controller.VisualArrayController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

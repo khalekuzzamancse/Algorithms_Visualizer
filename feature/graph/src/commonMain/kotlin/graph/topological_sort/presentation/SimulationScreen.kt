@@ -2,8 +2,8 @@
 package graph.topological_sort.presentation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import core_ui.graph.GraphFactory
-import core_ui.graph.editor.model.GraphType
+import core.ui.graph.GraphFactory
+import core.ui.graph.editor.model.GraphType
 import graph._core.presentation.Route
 
 

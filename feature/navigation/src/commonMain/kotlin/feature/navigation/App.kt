@@ -6,7 +6,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import core_ui.GlobalMessenger
+import core.ui.GlobalMessenger
 import lineards.linear_search.presentation.LinearSearchRoute
 
 
@@ -16,7 +16,7 @@ fun MyApplication() {
     AppTheme {
         LaunchedEffect(Unit){
 
-            GlobalMessenger.messageToUI.collect{msg->
+            GlobalMessenger.messageToUI.collect{ msg->
                 if(msg!=null){
                     hostState.showSnackbar(msg)
                 }

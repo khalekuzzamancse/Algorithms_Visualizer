@@ -6,7 +6,7 @@ kotlin {
     sourceSets{
         val commonMain by getting{
             dependencies {
-                implementation(projects.core.ui)
+                implementation(projects.core)
                 implementation(libs.common.navigation)
                 implementation(libs.common.viewmodel)
                 implementation(projects.feature.linearDatastructures)

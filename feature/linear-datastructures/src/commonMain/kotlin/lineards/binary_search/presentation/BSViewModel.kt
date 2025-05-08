@@ -1,8 +1,8 @@
 @file:Suppress("functionName")
 package lineards.binary_search.presentation
-import core_ui.ArrayColor
-import core_ui.core.array.VisualArrayFactory
-import core_ui.core.array.controller.VisualArrayController
+import core.ui.ArrayColor
+import core.ui.core.array.VisualArrayFactory
+import core.ui.core.array.controller.VisualArrayController
 import kotlinx.coroutines.flow.update
 import lineards.binary_search.DiContainer
 import lineards.binary_search.domain.model.DataModel
@@ -33,7 +33,7 @@ internal class BSViewModel: SearchRouteControllerBase() {
 
 
         arrayController.value?.let { arrayController ->
-            val visitedColor=ArrayColor.VISITED_ELEMENT_COLOR
+            val visitedColor= ArrayColor.VISITED_ELEMENT_COLOR
             when (state) {
                 is SimulationState.PointerLow -> {
                     arrayController.movePointer(label = POINTER_LOW, index = state.index)

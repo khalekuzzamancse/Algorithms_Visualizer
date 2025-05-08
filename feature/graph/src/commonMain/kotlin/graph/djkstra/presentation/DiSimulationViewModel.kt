@@ -1,11 +1,11 @@
 @file:Suppress("functionName")
 package graph.djkstra.presentation
 
-import core_ui.core.controller.AutoPlayerImpl
-import core_ui.graph.common.model.GraphResult
-import core_ui.graph.common.model.Node
-import core_ui.graph.viewer.controller.GraphViewerController
+import core.ui.graph.common.model.GraphResult
+import core.ui.graph.common.model.Node
+import core.ui.graph.viewer.controller.GraphViewerController
 import graph.DiContainer
+import graph._core.presentation.AutoPlayerImpl
 import graph.djkstra.domain.model.DijkstraGraphModel
 import graph.djkstra.domain.model.EdgeModel
 import graph.djkstra.domain.model.NodeModel

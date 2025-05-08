@@ -30,12 +30,10 @@ val applicationModules = listOf(
 
 
 val coreModules = listOf(
-    ":core",":core:lang", ":core:ui",
+    ":core",
 )
 
-val selectionSort=":feature:lineards-selection-sort"
-val insertionSort=":feature:lineards-insertion-sort"
-val binarySearch=":feature:lineards-binary-search"
+
 val featuresModules = listOf(
     ":feature",
     "feature:linear-datastructures",

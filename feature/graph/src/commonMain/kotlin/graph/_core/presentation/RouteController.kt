@@ -2,12 +2,12 @@
 
 package graph._core.presentation
 
-import core_ui.GlobalColors
-import core_ui.GlobalMessenger
-import core_ui.core.SimulationScreenState
-import core_ui.graph.common.model.GraphResult
-import core_ui.graph.common.model.Node
-import core_ui.graph.viewer.controller.GraphViewerController
+import core.ui.GlobalColors
+import core.ui.GlobalMessenger
+import core.ui.core.SimulationScreenState
+import core.ui.graph.common.model.GraphResult
+import core.ui.graph.common.model.Node
+import core.ui.graph.viewer.controller.GraphViewerController
 import graph._core.domain.ColorModel
 import graph._core.domain.DomainNodeModel
 import graph._core.domain.EdgeModel

@@ -1,6 +1,5 @@
 package graph._core.presentation
-
-import core_ui.graph.common.model.GraphResult
+import core.ui.graph.common.model.GraphResult
 import graph.DiContainer
 import graph._core.domain.GraphModel
 import graph._core.domain.TraversalSimulationState

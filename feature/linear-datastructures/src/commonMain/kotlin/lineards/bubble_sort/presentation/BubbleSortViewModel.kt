@@ -3,9 +3,9 @@
 package lineards.bubble_sort.presentation
 
 import bubblesort.domain.service.Simulator
-import core_ui.ArrayColor
-import core_ui.core.array.VisualArrayFactory
-import core_ui.core.array.controller.VisualArrayController
+import core.ui.ArrayColor
+import core.ui.core.array.VisualArrayFactory
+import core.ui.core.array.controller.VisualArrayController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
@@ -28,7 +28,7 @@ internal class BubbleSortViewModel: SortRouteControllerBase() {
                 is SimulationState.PointerIChanged -> {
                     val index=state.index
                     arrayController.movePointer(label = "i", index =index)
-                    arrayController.changeElementColor(index,ArrayColor.CURRENT_ELEMENT)
+                    arrayController.changeElementColor(index, ArrayColor.CURRENT_ELEMENT)
 
                 }
                 is SimulationState.PointerJChanged -> {

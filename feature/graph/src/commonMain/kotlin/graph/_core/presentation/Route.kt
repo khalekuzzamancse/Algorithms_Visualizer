@@ -8,15 +8,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import core_ui.CodeViewer
-import core_ui.core.SimulationScreenEvent
-import core_ui.core.SimulationSlot
-import core_ui.graph.GraphFactory
-import core_ui.graph.common.model.EditorEdgeMode
-import core_ui.graph.common.model.EditorNodeModel
-import core_ui.graph.editor.model.GraphType
-import core_ui.graph.editor.ui.GraphEditor
-import core_ui.graph.viewer.GraphViewer
+import core.ui.CodeViewer
+import core.ui.core.SimulationScreenEvent
+import core.ui.core.SimulationSlot
+import core.ui.graph.GraphFactory
+import core.ui.graph.common.model.EditorEdgeMode
+import core.ui.graph.common.model.EditorNodeModel
+import core.ui.graph.editor.model.GraphType
+import core.ui.graph.editor.ui.GraphEditor
+import core.ui.graph.viewer.GraphViewer
+
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
