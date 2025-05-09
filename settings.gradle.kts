@@ -5,7 +5,7 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
- //  includeBuild("build-logic")//build-logic as a Composite Build, for convention plugin
+   includeBuild("build-logic")//build-logic as a Composite Build, for convention plugin
 
     repositories {
         google {
@@ -34,7 +34,7 @@ dependencyResolutionManagement {
 
 val applicationModules = listOf(
     ":applications",
-//    ":applications:android",
+   ":applications:android",
     ":applications:desktop",
     ":applications:web",
 )
@@ -42,11 +42,13 @@ val applicationModules = listOf(
 
 val coreModules = listOf(
     ":core",
+    "core-linear-ds-ui"
 )
 
 
 val featuresModules = listOf(
     ":feature",
+    ":feature:web-x",
     "feature:linear-datastructures",
     ":feature:graph",
     ":feature:navigation",
@@ -54,4 +56,4 @@ val featuresModules = listOf(
 )
 
 rootProject.name = "AlgorithmVisualizer"
-include(applicationModules)
+include(applicationModules+coreModules+featuresModules)

@@ -77,7 +77,7 @@ internal abstract class BaseRouteController : RouteController {
 
 
 internal abstract class SearchRouteControllerBase : BaseRouteController(), SearchRouteController {
-    private val tag = this.javaClass.simpleName
+//    private val tag = this.javaClass.simpleName
     protected var target: Int = 0
 
     override fun onTargetInputted(target: Int) {
