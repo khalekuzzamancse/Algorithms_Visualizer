@@ -42,13 +42,12 @@ val applicationModules = listOf(
 
 val coreModules = listOf(
     ":core",
-    "core-linear-ds-ui"
 )
 
 
 val featuresModules = listOf(
     ":feature",
-    ":feature:web-x",
+    ":feature:web-support",
     "feature:linear-datastructures",
     ":feature:graph",
     ":feature:navigation",

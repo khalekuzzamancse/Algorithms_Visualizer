@@ -1,9 +1,8 @@
 
 
-
 :applications:web:wasmJsBrowserDevelopmentRun
 
-Linear search:
+# Linear search
 Show initial pseudocode
 Handle the smaller screen
 
@@ -19,8 +18,8 @@ Pesudocode text color single source
 when algorithms finished disable the next so that user can understand it
 once reset the pseudocode and other should be clear with state clear
 if already finished then show a friendly message
-
 code viewer  design with font changeable
+
 # Code Viewer
 Look Like a Viewer such as Theme, Border, Copy
 Text size should changeable
@@ -33,20 +32,6 @@ support different theme
 
 ## convention
 name with _ used to use internal such asp package _ should not be used by outer module
-
-# Bug
-Prime and Tree drawing new edge [bug]
-Why edge is not unselected or try to use a method for unselected
-Since under the hood using the graph editor in the Tre editor that means problem is in the
-Graph editor
-IN case of tree the state is not saved means the new node can not added
-------------
-Make the edge selection easier with a tools or swipe because edge are less thin and takes times to select it
-Or show the controll point with click-able so that can select a edge if a controll point is clicked 
-
-In case of edge drawing why the edge are not drawing correcly?
-show a state that edge are connected,
-Why adding new graph or node is not working???
 
 
 
@@ -121,8 +106,3 @@ TODO:
 - Create add a new node to that list,when user added it to graph
 - A node can have the function called isWithinBoundary(offset)
 
-# Implementation Guide TODO(Refactor)
-- 
-- Use DI that is why only depends on abstraction
-- Right now need not using automatic DI,that is why use manual DI container with factory method to create object
-- Since Following DI so all class are testable as well as anytime can introduce automatic DI container without changing the code

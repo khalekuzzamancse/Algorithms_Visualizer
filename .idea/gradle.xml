@@ -29,14 +29,13 @@
             <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/build-logic/convention-plugin" />
             <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/core-linear-ds-ui" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/graph" />
             <option value="$PROJECT_DIR$/feature/linear-datastructures" />
             <option value="$PROJECT_DIR$/feature/navigation" />
             <option value="$PROJECT_DIR$/feature/tree-binary" />
             <option value="$PROJECT_DIR$/feature/tree-traversal" />
-            <option value="$PROJECT_DIR$/feature/web-x" />
+            <option value="$PROJECT_DIR$/feature/web-support" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

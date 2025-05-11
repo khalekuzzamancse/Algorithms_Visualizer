@@ -5,8 +5,6 @@ package lineards._core
 import core.ui.GlobalMessenger
 import core.ui.core.SimulationScreenState
 import core.ui.core.array.controller.VisualArrayController
-
-
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
