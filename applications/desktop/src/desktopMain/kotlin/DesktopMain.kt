@@ -15,7 +15,7 @@ fun main() {
         val state= remember { WindowState(
             position = WindowPosition(0.dp, 0.dp),
         ) }
-        state.size= DpSize(width = 1366.dp, height =730.dp)
+        state.size= DpSize(width = 600.dp, height =730.dp)
         Window(
             state=state,
             title = "Algorithms Visualizer",

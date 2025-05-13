@@ -10,7 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import core.ui.CodeViewer
-import core.ui.core.ArrayInputDialog
+import core.ui.core.ArrayInputView
 import core.ui.core.SimulationScreenEvent
 import core.ui.core.SimulationScreenState
 import core.ui.core.SimulationSlot
@@ -45,7 +45,7 @@ fun QuickSortScreen(modifier: Modifier = Modifier, navigationIcon: @Composable (
         },
         visualization = {
             if (showInputDialog) {
-                ArrayInputDialog(
+                ArrayInputView(
                     onConfirm = quickSortViewModel::onInputComplete
                 )
             } else {

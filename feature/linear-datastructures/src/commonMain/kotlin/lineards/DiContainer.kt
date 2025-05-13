@@ -1,4 +1,4 @@
-package lineards.linear_search
+package lineards
 
 import lineards.linear_search.domain.model.DataModel
 import lineards.linear_search.infrastructure.InfrastructureFactory

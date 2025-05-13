@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import core.ui.CodeViewer
-import core.ui.core.ArrayInputDialog
-import core.ui.core.SearchInputDialog
+import core.ui.core.ArrayInputView
+import core.ui.core.SearchInputView
 import core.ui.core.SimulationScreenEvent
 import core.ui.core.SimulationSlot
 import core.ui.core.array.VisualArray
@@ -32,6 +32,7 @@ internal  fun Route(
     SimulationSlot(
         modifier = modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
         disableControls = showInputDialog,
+        enableNext = !showInputDialog,
         state = state,
         navigationIcon = navigationIcon,
         resultSummary = { },
@@ -46,14 +47,14 @@ internal  fun Route(
         visualization = {
             if (showInputDialog) {
                 if (viewModel is SearchRouteControllerBase) {
-                    SearchInputDialog(
+                    SearchInputView(
                     onConfirm = {array,target->
                         viewModel.onTargetInputted(target)
                         viewModel.onListInputted(array)
                     }
                 )
                 } else if (viewModel is SortRouteControllerBase) {
-                    ArrayInputDialog(onConfirm = viewModel::onListInputted)
+                    ArrayInputView(onConfirm = viewModel::onListInputted)
                 }
             } else {
                 Column {

@@ -30,4 +30,6 @@ class SimulatorImpl<T : Comparable<T>> internal constructor(
     override fun next(): SimulationState = if (iterator.hasNext()) iterator.next()
     else SimulationState.Finished(PseudocodeGenerator.rawCode)
 
+    override fun getRawPseudocode()=PseudocodeGenerator.rawCode
+
 }

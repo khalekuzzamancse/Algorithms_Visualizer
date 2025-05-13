@@ -2,13 +2,18 @@
 
 package core.ui.core
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.automirrored.outlined.ManageSearch
@@ -27,9 +32,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import core.ui.SpacerHorizontal
+import core.ui.SpacerVertical
 
 @Composable
-fun ArrayInputDialog(
+fun ArrayInputView(
     initialList: String = "10, 5, 4, 13, 8",
     onConfirm: (List<Int>) -> Unit,
 ) {
@@ -38,10 +45,10 @@ fun ArrayInputDialog(
     val isInputValid = arrayList.isNotEmpty()
     val keyboardController = LocalSoftwareKeyboardController.current
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-
     ) {
         _InputInstructions(
             listOf(
@@ -49,8 +56,7 @@ fun ArrayInputDialog(
                 "Click 'Start Visualization' to begin"
             )
         )
-
-        _ArrayInputField(arrayInput) { newValue ->
+        _ArrayInputField(arrayInput = arrayInput) { newValue ->
             arrayInput = _FilterArrayInput(newValue)
         }
         _ConfirmButton(
@@ -67,7 +73,7 @@ fun ArrayInputDialog(
 }
 
 @Composable
-fun SearchInputDialog(
+fun SearchInputView(
     onConfirm: (List<Int>, target: Int) -> Unit,
 ) {
     var arrayInput by rememberSaveable { mutableStateOf("10 20 30 40 50 60") }
@@ -75,42 +81,46 @@ fun SearchInputDialog(
     val arrayList = _ParseArrayInput(arrayInput)
     val isInputValid = arrayList.isNotEmpty() && targetInput.toIntOrNull() != null
     val keyboardController = LocalSoftwareKeyboardController.current
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
+        Column(
+            modifier = Modifier
+                .wrapContentWidth()
+                .padding(16.dp)
 
-    ) {
-        _InputInstructions(
-            listOf(
-                "Input the array elements separated by space or comma",
-                "Enter the target number you are searching for",
-                "Click 'Start Visualization' to begin"
-            )
-        )
-
-        _ArrayInputField(arrayInput) { newValue ->
-            arrayInput = _FilterArrayInput(newValue)
-        }
-
-        _TargetInputField(targetInput) { newValue ->
-            targetInput = _FilterNumericInput(newValue)
-        }
-
-        _ConfirmButton(
-            isEnabled = isInputValid,
-            onClick = {
-                keyboardController?.hide()
-                val targetValue = targetInput.toIntOrNull()
-                if (targetValue != null) {
-                    onConfirm(arrayList, targetValue)
-                }
+        ) {
+            _ArrayInputField(
+                arrayInput=arrayInput
+            ) { newValue ->
+                arrayInput = _FilterArrayInput(newValue)
             }
-        )
-        Spacer(Modifier.height(8.dp))
-        PlayInstruction()
 
+            _TargetInputField(targetInput) { newValue ->
+                targetInput = _FilterNumericInput(newValue)
+            }
+
+            _ConfirmButton(
+                isEnabled = isInputValid,
+                onClick = {
+                    keyboardController?.hide()
+                    val targetValue = targetInput.toIntOrNull()
+                    if (targetValue != null) {
+                        onConfirm(arrayList, targetValue)
+                    }
+                }
+            )
+            SpacerVertical(8)
+            _InputInstructions(
+                listOf(
+                    "Input the array elements separated by space or comma",
+                    "Enter the target number you are searching for",
+                    "Click 'Start Visualization' to begin"
+                )
+            )
+            PlayInstruction()
+
+        }
     }
+
 }
 
 
@@ -122,24 +132,26 @@ private fun _InputInstructions(instructions: List<String>) {
         fontWeight = FontWeight.SemiBold,
         color = MaterialTheme.colorScheme.primary
     )
-    Spacer(modifier = Modifier.height(8.dp))
+  SpacerVertical(4)
     _InstructionList(instructions = instructions)
-    Spacer(modifier = Modifier.height(16.dp))
+  SpacerVertical(16)
 }
 
 @Composable
 private fun _ArrayInputField(
+    modifier: Modifier=Modifier,
     arrayInput: String,
     onValueChange: (String) -> Unit
 ) {
     CustomTextField(
+        modifier = modifier.widthIn(max = 500.dp),
         label = "Array",
         value = arrayInput,
         onValueChange = onValueChange,
         keyboardType = KeyboardType.Text,
         leadingIcon = Icons.AutoMirrored.Outlined.List
     )
-    Spacer(modifier = Modifier.height(16.dp))
+    SpacerVertical(16)
 }
 
 @Composable
@@ -148,35 +160,35 @@ private fun _TargetInputField(
     onValueChange: (String) -> Unit
 ) {
     CustomTextField(
+        modifier = Modifier.widthIn(max = 200.dp),
         label = "Target",
         value = targetInput,
         onValueChange = onValueChange,
         keyboardType = KeyboardType.Number,
         leadingIcon = Icons.AutoMirrored.Outlined.ManageSearch
     )
-    Spacer(modifier = Modifier.height(24.dp))
+    SpacerVertical(24)
 }
 
 @Composable
-private fun ColumnScope._ConfirmButton(
+private fun _ConfirmButton(
+    modifier: Modifier = Modifier,
     isEnabled: Boolean,
     onClick: () -> Unit
 ) {
     Button(
         onClick = onClick,
         enabled = isEnabled,
-        modifier = Modifier.align(Alignment.CenterHorizontally)
+        modifier = modifier
     ) {
         Text(text = "Start Visualization")
     }
 }
 
 @Composable
-private fun _InstructionList(instructions: List<String>) {
+private fun _InstructionList(modifier: Modifier=Modifier,instructions: List<String>) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+        modifier = modifier
     ) {
         instructions.forEach { instruction ->
             _BulletPointText(text = instruction)
@@ -187,16 +199,17 @@ private fun _InstructionList(instructions: List<String>) {
 @Composable
 private fun _BulletPointText(text: String) {
     Row(
-        verticalAlignment = Alignment.Top,
-        modifier = Modifier.padding(vertical = 4.dp)
+        modifier = Modifier
     ) {
-        Text(
-            text = "•",
-            fontSize = 24.sp,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(end = 8.dp)
+        Box(Modifier
+            .padding(top = 4.dp)//for align center
+            .size(8.dp)
+            .background( color = MaterialTheme.colorScheme.primary, shape = CircleShape)
+            .align(Alignment.CenterVertically)
         )
+        SpacerHorizontal(4)
         Text(
+            modifier = Modifier.align(Alignment.CenterVertically),
             text = text,
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onBackground

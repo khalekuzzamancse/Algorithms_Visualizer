@@ -5,8 +5,8 @@ import core.ui.ArrayColor
 import core.ui.core.array.VisualArrayFactory
 import core.ui.core.array.controller.VisualArrayController
 import kotlinx.coroutines.flow.update
+import lineards.DiContainer
 import lineards._core.SearchRouteControllerBase
-import lineards.linear_search.DiContainer
 import lineards.linear_search.domain.model.DataModel
 import lineards.linear_search.domain.model.SimulationState
 import lineards.linear_search.domain.service.Simulator
@@ -55,6 +55,7 @@ internal class LSSearchRouteController : SearchRouteControllerBase() {
 
     override fun _createController(): VisualArrayController {
         _simulator = DiContainer.createSimulator(DataModel(array = list.value, target))
+        _code.update { _simulator.getRawPseudocode() }
         return VisualArrayFactory.createController(
             itemLabels = list.value.map { it.toString() },
             pointersLabel = pointers
