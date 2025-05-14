@@ -10,9 +10,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import lineards.DiContainer
+import lineards._core.SortRouteControllerBase
 import lineards.bubble_sort.domain.model.DataModel
 import lineards.bubble_sort.domain.model.SimulationState
-import lineards._core.SortRouteControllerBase
 
 
 internal class BubbleSortViewModel: SortRouteControllerBase() {
@@ -56,7 +57,7 @@ internal class BubbleSortViewModel: SortRouteControllerBase() {
 
 
      override fun _createController(): VisualArrayController {
-        simulator = DiContainer.createSimulator(DataModel(array = list.value))
+        simulator = DiContainer.createBubbleSortSimulator(DataModel(array = list.value))
          return VisualArrayFactory.createController(
              itemLabels = list.value.map { it.toString() },
              pointersLabel = listOf("i", "j", "j+1")

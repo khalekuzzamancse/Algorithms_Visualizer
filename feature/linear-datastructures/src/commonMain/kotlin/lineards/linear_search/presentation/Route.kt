@@ -1,16 +1,21 @@
 package lineards.linear_search.presentation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import lineards._core.Route
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import lineards._core.createNavGraph
 
 @Composable
 fun LinearSearchRoute(
     modifier: Modifier = Modifier,
     navigationIcon: @Composable () -> Unit,
 ) {
-    val viewModel = remember { LSSearchRouteController() }
-    Route(modifier = modifier, viewModel = viewModel, navigationIcon = navigationIcon)
+    val navController= rememberNavController()
+    NavHost(
+        modifier = modifier,
+        navController =navController,
+        graph =navController.createNavGraph(navigationIcon)
+    )
 
 }

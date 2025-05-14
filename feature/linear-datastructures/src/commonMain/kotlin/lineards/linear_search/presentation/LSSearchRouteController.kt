@@ -1,6 +1,7 @@
 package lineards.linear_search.presentation
 
 
+import core.lang.Logger
 import core.ui.ArrayColor
 import core.ui.core.array.VisualArrayFactory
 import core.ui.core.array.controller.VisualArrayController
@@ -54,7 +55,8 @@ internal class LSSearchRouteController : SearchRouteControllerBase() {
     }
 
     override fun _createController(): VisualArrayController {
-        _simulator = DiContainer.createSimulator(DataModel(array = list.value, target))
+        Logger.on(this.javaClass.simpleName,"_createController")
+        _simulator = DiContainer.createLinearSearchSimulator(DataModel(array = list.value, target))
         _code.update { _simulator.getRawPseudocode() }
         return VisualArrayFactory.createController(
             itemLabels = list.value.map { it.toString() },
@@ -64,7 +66,7 @@ internal class LSSearchRouteController : SearchRouteControllerBase() {
 
     override fun onReset() {
         super.onReset()
-        _simulator = DiContainer.createSimulator(DataModel(array = list.value, target))
+        _simulator = DiContainer.createLinearSearchSimulator(DataModel(array = list.value, target))
     }
 
     override fun _onFinished() {

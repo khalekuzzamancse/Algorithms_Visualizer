@@ -9,8 +9,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import lineards.DiContainer
 import lineards._core.SortRouteControllerBase
-import lineards.selection_sort.DiContainer
 import lineards.selection_sort.domain.model.DataModel
 import lineards.selection_sort.domain.model.SimulationState
 import lineards.selection_sort.domain.service.Simulator
@@ -73,7 +73,7 @@ internal class SimulationViewModel : SortRouteControllerBase() {
     }
 
     override fun _createController(): VisualArrayController {
-        simulator = DiContainer.createSimulator(DataModel(array = list.value))
+        simulator = DiContainer.createSelectionSortSimulator(DataModel(array = list.value))
         return VisualArrayFactory.createController(
             itemLabels = list.value.map { it.toString() },
             pointersLabel = pointers

@@ -6,9 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -18,8 +16,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.automirrored.outlined.ManageSearch
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,91 +39,104 @@ import core.ui.SpacerVertical
 @Composable
 fun ArrayInputView(
     initialList: String = "10, 5, 4, 13, 8",
+    navigationIcon:@Composable ()->Unit={},
     onConfirm: (List<Int>) -> Unit,
 ) {
     var arrayInput by rememberSaveable { mutableStateOf(initialList) }
     val arrayList = _ParseArrayInput(arrayInput)
     val isInputValid = arrayList.isNotEmpty()
     val keyboardController = LocalSoftwareKeyboardController.current
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        _InputInstructions(
-            listOf(
-                "Input the array elements separated by space or comma",
-                "Click 'Start Visualization' to begin"
-            )
-        )
-        _ArrayInputField(arrayInput = arrayInput) { newValue ->
-            arrayInput = _FilterArrayInput(newValue)
-        }
-        _ConfirmButton(
-            isEnabled = isInputValid,
-            onClick = {
-                keyboardController?.hide()
-                onConfirm(arrayList)
+    _LayoutStrategy(
+        enableStart = isInputValid,
+        onStartClick = {
+            keyboardController?.hide()
+            onConfirm(arrayList)
+        },
+        navigationIcon =navigationIcon ,
+        input = {
+            _ArrayInputField(arrayInput = arrayInput) { newValue ->
+                arrayInput = _FilterArrayInput(newValue)
             }
-        )
-        Spacer(Modifier.height(8.dp))
-        PlayInstruction()
-
-    }
+        }
+    )
 }
 
 @Composable
 fun SearchInputView(
-    onConfirm: (List<Int>, target: Int) -> Unit,
+    onStartRequest: (List<Int>, target: Int) -> Unit,
+    navigationIcon:@Composable ()->Unit={}
 ) {
     var arrayInput by rememberSaveable { mutableStateOf("10 20 30 40 50 60") }
     var targetInput by rememberSaveable { mutableStateOf("") }
     val arrayList = _ParseArrayInput(arrayInput)
     val isInputValid = arrayList.isNotEmpty() && targetInput.toIntOrNull() != null
     val keyboardController = LocalSoftwareKeyboardController.current
-    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
-        Column(
-            modifier = Modifier
-                .wrapContentWidth()
-                .padding(16.dp)
-
-        ) {
+    _LayoutStrategy(
+        navigationIcon = navigationIcon,
+        enableStart = isInputValid,
+        onStartClick = {
+            keyboardController?.hide()
+            val targetValue = targetInput.toIntOrNull()
+            if (targetValue != null) {
+                onStartRequest(arrayList, targetValue)
+            }
+        },
+        input = {
             _ArrayInputField(
                 arrayInput=arrayInput
             ) { newValue ->
                 arrayInput = _FilterArrayInput(newValue)
             }
-
             _TargetInputField(targetInput) { newValue ->
                 targetInput = _FilterNumericInput(newValue)
             }
+        }
+    )
 
-            _ConfirmButton(
-                isEnabled = isInputValid,
-                onClick = {
-                    keyboardController?.hide()
-                    val targetValue = targetInput.toIntOrNull()
-                    if (targetValue != null) {
-                        onConfirm(arrayList, targetValue)
-                    }
-                }
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private  fun _LayoutStrategy(
+    enableStart:Boolean,
+    onStartClick: () -> Unit,
+    navigationIcon:@Composable ()->Unit,
+    input:@Composable (Modifier)->Unit
+) {
+    Scaffold (
+        topBar = {
+            TopAppBar(
+                title = {},
+                navigationIcon = navigationIcon
             )
-            SpacerVertical(8)
-            _InputInstructions(
-                listOf(
-                    "Input the array elements separated by space or comma",
-                    "Enter the target number you are searching for",
-                    "Click 'Start Visualization' to begin"
+        }
+    ){
+        Box(modifier = Modifier.padding(it).fillMaxWidth(), contentAlignment = Alignment.Center){
+            Column(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .padding(16.dp)
+            ) {
+                input(Modifier)
+                _ConfirmButton(
+                    isEnabled = enableStart,
+                    onClick =onStartClick
                 )
-            )
-            PlayInstruction()
+                SpacerVertical(8)
+                _InputInstructions(
+                    listOf(
+                        "Input the array elements separated by space or comma",
+                        "Enter the target number you are searching for",
+                        "Click 'Start Visualization' to begin"
+                    )
+                )
+                PlayInstruction()
 
+            }
         }
     }
 
-}
 
+}
 
 @Composable
 private fun _InputInstructions(instructions: List<String>) {

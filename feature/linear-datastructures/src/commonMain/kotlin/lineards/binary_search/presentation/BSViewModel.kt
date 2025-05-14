@@ -4,11 +4,11 @@ import core.ui.ArrayColor
 import core.ui.core.array.VisualArrayFactory
 import core.ui.core.array.controller.VisualArrayController
 import kotlinx.coroutines.flow.update
-import lineards.binary_search.DiContainer
+import lineards.DiContainer
+import lineards._core.SearchRouteControllerBase
 import lineards.binary_search.domain.model.DataModel
 import lineards.binary_search.domain.model.SimulationState
 import lineards.binary_search.domain.service.Simulator
-import lineards._core.SearchRouteControllerBase
 
 internal class BSViewModel: SearchRouteControllerBase() {
     private lateinit var simulator: Simulator<Int>
@@ -74,7 +74,7 @@ internal class BSViewModel: SearchRouteControllerBase() {
 
 
      override fun _createController(): VisualArrayController {
-        simulator = DiContainer.createSimulator(DataModel(array = list.value, target))
+        simulator = DiContainer.createBinarySearchSimulator(DataModel(array = list.value, target))
          return  VisualArrayFactory.createController(
              itemLabels = list.value.map { it.toString() },
              pointersLabel = pointers

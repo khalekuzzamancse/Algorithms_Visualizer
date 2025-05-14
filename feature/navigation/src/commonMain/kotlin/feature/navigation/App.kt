@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import core.ui.GlobalMessenger
-import lineards.linear_search.presentation.LinearSearchRoute
 
 
 @Composable
@@ -29,20 +28,21 @@ fun MyApplication() {
                 SnackbarHost(hostState = hostState)
             },
         ) {
+            MainNavHost()
            // TreeSimulationScreen{}
            // DijkstraSimulationScreen{}
            // PrimsSimulationScreen{}
           // BFSSimulation{}
            // TopologicalSort{}
            // DFSSimulation{}
-           // MainNavHost()
+
           //BubbleSortRoute{}
        //     BinarySearchRoute{}
-            LinearSearchRoute(
-                navigationIcon = {
-
-                }
-       )
+//            LinearSearchRoute(
+//                navigationIcon = {
+//
+//                }
+//       )
         }
 
 

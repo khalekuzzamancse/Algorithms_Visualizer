@@ -1,5 +1,6 @@
 package core.lang
 @Suppress("functionName","unused")
+ fun Any.tag()=this::class.simpleName
 object Logger {
     fun on(tag: String, msg: String) {
         _log(tag,msg)

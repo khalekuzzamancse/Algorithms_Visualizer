@@ -2,6 +2,7 @@
 
 package lineards._core
 
+import core.lang.Logger
 import core.ui.GlobalMessenger
 import core.ui.core.SimulationScreenState
 import core.ui.core.array.controller.VisualArrayController
@@ -33,7 +34,7 @@ internal interface SearchRouteController : RouteController {
 
 internal interface SortRouteController : RouteController
 internal abstract class BaseRouteController : RouteController {
-    protected val _inputMode = MutableStateFlow(true)
+    private val _inputMode = MutableStateFlow(true)
     override val inputMode = _inputMode.asStateFlow()
 
     private val _array = MutableStateFlow(listOf(10, 5, 4, 13, 8))
@@ -77,9 +78,15 @@ internal abstract class BaseRouteController : RouteController {
 internal abstract class SearchRouteControllerBase : BaseRouteController(), SearchRouteController {
 //    private val tag = this.javaClass.simpleName
     protected var target: Int = 0
+    fun onInput(array:List<Int>,target: Int){
+        super.onListInputted(array)
+        onTargetInputted(target)
+    }
 
     override fun onTargetInputted(target: Int) {
         this.target = target
+        arrayController.update { _createController() }
+        Logger.on(this.javaClass.simpleName,"onTargetInputted:${this.target}")
     }
 }
 
