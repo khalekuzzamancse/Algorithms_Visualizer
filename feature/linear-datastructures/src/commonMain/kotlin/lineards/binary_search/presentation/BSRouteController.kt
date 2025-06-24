@@ -10,7 +10,7 @@ import lineards.binary_search.domain.model.DataModel
 import lineards.binary_search.domain.model.SimulationState
 import lineards.binary_search.domain.service.Simulator
 
-internal class BSViewModel: SearchRouteControllerBase() {
+internal class BSRouteController: SearchRouteControllerBase() {
     private lateinit var simulator: Simulator<Int>
 
     companion object {
@@ -20,7 +20,6 @@ internal class BSViewModel: SearchRouteControllerBase() {
     }
 
     private val pointers = listOf(POINTER_LOW, POINTER_HIGH, POINTER_MID)
-
 
 
     override fun onNext() {
@@ -72,8 +71,7 @@ internal class BSViewModel: SearchRouteControllerBase() {
         arrayController.value?.removePointers(pointers)
     }
 
-
-     override fun _createController(): VisualArrayController {
+     override fun arrayControllerFactory(): VisualArrayController {
         simulator = DiContainer.createBinarySearchSimulator(DataModel(array = list.value, target))
          return  VisualArrayFactory.createController(
              itemLabels = list.value.map { it.toString() },

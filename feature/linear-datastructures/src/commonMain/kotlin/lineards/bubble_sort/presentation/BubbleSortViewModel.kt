@@ -56,7 +56,7 @@ internal class BubbleSortViewModel: SortRouteControllerBase() {
 
 
 
-     override fun _createController(): VisualArrayController {
+     override fun arrayControllerFactory(): VisualArrayController {
         simulator = DiContainer.createBubbleSortSimulator(DataModel(array = list.value))
          return VisualArrayFactory.createController(
              itemLabels = list.value.map { it.toString() },

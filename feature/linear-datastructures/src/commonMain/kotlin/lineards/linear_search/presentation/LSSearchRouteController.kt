@@ -21,7 +21,6 @@ internal class LSSearchRouteController : SearchRouteControllerBase() {
 
     private val pointers = listOf(POINTER_I)
 
-
     override fun onNext() {
         arrayController.value?.let { arrayController ->
             if (_simulator.isFinished()) {
@@ -54,7 +53,7 @@ internal class LSSearchRouteController : SearchRouteControllerBase() {
 
     }
 
-    override fun _createController(): VisualArrayController {
+    override fun arrayControllerFactory(): VisualArrayController {
         Logger.on(this.javaClass.simpleName,"_createController")
         _simulator = DiContainer.createLinearSearchSimulator(DataModel(array = list.value, target))
         _code.update { _simulator.getRawPseudocode() }

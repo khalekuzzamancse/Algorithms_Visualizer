@@ -4,7 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import lineards._core.createNavGraph
+import lineards.DiContainer
+import lineards._core.createSearchNavGraph
 
 @Composable
 fun LinearSearchRoute(
@@ -15,7 +16,10 @@ fun LinearSearchRoute(
     NavHost(
         modifier = modifier,
         navController =navController,
-        graph =navController.createNavGraph(navigationIcon)
+        graph =navController.createSearchNavGraph(
+            controller= DiContainer.lsSearchController(),
+            navigationIcon = navigationIcon,
+        )
     )
 
 }

@@ -1,6 +1,12 @@
-
-
 :applications:web:wasmJsBrowserDevelopmentRun
+# Progress
+- Sort screen navigation make same as the Linear  and Binary search
+
+# TODO - Priority 1
+# TODO Priority less
+- on screen size changed the navigation not preserved such as in window on screen size 
+  automatically back to the instruction screen in Linear search.
+
 
 # Linear search
 Show initial pseudocode

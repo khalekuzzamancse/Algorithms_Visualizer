@@ -53,12 +53,12 @@ internal abstract class BaseRouteController : RouteController {
     override fun onListInputted(inputData: List<Int>) {
         _inputMode.update { false }
         _array.update { inputData }
-        arrayController.update { _createController() }
+        arrayController.update { arrayControllerFactory() }
     }
 
     override fun onReset() {
         autoPlayer.dismiss()
-        arrayController.update { _createController() }
+        arrayController.update { arrayControllerFactory() }
         _code.update { PseudocodeGenerator.rawCode }
     }
 
@@ -67,7 +67,7 @@ internal abstract class BaseRouteController : RouteController {
         GlobalMessenger.updateAsEndedMessage()
     }
 
-    protected abstract fun _createController(): VisualArrayController
+    protected abstract fun arrayControllerFactory(): VisualArrayController
 
     init {
         autoPlayer.onNextCallback = ::onNext
@@ -80,12 +80,13 @@ internal abstract class SearchRouteControllerBase : BaseRouteController(), Searc
     protected var target: Int = 0
     fun onInput(array:List<Int>,target: Int){
         super.onListInputted(array)
+        Logger.on(this.javaClass.simpleName.toString(),"onInputListDone");
         onTargetInputted(target)
     }
 
     override fun onTargetInputted(target: Int) {
         this.target = target
-        arrayController.update { _createController() }
+        arrayController.update { arrayControllerFactory() }
         Logger.on(this.javaClass.simpleName,"onTargetInputted:${this.target}")
     }
 }

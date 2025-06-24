@@ -72,7 +72,7 @@ internal class SimulationViewModel : SortRouteControllerBase() {
 
     }
 
-    override fun _createController(): VisualArrayController {
+    override fun arrayControllerFactory(): VisualArrayController {
         simulator = DiContainer.createSelectionSortSimulator(DataModel(array = list.value))
         return VisualArrayFactory.createController(
             itemLabels = list.value.map { it.toString() },

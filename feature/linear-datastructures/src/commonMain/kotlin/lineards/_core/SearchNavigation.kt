@@ -1,3 +1,5 @@
+@file:Suppress("className")
+
 package lineards._core
 
 import androidx.compose.material.icons.Icons
@@ -18,18 +20,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.createGraph
 import core.ui.core.SearchInputView
-import lineards.DiContainer
 import kotlin.reflect.KClass
 
-object Navigation {
-    const val INPUT_ROUTE = "LinearSearchScreenInput"
-    const val LINEAR_SEARCH_ROUTE = "LinearSearchScreen"
-
+private object _RouteNames {
+    const val INPUT_ROUTE = "InputScreen"
+    const val VISUALIZATION_ROUTE = "VisualizationScreen"
 }
 
-internal class MyViewModel : ViewModel(){
-    val controller=DiContainer.lsSearchController()
-}
+private   class _SearchViewModel(val controller: SearchRouteControllerBase) : ViewModel()
+
 /**
  * This navigation graph scopes the MyViewModel to the "main_flow" navigation graph
  * using a shared ViewModelStoreOwner. This ensures that MyViewModel is created only once
@@ -42,31 +41,32 @@ internal class MyViewModel : ViewModel(){
  * This prevents a new ViewModel from being created for each composable.
  */
 
-fun NavHostController.createNavGraph(
-    navigationIcon:@Composable ()->Unit={}
+internal fun NavHostController.createSearchNavGraph(
+    controller: SearchRouteControllerBase,
+    navigationIcon: @Composable () -> Unit = {}
 ): NavGraph {
     return createGraph(startDestination = "main_flow") {
-        val navController=this@createNavGraph
+        val navController = this@createSearchNavGraph
         navigation(
-            startDestination = Navigation.INPUT_ROUTE,
+            startDestination = _RouteNames.INPUT_ROUTE,
             route = "main_flow"
         ) {
-            composable(Navigation.INPUT_ROUTE) { entry ->
-                val viewModel = entry.sharedViewModel<MyViewModel>(navController, "main_flow") {
-                    MyViewModelFactory()
+            composable(_RouteNames.INPUT_ROUTE) { entry ->
+                val viewModel = entry._sharedViewModel<_SearchViewModel>(navController, "main_flow") {
+                    _MyViewModelFactory(controller)
                 }
                 SearchInputView(
                     navigationIcon = navigationIcon,
                     onStartRequest = { array, target ->
-                        viewModel.controller.onInput(array,target)
-                        navController.navigate(Navigation.LINEAR_SEARCH_ROUTE)
+                        viewModel.controller.onInput(array, target)
+                        navController.navigate(_RouteNames.VISUALIZATION_ROUTE)
                     }
                 )
             }
 
-            composable(Navigation.LINEAR_SEARCH_ROUTE) { entry ->
-                val viewModel = entry.sharedViewModel<MyViewModel>(navController, "main_flow") {
-                    MyViewModelFactory()
+            composable(_RouteNames.VISUALIZATION_ROUTE) { entry ->
+                val viewModel = entry._sharedViewModel<_SearchViewModel>(navController, "main_flow") {
+                    _MyViewModelFactory(controller)
                 }
                 Route(
                     modifier = Modifier,
@@ -76,8 +76,11 @@ fun NavHostController.createNavGraph(
                             onClick = {
                                 navController.popBackStack()
                             }
-                        ){
-                            Icon(imageVector = Icons.Default.ArrowBackIosNew, contentDescription = "back")
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBackIosNew,
+                                contentDescription = "back"
+                            )
                         }
                     }
                 )
@@ -87,16 +90,17 @@ fun NavHostController.createNavGraph(
 }
 
 
-
-internal class MyViewModelFactory : ViewModelProvider.Factory {
+private class _MyViewModelFactory(
+    val controller: SearchRouteControllerBase
+) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
-            return MyViewModel() as T
+        return _SearchViewModel(controller) as T
     }
 }
 
 @Composable
-inline fun <reified VM : ViewModel> NavBackStackEntry.sharedViewModel(
+private  inline fun <reified VM : ViewModel> NavBackStackEntry._sharedViewModel(
     navController: NavHostController,
     parentRoute: String,
     crossinline factory: () -> ViewModelProvider.Factory

@@ -1,5 +1,4 @@
 package lineards._core
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -13,7 +12,6 @@ import core.ui.core.SimulationSlot
 import core.ui.core.array.VisualArray
 
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal  fun Route(
     modifier: Modifier = Modifier,

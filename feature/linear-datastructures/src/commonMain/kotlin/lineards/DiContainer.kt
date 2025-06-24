@@ -1,5 +1,6 @@
 package lineards
 
+import lineards.binary_search.presentation.BSRouteController
 import lineards.linear_search.domain.model.DataModel
 import lineards.linear_search.infrastructure.InfrastructureFactory
 import lineards.linear_search.presentation.LSSearchRouteController
@@ -7,6 +8,9 @@ import lineards.linear_search.presentation.LSSearchRouteController
 internal object DiContainer {
     fun  lsSearchController(): LSSearchRouteController{
         return  LSSearchRouteController()
+    }
+    fun  bsSearchController(): BSRouteController{
+        return  BSRouteController()
     }
     fun <T : Comparable<T>> createLinearSearchSimulator(model: DataModel<T>) =
         InfrastructureFactory.createSimulator(model)
