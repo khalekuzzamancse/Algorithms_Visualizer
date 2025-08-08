@@ -21,7 +21,7 @@ fun TreeEditor(
         navigationIcon = navigationIcon,
         graphType = GraphType.Undirected,//Tree's are undirected Graph
         initialGraph = SavedGraphProvider.getTree(),
-        onDone = {result ->
+        onDone = {result,type ->
             val root= buildTree(result)
             onDone(
                 TreeResult(

@@ -11,6 +11,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import core.lang.ComposeView
+import core.lang.VoidCallback
 import core.ui.CodeViewer
 import core.ui.TreeEditor
 import core.ui.core.SimulationScreenEvent
@@ -18,10 +20,50 @@ import core.ui.core.SimulationScreenState
 import core.ui.core.SimulationSlot
 import core.ui.graph.viewer.GraphViewer
 import core.ui.graph.viewer.controller.GraphViewerController
-
+import lineards._core.FeatureNavHost
 
 @Composable
-fun TreeSimulationScreen(navigationIcon: @Composable () -> Unit) {
+fun TreeSimulationScreen(navigationIcon:ComposeView) {
+    val viewModel = remember { SimulationViewModel() }
+    val showTypeInputDialog=viewModel.traversalType.collectAsState().value==null
+    var navigateToVisualization:VoidCallback?= remember { null }
+    var showGraphType by remember { mutableStateOf(false) }
+    FeatureNavHost(
+        navigate = { navigateToVisualization=it},
+        onBacked = {
+            viewModel.resetInputMode()
+        },
+        inputScreen = {
+            if (viewModel.isInputMode.collectAsState().value) {
+                TreeEditor(
+                    navigationIcon = navigationIcon,
+                ) { result ->
+                    viewModel.onGraphCreated(result)
+                    showGraphType=true
+
+                }
+            }
+            if(showGraphType){
+                TypeInputDialog {type->
+                    viewModel.selectTraversalType(type)
+                    showGraphType=false
+                    navigateToVisualization?.invoke()
+                }
+            }
+
+        },
+        visualizationScreen = {
+            _GraphViewer(
+                viewModel = viewModel,
+                graphController = viewModel.graphController,
+                navigationIcon = it
+            )
+        }
+    )
+}
+
+@Composable
+fun TreeSimulationScreen2(navigationIcon: @Composable () -> Unit) {
     val viewModel = remember { SimulationViewModel() }
     val showTypeInputDialog=viewModel.traversalType.collectAsState().value==null
 

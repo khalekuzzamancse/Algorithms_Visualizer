@@ -15,7 +15,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import core.ui.graph.common.drawEdge
 import core.ui.graph.common.drawNode
-import core.ui.graph.common.model.EditorEdgeMode
+import core.ui.graph.common.model.EditorEdgeModel
 import core.ui.graph.common.model.EditorNodeModel
 import core.ui.graph.editor.ui.component.getMaxXY
 import core.ui.graph.viewer.controller.GraphViewerController
@@ -43,7 +43,7 @@ fun GraphViewer(
 @Composable
 private fun _GraphDrawer(
     nodes: Set<EditorNodeModel>,
-    edges: Set<EditorEdgeMode>
+    edges: Set<EditorEdgeModel>
 ) {
     val canvasUtils = remember(nodes, edges) {
         getMaxXY(nodes = nodes.map { it.topLeft },

@@ -6,6 +6,8 @@ kotlin {
         val commonMain by getting{
             dependencies {
                 implementation(projects.core)
+                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(libs.androidx.lifecycle.viewmodel.compose)
             }
         }
         val commonTest by getting {

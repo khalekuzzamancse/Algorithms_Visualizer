@@ -26,6 +26,9 @@ class SimulationViewModel {
     val isInputMode = _isInputMode.asStateFlow()
     private val _code = MutableStateFlow<String?>(null)
     val code = _code.asStateFlow()
+    fun resetInputMode(){
+        _isInputMode.update { true }
+    }
 
     fun onGraphCreated(result: TreeResult) {
         this.result=result

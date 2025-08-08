@@ -10,7 +10,7 @@ import graph.prims.domain.model.PrimsSimulationState
 import graph.prims.domain.service.PrimsSimulator
 import kotlinx.coroutines.flow.update
 
-internal class PrimsSimulationViewModel : BaseRouteController() {
+internal class PrimsSimulationController : BaseRouteController() {
     private lateinit var simulator: PrimsSimulator
 
     override fun onGraphCreated(result: GraphResult) {

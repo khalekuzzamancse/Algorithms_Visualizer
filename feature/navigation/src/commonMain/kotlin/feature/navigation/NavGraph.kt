@@ -23,7 +23,7 @@ import lineards.linear_search.presentation.LinearSearchRoute
 import lineards.quick_sort.presentation.QuickSortScreen
 import lineards.selection_sort.presenation.SelectionSortRoute
 import tree.binary.BSTView
-import tree.binary.expression_tree.ExpressionTree
+import tree.binary.expression_tree.ExpressionTreeScreen
 import tree_traversal.presentation.TreeSimulationScreen
 
 
@@ -179,7 +179,7 @@ fun NavController.createNavGraph(
             )
         }
         composable(NavDestination.ExpressionSearchTree.route) {
-            ExpressionTree(
+            ExpressionTreeScreen(
                 onNavBack = {
                     popBackStack()
                 }

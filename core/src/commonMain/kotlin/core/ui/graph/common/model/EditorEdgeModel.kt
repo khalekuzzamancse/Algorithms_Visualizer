@@ -14,7 +14,7 @@ import kotlin.math.atan2
  * - Only id,start,end,control,directed need for drawing means for viewer
  * @property pathColor default is sunsetOrange
  */
-data class EditorEdgeMode internal constructor(
+data class EditorEdgeModel internal constructor(
     val id: String,
     val start: Offset,
     val end: Offset,

@@ -2,7 +2,7 @@ package core.ui.graph.viewer.controller
 
 import androidx.compose.ui.graphics.Color
 import core.ui.graph.common.Constants
-import core.ui.graph.common.model.EditorEdgeMode
+import core.ui.graph.common.model.EditorEdgeModel
 import core.ui.graph.common.model.EditorNodeModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
  */
 class GraphViewerControllerImpl internal constructor(
     nodes: Set<EditorNodeModel>,
-    edges: Set<EditorEdgeMode>
+    edges: Set<EditorEdgeModel>
 ) : GraphViewerController() {
 
 
@@ -33,7 +33,7 @@ class GraphViewerControllerImpl internal constructor(
     private val edgeColor = Constants.edgeColor
     override val canvasSize = canvasUtils.canvasSize
     override val nodes: StateFlow<Set<EditorNodeModel>> = _nodes.asStateFlow()
-    override val edges: StateFlow<Set<EditorEdgeMode>> = _edges.asStateFlow()
+    override val edges: StateFlow<Set<EditorEdgeModel>> = _edges.asStateFlow()
     private val baseColors = mutableMapOf<String, Color>()
     private var blinkingJob: Job? = null
     private var blinkingNodeId: String? = null

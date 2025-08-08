@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.dp
 import core.lang.Logger
 import core.ui.graph.GraphFactory
 import core.ui.graph.common.model.Edge
-import core.ui.graph.common.model.EditorEdgeMode
+import core.ui.graph.common.model.EditorEdgeModel
 import core.ui.graph.common.model.EditorNodeModel
 import core.ui.graph.common.model.GraphResult
 import core.ui.graph.common.model.Node
@@ -33,7 +33,7 @@ after tap if mode==AddNode is on then change the mode.
 internal data class GraphEditorControllerImpl(
     override val inputController: InputControllerImpl,
     private val density: Float,
-    private val initialGraph:Pair<List<EditorNodeModel>, List<EditorEdgeMode>> =Pair(emptyList(), emptyList()),
+    private val initialGraph:Pair<List<EditorNodeModel>, List<EditorEdgeModel>> =Pair(emptyList(), emptyList()),
 ) : GraphEditorController {
     private val nodeManger = GraphEditorNodeController(density)
     private val edgeManger = GraphEditorEdgeController()
@@ -66,7 +66,7 @@ internal data class GraphEditorControllerImpl(
         ///TODO make sure the id are unique
         val id=(edgeManger.edges.value.size+1).toString()
         edgeManger.addEdge(
-            EditorEdgeMode(
+            EditorEdgeModel(
                 id = id,
                 start = Offset.Zero,
                 end = Offset.Zero,
@@ -82,7 +82,7 @@ internal data class GraphEditorControllerImpl(
     override var selectedEdge = edgeManger.selectedEdge
 
 
-    override val edges: StateFlow<List<EditorEdgeMode>>
+    override val edges: StateFlow<List<EditorEdgeModel>>
         get() = edgeManger.edges
     override val nodes: StateFlow<Set<EditorNodeModel>>
         get() = nodeManger.nodes
@@ -114,7 +114,8 @@ internal data class GraphEditorControllerImpl(
                     edges.value.map { it.copy(directed = inputController.isDirected()) }.toSet()
                 ),
             nodes = makeNodes(),
-            edges = makeEdges()
+            edges = makeEdges(),
+            visualGraph = Pair(nodes.value.toList(),edges.value.toList())
         )
     }
 
@@ -219,8 +220,8 @@ internal data class GraphEditorControllerImpl(
     }
 
 
-    private fun List<EditorEdgeMode>.removeDirection()=this.map { it.copy(directed =false)}
-    private fun List<EditorEdgeMode>.removeWeight()=this.map { it.copy(cost =null)}
+    private fun List<EditorEdgeModel>.removeDirection()=this.map { it.copy(directed =false)}
+    private fun List<EditorEdgeModel>.removeWeight()=this.map { it.copy(cost =null)}
     @Suppress("Unused")
     private fun log(message: String, methodName: String? = null) {
         val tag = "${this@GraphEditorControllerImpl::class.simpleName}Log:"

@@ -3,11 +3,17 @@
 package graph.dfs.presentation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import graph._core.presentation.Route
+import graph.bfs.presentation.BFSRouteController
 
 
 @Composable
 fun DFSSimulation(navigationIcon: @Composable () -> Unit){
-val viewModel= remember { DFSRouteController() }
-    Route(viewModel=viewModel, navigationIcon = navigationIcon)
+val viewModel= viewModel { MyViewModel() }
+    Route(viewModel=viewModel.controller, navigationIcon = navigationIcon)
+}
+private class MyViewModel: ViewModel(){
+    val controller= DFSRouteController()
 }

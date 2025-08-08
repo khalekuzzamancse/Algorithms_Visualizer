@@ -2,7 +2,7 @@
 
 package core.ui.graph
 
-import core.ui.graph.common.model.EditorEdgeMode
+import core.ui.graph.common.model.EditorEdgeModel
 import core.ui.graph.common.model.EditorNodeModel
 import core.ui.graph.editor.controller.GraphEditorController
 import core.ui.graph.editor.factory.GraphEditorControllerImpl
@@ -17,12 +17,12 @@ object GraphFactory {
 
     internal fun createGraphViewerController(
         nodes: Set<EditorNodeModel>,
-        edges: Set<EditorEdgeMode>
+        edges: Set<EditorEdgeModel>
     ): GraphViewerController = GraphViewerControllerImpl(nodes, edges)
 
     internal fun createGraphEditorController(
         density: Float,
-        initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeMode>> = Pair(
+        initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeModel>> = Pair(
             emptyList(),
             emptyList()
         ),

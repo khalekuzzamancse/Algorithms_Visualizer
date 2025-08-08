@@ -9,13 +9,13 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.unit.Dp
-import core.ui.graph.common.model.EditorEdgeMode
+import core.ui.graph.common.model.EditorEdgeModel
 import core.ui.graph.editor.model.EdgePoint
 
 
 internal fun DrawScope.drawEdge(
     hideControllerPoints: Boolean,
-    edge: EditorEdgeMode,
+    edge: EditorEdgeModel,
     textMeasurer: TextMeasurer? = null,
     width:Float,
 ) {
@@ -72,7 +72,7 @@ private fun DrawScope.drawEdgeCost(
                 textMeasurer = textMeasurer,
                 style = TextStyle(
                     //This color work well in both dark and light theme,since edge cost make sense to use same color as edge
-                    color = EditorEdgeMode.pathDefaultColor
+                    color = EditorEdgeModel.pathDefaultColor
                 )
 
             )

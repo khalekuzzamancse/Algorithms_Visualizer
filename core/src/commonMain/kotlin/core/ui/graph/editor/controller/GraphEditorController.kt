@@ -1,7 +1,7 @@
 package core.ui.graph.editor.controller
 
 import androidx.compose.ui.geometry.Offset
-import core.ui.graph.common.model.EditorEdgeMode
+import core.ui.graph.common.model.EditorEdgeModel
 import core.ui.graph.common.model.EditorNodeModel
 import core.ui.graph.common.model.GraphResult
 import core.ui.graph.editor.model.GraphType
@@ -45,10 +45,10 @@ internal interface GraphEditorController {
     }
 
     //
-    val edges: StateFlow<List<EditorEdgeMode>>
+    val edges: StateFlow<List<EditorEdgeModel>>
     val nodes: StateFlow<Set<EditorNodeModel>>
     val selectedNode: StateFlow<EditorNodeModel?>
-    var selectedEdge: StateFlow<EditorEdgeMode?>
+    var selectedEdge: StateFlow<EditorEdgeModel?>
     fun onRemovalRequest()
     fun onGraphInputCompleted(): GraphResult
     fun onTap(tappedPosition: Offset)

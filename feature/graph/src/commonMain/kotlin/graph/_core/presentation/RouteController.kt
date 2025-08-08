@@ -5,8 +5,11 @@ package graph._core.presentation
 import core.ui.GlobalColors
 import core.ui.GlobalMessenger
 import core.ui.core.SimulationScreenState
+import core.ui.graph.common.model.EditorEdgeModel
+import core.ui.graph.common.model.EditorNodeModel
 import core.ui.graph.common.model.GraphResult
 import core.ui.graph.common.model.Node
+import core.ui.graph.editor.model.GraphType
 import core.ui.graph.viewer.controller.GraphViewerController
 import graph._core.domain.ColorModel
 import graph._core.domain.DomainNodeModel
@@ -19,10 +22,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 
+
 internal typealias UiNodeModel = graph._core.presentation.NodeModel
 
 interface RouteController {
     val inputMode: StateFlow<Boolean>
+    val graphEditMode:StateFlow<Boolean>
+    fun lastEditedGraphOrNull():Pair<Pair<List<EditorNodeModel>,List<EditorEdgeModel>>,GraphType>?
+    fun  updateLastEditedGraphType(type: GraphType?)
     val code: StateFlow<String?>
     val state: StateFlow<SimulationScreenState>
     var graphController: GraphViewerController
@@ -31,10 +38,12 @@ interface RouteController {
     fun onGraphCreated(result: GraphResult)
     fun onNext()
     fun onReset()
+    fun enterInputMode()
 }
 
 internal abstract class BaseRouteController : RouteController {
     protected val _inputMode = MutableStateFlow(true)
+    override val graphEditMode= MutableStateFlow(false)
     override val inputMode = _inputMode.asStateFlow()
     private val _array = MutableStateFlow(listOf(10, 5, 4, 13, 8))
     protected val list = _array.asStateFlow()
@@ -46,7 +55,22 @@ internal abstract class BaseRouteController : RouteController {
     override val autoPlayer = AutoPlayerImpl(::onNext)
     lateinit var result: GraphResult
     override val neighborSelector = NeighborSelectorImpl()
+    private var _lastEditedGraph:Pair<List<EditorNodeModel>, List<EditorEdgeModel>> ? =null
+    private var _graphType:GraphType?=null
 
+    override fun lastEditedGraphOrNull(): Pair<Pair<List<EditorNodeModel>, List<EditorEdgeModel>>, GraphType> ?{
+        return try {
+            Pair(_lastEditedGraph!!,_graphType!!)
+        } catch (_:NullPointerException){
+            null
+        }
+
+
+    }
+
+    override fun updateLastEditedGraphType(type: GraphType?) {
+        _graphType=type
+    }
     override fun onReset() {
         graphController.reset()
         graphController = result.controller
@@ -61,8 +85,14 @@ internal abstract class BaseRouteController : RouteController {
 
     override fun onGraphCreated(result: GraphResult) {
         this.result = result
+        _lastEditedGraph=result.visualGraph
+        result.nodes
         graphController = result.controller
         _inputMode.update { false }
+    }
+
+    override fun enterInputMode() {
+        graphEditMode.update { true }
     }
 
     protected fun _createGraph(): GraphModel {

@@ -22,6 +22,7 @@ fun FeatureNavHost(
     modifier: Modifier = Modifier,
     navigate:(VoidCallback)->Unit,
     inputScreen: ComposeView,
+    onBacked:VoidCallback={},
     visualizationScreen: @Composable (ComposeView) -> Unit,
 ) {
     val navController = rememberNavController()
@@ -38,6 +39,7 @@ fun FeatureNavHost(
                 IconButton(
                     onClick = {
                         navController.popBackStack()
+                        onBacked()
                     }
                 ) {
                     Icon(

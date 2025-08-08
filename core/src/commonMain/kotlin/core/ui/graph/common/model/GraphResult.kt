@@ -11,5 +11,8 @@ data class GraphResult internal constructor(
     val directed: Boolean,
     val controller: GraphViewerController,
     val nodes: Set<Node>,
-    val edges: Set<Edge>
+    val edges: Set<Edge>,
+    val visualGraph: Pair<List<EditorNodeModel>,List<EditorEdgeModel>> =Pair(emptyList(),
+        emptyList()
+    )
 )

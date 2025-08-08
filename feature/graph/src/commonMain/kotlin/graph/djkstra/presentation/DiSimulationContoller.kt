@@ -3,43 +3,23 @@ package graph.djkstra.presentation
 
 import core.ui.graph.common.model.GraphResult
 import core.ui.graph.common.model.Node
-import core.ui.graph.viewer.controller.GraphViewerController
 import graph.DiContainer
-import graph._core.presentation.AutoPlayerImpl
+import graph._core.presentation.BaseRouteController
 import graph.djkstra.domain.model.DijkstraGraphModel
 import graph.djkstra.domain.model.EdgeModel
 import graph.djkstra.domain.model.NodeModel
 import graph.djkstra.domain.model.NodeModel.Companion.INFINITY
 import graph.djkstra.domain.model.SimulationState
 import graph.djkstra.domain.service.Simulator
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class DiSimulationViewModel (
-    private val color: StatusColor
-){
-    lateinit var graphController: GraphViewerController
+internal class DiSimulationContoller (private val color: StatusColor):BaseRouteController(){
     private lateinit var simulator: Simulator
-    val autoPlayer = AutoPlayerImpl(::onNext)
-    private lateinit var result: GraphResult
-
-    private val _isInputMode = MutableStateFlow(true)
-    val isInputMode = _isInputMode.asStateFlow()
-    private val _code = MutableStateFlow<String?>(null)
-    val code = _code.asStateFlow()
-
-
-
-
-    fun onGraphCreated(result: GraphResult) {
-        this.result = result
-        graphController = result.controller
-        simulator = DiContainer.createSimulator(_createGraph())
-        _isInputMode.update { false }
-
+    override fun onGraphCreated(result: GraphResult) {
+        super.onGraphCreated(result)
+        simulator = DiContainer.createSimulator(createGraph())
     }
-    fun onNext() {
+    override fun onNext() {
         val state = simulator.next()
         _code.update { state.code }
         when ( state ) {
@@ -51,14 +31,9 @@ class DiSimulationViewModel (
         }
     }
 
-    fun onReset() {
-        graphController = result.controller
-        simulator = DiContainer.createSimulator(_createGraph())
-        graphController.reset()
-        autoPlayer.dismiss()
-//        consumer.onReset()
-//        consumer = _createConsumer()
-
+    override fun onReset() {
+      super.onReset()
+        simulator = DiContainer.createSimulator(createGraph())
     }
 
     private fun handleProcessingNode(node: NodeModel) {
@@ -79,15 +54,7 @@ class DiSimulationViewModel (
         }
     }
 
-    private fun handleSimulationFinished() {
-        graphController.stopBlinkAll()
-    }
-
-
-
-
-
-    private fun _createGraph(): DijkstraGraphModel {
+    private fun createGraph(): DijkstraGraphModel {
         val nodeModels = result.nodes.map { it._toNodeModel() }.toSet()
         val edgeModels = result.edges.map {
             EdgeModel(
@@ -99,12 +66,8 @@ class DiSimulationViewModel (
         }.toSet()
         return DijkstraGraphModel(nodeModels, edgeModels, nodeModels.first())
     }
-
-
     private fun Node._toNodeModel() = NodeModel(
         id = id, label = label
     )
-
-
 
 }

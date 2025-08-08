@@ -3,6 +3,7 @@
 - Selection sort controller need to fix
 
 # TODO - Priority 1
+- Graph node heterogeneous node size fixes in Dijkstra, Prims
 # TODO Priority less
 - on screen size changed the navigation not preserved such as in window on screen size 
   automatically back to the instruction screen in Linear search.

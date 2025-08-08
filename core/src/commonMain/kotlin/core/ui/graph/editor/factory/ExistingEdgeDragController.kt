@@ -2,7 +2,7 @@ package core.ui.graph.editor.factory
 
 
 import androidx.compose.ui.geometry.Offset
-import core.ui.graph.common.model.EditorEdgeMode
+import core.ui.graph.common.model.EditorEdgeModel
 import core.ui.graph.editor.model.EdgePoint
 
 /*
@@ -13,14 +13,14 @@ Or neither existing edge is being dragged nor new edge being added.
 it will handle just the existing edge dragging,
  */
 
-internal class ExistingEdgeDragController(private val selectedEdge: EditorEdgeMode) {
+internal class ExistingEdgeDragController(private val selectedEdge: EditorEdgeModel) {
 
-    fun onDrag(dragAmount: Offset): EditorEdgeMode {
+    fun onDrag(dragAmount: Offset): EditorEdgeModel {
         return selectedEdge.updatePoint(dragAmount)
     }
 
 
-    private fun EditorEdgeMode.updatePoint(amount: Offset): EditorEdgeMode {
+    private fun EditorEdgeModel.updatePoint(amount: Offset): EditorEdgeModel {
        // Log.i("SelectedPoint","${selectedEdge.selectedPoint}")
         return when (selectedPoint) {
             EdgePoint.Start -> {

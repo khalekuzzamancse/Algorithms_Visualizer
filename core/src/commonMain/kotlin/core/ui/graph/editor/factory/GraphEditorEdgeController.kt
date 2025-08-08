@@ -10,18 +10,18 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 internal class GraphEditorEdgeController {
-    private val _edges= MutableStateFlow<List<EditorEdgeMode>>(emptyList())
-    private val _selectedEdge = MutableStateFlow<EditorEdgeMode?>(null)
+    private val _edges= MutableStateFlow<List<EditorEdgeModel>>(emptyList())
+    private val _selectedEdge = MutableStateFlow<EditorEdgeModel?>(null)
     private var newlyAdding = false
 
     val selectedEdge = _selectedEdge.asStateFlow()
     val edges = _edges.asStateFlow()
 
-    fun setInitialEdge(edge: Set<EditorEdgeMode>) {
+    fun setInitialEdge(edge: Set<EditorEdgeModel>) {
         _edges.update { edge.toList() }
     }
 
-    fun addEdge(edge: EditorEdgeMode) {
+    fun addEdge(edge: EditorEdgeModel) {
         _edges.value = edges.value + edge.copy(selectedPoint = EdgePoint.End)
         _selectedEdge.value = edge.copy(selectedPoint = EdgePoint.End)
         newlyAdding = true
@@ -87,7 +87,7 @@ internal class GraphEditorEdgeController {
         newlyAdding = false
     }
 
-    fun setEdge(edges: List<EditorEdgeMode>) {
+    fun setEdge(edges: List<EditorEdgeModel>) {
         _edges.update { edges }
     }
 
@@ -104,10 +104,10 @@ internal class GraphEditorEdgeController {
 }
 
 internal class EdgeSelectionControllerImpl(
-    private val edges: List<EditorEdgeMode>,
+    private val edges: List<EditorEdgeModel>,
     private val tappedPosition: Offset) {
 
-    private var selectedEdge: EditorEdgeMode? = null
+    private var selectedEdge: EditorEdgeModel? = null
 
     init {
         deSelectEdges()//remove if any node is already selected
@@ -116,12 +116,12 @@ internal class EdgeSelectionControllerImpl(
 
     fun findSelectedEdgeOrNull()=selectedEdge
 
-    fun getEdgesWithSelection(): List<EditorEdgeMode> {
+    fun getEdgesWithSelection(): List<EditorEdgeModel> {
         val point = findSelectedPoint()
         return highLightPoint(point)
     }
 
-    private fun highLightPoint(point: EdgePoint): List<EditorEdgeMode> {
+    private fun highLightPoint(point: EdgePoint): List<EditorEdgeModel> {
         selectedEdge?.let { activeEdge ->
             val highLightedEdge = when (point) {
                 EdgePoint.Start -> activeEdge.copy(
@@ -155,7 +155,7 @@ internal class EdgeSelectionControllerImpl(
     }
 
     private fun deSelectEdges() =
-        edges.map { it.copy(selectedPoint = EdgePoint.None, pathColor = EditorEdgeMode.pathDefaultColor) }
+        edges.map { it.copy(selectedPoint = EdgePoint.None, pathColor = EditorEdgeModel.pathDefaultColor) }
 
 
 
@@ -168,22 +168,22 @@ internal class EdgeSelectionControllerImpl(
         return EdgePoint.None
     }
 
-    private fun isAnyControlTouched(edge: EditorEdgeMode): Boolean {
+    private fun isAnyControlTouched(edge: EditorEdgeModel): Boolean {
         return isStartTouched(edge) || isEndTouched(edge) || isControlTouched(edge)
     }
 
 
-    private fun isControlTouched(edge: EditorEdgeMode) =
+    private fun isControlTouched(edge: EditorEdgeModel) =
         isTargetTouched(edge, edge.pathCenter)
 
-    private fun isStartTouched(edge: EditorEdgeMode) =
+    private fun isStartTouched(edge: EditorEdgeModel) =
         isTargetTouched(edge, edge.start)
 
-    private fun isEndTouched(edge: EditorEdgeMode) =
+    private fun isEndTouched(edge: EditorEdgeModel) =
         isTargetTouched(edge, edge.end)
 
     private fun isTargetTouched(
-        edge: EditorEdgeMode,
+        edge: EditorEdgeModel,
         target: Offset
     ): Boolean {
         //Can causes crash

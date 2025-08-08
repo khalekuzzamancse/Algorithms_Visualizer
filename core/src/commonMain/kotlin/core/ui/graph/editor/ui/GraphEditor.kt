@@ -46,12 +46,12 @@ fun GraphEditor(
         GraphType.UnDirectedWeighted,
         GraphType.DirectedWeighted
     ),
-    initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeMode>> = Pair(
+    initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeModel>> = Pair(
         emptyList(),
         emptyList()
     ),
     navigationIcon: @Composable () -> Unit,
-    onDone: (GraphResult) -> Unit
+    onDone: (GraphResult,GraphType?) -> Unit
 ) {
     val hostState = remember { SnackbarHostState() }
     val controller: GraphEditorController = remember {
@@ -96,7 +96,8 @@ fun GraphEditor(
                 },
                 onSaveRequest = {
                     val result = controller.onGraphInputCompleted()
-                    onDone(result)
+                  val type=  controller.inputController.graphType.value
+                    onDone(result,type)
                 },
                 onRemoveNodeRequest = { controller.onRemovalRequest() },
                 disableAll = !(controller.inputController.graphTypeSelected.collectAsState().value),

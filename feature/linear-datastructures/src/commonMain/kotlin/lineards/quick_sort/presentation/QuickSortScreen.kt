@@ -22,11 +22,6 @@ import lineards.bubble_sort.presentation.BubbleSortController
 
 @Composable
 fun QuickSortScreen(modifier: Modifier = Modifier, navigationIcon: @Composable () -> Unit) {
-//    val color = StatusColor(iPointerLocation = MaterialTheme.colorScheme.secondary)
-//    val quickSortViewModel = remember { QuickSortViewModel() }
-//
-//    val showInputDialog = quickSortViewModel.inputMode.collectAsState().value
-//    val arrayController = quickSortViewModel.arrayController.collectAsState().value
 
     SortRouteStrategy(
         modifier=modifier,
@@ -40,65 +35,6 @@ fun QuickSortScreen(modifier: Modifier = Modifier, navigationIcon: @Composable (
             )
         }
     )
-///    var state by remember { mutableStateOf(SimulationScreenState()) }
-
-//    SimulationSlot(
-//        modifier = modifier,
-//        state = state,
-//        disableControls = showInputDialog,
-//        navigationIcon = navigationIcon,
-//        resultSummary = { },
-//        pseudoCode = { mod ->
-//            val code = quickSortViewModel.code.collectAsState().value
-//            if (code != null)
-//                CodeViewer(
-//                    modifier = mod,
-//                    code = code,
-//
-//                    )
-//        },
-//        visualization = {
-//            if (showInputDialog) {
-//                ArrayInputView(
-//                    onConfirm = quickSortViewModel::onListInputted
-//                )
-//            } else {
-//                if (arrayController != null) {
-//                    VisualArray(
-//                        controller = arrayController
-//                    )
-//                }
-//
-//
-//            }
-//        },
-//        onEvent = { event ->
-//            when (event) {
-//                is SimulationScreenEvent.AutoPlayRequest -> {
-//                    quickSortViewModel.autoPlayer.autoPlayRequest(event.time)
-//                }
-//
-//                SimulationScreenEvent.NextRequest -> quickSortViewModel.onNext()
-//
-//                SimulationScreenEvent.NavigationRequest -> {}
-//                SimulationScreenEvent.ResetRequest -> {
-//                    quickSortViewModel.onReset()
-//                }
-//
-//                SimulationScreenEvent.CodeVisibilityToggleRequest -> {
-//                    val isVisible = state.showPseudocode
-//                    state = state.copy(showPseudocode = !isVisible)
-//                }
-//
-//                SimulationScreenEvent.ToggleNavigationSection -> {
-//
-//                }
-//
-//                else -> {}
-//            }
-//
-//        },
-//    )
 
 
 }
