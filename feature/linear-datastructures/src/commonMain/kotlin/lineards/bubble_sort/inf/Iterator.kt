@@ -2,7 +2,7 @@ package lineards.bubble_sort.inf
 
 import lineards.bubble_sort.domain.model.CodeStateModel
 import lineards.bubble_sort.domain.model.SimulationState
-import bubblesort.domain.service.PseudocodeGenerator
+import lineards.bubble_sort.domain.service.PseudocodeGenerator
 
 internal class Iterator<T : Comparable<T>>(array: List<T>) {
     private var i = 0

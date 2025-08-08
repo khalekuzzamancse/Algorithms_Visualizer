@@ -1,4 +1,4 @@
-package bubblesort.domain.service
+package lineards.bubble_sort.domain.service
 
 import lineards.bubble_sort.domain.model.SimulationState
 

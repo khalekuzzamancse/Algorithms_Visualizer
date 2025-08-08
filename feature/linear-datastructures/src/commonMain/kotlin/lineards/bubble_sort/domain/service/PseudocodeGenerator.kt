@@ -1,7 +1,6 @@
-package bubblesort.domain.service
+package lineards.bubble_sort.domain.service
 
 import lineards.bubble_sort.domain.model.CodeStateModel
-import lineards.bubble_sort.domain.model.TokenModel
 
 /**
  * - Defining in the domain layer because need to access from both data and ui layer
@@ -20,12 +19,6 @@ object PseudocodeGenerator {
         }
     }
     """.trimStart()
-
-    val token = TokenModel(
-        identifier = listOf("list", "len", "i", "j", "shouldSwap"),
-        literal = listOf(""),
-        function = listOf("bubbleSort", "swap")
-    )
 
     fun generate(model: CodeStateModel): String {
         return with(model) {

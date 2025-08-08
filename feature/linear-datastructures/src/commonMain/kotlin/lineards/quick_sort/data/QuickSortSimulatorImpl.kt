@@ -1,31 +1,11 @@
-package quick_sort.data
+package lineards.quick_sort.data
+import lineards.quick_sort.domain.QuickSortSimulator
+import lineards.quick_sort.domain.QuickSortState
 
-sealed  interface QuickSortState{
-    data object  Finish: QuickSortState
-    data class State(
-        val low: Int=0,
-        val high: Int,
-        val pivot: Int=high,
-        val swapped: Pair<Int, Int>?=null,
-        val i: Int?=-1,
-        val j: Int?=0
-    ): QuickSortState
-}
-
-
-
-interface  QuickSortIterator{
-    companion object{
-        fun create(list: List<Int>): QuickSortIterator = QuickSortIteratorImpl(list)
-    }
-    fun next(): QuickSortState
-}
-private class QuickSortIteratorImpl(
-    list: List<Int>
-): QuickSortIterator {
+ class QuickSortSimulatorImpl(list: List<Int>) :QuickSortSimulator{
     private val states= mutableListOf<QuickSortState>()
     private var count=0
-    override fun next(): QuickSortState {
+     override fun next(): QuickSortState {
         return try {
             states[count++]
         } catch (_:Exception){
@@ -33,13 +13,10 @@ private class QuickSortIteratorImpl(
         }
     }
 
-
     init {
         quickSort(list.toMutableList())
     }
     private fun quickSort(arr: MutableList<Int>, low: Int=0, high: Int=arr.lastIndex) {
-
-
         if (low < high) {
             // Partition the array and get the pivot index
             val pivotIndex = partition(arr, low, high)

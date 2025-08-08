@@ -2,7 +2,7 @@
 
 package lineards.bubble_sort.presentation
 
-import bubblesort.domain.service.Simulator
+import lineards.bubble_sort.domain.service.Simulator
 import core.ui.ArrayColor
 import core.ui.core.array.VisualArrayFactory
 import core.ui.core.array.controller.VisualArrayController

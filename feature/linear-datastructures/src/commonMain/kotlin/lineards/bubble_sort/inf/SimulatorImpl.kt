@@ -2,8 +2,8 @@ package lineards.bubble_sort.inf
 
 import lineards.bubble_sort.domain.model.DataModel
 import lineards.bubble_sort.domain.model.SimulationState
-import bubblesort.domain.service.PseudocodeGenerator
-import bubblesort.domain.service.Simulator
+import lineards.bubble_sort.domain.service.PseudocodeGenerator
+import lineards.bubble_sort.domain.service.Simulator
 
 class SimulatorImpl<T : Comparable<T>> internal constructor(model: DataModel<T>) : Simulator<T> {
 
