@@ -16,7 +16,7 @@ import lineards.insertion_sort.domain.model.SimulationState
 import lineards.insertion_sort.domain.service.Simulator
 
 
-internal class SimulationViewModel: SortRouteControllerBase() {
+internal class InsertionSortController: SortRouteControllerBase() {
     private lateinit var simulator: Simulator<Int>
     private val scope = CoroutineScope(Dispatchers.Default)
 

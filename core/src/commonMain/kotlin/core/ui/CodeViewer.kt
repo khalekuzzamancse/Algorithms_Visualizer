@@ -52,7 +52,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun CodeViewer(modifier: Modifier = Modifier, code: String) {
-    var theme by rememberSaveable { mutableStateOf(CodeViewerColor.availableThemes().first()) }
+    var theme by remember { mutableStateOf(CodeViewerColor.availableThemes().first()) }
     var showThemeDialog by remember { mutableStateOf(false) }
 
     _CodeViewer(

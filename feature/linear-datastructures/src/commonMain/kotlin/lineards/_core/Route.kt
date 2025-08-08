@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import core.ui.CodeViewer
+import core.ui.core.ArrayInputView
 import core.ui.core.SimulationScreenEvent
 import core.ui.core.SimulationSlot
 import core.ui.core.array.VisualArray

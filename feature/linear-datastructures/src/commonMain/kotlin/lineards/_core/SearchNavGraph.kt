@@ -27,7 +27,7 @@ private object _RouteNames {
     const val VISUALIZATION_ROUTE = "VisualizationScreen"
 }
 
-private   class _SearchViewModel(val controller: SearchRouteControllerBase) : ViewModel()
+
 
 /**
  * This navigation graph scopes the MyViewModel to the "main_flow" navigation graph
@@ -88,7 +88,7 @@ internal fun NavHostController.createSearchNavGraph(
         }
     }
 }
-
+private   class _SearchViewModel(val controller: SearchRouteControllerBase) : ViewModel()
 
 private class _MyViewModelFactory(
     val controller: SearchRouteControllerBase

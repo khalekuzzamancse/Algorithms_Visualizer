@@ -16,7 +16,7 @@ import lineards.selection_sort.domain.model.SimulationState
 import lineards.selection_sort.domain.service.Simulator
 
 
-internal class SimulationViewModel : SortRouteControllerBase() {
+internal class SelectionSortController : SortRouteControllerBase() {
     private lateinit var simulator: Simulator<Int>
     private val scope = CoroutineScope(Dispatchers.Default)
 

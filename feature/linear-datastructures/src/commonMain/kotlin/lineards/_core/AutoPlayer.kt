@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
  * that is why exposing some event from here
  */
 
-internal interface AutoPlayer {
+interface AutoPlayer {
     fun isAutoPlayMode(): Boolean
     fun autoPlayRequest(delay: Int)
 

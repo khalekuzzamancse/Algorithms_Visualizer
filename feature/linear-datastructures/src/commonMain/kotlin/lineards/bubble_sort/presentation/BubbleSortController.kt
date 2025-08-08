@@ -16,7 +16,7 @@ import lineards.bubble_sort.domain.model.DataModel
 import lineards.bubble_sort.domain.model.SimulationState
 
 
-internal class BubbleSortViewModel: SortRouteControllerBase() {
+internal class BubbleSortController: SortRouteControllerBase() {
     private val  scope= CoroutineScope(Dispatchers.Default)
     private lateinit var simulator: Simulator<Int>
 
@@ -53,8 +53,6 @@ internal class BubbleSortViewModel: SortRouteControllerBase() {
 
 
     }
-
-
 
      override fun arrayControllerFactory(): VisualArrayController {
         simulator = DiContainer.createBubbleSortSimulator(DataModel(array = list.value))

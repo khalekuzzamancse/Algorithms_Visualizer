@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.app"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.khalekuzzaman.just.cse.algorithms_simulator"

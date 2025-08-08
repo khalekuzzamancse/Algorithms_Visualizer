@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import lineards.linear_search.domain.service.PseudocodeGenerator
 
-internal interface RouteController {
+interface RouteController {
     val inputMode: StateFlow<Boolean>
     val arrayController: StateFlow<VisualArrayController?>
     val state: StateFlow<SimulationScreenState>
@@ -24,7 +24,7 @@ internal interface RouteController {
 }
 
 
-internal interface SearchRouteController : RouteController {
+interface SearchRouteController : RouteController {
     /**
      * *In case of sort algorithms just ignore or un-used it
      * In case of search call it before the list input or do not forget to call it
@@ -32,8 +32,8 @@ internal interface SearchRouteController : RouteController {
     fun onTargetInputted(target: Int)
 }
 
-internal interface SortRouteController : RouteController
-internal abstract class BaseRouteController : RouteController {
+interface SortRouteController : RouteController
+abstract class BaseRouteController : RouteController {
     private val _inputMode = MutableStateFlow(true)
     override val inputMode = _inputMode.asStateFlow()
 
@@ -75,19 +75,19 @@ internal abstract class BaseRouteController : RouteController {
 }
 
 
-internal abstract class SearchRouteControllerBase : BaseRouteController(), SearchRouteController {
-//    private val tag = this.javaClass.simpleName
+abstract class SearchRouteControllerBase : BaseRouteController(), SearchRouteController {
+  private val tag = this.javaClass.simpleName.toString()
     protected var target: Int = 0
     fun onInput(array:List<Int>,target: Int){
         super.onListInputted(array)
-        Logger.on(this.javaClass.simpleName.toString(),"onInputListDone");
+        Logger.on(tag,"onInputListDone")
         onTargetInputted(target)
     }
 
     override fun onTargetInputted(target: Int) {
         this.target = target
         arrayController.update { arrayControllerFactory() }
-        Logger.on(this.javaClass.simpleName,"onTargetInputted:${this.target}")
+        Logger.on(tag,"onTargetInputted:${this.target}")
     }
 }
 

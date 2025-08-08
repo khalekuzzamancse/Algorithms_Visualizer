@@ -1,6 +1,6 @@
 :applications:web:wasmJsBrowserDevelopmentRun
 # Progress
-- Sort screen navigation make same as the Linear  and Binary search
+- Selection sort controller need to fix
 
 # TODO - Priority 1
 # TODO Priority less

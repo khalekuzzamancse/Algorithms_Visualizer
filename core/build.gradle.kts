@@ -14,6 +14,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(compose.materialIconsExtended)
+                implementation(libs.common.navigation)
             }
         }
 
