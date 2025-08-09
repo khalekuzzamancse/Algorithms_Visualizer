@@ -108,8 +108,6 @@ TODO:
   but before tapping we inputted the text of that node,
 - onAddNodeRequest() ,here we can decide the size of the node ,by measuring the text size
 
-
-
 - Create add a new node to that list,when user added it to graph
 - A node can have the function called isWithinBoundary(offset)
 

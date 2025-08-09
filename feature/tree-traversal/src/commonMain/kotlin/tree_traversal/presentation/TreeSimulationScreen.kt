@@ -12,6 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.lang.ComposeView
+import core.lang.Logger
 import core.lang.VoidCallback
 import core.ui.CodeViewer
 import core.ui.TreeEditor
@@ -38,6 +39,7 @@ fun TreeSimulationScreen(navigationIcon:ComposeView) {
                 TreeEditor(
                     navigationIcon = navigationIcon,
                 ) { result ->
+
                     viewModel.onGraphCreated(result)
                     showGraphType=true
 
@@ -62,34 +64,6 @@ fun TreeSimulationScreen(navigationIcon:ComposeView) {
     )
 }
 
-@Composable
-fun TreeSimulationScreen2(navigationIcon: @Composable () -> Unit) {
-    val viewModel = remember { SimulationViewModel() }
-    val showTypeInputDialog=viewModel.traversalType.collectAsState().value==null
-
-    if (viewModel.isInputMode.collectAsState().value) {
-        TreeEditor(
-            navigationIcon = navigationIcon,
-        ) { result ->
-            viewModel.onGraphCreated(result)
-
-        }
-    } else {
-        if(showTypeInputDialog){
-            TypeInputDialog {type->
-                viewModel.selectTraversalType(type)
-            }
-        }
-        _GraphViewer(
-            viewModel = viewModel,
-            graphController = viewModel.graphController,
-            navigationIcon = navigationIcon
-        )
-
-    }
-
-
-}
 
 @Composable
 private fun _GraphViewer(

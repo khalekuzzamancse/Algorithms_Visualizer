@@ -48,29 +48,6 @@ internal  fun Route(
             else{
                 Text("Array Controller is NULL")
             }
-//            if (showInputDialog) {
-//                if (viewModel is SearchRouteControllerBase) {
-//                    SearchInputView(
-//                    onConfirm = {array,target->
-//                        viewModel.onTargetInputted(target)
-//                        viewModel.onListInputted(array)
-//                    }
-//                )
-//                } else if (viewModel is SortRouteControllerBase) {
-//                    ArrayInputView(onConfirm = viewModel::onListInputted)
-//                }
-//            } else {
-//                Column {
-//                    FlowRow {
-//
-//
-//                    }
-//
-//
-//                }
-//
-//
-//            }
 
         },
         onEvent = { event ->

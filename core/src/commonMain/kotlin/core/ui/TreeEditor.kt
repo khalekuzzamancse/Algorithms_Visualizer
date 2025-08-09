@@ -2,6 +2,8 @@ package core.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
 import core.lang.Logger
 import core.ui.graph.common.model.GraphResult
 import core.ui.graph.common.model.Node
@@ -17,11 +19,14 @@ fun TreeEditor(
     onDone: (TreeResult) -> Unit,
 ){
     val  tag= remember { "TreeEditor" }
+    val density= LocalDensity.current
+    val nodeSizePx= remember { with(density){48.dp.toPx()} }
     GraphEditor(
         navigationIcon = navigationIcon,
         graphType = GraphType.Undirected,//Tree's are undirected Graph
-        initialGraph = SavedGraphProvider.getTree(),
-        onDone = {result,type ->
+        ///TODO: Bug, Assigning node size is >=60f not works in DFS or post-order why
+        initialGraph = SavedGraphProvider.getTree(48f),
+        onDone = {result,_ ->
             val root= buildTree(result)
             onDone(
                 TreeResult(

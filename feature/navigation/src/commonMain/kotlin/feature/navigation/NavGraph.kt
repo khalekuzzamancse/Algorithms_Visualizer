@@ -180,18 +180,13 @@ fun NavController.createNavGraph(
         }
         composable(NavDestination.ExpressionSearchTree.route) {
             ExpressionTreeScreen(
-                onNavBack = {
-                    popBackStack()
+                navigationIcon = {
+                    _DrawerIcon(
+                        isNavRailMode = isNavRailMode,
+                        onClick = openDrawerRequest
+                    )
                 }
             )
-//            BSTView(
-//                navigationIcon = {
-//                    _DrawerIcon(
-//                        isNavRailMode = isNavRailMode,
-//                        onClick = openDrawerRequest
-//                    )
-//                }
-//            )
         }
         composable(NavDestination.AboutUs.route) {
             AboutUsPage(
