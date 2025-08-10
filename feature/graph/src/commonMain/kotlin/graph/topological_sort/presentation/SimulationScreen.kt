@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import core.ui.graph.GraphFactory
 import core.ui.graph.editor.model.GraphType
+import core.ui.graph.editor.ui.GraphConstant
 import core.ui.graph.scaleGraph
 import graph._core.presentation.Route
 
@@ -15,7 +16,7 @@ import graph._core.presentation.Route
  fun TopologicalSort( navigationIcon: @Composable () -> Unit) {
      val  viewmodel= viewModel { MyViewModel() }
     val density= LocalDensity.current
-    val nodeSizePx= remember { with(density){30.dp.toPx()} }
+    val nodeSizePx= remember { with(density){ GraphConstant.nodeMinSize().toPx()} }
     Route(
         viewModel = viewmodel.controller,
         navigationIcon = navigationIcon,

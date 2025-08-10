@@ -9,6 +9,7 @@ import core.ui.graph.common.model.GraphResult
 import core.ui.graph.common.model.Node
 import core.ui.graph.editor.factory.SavedGraphProvider
 import core.ui.graph.editor.model.GraphType
+import core.ui.graph.editor.ui.GraphConstant
 import core.ui.graph.editor.ui.GraphEditor
 import core.ui.graph.scaleGraph
 import core.ui.graph.trimGraphExtraSpace
@@ -22,7 +23,7 @@ fun TreeEditor(
 ){
     val  tag= remember { "TreeEditor" }
     val density= LocalDensity.current
-    val nodeSizePx= remember { with(density){30.dp.toPx()} }
+    val nodeSizePx= remember { with(density){ GraphConstant.nodeMinSize().toPx()} }
     GraphEditor(
         navigationIcon = navigationIcon,
         graphType = GraphType.Undirected,//Tree's are undirected Graph

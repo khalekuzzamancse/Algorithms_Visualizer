@@ -75,6 +75,13 @@ internal data class GraphEditorNodeController(private val deviceDensity: Float) 
         }
 
     }
+    fun clearAll(){
+       resetSelection()
+        _nodes.update{
+            emptySet()
+        }
+
+    }
 
     fun add(editorNodeModel: EditorNodeModel) {
         _nodes.value += editorNodeModel

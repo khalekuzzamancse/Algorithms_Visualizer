@@ -35,7 +35,8 @@ fun Route(
         GraphType.UnDirectedWeighted,
         GraphType.DirectedWeighted
     ),
-    initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeModel>> = GraphFactory.getDemoGraph(LocalDensity.current.density),
+    initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeModel>> =
+        GraphFactory.getDemoGraph(LocalDensity.current.density),
     navigationIcon: @Composable () -> Unit,
     nodeStatusUI: ComposeView?=null
 ) {

@@ -14,19 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.unit.dp
 import core.ui.graph.GraphFactory
 import core.ui.graph.common.model.*
 import core.ui.graph.editor.*
 import core.ui.graph.editor.controller.GraphEditorController
 import core.ui.graph.editor.model.GraphType
-import core.ui.graph.editor.ui.component.Editor
-import core.ui.graph.editor.ui.component.GraphEditorToolBar
-import core.ui.graph.editor.ui.component.GraphTypeInputDialog
-import core.ui.graph.editor.ui.component.InputDialog
-import core.ui.graph.editor.ui.component.Instruction
-import core.ui.graph.editor.ui.component._calculateTextSizePx
-
 
 /**
  * @param hasDistance is the graph node has distance such as Node for Dijkstra algorithm. if the graph node has distance
@@ -74,7 +66,7 @@ fun GraphEditor(
     val showGraphTypeInputDialog = controller.inputController.showGraphTypeSelectionUi.collectAsState().value
     val showEdgeCostDialog = controller.inputController.showEdgeCostInputUi.collectAsState().value
     val showNodeInputDialog = controller.inputController.showNodeInputUi.collectAsState().value
-    val nodeMinSizeDp = if (hasDistance) 64.dp else 48.dp
+    val nodeMinSizeDp = GraphConstant.nodeMinSize()
 
     val graphTypeHasTaken = (controller.inputController.graphTypeSelected.collectAsState().value)
 
@@ -103,6 +95,9 @@ fun GraphEditor(
                 disableAll = !(controller.inputController.graphTypeSelected.collectAsState().value),
                 onClearSelectionRequest = {
                     controller.clearSelection();
+                },
+                onDeleteRequest = {
+                    controller.clearAll()
                 }
             )
         }

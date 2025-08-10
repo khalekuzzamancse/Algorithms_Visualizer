@@ -1,4 +1,4 @@
-package core.ui.graph.editor.ui.component
+package core.ui.graph.editor.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +14,7 @@ import androidx.compose.material.icons.automirrored.filled.Input
 import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.ArrowCircleRight
 import androidx.compose.material.icons.filled.ClearAll
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Moving
 import androidx.compose.material.icons.filled.RemoveCircleOutline
 import androidx.compose.material3.Button
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import core.lang.VoidCallback
 
 
 @Composable
@@ -79,6 +81,14 @@ import androidx.compose.ui.unit.sp
         InstructionRow(
             icon = Icons.Filled.RemoveCircleOutline,
             text = "Remove a selected node or edge"
+        )
+        InstructionRow(
+            icon = Icons.Filled.Delete,
+            text = "Delete the whole Graph"
+        )
+        InstructionRow(
+            icon = Icons.Filled.ClearAll,
+            text = "Clear all selection"
         )
         InstructionRow(
             icon = Icons.Filled.ArrowCircleRight,
@@ -159,6 +169,7 @@ internal fun GraphEditorToolBar(
     onSaveRequest: () -> Unit,
     onRemoveNodeRequest: () -> Unit,
     onClearSelectionRequest:()->Unit={},
+    onDeleteRequest:VoidCallback,
     navigationIcon: @Composable () -> Unit,
 ) {
 
@@ -166,6 +177,11 @@ internal fun GraphEditorToolBar(
         title = {},
         navigationIcon = navigationIcon,
         actions = {
+            TopBarIconButton(
+                enabled = !disableAll,
+                icon = Icons.Filled.Delete,
+                onClick = onDeleteRequest
+            )
             //for clear selection
             TopBarIconButton(
                 enabled = !disableAll,

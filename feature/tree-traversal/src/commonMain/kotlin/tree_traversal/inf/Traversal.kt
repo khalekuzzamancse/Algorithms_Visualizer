@@ -160,17 +160,17 @@ class _DFSTraversal(
                     }
                 }
 
-                TraversalType.DFS -> {
-                    ///TODO:Has a problem with this implementation
-                    // DFS: Visit node after its children have been processed
-                    if (!visited.contains(current)) {
-                        current.children.asReversed().forEach { stack.push(it) }
-                        visited.add(current)
-                    } else {
-                        yield(SimulationState.ProcessingNode(current, code = ""))//visited
-                        stack.pop()
-                    }
-                }
+//                TraversalType.DFS -> {
+//                    ///TODO:Has a problem with this implementation
+//                    // DFS: Visit node after its children have been processed
+//                    if (!visited.contains(current)) {
+//                        current.children.asReversed().forEach { stack.push(it) }
+//                        visited.add(current)
+//                    } else {
+//                        yield(SimulationState.ProcessingNode(current, code = ""))//visited
+//                        stack.pop()
+//                    }
+//                }
 
                 TraversalType.BFS -> {}
 

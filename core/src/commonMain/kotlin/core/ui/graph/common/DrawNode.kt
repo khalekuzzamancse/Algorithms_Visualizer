@@ -37,7 +37,7 @@ internal fun DrawScope.drawNode(
             topLeft = Offset(radius, radius) -offsetForCenterText,
             textMeasurer = measurer,
             style = TextStyle(
-                color = if (node.color.luminance() > 0.5) {
+                color = if (node.color.luminance() > 0.6) {
                     Color.Black
                 } else {
                     Color.White

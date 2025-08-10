@@ -100,6 +100,10 @@ internal class GraphEditorEdgeController {
         )
         }
     }
+     fun  clearAll(){
+        clearSelection()
+        _edges.update{ emptyList() }
+    }
 
 }
 

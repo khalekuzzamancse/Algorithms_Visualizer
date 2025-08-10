@@ -1,10 +1,9 @@
-package core.ui.graph.editor.ui.component
+package core.ui.graph.editor.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Input
-import androidx.compose.material.icons.outlined.Input
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -53,6 +52,7 @@ internal fun InputDialog(
         },
         confirmButton = {
             Button(
+                enabled = text.isNotBlank(),
                 onClick = {
                     keyboard?.hide()
                     if (text.isNotBlank()) {

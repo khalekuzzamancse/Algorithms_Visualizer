@@ -171,6 +171,12 @@ internal data class GraphEditorControllerImpl(
         edgeManger.clearSelection()
     }
 
+    override fun clearAll() {
+        clearSelection()
+        nodeManger.clearAll()
+        edgeManger.clearAll()
+    }
+
 
     private fun addNode(position: Offset) {
         nextAddedEditorNodeModel?.let {
