@@ -559,7 +559,8 @@ internal object SavedGraphProvider {
 
         return Pair(nodes, edges)
     }
-    fun getTree(nodeSizePx:Float=48.0f): Pair<List<EditorNodeModel>, List<EditorEdgeModel>> {
+    fun getTree(): Pair<List<EditorNodeModel>, List<EditorEdgeModel>> {
+        val nodeSizePx=48.0f
         val nodes = listOf(
             EditorNodeModel(
                 id = "1",

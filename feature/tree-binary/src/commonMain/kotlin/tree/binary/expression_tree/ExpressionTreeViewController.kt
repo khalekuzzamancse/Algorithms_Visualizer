@@ -47,6 +47,9 @@ class ExpressionTreeViewController {
     }
 
     val inputMode = _inputMode.asStateFlow()
+    fun dismissInput(){
+        _inputMode.update { false }
+    }
 
     fun next() {
         try {

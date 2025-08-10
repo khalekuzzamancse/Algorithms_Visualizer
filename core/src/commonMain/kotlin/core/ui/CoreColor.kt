@@ -106,8 +106,8 @@ object CodeViewerColor {
     )
 
     fun availableThemes() = listOf(
-        blueishDark(),
         lightKaryPro(),
+        blueishDark(),
         solarizedDark(),
         dracula(),
         githubLight()

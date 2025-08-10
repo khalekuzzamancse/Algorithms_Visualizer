@@ -3,6 +3,7 @@
 package tree_traversal.presentation
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -10,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import core.lang.ComposeView
 import core.lang.Logger
@@ -23,28 +25,26 @@ import core.ui.graph.viewer.GraphViewer
 import core.ui.graph.viewer.controller.GraphViewerController
 import lineards._core.FeatureNavHost
 
+//TODO: Fix it later, can not persist via remember
+var navigateToVisualization:VoidCallback?=  null
 @Composable
 fun TreeSimulationScreen(navigationIcon:ComposeView) {
     val viewModel = remember { SimulationViewModel() }
-    val showTypeInputDialog=viewModel.traversalType.collectAsState().value==null
-    var navigateToVisualization:VoidCallback?= remember { null }
     var showGraphType by remember { mutableStateOf(false) }
+
     FeatureNavHost(
         navigate = { navigateToVisualization=it},
         onBacked = {
             viewModel.resetInputMode()
         },
         inputScreen = {
-            if (viewModel.isInputMode.collectAsState().value) {
                 TreeEditor(
                     navigationIcon = navigationIcon,
                 ) { result ->
-
                     viewModel.onGraphCreated(result)
                     showGraphType=true
-
                 }
-            }
+
             if(showGraphType){
                 TypeInputDialog {type->
                     viewModel.selectTraversalType(type)
@@ -82,7 +82,7 @@ private fun _GraphViewer(
         navigationIcon =navigationIcon,
         pseudoCode = { mod ->
             val code = viewModel.code.collectAsState().value
-            if (code != null)
+            if (!code.isNullOrBlank())
                 CodeViewer(
                     modifier = mod,
                     code = code,

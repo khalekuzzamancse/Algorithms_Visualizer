@@ -1,8 +1,11 @@
 package graph._core.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -20,9 +23,12 @@ import androidx.compose.ui.unit.dp
 import core.ui.GlobalColors
 
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
  fun _NodeStatusIndicator() {
-    Column(modifier = Modifier.padding(16.dp)) {
+    FlowRow (modifier = Modifier.padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         _StatusIndicatorBox(
             color = GlobalColors.GraphColor.UNDISCOVERED,
             label = "Undiscovered"

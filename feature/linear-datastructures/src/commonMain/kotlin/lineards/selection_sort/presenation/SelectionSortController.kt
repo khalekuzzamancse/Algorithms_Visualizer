@@ -57,11 +57,7 @@ internal class SelectionSortController : SortRouteControllerBase() {
 
                 }
 
-                is SimulationState.Finished -> arrayController.removePointers(
-                    listOf(
-                        POINTER_MIN_INDEX
-                    )
-                )
+                is SimulationState.Finished -> arrayController.removePointers(pointers)
 
                 else -> {
 

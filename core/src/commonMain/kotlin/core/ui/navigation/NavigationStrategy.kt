@@ -1,6 +1,8 @@
 package lineards._core
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,6 +28,8 @@ fun FeatureNavHost(
     visualizationScreen: @Composable (ComposeView) -> Unit,
 ) {
     val navController = rememberNavController()
+
+
     LaunchedEffect(Unit){
         navigate{
             navController.navigate(Routes.VISUALIZATION)
@@ -43,7 +47,7 @@ fun FeatureNavHost(
                     }
                 ) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBackIosNew,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "back"
                     )
                 }

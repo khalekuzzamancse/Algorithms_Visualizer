@@ -53,7 +53,10 @@ fun ExpressionTreeScreen(modifier: Modifier = Modifier,  onNavBack: VoidCallback
             title = "",
             initial = "3 + 5 * ( ( 4 - 2 ) + ( 6 / 3 ) - ( 2 - 1 ) )",
             onAdded = controller::onInputComplete,
-            onDismiss =   onNavBack,
+            onDismiss =   {
+                onNavBack()
+                controller.dismissInput()
+            },
         )
     }
     SimulationSlot(
@@ -61,7 +64,7 @@ fun ExpressionTreeScreen(modifier: Modifier = Modifier,  onNavBack: VoidCallback
         state = state,
         disableControls = false,
         enableNext = controller.enableNext.collectAsState().value,
-        navigationIcon = { },
+        navigationIcon = navigationIcon,
         extraActions = {
             ControlIconButton(
                 onClick = controller::toggleControlsVisibility,

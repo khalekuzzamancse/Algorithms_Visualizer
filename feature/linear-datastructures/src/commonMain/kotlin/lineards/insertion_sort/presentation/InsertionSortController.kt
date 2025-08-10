@@ -61,16 +61,10 @@ internal class InsertionSortController: SortRouteControllerBase() {
                     }
 
                 }
-
-
                 is SimulationState.Finished -> {
-                    arrayController.removePointers(listOf(POINTER_I,POINTER_J, POINTER_J_MINUS_1))
-
+                    arrayController.removePointers(pointers)
                 }
 
-                else -> {
-
-                }
             }
         }
 

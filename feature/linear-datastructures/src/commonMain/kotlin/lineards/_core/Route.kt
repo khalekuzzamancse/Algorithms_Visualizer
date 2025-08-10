@@ -24,6 +24,7 @@ internal  fun Route(
     val arrayController=controller.arrayController.collectAsState().value
     var state=controller.state.collectAsState().value
 
+
     SimulationSlot(
         modifier = modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
         disableControls = showInputDialog,

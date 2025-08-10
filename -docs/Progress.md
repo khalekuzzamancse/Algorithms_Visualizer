@@ -1,14 +1,15 @@
 :applications:web:wasmJsBrowserDevelopmentRun
-
 # Progress
-# TODO - Priority 1
-- Graph node heterogeneous node size fixes in Dijkstra, Prims
-- Small font size in tree and tree 
+- Handle back button edge cases in tree traversal, complete all branch in input screen
+
+
+
+
 # TODO Priority less
 - on screen size changed the navigation not preserved such as in window on screen size
   automatically back to the instruction screen in Linear search.
-
-
+- - Small font size in tree and tree
+- Remove extra canvas height for graph view with carefully later
 # Next TODO:
 Theme Fix and Color fix
 

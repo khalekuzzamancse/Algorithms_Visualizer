@@ -48,6 +48,7 @@ fun SimulationSlot(
     modifier: Modifier = Modifier,
     disableControls: Boolean=false,
     enableNext:Boolean=true,
+    disablePseudocode: Boolean=false,
     state: SimulationScreenState,
     onEvent: (SimulationScreenEvent) -> Unit,
     navigationIcon: @Composable () -> Unit = {},
@@ -56,6 +57,7 @@ fun SimulationSlot(
     pseudoCode: (@Composable ColumnScope.(Modifier) -> Unit)?=null,
     visualization: @Composable ColumnScope.() -> Unit,
 ) {
+    var showPseudocode by rememberSaveable{mutableStateOf(true)}
 
     TopBarControlSection(
         enableNext = enableNext,
@@ -63,12 +65,15 @@ fun SimulationSlot(
         disableControls = disableControls,
         extraActions = extraActions,
         showPseudocode = state.showPseudocode,
-        disablePseudocode = true,
+        disablePseudocode = disablePseudocode,
         navigationIcon = navigationIcon,
         onNext = { onEvent(SimulationScreenEvent.NextRequest) },
         onResetRequest = { onEvent(SimulationScreenEvent.ResetRequest) },
         onAutoPlayRequest = { onEvent(SimulationScreenEvent.AutoPlayRequest(it)) },
-        onCodeVisibilityToggleRequest = { onEvent(SimulationScreenEvent.CodeVisibilityToggleRequest) }
+        onCodeVisibilityToggleRequest = {
+         //   onEvent(SimulationScreenEvent.CodeVisibilityToggleRequest)
+            showPseudocode=!showPseudocode
+        }
     ) {
 
         Column(
@@ -87,7 +92,7 @@ fun SimulationSlot(
             }
             if (resultSummary!=null)
                 Spacer(Modifier.height(16.dp))
-            AnimatedVisibility(state.showPseudocode) {
+            AnimatedVisibility(showPseudocode) {
                 if (pseudoCode != null) {
                     pseudoCode(Modifier.align(Alignment.Start))
                 }
@@ -126,7 +131,7 @@ fun TopBarControlSection(
     disableControls: Boolean,
     showPseudocode: Boolean = false,
     enableNext:Boolean,
-    disablePseudocode: Boolean = true,
+    disablePseudocode: Boolean = false,
     extraActions: (@Composable (Modifier) -> Unit)?=null,
     onNext: () -> Unit = {},
     onResetRequest: () -> Unit = {},
@@ -146,7 +151,7 @@ fun TopBarControlSection(
                 navigationIcon = navigationIcon,
                 actions = {
                     TopBarActions(
-                        disablePseudocode = true,
+                        disablePseudocode = disablePseudocode,
                         enableNext = enableNext,
                         disableControls = disableControls,
                         showPseudocode = showPseudocode,

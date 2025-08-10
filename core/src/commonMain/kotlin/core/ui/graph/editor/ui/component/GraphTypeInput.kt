@@ -12,7 +12,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
@@ -44,24 +48,32 @@ internal fun GraphTypeInputDialog(
                 .padding(16.dp)
                 .fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
+            shadowElevation = 8.dp
         ) {
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
-                TitleText()
-
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    TitleText()
+                    IconButton(
+                        onClick = { onInputComplete(selectedOption) },
+                    ) {
+                        Icon(
+                            imageVector =
+                            Icons.Outlined.Done,
+                            contentDescription = "done",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
                 GraphTypeSelectionFlowRow(
                     options = supportedTypes,
                     selectedOption = selectedOption,
                     onOptionSelected = { selectedOption = it }
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                ConfirmButton(
-                    onConfirmClick = {
-                        onInputComplete(selectedOption)
-                    }
                 )
             }
         }
@@ -73,7 +85,7 @@ private fun TitleText() {
     Text(
         text = "Select Graph Type",
         style = MaterialTheme.typography.titleMedium,
-        modifier = Modifier.padding(bottom = 8.dp)
+        modifier = Modifier
     )
 }
 
@@ -86,8 +98,8 @@ private fun GraphTypeSelectionFlowRow(
 ) {
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         options.forEach { option ->
             GraphTypeOptionRow(

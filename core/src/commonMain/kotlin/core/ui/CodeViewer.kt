@@ -1,7 +1,5 @@
 @file:Suppress("functionName", "unused")
-
 package core.ui
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,8 +12,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ContentCopy
@@ -49,10 +49,20 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
+private class ThemeController:ViewModel(){
+    var theme by mutableStateOf(CodeViewerColor.availableThemes().first())
+    private set
+    fun changeTheme(theme: CodeViewerTheme){
+        this.theme=theme
+    }
+}
 @Composable
 fun CodeViewer(modifier: Modifier = Modifier, code: String) {
-    var theme by remember { mutableStateOf(CodeViewerColor.availableThemes().first()) }
+    val controller= viewModel { ThemeController() }
+    val  theme=controller.theme
     var showThemeDialog by remember { mutableStateOf(false) }
 
     _CodeViewer(
@@ -70,7 +80,7 @@ fun CodeViewer(modifier: Modifier = Modifier, code: String) {
             currentTheme = theme,
             onDismissRequest = { showThemeDialog = false },
             onThemeSelected = {
-                theme = it
+                controller.changeTheme(it)
                 showThemeDialog = false
             }
         )
@@ -266,7 +276,7 @@ fun ThemeSelectionDialog(
         title = { Text("Select Theme") },
         text = {
             FlowRow(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {

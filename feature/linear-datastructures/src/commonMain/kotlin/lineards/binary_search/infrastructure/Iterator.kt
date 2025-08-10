@@ -38,13 +38,12 @@ internal class Iterator<T : Comparable<T>>(private val array: List<T>, private v
             )  // Update the mid pointer
 
             when {
-
                 current == target -> {
                     model = model.copy(isFound = "true; ", returnIndex = mid)
                     yield(
                         SimulationState.FoundAt(
                             index = mid,
-                            code = model.toCode()
+                            code = model.toCode(),
                         )
                     )  // Found the target at mid
                     break
@@ -65,10 +64,8 @@ internal class Iterator<T : Comparable<T>>(private val array: List<T>, private v
             //Clear old state
             model = model.copy(mid = OutOfScope, current = OutOfScope, isFound = OutOfScope, currentGreaterThanTarget = OutOfScope, currentLessThanTarget = OutOfScope)
 
-
-
         }
-        model = model.copy(returnIndex = -1, mid = OutOfScope, high = OutOfScope, low = OutOfScope, isFound = OutOfScope, currentGreaterThanTarget = OutOfScope, currentLessThanTarget = OutOfScope)
+        model = model.copy( mid = OutOfScope, high = OutOfScope, low = OutOfScope, isFound = OutOfScope, currentGreaterThanTarget = OutOfScope, currentLessThanTarget = OutOfScope)
         yield(SimulationState.Finished(model.toCode()))  // Finish the search if target is not found
     }
 }

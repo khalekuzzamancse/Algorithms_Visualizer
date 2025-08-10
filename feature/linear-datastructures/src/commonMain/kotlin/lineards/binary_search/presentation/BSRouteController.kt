@@ -23,14 +23,12 @@ internal class BSRouteController: SearchRouteControllerBase() {
 
 
     override fun onNext() {
+        val state = simulator.next()
+        _code.update { state.code }
         if (simulator.isFinished()) {
             _onFinished()
             return
         }
-        val state = simulator.next()
-        _code.update { state.code }
-
-
         arrayController.value?.let { arrayController ->
             val visitedColor= ArrayColor.VISITED_ELEMENT_COLOR
             when (state) {

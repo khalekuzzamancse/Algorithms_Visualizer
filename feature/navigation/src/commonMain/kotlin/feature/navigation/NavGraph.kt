@@ -180,6 +180,7 @@ fun NavController.createNavGraph(
         }
         composable(NavDestination.ExpressionSearchTree.route) {
             ExpressionTreeScreen(
+                onNavBack = openDrawerRequest,
                 navigationIcon = {
                     _DrawerIcon(
                         isNavRailMode = isNavRailMode,

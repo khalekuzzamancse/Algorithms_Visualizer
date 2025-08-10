@@ -10,6 +10,8 @@ import core.ui.graph.common.model.Node
 import core.ui.graph.editor.factory.SavedGraphProvider
 import core.ui.graph.editor.model.GraphType
 import core.ui.graph.editor.ui.GraphEditor
+import core.ui.graph.scaleGraph
+import core.ui.graph.trimGraphExtraSpace
 import core.ui.graph.viewer.controller.GraphViewerController
 
 
@@ -20,12 +22,11 @@ fun TreeEditor(
 ){
     val  tag= remember { "TreeEditor" }
     val density= LocalDensity.current
-    val nodeSizePx= remember { with(density){48.dp.toPx()} }
+    val nodeSizePx= remember { with(density){30.dp.toPx()} }
     GraphEditor(
         navigationIcon = navigationIcon,
         graphType = GraphType.Undirected,//Tree's are undirected Graph
-        ///TODO: Bug, Assigning node size is >=60f not works in DFS or post-order why
-        initialGraph = SavedGraphProvider.getTree(48f),
+        initialGraph = SavedGraphProvider.getTree().scaleGraph(nodeSizePx).trimGraphExtraSpace(),
         onDone = {result,_ ->
             val root= buildTree(result)
             onDone(

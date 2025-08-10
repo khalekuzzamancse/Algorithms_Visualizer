@@ -1,14 +1,18 @@
 package graph._core.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import core.lang.ComposeView
 import core.lang.VoidCallback
 import core.ui.CodeViewer
 import core.ui.core.SimulationScreenEvent
@@ -32,7 +36,8 @@ fun Route(
         GraphType.DirectedWeighted
     ),
     initialGraph: Pair<List<EditorNodeModel>, List<EditorEdgeModel>> = GraphFactory.getDemoGraph(LocalDensity.current.density),
-    navigationIcon: @Composable () -> Unit
+    navigationIcon: @Composable () -> Unit,
+    nodeStatusUI: ComposeView?=null
 ) {
     var navigateToVisualization:VoidCallback?= remember { null }
     val neighborSelector = viewModel.neighborSelector
@@ -62,20 +67,8 @@ fun Route(
                     }
                 )
             }
-            if (graphEditMode) {
-                //on edit mode put the existing graph instead of initial
-                GraphEditor(
-                    initialGraph = viewModel.lastEditedGraphOrNull()?.first?:initialGraph,
-                    supportedType = supportedType,
-                    graphType = viewModel.lastEditedGraphOrNull()?.second,
-                    navigationIcon = navigationIcon,
-                ) { result ,type->
-                    viewModel.onGraphCreated(result)
-                        viewModel.updateLastEditedGraphType(type)
-                    navigateToVisualization?.invoke()
-                }
-            }
-            else if (inputMode) {
+
+             if (inputMode) {
                 GraphEditor(
                     initialGraph =initialGraph,
                     supportedType = supportedType,
@@ -86,6 +79,21 @@ fun Route(
                     navigateToVisualization?.invoke()
                 }
             }
+            else{
+                //on edit mode put the existing graph instead of initial
+                GraphEditor(
+                    initialGraph = viewModel.lastEditedGraphOrNull()?.first?:initialGraph,
+                    supportedType = supportedType,
+                    graphType = viewModel.lastEditedGraphOrNull()?.second,
+                    navigationIcon = navigationIcon,
+                ) { result ,type->
+                    viewModel.onGraphCreated(result)
+                    viewModel.updateLastEditedGraphType(type)
+                    navigateToVisualization?.invoke()
+                }
+            }
+
+
 
         },
         visualizationScreen = {
@@ -109,11 +117,13 @@ fun Route(
                     FlowRow {
                         GraphViewer(
                             modifier = Modifier
-                                .padding(16.dp),
+                                .padding(horizontal = 16.dp)
+
+                            ,
                             controller = viewModel.graphController
                         )
-                        _NodeStatusIndicator()
-
+                   if(nodeStatusUI!=null)
+                       nodeStatusUI()
                     }
 
                 },
