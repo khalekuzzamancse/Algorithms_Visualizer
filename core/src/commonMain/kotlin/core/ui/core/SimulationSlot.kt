@@ -64,7 +64,7 @@ fun SimulationSlot(
         modifier = Modifier,
         disableControls = disableControls,
         extraActions = extraActions,
-        showPseudocode = state.showPseudocode,
+        showPseudocode = showPseudocode,
         disablePseudocode = disablePseudocode,
         navigationIcon = navigationIcon,
         onNext = { onEvent(SimulationScreenEvent.NextRequest) },

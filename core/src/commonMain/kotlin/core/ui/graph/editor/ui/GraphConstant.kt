@@ -4,6 +4,5 @@ import androidx.compose.ui.unit.dp
 
 object GraphConstant {
     fun nodeMinSize(hasDistance:Boolean=false)=
-        if (hasDistance) 64.dp else 48.dp
-
+        if (hasDistance) 50.dp else 40.dp
 }

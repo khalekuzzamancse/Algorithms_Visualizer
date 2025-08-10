@@ -45,14 +45,21 @@ internal fun DrawScope.drawEdge(
 
         else -> {}
 }
+    //
     //draw edge cost
     if (textMeasurer != null) {
         edge.cost?.let { text ->
-            drawEdgeCost(text, textMeasurer, edge.slop, edge.pathCenter)
-        }
+
+                drawEdgeCost(text, textMeasurer, edge.slop, edge.pathCenter)
+            }
+
+
     }
     if (edge.directed) {
-        drawArrowHead(edge.pathColor, edge.arrowHeadPosition, edge.end,width=width)
+            drawArrowHead(edge.pathColor, edge.arrowHeadPosition, edge.end,width=width)
+
+
+
     }
 
 }
