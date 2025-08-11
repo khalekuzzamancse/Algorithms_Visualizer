@@ -55,9 +55,13 @@ import core.ui.graph.common.drawNode
 import core.ui.graph.common.model.EditorEdgeModel
 import core.ui.graph.common.model.EditorNodeModel
 import core.ui.graph.editor.controller.GraphEditorController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 interface CanvasController {
     /** (Width,height)Null means not decided yet*/
@@ -77,6 +81,7 @@ interface CanvasController {
 }
 
 class CanvasControllerImpl : CanvasController {
+    private val scope= CoroutineScope(Dispatchers.Default)
     override val size = MutableStateFlow<Pair<Dp, Dp>?>(null)
     override val show = MutableStateFlow(false)
     override fun updateWidth(value: Dp) {
@@ -92,9 +97,14 @@ class CanvasControllerImpl : CanvasController {
     }
 
     override fun updateSize(width: Dp, height: Dp) {
-        size.update {
-            it?.copy(first = width, second = height) ?: Pair(width, height)
+        scope.launch {
+            size.update{null}
+            delay(500) //without delay state update not trigger new UI
+            size.update {
+                it?.copy(first = width, second = height) ?: Pair(width, height)
+            }
         }
+
     }
 
     //Calculating exact size that need to render the node and parent
@@ -116,6 +126,8 @@ class CanvasControllerImpl : CanvasController {
         val canvasHeight = with(density) { points.second.toDp() + nodeMaxSize }
         val canvasWidth = with(density) { points.first.toDp() + nodeMaxSize }
         updateSize(canvasWidth, canvasHeight)
+       // updateSize(600.dp,400.dp)
+        Logger.on("CanvasController","with nodes and edges")
     }
 
     override fun showDialog() {
@@ -282,10 +294,10 @@ fun DialogUI(
                     IconButton(
                         onClick = {
                             try {
-                                val width = value1.toInt().dp
-                                val height = value2.toInt().dp
-                                if (width >= canvasSize.first && height >= canvasSize.second) {
-                                    canvasController.updateSize(width, height)
+                                val width = value1.toInt()
+                                val height = value2.toInt()
+                                if (width >= canvasSize.first.value.toInt() && height >= canvasSize.second.value.toInt()) {
+                                    canvasController.updateSize(width.dp, height.dp)
                                     canvasController.dismiss()
                                 }
                             } catch (_: Throwable) {
