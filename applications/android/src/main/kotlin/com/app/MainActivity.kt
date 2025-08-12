@@ -3,8 +3,6 @@ package com.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AspectRatio
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.app.theme.AndroidAppThemes
 import feature.navigation.MyApplication

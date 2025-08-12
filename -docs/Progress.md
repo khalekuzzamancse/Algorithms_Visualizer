@@ -3,6 +3,10 @@
 
 
 # Bugs and Edge case
+- Graph editor top bar overlapped with the navigaiton drawer icon  in POCO C3, fix the content padding with navIcon
+- Why causae loading during back  from graph visualization screen to view screen
+- graph dialog confirmation
+- prevnet crsh to empty graph visualtion screen 
  If size is not enough the node and edge draw will throw exception
 - Remove extra canvas height for graph view with carefully later
 # Progress

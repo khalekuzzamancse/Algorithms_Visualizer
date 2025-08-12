@@ -21,6 +21,8 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DoneAll
+import androidx.compose.material.icons.outlined.SwipeLeft
+import androidx.compose.material.icons.outlined.SwipeRight
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -54,6 +56,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import core.lang.Logger
+import core.ui.SpacerHorizontal
 import core.ui.SpacerVertical
 import core.ui.core.CustomTextField
 import core.ui.graph.common.drawEdge
@@ -161,7 +164,7 @@ internal fun Editor(
     val nodes: Set<EditorNodeModel> = controller.nodes.collectAsState().value
     val edges = controller.edges.collectAsState().value
     var awayFromViewportX by rememberSaveable { mutableStateOf(0f) }
-    val scrollbarSize = 20.dp
+    val scrollbarSize = 30.dp
     val canvasController = controller.canvasController
     val density = LocalDensity.current
     val canvasSize = canvasController.size.collectAsState().value
@@ -358,16 +361,21 @@ private fun ScrollbarHorizontal(
                     },
                     onDragEnd = {}
                 )
-            }
+            },
+        contentAlignment = Alignment.Center
     ) {
-        // Static scrollbar thumb
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(50.dp) // Static size for now
-                .background(Color(0xFF757575), RoundedCornerShape(4.dp))
-                .align(Alignment.Center) // Thumb position
-        )
+        Row(modifier=Modifier.padding(2.dp).fillMaxHeight()) {
+            Icon(
+                imageVector = Icons.Outlined.SwipeLeft,
+                contentDescription = "drag left"
+            )
+            SpacerHorizontal(16)
+            Icon(
+                imageVector = Icons.Outlined.SwipeRight,
+                contentDescription = "drag left"
+            )
+
+        }
     }
 
 }

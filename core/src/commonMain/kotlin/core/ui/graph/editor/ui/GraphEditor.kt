@@ -90,7 +90,7 @@ fun GraphEditor(
                 },
                 onSaveRequest = {
                     val result = controller.onGraphInputCompleted()
-                  val type=  controller.inputController.graphType.value
+                     val type=  controller.inputController.graphType.value
                     onDone(result,type)
                 },
                 onRemoveNodeRequest = { controller.onRemovalRequest() },

@@ -1,5 +1,6 @@
 package core.ui.graph.editor.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -18,11 +19,12 @@ import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Moving
 import androidx.compose.material.icons.filled.RemoveCircleOutline
+import androidx.compose.material.icons.filled.SwipeLeft
+import androidx.compose.material.icons.filled.SwipeRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -40,7 +42,7 @@ import core.lang.VoidCallback
 
 
 @Composable
- fun Instruction(
+fun Instruction(
     modifier: Modifier = Modifier,
     onGraphTypeInputRequest: () -> Unit
 ) {
@@ -66,6 +68,7 @@ import core.lang.VoidCallback
             color = MaterialTheme.colorScheme.secondary
         )
         Spacer(modifier = Modifier.height(16.dp))
+
 
         InstructionRow(
             icon = Icons.AutoMirrored.Filled.Input,
@@ -95,7 +98,14 @@ import core.lang.VoidCallback
             icon = Icons.Filled.ArrowCircleRight,
             text = "Start Visualization"
         )
-
+        InstructionRow(
+            icon = Icons.Filled.SwipeLeft,
+            text = "Drag left in this bar to scroll canvas left"
+        )
+        InstructionRow(
+            icon = Icons.Filled.SwipeRight,
+            text = "Drag left in this bar to scroll canvas right"
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -175,53 +185,55 @@ internal fun GraphEditorToolBar(
     navigationIcon: @Composable () -> Unit,
 ) {
 
+
     TopAppBar(
         title = {},
         navigationIcon = navigationIcon,
         actions = {
-            TopBarIconButton(
-                enabled = !disableAll,
-                icon =  Icons.Filled.AspectRatio,
-                onClick = onCanvasSizeChangeRequest
-            )
-            TopBarIconButton(
-                enabled = !disableAll,
-                icon = Icons.Filled.Delete,
-                onClick = onDeleteRequest
-            )
-            //for clear selection
-            TopBarIconButton(
-                enabled = !disableAll,
-                icon = Icons.Filled.ClearAll,
-                onClick = onClearSelectionRequest
-            )
-            // Add Node Button
-            TopBarIconButton(
-                enabled = !disableAll,
-                icon = Icons.Filled.AddCircleOutline,
-                onClick = onAddNodeRequest
-            )
+                TopBarIconButton(
+                    enabled = !disableAll,
+                    icon =  Icons.Filled.AspectRatio,
+                    onClick = onCanvasSizeChangeRequest
+                )
+                TopBarIconButton(
+                    enabled = !disableAll,
+                    icon = Icons.Filled.Delete,
+                    onClick = onDeleteRequest
+                )
+                //for clear selection
+                TopBarIconButton(
+                    enabled = !disableAll,
+                    icon = Icons.Filled.ClearAll,
+                    onClick = onClearSelectionRequest
+                )
+                // Add Node Button
+                TopBarIconButton(
+                    enabled = !disableAll,
+                    icon = Icons.Filled.AddCircleOutline,
+                    onClick = onAddNodeRequest
+                )
 
-            // Add Edge Button
-            TopBarIconButton(
-                enabled = !disableAll,
-                icon = Icons.Filled.Moving,
-                onClick = onAddEdgeRequest
-            )
+                // Add Edge Button
+                TopBarIconButton(
+                    enabled = !disableAll,
+                    icon = Icons.Filled.Moving,
+                    onClick = onAddEdgeRequest
+                )
 
-            // Remove Node Button
-            TopBarIconButton(
-                enabled = !disableAll && enabledRemoveNode,
-                icon = Icons.Filled.RemoveCircleOutline,
-                onClick = onRemoveNodeRequest
-            )
+                // Remove Node Button
+                TopBarIconButton(
+                    enabled = !disableAll && enabledRemoveNode,
+                    icon = Icons.Filled.RemoveCircleOutline,
+                    onClick = onRemoveNodeRequest
+                )
 
-            //
-            TopBarIconButton(
-                enabled = !disableAll,
-                icon = Icons.Filled.ArrowCircleRight,
-                onClick = onSaveRequest
-            )
+                //
+                TopBarIconButton(
+                    enabled = !disableAll,
+                    icon = Icons.Filled.ArrowCircleRight,
+                    onClick = onSaveRequest
+                )
+
         }
     )
 }
@@ -232,17 +244,20 @@ private fun TopBarIconButton(
     icon: ImageVector,
     onClick: () -> Unit
 ) {
-    IconButton(
-        onClick = onClick,
-        enabled = enabled
-    ) {
+    //Just raw icon to avoid internal padding so that takes less spaces that works well is smaller screen
         Icon(
             imageVector = icon,
             contentDescription = null,
+            modifier = Modifier.clickable {
+                if(enabled)
+                    onClick()
+            }
+                .padding(horizontal = 4.dp)
+            ,
             tint = if (enabled) MaterialTheme.colorScheme.primary
             else Color.Gray
         )
-    }
+
 }
 
 /**
