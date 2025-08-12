@@ -6,17 +6,19 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import core.ui.graph.common.drawEdge
 import core.ui.graph.common.drawNode
@@ -26,10 +28,16 @@ import core.ui.graph.editor.ui.getMaxXY
 import core.ui.graph.viewer.controller.GraphViewerController
 
 
+/**
+ * @param modifier , do not give padding instead use [contentPaddingTop] and [contentPaddingLeft] to avoid
+ * cut-out effect during scrolling
+ */
 @Composable
 fun GraphViewer(
     modifier: Modifier,
-    controller: GraphViewerController
+    controller: GraphViewerController,
+    contentPaddingTop: Dp=4.dp,
+    contentPaddingLeft: Dp=4.dp
 ) {
 
 
@@ -38,7 +46,9 @@ fun GraphViewer(
     ) {
         _GraphViewer2(
             nodes = controller.nodes.collectAsState().value,
-            edges = controller.edges.collectAsState().value
+            edges = controller.edges.collectAsState().value,
+            contentPaddingTop=contentPaddingTop,
+            contentPaddingLeft=contentPaddingLeft
         )
 //        _GraphDrawer(
 //            nodes = controller.nodes.collectAsState().value,
@@ -52,7 +62,9 @@ fun GraphViewer(
 @Composable
 private fun _GraphViewer2(
     nodes: Set<EditorNodeModel>,
-    edges: Set<EditorEdgeModel>
+    edges: Set<EditorEdgeModel>,
+    contentPaddingTop: Dp,
+    contentPaddingLeft: Dp
 ) {
     val canvasUtils = remember(nodes, edges) {
         getMaxXY(nodes = nodes.map { it.topLeft },
@@ -60,6 +72,9 @@ private fun _GraphViewer2(
             controls = edges.map { it.control })
     }
     val density = LocalDensity.current
+    val topPaddingPx= with(density){contentPaddingTop.toPx()}
+    val leftPaddingPx= with(density){contentPaddingLeft.toPx()}
+
     val nodeMaxSize = remember { 64.dp }
     val extra =
         remember { 20.dp }//possible that edge cost at end and after the node or control point
@@ -73,24 +88,32 @@ private fun _GraphViewer2(
     Column(
         modifier = Modifier
             .height(canvasHeight)
-            .width(canvasWidth + 400.dp)
+            .width(canvasWidth)
             .horizontalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState())
     ) {
-        Box(modifier = Modifier.width(canvasWidth + 400.dp))//placeholder for scrollable
+        Box(modifier = Modifier.width(canvasWidth))//placeholder for scrollable
+        Box(modifier = Modifier.width(canvasHeight))//placeholder for scrollable
         Box(modifier = Modifier
             .height(canvasHeight)
-            .width(canvasWidth + 400.dp)
+            .width(canvasWidth)
             .drawBehind {
-                edges.forEach {
-                    drawEdge(
-                        hideControllerPoints = true,
-                        edge = it, textMeasurer = textMeasurer,
-                        width = edgeWith
-                    )
+                translate(
+                    top = topPaddingPx,
+                    left = leftPaddingPx
+                ) {
+                    edges.forEach {
+                        drawEdge(
+                            hideControllerPoints = true,
+                            edge = it, textMeasurer = textMeasurer,
+                            width = edgeWith
+                        )
+                    }
+                    nodes.forEach {
+                        drawNode(it, textMeasurer)
+                    }
                 }
-                nodes.forEach {
-                    drawNode(it, textMeasurer)
-                }
+
             }
         )
     }

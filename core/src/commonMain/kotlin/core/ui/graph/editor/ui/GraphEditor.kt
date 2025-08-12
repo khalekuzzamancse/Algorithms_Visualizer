@@ -3,6 +3,8 @@ package core.ui.graph.editor.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -98,6 +100,9 @@ fun GraphEditor(
                 },
                 onDeleteRequest = {
                     controller.clearAll()
+                },
+                onCanvasSizeChangeRequest = {
+                    controller.canvasController.showDialog()
                 }
             )
         }
@@ -106,10 +111,12 @@ fun GraphEditor(
             modifier = Modifier
                 .padding(scaffoldPadding)
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
 
             if (graphType == null && !graphTypeHasTaken) {
                 Instruction(
+
                     onGraphTypeInputRequest = {
                         controller.inputController.onGraphTypeSelectionRequest()
                     }

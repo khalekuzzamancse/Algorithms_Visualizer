@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -16,14 +17,15 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DoneAll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.TextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -38,18 +40,22 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import core.lang.Logger
-import core.ui.SpacerHorizontal
 import core.ui.SpacerVertical
+import core.ui.core.CustomTextField
 import core.ui.graph.common.drawEdge
 import core.ui.graph.common.drawNode
 import core.ui.graph.common.model.EditorEdgeModel
@@ -73,7 +79,7 @@ interface CanvasController {
     fun sizeAccordingToContent(
         nodes: List<EditorNodeModel>,
         edges: List<EditorEdgeModel>,
-        density: Density
+        density: Density,
     )
 
     fun showDialog()
@@ -81,7 +87,7 @@ interface CanvasController {
 }
 
 class CanvasControllerImpl : CanvasController {
-    private val scope= CoroutineScope(Dispatchers.Default)
+    private val scope = CoroutineScope(Dispatchers.Default)
     override val size = MutableStateFlow<Pair<Dp, Dp>?>(null)
     override val show = MutableStateFlow(false)
     override fun updateWidth(value: Dp) {
@@ -98,7 +104,7 @@ class CanvasControllerImpl : CanvasController {
 
     override fun updateSize(width: Dp, height: Dp) {
         scope.launch {
-            size.update{null}
+            size.update { null }
             delay(500) //without delay state update not trigger new UI
             size.update {
                 it?.copy(first = width, second = height) ?: Pair(width, height)
@@ -121,13 +127,13 @@ class CanvasControllerImpl : CanvasController {
         val points = getMaxXY(nodes = nodes.map { it.topLeft },
             starts = edges.map { it.start }, ends = edges.map { it.end },
             controls = edges.map { it.control })
+
         //Dealing with topLeft so need to add the node size to get the canvas exact size
         val nodeMaxSize = with(density) { nodes.maxBy { it.exactSizePx }.exactSizePx.toDp() }
         val canvasHeight = with(density) { points.second.toDp() + nodeMaxSize }
         val canvasWidth = with(density) { points.first.toDp() + nodeMaxSize }
         updateSize(canvasWidth, canvasHeight)
-       // updateSize(600.dp,400.dp)
-        Logger.on("CanvasController","with nodes and edges")
+        Logger.on("GraphEditor", "with nodes and edges")
     }
 
     override fun showDialog() {
@@ -135,7 +141,7 @@ class CanvasControllerImpl : CanvasController {
     }
 
     override fun dismiss() {
-        show.update{false}
+        show.update { false }
     }
 
 }
@@ -146,17 +152,22 @@ class CanvasControllerImpl : CanvasController {
  * -  Manage it own scroller so consumer should handle the nested scrolling otherwise can causes crash
  */
 @Composable
-internal fun Editor(controller: GraphEditorController) {
+internal fun Editor(
+    controller: GraphEditorController,
+    contentPaddingTop: Dp=4.dp,
+    contentPaddingLeft: Dp=4.dp
+) {
     val tag = "GraphEditor:_Editor"
     val nodes: Set<EditorNodeModel> = controller.nodes.collectAsState().value
     val edges = controller.edges.collectAsState().value
     var awayFromViewportX by rememberSaveable { mutableStateOf(0f) }
     val scrollbarSize = 20.dp
-    val canvasController = remember(nodes, edges) { CanvasControllerImpl() }
+    val canvasController = controller.canvasController
     val density = LocalDensity.current
     val canvasSize = canvasController.size.collectAsState().value
-    var show = canvasController.show.collectAsState().value
-    LaunchedEffect(nodes, edges) {
+    val show = canvasController.show.collectAsState().value
+    LaunchedEffect(Unit) {
+        //don't depends on node and edges because these during new node add will cause problem
         canvasController.sizeAccordingToContent(nodes.toList(), edges, density)
     }
 
@@ -171,8 +182,8 @@ internal fun Editor(controller: GraphEditorController) {
             CircularProgressIndicator(Modifier.size(64.dp))
         }
     } else {
-        val contentWidth = canvasSize.first
-        val contentHeight = canvasSize.second
+        val contentWidth = canvasSize.first+contentPaddingLeft////since left are shifted down, so to avoid right overlap
+        val contentHeight = canvasSize.second+contentPaddingTop//since top are shifted down, so to avoid bottom overlap
         BoxWithConstraints(Modifier) {
             val viewportWidth = maxWidth
             val scrollableWidth = contentWidth - viewportWidth
@@ -180,22 +191,11 @@ internal fun Editor(controller: GraphEditorController) {
             ScrollbarHorizontal(
                 modifier = Modifier,
                 scrollbarSize = scrollbarSize,
-                viewportWidth = viewportWidth,
-                awayFromViewportX = awayFromViewportX,
                 onDrag = { amount ->
                     //x∈[wV −wC ,0]
                     awayFromViewportX = (awayFromViewportX + amount).coerceIn(-scrollWidthPx, 0f)
                 },
-                canvasSize = canvasSize,
-                onSizeChanged = {
-                    canvasController.showDialog()
-                },
             )
-            Logger.on(tag, "viewportWidth:$viewportWidth")
-            Logger.on(tag, "canvasWidth:$contentWidth")
-            Logger.on(tag, "scrollableWidth:$scrollableWidth")
-            Logger.on(tag, "scrollWidthPx:$scrollWidthPx px")
-            Logger.on(tag, "awayFromViewportX:$awayFromViewportX px")
             //Viewport
             Box(
                 modifier = Modifier.padding(top = scrollbarSize)
@@ -204,10 +204,15 @@ internal fun Editor(controller: GraphEditorController) {
                     .pointerInput(Unit) {
                         detectTapGestures(
                             onTap = { positionInViewPort ->
-                                Logger.on(tag, "onTap:$positionInViewPort")
+                                Logger.on(tag, "onTap, positionInViewport:$positionInViewPort")
                                 //enable only horizontal axis dragging
                                 val positionInCanvas =
-                                    positionInViewPort - Offset.Zero.copy(awayFromViewportX)
+                                    positionInViewPort - Offset.Zero.copy(
+                                        x = awayFromViewportX,
+                                        y = 0f
+                                    )
+                                Logger.on(tag, "onTap, awayFromViewportX:$awayFromViewportX")
+                                Logger.on(tag, "onTap position in canvas:$positionInCanvas")
                                 controller.onTap(positionInCanvas)
                             },
                             onDoubleTap = {
@@ -231,9 +236,16 @@ internal fun Editor(controller: GraphEditorController) {
 
             ) {
                 CanvasView(
-                    modifier = Modifier.width(contentWidth)
+                    modifier = Modifier
+                        .width(contentWidth)
                         .height(contentHeight - scrollbarSize)
-                        .background(Color.Gray),
+                        .shadow(
+                            elevation = .5.dp,
+                            ambientColor = Color.White,
+                            clip = false
+                        ),
+                    contentPaddingTop = contentPaddingTop,
+                    contentPaddingLeft = contentPaddingLeft,
                     topLeft = Offset.Zero.copy(x = awayFromViewportX),
                     nodes = nodes,
                     edges = edges,
@@ -249,64 +261,68 @@ internal fun Editor(controller: GraphEditorController) {
 
 @Composable
 fun DialogUI(
-    modifier: Modifier = Modifier,
     canvasController: CanvasController,
 ) {
-    val canvasSize=canvasController.size.collectAsState().value
-    canvasSize?.let {canvasSize->
-        var value1 by remember { mutableStateOf("${canvasSize.first.value.toInt()}") }
-        var value2 by remember { mutableStateOf("${canvasSize.second.value.toInt()}") }
+    val canvasSize = canvasController.size.collectAsState().value
+    canvasSize?.let { size ->
+        var value1 by remember { mutableStateOf("${size.first.value.toInt()}") }
+        var value2 by remember { mutableStateOf("${size.second.value.toInt()}") }
         Dialog(
             onDismissRequest = canvasController::dismiss
         ) {
             Surface(
-                shadowElevation = 8.dp
+                shadowElevation = 8.dp,
+                modifier = Modifier.widthIn(max = 450.dp),
+                shape = RoundedCornerShape(16.dp)
             ) {
-                Column {
-                    Row(
-                        modifier = Modifier.height(300.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TextField(
-                            modifier = Modifier.width(100.dp),
-                            value = value1,
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                keyboardType = KeyboardType.Number
-                            ),
-                            onValueChange = {
-                                value1=it
-                            }
-                        )
-                        SpacerHorizontal(8)
-                        TextField(
-                            modifier = Modifier.width(100.dp),
-                            value = value2,
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                keyboardType = KeyboardType.Number
-                            ),
-                            onValueChange = {
-                                value2=it
-                            }
-                        )
-
-                    }
+                Column(
+                    modifier = Modifier.padding(24.dp)
+                ) {
+                    Text(
+                        text = "Canvas Size(Width, Height)",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.W400
+                    )
                     SpacerVertical(16)
-                    IconButton(
-                        onClick = {
-                            try {
-                                val width = value1.toInt()
-                                val height = value2.toInt()
-                                if (width >= canvasSize.first.value.toInt() && height >= canvasSize.second.value.toInt()) {
-                                    canvasController.updateSize(width.dp, height.dp)
-                                    canvasController.dismiss()
-                                }
-                            } catch (_: Throwable) {
-                            }
-                        }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
+                        CustomTextField(
+                            modifier = Modifier.width(80.dp),
+                            label = "Width",
+                            value = value1,
+                            textAlign = TextAlign.Center,
+                            keyboardType = KeyboardType.Number,
+                            onValueChange = {
+                                value1 = it
+                            }
+                        )
+                        CustomTextField(
+                            modifier = Modifier.width(80.dp),
+                            textAlign = TextAlign.Center,
+                            label = "Height",
+                            value = value2,
+                            keyboardType = KeyboardType.Number,
+                            onValueChange = {
+                                value2 = it
+                            }
+                        )
                         Icon(
                             imageVector = Icons.Filled.DoneAll,
-                            contentDescription = "done"
+                            contentDescription = "done",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.clickable {
+                                try {
+                                    val width = value1.toInt()
+                                    val height = value2.toInt()
+                                    //TODO: Force to  min size
+                                    canvasController.updateSize(width.dp, height.dp)
+                                    canvasController.dismiss()
+                                } catch (_: Throwable) {
+                                }
+                            }
                         )
                     }
                 }
@@ -321,71 +337,85 @@ fun DialogUI(
 private fun ScrollbarHorizontal(
     modifier: Modifier = Modifier,
     scrollbarSize: Dp,
-    awayFromViewportX: Float,
-    viewportWidth: Dp,
-    onDrag: (Float) -> Unit,
-    canvasSize: Pair<Dp, Dp>,
-    onSizeChanged: () -> Unit
+    onDrag: (Float) -> Unit
 ) {
-    val density = LocalDensity.current
-    val paddingLeftPx = with(density) { 32.dp.toPx() }
-    val viewportWidthPx = with(density) { viewportWidth.toPx() }
-    var showDialog by mutableStateOf(false)
+
     Box(
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(scrollbarSize)
-            .background(Color.White)
-            .shadow(elevation = 8.dp)
+            .background(Color(0xFFE0E0E0), RoundedCornerShape(4.dp)) // Track color
+            .shadow(
+                elevation = 2.dp,
+                ambientColor = Color.Black.copy(alpha = 0.1f),
+                shape = RoundedCornerShape(4.dp)
+            )
             .pointerInput(Unit) {
-                detectDragGestures(onDragStart = {},
+                detectDragGestures(
+                    onDragStart = {},
                     onDrag = { _, dragAmount ->
                         onDrag(dragAmount.x)
                     },
-                    onDragEnd = {
-
-                    }
+                    onDragEnd = {}
                 )
-            },
-        contentAlignment = Alignment.Center
+            }
     ) {
-        Box(Modifier.width(20.dp).fillMaxHeight().background(Color.Red).clickable {
-            onSizeChanged()
-        })
-
+        // Static scrollbar thumb
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(50.dp) // Static size for now
+                .background(Color(0xFF757575), RoundedCornerShape(4.dp))
+                .align(Alignment.Center) // Thumb position
+        )
     }
 
 }
-
+/**
+ * @param modifier , do not give padding instead use [contentPaddingTop] and [contentPaddingLeft] to avoid
+ * cut-out effect during scrolling
+ */
 @Composable
 private fun CanvasView(
     modifier: Modifier = Modifier,
     topLeft: Offset,
     nodes: Set<EditorNodeModel>,
-    edges: List<EditorEdgeModel>
+    edges: List<EditorEdgeModel>,
+    contentPaddingTop: Dp=4.dp,
+    contentPaddingLeft: Dp=4.dp
+
 ) {
     val textMeasurer = rememberTextMeasurer()
     val edgeWidth = with(LocalDensity.current) { 1.dp.toPx() }
+    val density = LocalDensity.current
+    val topPaddingPx= with(density){contentPaddingTop.toPx()}
+    val leftPaddingPx= with(density){contentPaddingLeft.toPx()}
     Box(modifier = modifier
         .offset { IntOffset(topLeft.x.toInt(), y = 0) }
         .drawBehind {
-            try {
-                //TODO:Since drawing, and can pass a saved graph but the device may have not space window to fit the drawing
-                //in that case it will crash so avoid the app crashing,fix it later
-                edges.forEach {
-                    drawEdge(
-                        hideControllerPoints = false,
-                        it,
-                        textMeasurer,
-                        width = edgeWidth
-                    )
-                }
-                nodes.forEach {
-                    drawNode(it, textMeasurer)
-                }
-            } catch (_: Exception) {
+            translate(
+                top = topPaddingPx,
+                left = leftPaddingPx
+            ) {
+                try {
+                    //TODO:Since drawing, and can pass a saved graph but the device may have not space window to fit the drawing
+                    //in that case it will crash so avoid the app crashing,fix it later
+                    edges.forEach {
+                        drawEdge(
+                            hideControllerPoints = false,
+                            it,
+                            textMeasurer,
+                            width = edgeWidth
+                        )
+                    }
+                    nodes.forEach {
+                        drawNode(it, textMeasurer)
+                    }
+                } catch (_: Exception) {
 
+                }
             }
+
         }
     )
 }

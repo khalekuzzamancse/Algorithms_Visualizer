@@ -5,10 +5,12 @@ import core.ui.graph.common.model.EditorEdgeModel
 import core.ui.graph.common.model.EditorNodeModel
 import core.ui.graph.common.model.GraphResult
 import core.ui.graph.editor.model.GraphType
+import core.ui.graph.editor.ui.CanvasController
 import kotlinx.coroutines.flow.StateFlow
 
 internal interface GraphEditorController {
     val inputController: InputController
+    val canvasController:CanvasController
     /**Forcing to implement a separate controller to reduce responsible and code length*/
     interface InputController {
         val showGraphTypeSelectionUi: StateFlow<Boolean>

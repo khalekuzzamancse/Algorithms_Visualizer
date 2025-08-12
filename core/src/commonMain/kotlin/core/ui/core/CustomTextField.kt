@@ -22,6 +22,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.sp
     leadingIcon: ImageVector? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     readOnly:Boolean=false,
+    textAlign : TextAlign= TextAlign.Start,
     onValueChange: (String) -> Unit,
     trailingIcon: (@Composable (Modifier) -> Unit)? = null
 ) {
@@ -42,6 +44,7 @@ import androidx.compose.ui.unit.sp
         modifier = modifier,
         label = label,
         value = value,
+        textAlign=textAlign,
         visualTransformation = visualTransformation,
         leadingIcon = leadingIcon,
         keyboardType = keyboardType,
@@ -56,6 +59,7 @@ private fun _BasicAuthTextField(
     modifier: Modifier,
     label: String,
     value: String,
+    textAlign : TextAlign= TextAlign.Start,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     leadingIcon: ImageVector?,
     keyboardType: KeyboardType,
@@ -74,7 +78,7 @@ private fun _BasicAuthTextField(
     BasicTextField(
         value = value,
         onValueChange = onValueChanged,
-        textStyle = TextStyle(fontSize = fontSize, color = MaterialTheme.colorScheme.onSurface),
+        textStyle = TextStyle(fontSize = fontSize, color = MaterialTheme.colorScheme.onSurface, textAlign = textAlign),
         singleLine = true,
         readOnly = readOnly,
         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = keyboardType),

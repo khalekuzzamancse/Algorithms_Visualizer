@@ -2,6 +2,7 @@ package core.lang
 @Suppress("functionName","unused")
  fun Any.tag()=this::class.simpleName
 object Logger {
+    private val id="CustomLog"
     fun on(tag: String, msg: String) {
         _log(tag,msg)
     }
@@ -11,7 +12,7 @@ object Logger {
 
 
     private fun _log(tag: String, msg: String) {
-        println("$tag::$msg")
+        println("$id::$tag::$msg")
     }
 
 }

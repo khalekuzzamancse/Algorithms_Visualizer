@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Input
 import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.ArrowCircleRight
+import androidx.compose.material.icons.filled.AspectRatio
 import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Moving
@@ -170,6 +171,7 @@ internal fun GraphEditorToolBar(
     onRemoveNodeRequest: () -> Unit,
     onClearSelectionRequest:()->Unit={},
     onDeleteRequest:VoidCallback,
+    onCanvasSizeChangeRequest:VoidCallback,
     navigationIcon: @Composable () -> Unit,
 ) {
 
@@ -177,6 +179,11 @@ internal fun GraphEditorToolBar(
         title = {},
         navigationIcon = navigationIcon,
         actions = {
+            TopBarIconButton(
+                enabled = !disableAll,
+                icon =  Icons.Filled.AspectRatio,
+                onClick = onCanvasSizeChangeRequest
+            )
             TopBarIconButton(
                 enabled = !disableAll,
                 icon = Icons.Filled.Delete,

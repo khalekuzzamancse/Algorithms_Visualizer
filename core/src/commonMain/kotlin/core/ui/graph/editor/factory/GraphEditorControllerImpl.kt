@@ -14,6 +14,8 @@ import core.ui.graph.common.model.Node
 import core.ui.graph.editor.controller.GraphEditorController
 import core.ui.graph.editor.model.GraphEditorMode
 import core.ui.graph.editor.model.GraphType
+import core.ui.graph.editor.ui.CanvasController
+import core.ui.graph.editor.ui.CanvasControllerImpl
 import kotlinx.coroutines.flow.StateFlow
 
 
@@ -80,7 +82,7 @@ internal data class GraphEditorControllerImpl(
 
 
     override var selectedEdge = edgeManger.selectedEdge
-
+    override val canvasController=CanvasControllerImpl()
 
     override val edges: StateFlow<List<EditorEdgeModel>>
         get() = edgeManger.edges

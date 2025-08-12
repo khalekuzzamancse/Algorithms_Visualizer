@@ -1,17 +1,12 @@
 package graph._core.presentation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.dp
 import core.lang.ComposeView
 import core.lang.VoidCallback
 import core.ui.CodeViewer
@@ -115,10 +110,12 @@ fun Route(
                             )
                 },
                 visualization = {
+                    //No padding should give to graph it will cut off it has scrollable item
+                    //or if has not scrollable item then give padding
+                    //or give the graph padding as content padding
                     FlowRow {
                         GraphViewer(
                             modifier = Modifier
-                                .padding(horizontal = 16.dp)
 
                             ,
                             controller = viewModel.graphController
