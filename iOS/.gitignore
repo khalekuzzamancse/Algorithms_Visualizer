@@ -1,0 +1,105 @@
+# ========================
+# Universal Ignored Files
+# ========================
+*.log
+*.tmp
+*.swp
+*.lock
+*.bak
+*.class
+*.py[cod]
+*.DS_Store
+Thumbs.db
+ehthumbs.db
+*.sublime-workspace
+*.sublime-project
+
+# ========================
+# Node.js / JavaScript
+# ========================
+**/node_modules/
+**/dist/
+**/build/
+**/.next/
+**/.nuxt/
+**/.turbo/
+**/.vite/
+
+# ========================
+# iOS / Xcode
+# ========================
+# Build products
+**/DerivedData/
+**/build/
+**/*.xcworkspace
+**/*.xcuserstate
+**/xcuserdata/
+**/*.xcodeproj/*
+**/*.xcscmblueprint
+**/*.moved-aside
+**/*.hmap
+**/*.ipa
+**/*.dSYM
+**/*.xcarchive
+
+# Swift Package Manager
+**/.build/
+**/Package.resolved
+
+# CocoaPods
+**/Pods/
+
+# Carthage
+**/Carthage/Build/
+
+# Fastlane
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots/**/*.png
+**/fastlane/test_output/
+
+# Xcode Server
+**/.xcschememanagement.plist
+
+# User settings and temp files
+*.swp
+*.lock
+*.tmp
+*.bak
+*.orig
+*.rej
+
+# OS-specific
+.DS_Store
+Icon?
+Desktop.ini
+Thumbs.db
+
+# ========================
+# Flutter / Dart (optional)
+# ========================
+**/.dart_tool/
+**/.packages
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.pub-cache/
+**/coverage/
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework/
+**/ios/Flutter/App.framework/
+**/ios/.generated/
+
+# ========================
+# Others
+# ========================
+*.apk
+*.ipa
+*.exe
+*.app
+*.zip
+*.tar
+*.gz
+*.7z
+*.rar
+**/test-results/
+**/.cache/
