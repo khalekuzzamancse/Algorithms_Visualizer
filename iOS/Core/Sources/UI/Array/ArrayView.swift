@@ -1,15 +1,18 @@
 import SwiftUI
 
 
-struct ArrayView:View {
+public struct ArrayView:View {
     @StateObject var controller = ArrayControllerImpl(
         itemLabels: ["A", "B", "C", "D"],
         pointerLabels: ["i"]
     )
     @State var cnt=0
-    var body: some View {
+    public init(){
         
-        VStack{
+  
+    }
+   public var body: some View {
+       VStack{
             HStack{
                 Button("Swap 0 and 1") {
                     let ctrl = controller  // capture safely

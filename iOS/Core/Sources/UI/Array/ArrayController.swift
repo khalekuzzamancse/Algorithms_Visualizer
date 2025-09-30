@@ -1,5 +1,25 @@
 import SwiftUI
 
+protocol VisualArrayController: ObservableObject {
+    var pointerPosition: CGPoint? { get set }
+    var allCellPlaced: Bool { get set }
+    var cells: [Cell] { get set }
+    var elements: [Element] { get set }
+    var pointers: [Pointer] { get set }
+    
+    var numberOfElements: Int { get }
+    
+    func onCellPositionChanged(index: Int, position: CGPoint)
+    func changeElementPosition(index: Int, position: CGPoint)
+    func swap(i: Int, j: Int, delay: TimeInterval) async
+    func movePointer(label: String, index: Int)
+    func hidePointer(label: String)
+    func changeElementColor(index: Int, color: Color)
+    func removePointers(labels: [String])
+    func changeCellColorUpTo(index: Int, color: Color)
+    func changeCellColor(index: Int, color: Color)
+}
+
 
 
 @Observable
@@ -104,26 +124,6 @@ class ArrayControllerImpl : VisualArrayController{
 }
 
 
-
-protocol VisualArrayController: ObservableObject {
-    var pointerPosition: CGPoint? { get set }
-    var allCellPlaced: Bool { get set }
-    var cells: [Cell] { get set }
-    var elements: [Element] { get set }
-    var pointers: [Pointer] { get set }
-    
-    var numberOfElements: Int { get }
-    
-    func onCellPositionChanged(index: Int, position: CGPoint)
-    func changeElementPosition(index: Int, position: CGPoint)
-    func swap(i: Int, j: Int, delay: TimeInterval) async
-    func movePointer(label: String, index: Int)
-    func hidePointer(label: String)
-    func changeElementColor(index: Int, color: Color)
-    func removePointers(labels: [String])
-    func changeCellColorUpTo(index: Int, color: Color)
-    func changeCellColor(index: Int, color: Color)
-}
 
 
 

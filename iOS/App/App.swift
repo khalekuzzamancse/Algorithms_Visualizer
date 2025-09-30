@@ -2,31 +2,23 @@
 import SwiftUI
 import SwiftUI
 import CoreUI
-import NearByMessenger
 
 
 @main
 struct SwiftUIConceptApp: App {
     var body: some Scene {
         WindowGroup {
-           // ContentView()
-            NearByMessengerNavHost()
+            ArrayView()
+       
         }
     }
 }
 
 
-struct ContentView: View {
-    var body: some View {
-        NearByMessengerNavHost()
-    }
-}
+
 
 #Preview {
-   NearByMessengerNavHost()
-   //ProfileNavHost()
-   // Demo()
-  
+    ArrayView()
   
 }
 

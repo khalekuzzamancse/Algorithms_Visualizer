@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="bfs-desktop">
-    <output-path>$PROJECT_DIR$/feature/graph/bfs/build/libs</output-path>
-    <root id="archive" name="bfs-desktop.jar">
-      <element id="module-output" name="AlgorithmVisualizer.feature.graph.bfs.desktopMain" />
-    </root>
-  </artifact>
-</component>

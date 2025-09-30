@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="dfs-desktop">
-    <output-path>$PROJECT_DIR$/feature/graph/dfs/build/libs</output-path>
-    <root id="archive" name="dfs-desktop.jar">
-      <element id="module-output" name="AlgorithmVisualizer.feature.graph.dfs.desktopMain" />
-    </root>
-  </artifact>
-</component>
