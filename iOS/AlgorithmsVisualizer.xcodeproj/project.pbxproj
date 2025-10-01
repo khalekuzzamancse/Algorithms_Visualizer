@@ -35,9 +35,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		503775152E11151200EB3E50 /* AlgorithmsVisualizer */ = {
+		503775152E11151200EB3E50 /* App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AlgorithmsVisualizer;
+			path = App;
 			sourceTree = "<group>";
 		};
 		508D1F452E799BFA0063A833 /* Core */ = {
@@ -84,7 +84,7 @@
 			children = (
 				50978FCC2E8D28DC00185A86 /* Features */,
 				508D1F452E799BFA0063A833 /* Core */,
-				503775152E11151200EB3E50 /* AlgorithmsVisualizer */,
+				503775152E11151200EB3E50 /* App */,
 				50C4CA502E7991D000D2F88B /* Frameworks */,
 				503775142E11151200EB3E50 /* Products */,
 			);
@@ -123,7 +123,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				503775152E11151200EB3E50 /* AlgorithmsVisualizer */,
+				503775152E11151200EB3E50 /* App */,
 			);
 			name = AlgorithmsVisualizer;
 			packageProductDependencies = (

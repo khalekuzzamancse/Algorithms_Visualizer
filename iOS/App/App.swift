@@ -6,13 +6,11 @@ import Features
 struct SwiftUIConceptApp: App {
     var body: some Scene {
         WindowGroup {
-          //  ArrayView()
+            LinearSearchRoute()
        
         }
     }
 }
-
-
 
 
 #Preview {
