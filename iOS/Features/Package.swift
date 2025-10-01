@@ -26,25 +26,3 @@ let package = Package(
 )
 
 
-
-
-
-//// swift-tools-version: 6.1
-//import PackageDescription
-//
-//let package = Package(
-//    name: "Features",
-//    platforms: [
-//          .iOS(.v17),
-//         
-//      ],
-//    products: [
-//        .library(
-//            name: "Features",
-//            targets: ["Features"]),
-//    ],
-//    targets: [
-//        .target(name: "Features"),
-//       
-//    ]
-//)

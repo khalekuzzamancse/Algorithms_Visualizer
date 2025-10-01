@@ -32,8 +32,8 @@ public struct SimulationSlot<Content: View>: View {
             ZStack {
                 VStack {
                     visualization()
-                        .frame(height: 200)
-                        .background(Color.green)
+                      
+                      //  .background(Color.green)
                     CodeViewer(code: randomString(n: 900))
                 }
                 .toolbar {
