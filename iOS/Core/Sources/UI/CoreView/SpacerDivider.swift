@@ -23,6 +23,9 @@ public struct SpacerHorizontal: View {
     public init(width: CGFloat) {
         self.width = width
     }
+    public init(_ width: CGFloat) {
+        self.width = width
+    }
     
     public var body: some View {
         Spacer()

@@ -36,6 +36,10 @@ public extension View {
     func size(value: CGFloat, alignment: Alignment = .center) -> some View {
         self.frame(width: value, height: value, alignment: alignment)
     }
+    /// Sets both fixed width and height
+    func size(_ value: CGFloat, alignment: Alignment = .center) -> some View {
+        self.frame(width: value, height: value, alignment: alignment)
+    }
     /// Sets min and max width
        func widthIn(min: CGFloat? = nil, max: CGFloat? = nil, alignment: Alignment = .center) -> some View {
            self.frame(minWidth: min, maxWidth: max, alignment: alignment)

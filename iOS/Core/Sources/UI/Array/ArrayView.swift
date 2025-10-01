@@ -1,54 +1,6 @@
 import SwiftUI
 
 
-public struct ArrayView:View {
-    @StateObject var controller = ArrayControllerImpl(
-        itemLabels: ["10", "20", "30", "40","50","60","70","80"],
-        pointerLabels: ["i"]
-    )
-    @State var cnt=0
-    public init(){
-        
-  
-    }
-   public var body: some View {
-       VStack{
-            HStack{
-                Button("Swap 0 and 1") {
-                    let ctrl = controller  // capture safely
-                    Task {
-                        await ctrl.swap(i: 0, j: 1, delay: 0)
-                      
-                    }
-                }.padding()
-                           .background(Color.blue)
-                           .foregroundColor(.white)
-                           .cornerRadius(8)
-                
-                Button("Move") {
-                    let ctrl = controller  // capture safely
-                    let cellLen=controller.cells.capacity
-                    Task {
-                       
-                        ctrl.movePointer(label: "i", index: cnt%cellLen)
-                        cnt+=1
-                    }
-                }.padding()
-                           .background(Color.blue)
-                           .foregroundColor(.white)
-                           .cornerRadius(8)
-
-            }
-          
-           _ArrayView(controller: controller)
-        }
-       
-    
-       
-            
-    }
-}
-
 struct CellPosKey: PreferenceKey {
     nonisolated(unsafe) static var defaultValue: [Int: Anchor<CGPoint>] = [:]
 
@@ -59,23 +11,29 @@ struct CellPosKey: PreferenceKey {
 }
 
 
-struct _ArrayView: View {
-    @ObservedObject var controller: ArrayControllerImpl
-    let columns = [
-        GridItem(.adaptive(minimum: 64), spacing:0)
-    ]
+public struct ArrayView: View {
 
     
-    var body: some View {
+    @ObservedObject private var controller: ArrayControllerImpl
+    public init(controller: ArrayControllerImpl){
+        self.controller = controller
+  
+    }
+    
+   
+   public var body: some View {
         ZStack {
-            LazyVGrid(columns: columns, spacing: 0) {
+            FlowLayout() {
                 ForEach(controller.cells.indices, id: \.self) { index in
                     CellView(size: 64, color: .blue, borderColor: .gray)
                         .anchorPreference(key: CellPosKey.self, value: .center) {
                             [index: $0]
                         }
+                        
                 }
             }
+            .coordinateSpace(name: "ArrayViewSpace") // Add this
+            .frame(maxWidth: .infinity, maxHeight: .infinity) // Ensure full frame
             ForEach(controller.elements.indices, id: \.self) { index in
                 let element = controller.elements[index]
                 let x=element.position.x
@@ -107,6 +65,7 @@ struct _ArrayView: View {
             
             
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity) // Ensure full frame
         .overlayPreferenceValue(CellPosKey.self) { prefs in
             GeometryReader { proxy in
                 Color.clear.onAppear {
@@ -124,6 +83,7 @@ struct _ArrayView: View {
                 }
             }
         }
+        .coordinateSpace(name: "OverlaySpace") // Add this
     }
     
 }
@@ -165,12 +125,10 @@ struct CellView: View {
     
     var body: some View {
         Rectangle()
-            .fill(Color.clear) // no solid fill
-            .overlay(
-                Rectangle()
-                    .stroke(color, lineWidth: 1) // use `color` as border
-            )
-            .frame(width: size, height: size)
+                  .fill(Color.clear)
+                  .frame(width: size, height: size)
+                  .border(borderColor ?? .gray, width: 1)
+           
     }
 }
 

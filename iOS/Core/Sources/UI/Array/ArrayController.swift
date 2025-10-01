@@ -1,6 +1,6 @@
 import SwiftUI
 
-protocol VisualArrayController: ObservableObject {
+protocol ArrayController: ObservableObject {
     var pointerPosition: CGPoint? { get set }
     var allCellPlaced: Bool { get set }
     var cells: [Cell] { get set }
@@ -23,18 +23,18 @@ protocol VisualArrayController: ObservableObject {
 
 
 @Observable
-class ArrayControllerImpl : VisualArrayController{
+public class ArrayControllerImpl : ArrayController{
     
    
-    var pointerPosition: CGPoint? = nil
+    public var pointerPosition: CGPoint? = nil
     
-    var allCellPlaced: Bool = false
+    public var allCellPlaced: Bool = false
     
-    var cells: [Cell] = []
+    public  var cells: [Cell] = []
     
-    var elements: [Element]
+    public var elements: [Element]
     
-    var pointers: [Pointer]
+     public  var pointers: [Pointer]
     
     //
     
@@ -69,7 +69,7 @@ class ArrayControllerImpl : VisualArrayController{
     func onCellPositionChanged(index: Int, position: CGPoint) {
         
         
-        print("onCellPositionChanged,:\(index),\(position)")
+        //print("onCellPositionChanged,:\(index),\(position)")
         let oldCell = cells[index]
            let newCell = oldCell.copy(position: position)
            cells[index] = newCell
@@ -88,7 +88,7 @@ class ArrayControllerImpl : VisualArrayController{
         elements[index] = newElement
     }
 
-    func swap(i: Int, j: Int, delay: TimeInterval) async {
+   public func swap(i: Int, j: Int, delay: TimeInterval) async {
         guard i < elements.count, j < elements.count else { return }
 
         // Swap positions
@@ -102,7 +102,7 @@ class ArrayControllerImpl : VisualArrayController{
         elements[j] = elements[j].copy(position: posI)
     }
 
-    func movePointer(label: String, index: Int) {
+    public func movePointer(label: String, index: Int) {
         guard index < cells.count else { return }
         let targetCell = cells[index]
         
@@ -113,8 +113,17 @@ class ArrayControllerImpl : VisualArrayController{
             pointers[pointerIndex] = newPointer
         }
     }
+    public func hidePointer(label: String) {
+        pointers = pointers.map { pointer in
+            if pointer.label == label {
+                return pointer.copy(position: .some(nil)) // explicitly set to nil
+            } else {
+                return pointer
+            }
+        }
+    }
 
-    func hidePointer(label: String) { }
+
     func changeElementColor(index: Int, color: Color) { }
     func removePointers(labels: [String]) { }
     func changeCellColorUpTo(index: Int, color: Color) { }
@@ -127,13 +136,15 @@ class ArrayControllerImpl : VisualArrayController{
 
 
 
-struct Cell: Equatable {
+public struct Cell: Equatable {
+    
+    
     let index: Int
     let position: CGPoint
     let elementId: Int?
     let color: Color
     
-    init(index: Int, position: CGPoint = .zero, elementId: Int? = nil, color: Color) {
+   public init(index: Int, position: CGPoint = .zero, elementId: Int? = nil, color: Color) {
         self.index = index
         self.position = position
         self.elementId = elementId
@@ -155,12 +166,12 @@ struct Cell: Equatable {
     }
 }
 
-struct Element: Equatable, CustomStringConvertible {
+public struct Element: Equatable, CustomStringConvertible {
     let position: CGPoint
     let color: Color
     let label: String
     
-    var description: String {
+   public var description: String {
         "(\(label): \(position.x), \(position.y))"
     }
     
@@ -177,13 +188,17 @@ struct Element: Equatable, CustomStringConvertible {
     }
 }
 
-struct Pointer: Equatable,Hashable {
+public struct Pointer: Equatable,Hashable {
     let label: String
     let position: CGPoint?
     
-    func copy(label: String? = nil, position: CGPoint? = nil) -> Pointer {
-        Pointer(label: label ?? self.label, position: position ?? self.position)
+    func copy(label: String? = nil, position: CGPoint?? = nil) -> Pointer {
+        Pointer(
+            label: label ?? self.label,
+            position: position ?? self.position
+        )
     }
+
 }
 
 

@@ -69,7 +69,7 @@ public struct IconView<S: Shape>: View {
     // Default shape is Rectangle
     public init(
         icon: String,
-        size: CGFloat,
+        size: CGFloat = 25,
         shape: S = Rectangle(),
         tint:Color? = nil
     ) {

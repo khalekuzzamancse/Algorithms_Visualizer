@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "Core",
     platforms: [
-          .iOS(.v17),   // 🔹 Add this
+          .iOS(.v17),
          
       ],
     products: [
