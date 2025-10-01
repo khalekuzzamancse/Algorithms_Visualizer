@@ -1,0 +1,58 @@
+# ========================
+# Xcode / iOS
+# ========================
+
+# Build products
+build/
+DerivedData/
+*.xcarchive
+*.ipa
+*.dSYM
+
+# Workspace
+*.xcworkspace
+xcuserdata/
+
+# Project user settings
+*.xcuserstate
+*.moved-aside
+*.hmap
+
+# Xcode server
+*.xcschememanagement.plist
+*.xcscmblueprint
+
+# CocoaPods
+Pods/
+
+# Swift Package Manager
+.build/
+Package.resolved
+
+# Carthage
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output/
+
+# Temporary files
+*.swp
+*.lock
+*.tmp
+*.bak
+*.orig
+*.rej
+
+# macOS / OS-specific
+.DS_Store
+Icon?
+Desktop.ini
+Thumbs.db
+
+# Keep shared project and workspace settings
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/xcshareddata/

@@ -1,0 +1,152 @@
+@file:Suppress("functionName", "className")
+
+package graph._core.presentation
+
+import core.ui.GlobalColors
+import core.ui.GlobalMessenger
+import core.ui.core.SimulationScreenState
+import core.ui.graph.common.model.EditorEdgeModel
+import core.ui.graph.common.model.EditorNodeModel
+import core.ui.graph.common.model.GraphResult
+import core.ui.graph.common.model.Node
+import core.ui.graph.editor.model.GraphType
+import core.ui.graph.viewer.controller.GraphViewerController
+import graph._core.domain.ColorModel
+import graph._core.domain.DomainNodeModel
+import graph._core.domain.EdgeModel
+import graph._core.domain.GraphModel
+import graph.bfs.domain.PseudocodeGenerator
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+
+
+
+internal typealias UiNodeModel = graph._core.presentation.NodeModel
+
+interface RouteController {
+    val inputMode: StateFlow<Boolean>
+    val graphEditMode:StateFlow<Boolean>
+    fun lastEditedGraphOrNull():Pair<Pair<List<EditorNodeModel>,List<EditorEdgeModel>>,GraphType>?
+    fun  updateLastEditedGraphType(type: GraphType?)
+    val code: StateFlow<String?>
+    val state: StateFlow<SimulationScreenState>
+    var graphController: GraphViewerController
+    val neighborSelector: NeighborSelectorImpl
+    val autoPlayer: Controller.AutoPlayer
+    fun onGraphCreated(result: GraphResult)
+    fun onNext()
+    fun onReset()
+    fun enterInputMode()
+}
+
+internal abstract class BaseRouteController : RouteController {
+    protected val _inputMode = MutableStateFlow(true)
+    override val graphEditMode= MutableStateFlow(false)
+    override val inputMode = _inputMode.asStateFlow()
+    private val _array = MutableStateFlow(listOf(10, 5, 4, 13, 8))
+    protected val list = _array.asStateFlow()
+    protected val _code = MutableStateFlow<String?>(null)
+    override lateinit var graphController: GraphViewerController
+    override val code = _code.asStateFlow()
+    private val _state = MutableStateFlow(SimulationScreenState(showPseudocode = true))
+    override val state = _state.asStateFlow()
+    override val autoPlayer = AutoPlayerImpl(::onNext)
+    lateinit var result: GraphResult
+    override val neighborSelector = NeighborSelectorImpl()
+    private var _lastEditedGraph:Pair<List<EditorNodeModel>, List<EditorEdgeModel>> ? =null
+    private var _graphType:GraphType?=null
+
+    override fun lastEditedGraphOrNull(): Pair<Pair<List<EditorNodeModel>, List<EditorEdgeModel>>, GraphType> ?{
+        return try {
+            Pair(_lastEditedGraph!!,_graphType!!)
+        } catch (_:NullPointerException){
+            null
+        }
+
+
+    }
+
+    override fun updateLastEditedGraphType(type: GraphType?) {
+        _graphType=type
+    }
+    override fun onReset() {
+        graphController.reset()
+        graphController = result.controller
+        autoPlayer.dismiss()
+        _code.update { PseudocodeGenerator.rawCode }
+    }
+
+    protected open fun _onFinished() {
+        autoPlayer.dismiss()
+        GlobalMessenger.updateAsEndedMessage()
+    }
+
+    override fun onGraphCreated(result: GraphResult) {
+        this.result = result
+        _lastEditedGraph=result.visualGraph
+        result.nodes
+        graphController = result.controller
+        _inputMode.update { false }
+    }
+
+    override fun enterInputMode() {
+        graphEditMode.update { true }
+    }
+
+    protected fun _createGraph(): GraphModel {
+        val nodeModels = result.nodes.map { it._toNodeModel() }.toSet()
+        val edgeModels = result.edges.map {
+            val cost = it.cost?.toIntOrNull()
+            EdgeModel(
+                id = it.id,
+                u = it.from._toNodeModel(),
+                v = it.to._toNodeModel(),
+                cost = cost
+            )
+        }.toSet()
+        return GraphModel(
+            isDirected = result.directed,
+            nodes = nodeModels,
+            edges = edgeModels,
+            source = nodeModels.first()
+        )
+    }
+
+    private fun Node._toNodeModel() = DomainNodeModel(id = id)
+    protected fun onColorChanged(pairs: Set<Pair<DomainNodeModel, ColorModel>>) {
+        pairs.forEach { (node, color) ->
+            val nodeColor = when (color) {
+                ColorModel.White -> GlobalColors.GraphColor.UNDISCOVERED
+                ColorModel.Gray -> GlobalColors.GraphColor.DISCOVERED
+                ColorModel.Black -> GlobalColors.GraphColor.PROCESSED
+            }
+            graphController.changeNodeColor(id = node.id, color = nodeColor)
+
+        }
+
+    }
+
+    protected fun blinkNode(nodeId: String) {
+        graphController.blinkNode(nodeId)
+    }
+
+    protected fun changeEdgeColor(id: String) {
+        graphController.changeEdgeColor(id = id, color = GlobalColors.GraphColor.TRAVERSING_EDGE)
+    }
+
+    protected fun changeNodeColor(id: String) {
+        graphController.changeNodeColor(
+            id = id,
+            color = GlobalColors.GraphColor.TRAVERSING_EDGE
+        )
+    }
+
+    protected open fun handleSimulationFinished() {
+        graphController.stopBlinkAll()
+        autoPlayer.dismiss()
+    }
+
+}
+

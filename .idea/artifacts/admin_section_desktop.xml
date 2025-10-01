@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="admin_section-desktop">
-    <output-path>$PROJECT_DIR$/feature/admin_section/build/libs</output-path>
-    <root id="archive" name="admin_section-desktop.jar">
-      <element id="module-output" name="DSAVisualier2024.feature.admin_section.desktopMain" />
-    </root>
-  </artifact>
-</component>

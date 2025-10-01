@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="bubble_sort-desktop">
-    <output-path>$PROJECT_DIR$/feature/bubble_sort/build/libs</output-path>
-    <root id="archive" name="bubble_sort-desktop.jar">
-      <element id="module-output" name="AlgorithmVisualizer.feature.bubble_sort.desktopMain" />
-    </root>
-  </artifact>
-</component>

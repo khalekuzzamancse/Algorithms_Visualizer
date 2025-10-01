@@ -1,0 +1,177 @@
+package web.x.core.array
+
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateOffsetAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
+import web.x.core.array.controller.VisualArrayController
+import web.x.core.ArrayColor
+import web.x.core.textColor
+
+
+@Composable
+fun VisualArray(
+    modifier: Modifier = Modifier,
+    controller: VisualArrayController
+) {
+    _ArrayCells(
+        modifier=modifier,
+        controller = controller,
+        borderColor = ArrayColor.CELL_BORDER,
+    )
+
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun _ArrayCells(
+    modifier: Modifier = Modifier,
+    controller: VisualArrayController,
+    borderColor: Color?,
+) {
+
+    val cells = controller.cells.collectAsState().value
+    val elements = controller.elements.collectAsState().value
+    val cellSize= remember { 64.dp }
+
+    Box(modifier = modifier) {
+        FlowRow {
+            cells.forEachIndexed { index, cell->
+                _Cell(
+                    color =cell.color,
+                    size = cellSize,
+                    borderColor =borderColor ,
+                    onPositionChanged = { position ->
+                        controller.onCellPositionChanged(index, position.positionInParent())
+                    },
+                )
+            }
+        }
+
+        elements.forEach { element ->
+            _Element(
+                label = element.label,
+                position = element.position,
+                color = element.color,
+                cellSize = cellSize
+            )
+        }
+        controller.pointers.collectAsState().value.forEach { pointer ->
+                if (pointer.position != null)
+                    _CellPointer(
+                        color = ArrayColor.POINTER_1,
+                        label = pointer.label,
+                        position = pointer.position,
+                        cellSize = cellSize
+                    )
+            }
+
+    }
+
+}
+
+
+
+@Composable
+private fun _CellPointer(
+    cellSize: Dp,
+    label: String,
+    color: Color,
+    position: Offset,
+) {
+    val offsetAnimation by animateOffsetAsState(position, label = "")
+    Box(
+        modifier = Modifier
+            .size(cellSize)
+            .offset {
+                IntOffset(offsetAnimation.x.toInt(), offsetAnimation.y.toInt())
+            }.background(MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.4f)),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Text(
+            text = label,
+            modifier = Modifier,
+            color = color
+        )
+    }
+}
+
+@Composable
+private fun _Element(
+    label: String,
+    cellSize: Dp,
+    color: Color,
+    position: Offset,
+) {
+    val backgroundColor= if (color==Color.Unspecified) MaterialTheme.colorScheme.tertiary else color
+    val offsetAnimation by animateOffsetAsState(
+        targetValue = position, label = label,
+        animationSpec = tween(
+            durationMillis = 300,
+            easing = LinearEasing
+        )
+    )
+
+    Box(
+        modifier = Modifier
+            .offset {
+                IntOffset(offsetAnimation.x.toInt(), offsetAnimation.y.toInt())
+            }
+            .size(cellSize)
+            .padding(2.dp)
+            .clip(CircleShape)
+            .background(backgroundColor),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = label, color = color.textColor())
+    }
+}
+
+/**
+ * @param borderColor is null that means hide the border
+ */
+@Composable
+private fun _Cell(
+    modifier: Modifier = Modifier,
+    size: Dp,
+    color: Color,
+    borderColor:Color?,
+    onPositionChanged: (LayoutCoordinates) -> Unit,
+) {
+    val hideBorder=borderColor==null;
+    Box(
+        modifier = modifier
+            .size(size)
+            .border(width = if (hideBorder) 0.dp else 1.dp, color = borderColor?:Color.Unspecified)
+            .background(color)
+            .onGloballyPositioned { position ->
+                onPositionChanged(position)
+            }
+    )
+
+}

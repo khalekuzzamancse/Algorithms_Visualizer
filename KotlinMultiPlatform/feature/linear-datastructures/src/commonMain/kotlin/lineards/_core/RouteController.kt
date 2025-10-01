@@ -1,0 +1,96 @@
+@file:Suppress("functionName", "propertyName", "unused")
+
+package lineards._core
+
+import core.lang.Logger
+import core.ui.GlobalMessenger
+import core.ui.core.SimulationScreenState
+import core.ui.core.array.controller.VisualArrayController
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import lineards.linear_search.domain.service.PseudocodeGenerator
+
+interface RouteController {
+    val inputMode: StateFlow<Boolean>
+    val arrayController: StateFlow<VisualArrayController?>
+    val state: StateFlow<SimulationScreenState>
+    val code: StateFlow<String?>
+    val autoPlayer: AutoPlayer
+    fun onListInputted(inputData: List<Int>)
+    fun onNext()
+    fun onReset()
+}
+
+
+interface SearchRouteController : RouteController {
+    /**
+     * *In case of sort algorithms just ignore or un-used it
+     * In case of search call it before the list input or do not forget to call it
+     * */
+    fun onTargetInputted(target: Int)
+}
+
+interface SortRouteController : RouteController
+abstract class BaseRouteController : RouteController {
+    private val _inputMode = MutableStateFlow(true)
+    override val inputMode = _inputMode.asStateFlow()
+
+    private val _array = MutableStateFlow(listOf(10, 5, 4, 13, 8))
+    protected val list = _array.asStateFlow()
+
+    protected val _code = MutableStateFlow<String?>(null)
+    override val code = _code.asStateFlow()
+
+    private val _state = MutableStateFlow(SimulationScreenState(showPseudocode = true))
+    override val state = _state.asStateFlow()
+
+    final override val autoPlayer = AutoPlayer.create()
+
+    override val arrayController = MutableStateFlow<VisualArrayController?>(null)
+
+    override fun onListInputted(inputData: List<Int>) {
+        _inputMode.update { false }
+        _array.update { inputData }
+        arrayController.update { arrayControllerFactory() }
+    }
+
+    override fun onReset() {
+        autoPlayer.dismiss()
+        arrayController.update { arrayControllerFactory() }
+        _code.update { PseudocodeGenerator.rawCode }
+    }
+
+    protected open fun _onFinished() {
+        autoPlayer.dismiss()
+        GlobalMessenger.updateAsEndedMessage()
+    }
+
+    protected abstract fun arrayControllerFactory(): VisualArrayController
+
+    init {
+        autoPlayer.onNextCallback = ::onNext
+    }
+}
+
+
+abstract class SearchRouteControllerBase : BaseRouteController(), SearchRouteController {
+  private val tag = this.javaClass.simpleName.toString()
+    protected var target: Int = 0
+    fun onInput(array:List<Int>,target: Int){
+        super.onListInputted(array)
+        Logger.on(tag,"onInputListDone")
+        onTargetInputted(target)
+    }
+
+    override fun onTargetInputted(target: Int) {
+        this.target = target
+        arrayController.update { arrayControllerFactory() }
+        Logger.on(tag,"onTargetInputted:${this.target}")
+    }
+}
+
+internal abstract class SortRouteControllerBase : BaseRouteController(), SortRouteController
+
+
