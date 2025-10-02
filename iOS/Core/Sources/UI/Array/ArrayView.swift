@@ -25,7 +25,7 @@ public struct ArrayView: View {
         ZStack {
             FlowLayout() {
                 ForEach(controller.cells.indices, id: \.self) { index in
-                    CellView(size: 64, color: .blue, borderColor: .gray)
+                    CellView(size: 64, color: controller.cells[index].color, borderColor: .gray)
                         .anchorPreference(key: CellPosKey.self, value: .center) {
                             [index: $0]
                         }
@@ -125,7 +125,7 @@ struct CellView: View {
     
     var body: some View {
         Rectangle()
-                  .fill(Color.clear)
+                  .fill(color)
                   .frame(width: size, height: size)
                   .border(borderColor ?? .gray, width: 1)
            

@@ -6,7 +6,8 @@ public struct SimulationSlot<Content: View>: View {
     private let onNextRequest: () -> Void
     private let onResetRequst: () -> Void
     private let hasNext: () -> Bool
-    private let peudocode: String?
+    @Binding var pseudocode: String?
+
     let visualization: () -> Content
 
     @State private var showAutoPlayDialog = false
@@ -17,14 +18,14 @@ public struct SimulationSlot<Content: View>: View {
         onNextRequest: @escaping () -> Void,
         onResetRequst: @escaping () -> Void,
         onAutoPlayRequest: @escaping () -> Bool,
-        peudocode: String? = nil,
+        pseudocode: Binding<String?>,
         @ViewBuilder visualization: @escaping () -> Content
     ) {
         self.onNextRequest = onNextRequest
         self.onResetRequst = onResetRequst
         self.hasNext = onAutoPlayRequest
         self.visualization = visualization
-        self.peudocode = peudocode
+        self._pseudocode = pseudocode
     }
 
     public var body: some View {
@@ -33,8 +34,11 @@ public struct SimulationSlot<Content: View>: View {
                 VStack {
                     visualization()
                       
-                      //  .background(Color.green)
-                    CodeViewer(code: randomString(n: 900))
+                    if let code = pseudocode {
+                        CodeViewer(code: code)
+                    }
+
+                  
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarTrailing) {

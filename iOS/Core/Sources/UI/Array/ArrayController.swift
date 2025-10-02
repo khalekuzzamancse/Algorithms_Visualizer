@@ -46,7 +46,7 @@ public class ArrayControllerImpl : ArrayController{
         
     ){
         cells = itemLabels.enumerated().map { index, _ in
-            Cell(index: index, color: .blue)
+            Cell(index: index, color: .clear)
         }
         elements=itemLabels.enumerated().map{index,label in
             Element(
@@ -127,8 +127,28 @@ public class ArrayControllerImpl : ArrayController{
     func changeElementColor(index: Int, color: Color) { }
     func removePointers(labels: [String]) { }
     func changeCellColorUpTo(index: Int, color: Color) { }
-    func changeCellColor(index: Int, color: Color) { }
-    
+   public func changeCellColor(index: Int, color: Color) {
+        guard index < cells.count else { return }
+        let oldCell = cells[index]
+        let newCell = oldCell.copy(color: color)
+        cells[index] = newCell
+    }
+
+    public func reset() {
+       
+        cells = cells.enumerated().map { index, cell in
+            cell.copy(color: .clear)
+        }
+        
+        elements = elements.enumerated().map { index, element in
+            element.copy(color: .red)
+        }
+        
+        for pointer in pointers {
+               hidePointer(label: pointer.label)
+           }
+    }
+
     
 }
 
