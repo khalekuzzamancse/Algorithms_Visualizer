@@ -1,7 +1,7 @@
 import Foundation
 
 // SimulationState equivalents
-public enum SimulationState {
+public enum LinearSearchST {
     case start(String)
     case pointerI(index: Int, code: String)
     case foundAt(index: Int, code: String)
@@ -14,7 +14,7 @@ class LinearSearchIterator {
      var currentIndex = 0
      var step: Step = .start
      var isFinished = false
-     private var model: CodeStateModel
+     private var model: LinearSearchCSM
    
 
 
@@ -29,14 +29,14 @@ class LinearSearchIterator {
         self.array = array
         self.target = target
         self.model =
-        CodeStateModel(len: array.count, target: target, i: nil, current: nil, isFound: nil, returnIndex: nil)
+        LinearSearchCSM(len: array.count, target: target, i: nil, current: nil, isFound: nil, returnIndex: nil)
     }
 
     func hasNext() -> Bool {
         return !isFinished
     }
 
-    func next() -> SimulationState {
+    func next() -> LinearSearchST {
       
         if isFinished { return onFinished() }
 
@@ -57,7 +57,7 @@ class LinearSearchIterator {
         
     }
     
-    private func searchNext()->SimulationState{
+    private func searchNext()->LinearSearchST{
         if currentIndex >= array.count {
             return onArrayBoundExit()
         } else {
@@ -75,44 +75,44 @@ class LinearSearchIterator {
         
     }
     
-    private func onFound(_ current:Int)->SimulationState{
+    private func onFound(_ current:Int)->LinearSearchST{
         let current=array[current]
         step = .found
         self.model = model.copy(i: current, current:current, isFound:true)
-        return .pointerI(index: current, code:Code.generate(model))
+        return .pointerI(index: current, code:CodeLS.generate(model))
        
     }
-    private func onNotFoundAtCurrentIndex(_ idx:Int)->SimulationState{
+    private func onNotFoundAtCurrentIndex(_ idx:Int)->LinearSearchST{
         currentIndex += 1
         let current=array[idx]
         self.model = model.copy(i: idx, current:current, isFound:false)
-        return .pointerI(index: idx, code:Code.generate(model))
+        return .pointerI(index: idx, code:CodeLS.generate(model))
     }
     
-    private func onArrayBoundExit()->SimulationState{
+    private func onArrayBoundExit()->LinearSearchST{
         step = .finished
         model = model.copy(
             i: nil, current: nil, isFound: nil, returnIndex: -1)
-        return .finished(Code.generate(model))
+        return .finished(CodeLS.generate(model))
         
     }
     
-    private func onFinished()->SimulationState{
+    private func onFinished()->LinearSearchST{
         isFinished = true
-        self.model=CodeStateModel(len: array.count, target: target, i: nil, current: nil, isFound: nil, returnIndex: nil)
+        self.model=LinearSearchCSM(len: array.count, target: target, i: nil, current: nil, isFound: nil, returnIndex: nil)
         print("onFinished")
-        return .finished(Code.generate(model))
+        return .finished(CodeLS.generate(model))
         
     }
-    private func onStart()->SimulationState{
+    private func onStart()->LinearSearchST{
         step = .hasSearch
-        return .start(Code.generate(model))
+        return .start(CodeLS.generate(model))
     }
 }
 
 // MARK: - Code State Model
 
-public struct CodeStateModel {
+private struct LinearSearchCSM {
     let len: Int
     let target: Int
     let i: Int?
@@ -127,8 +127,8 @@ public struct CodeStateModel {
         current: Int?? = nil,
         isFound: Bool?? = nil,
         returnIndex: Int?? = nil
-    ) -> CodeStateModel {
-        return CodeStateModel(
+    ) -> LinearSearchCSM {
+        return LinearSearchCSM(
             len: len ?? self.len,
             target: target ?? self.target,
             i: i ?? self.i,
@@ -141,8 +141,8 @@ public struct CodeStateModel {
 
 // MARK: - Pseudocode Generator
 
-class Code {
-    static func generate(_ model: CodeStateModel) -> String {
+private class CodeLS {
+    static func generate(_ model: LinearSearchCSM) -> String {
         let idxComment = model.i.map { "// i: \($0)" } ?? ""
         let valueComment = model.current.map { "// current: \($0)" } ?? ""
         let foundComment = model.isFound.map { "//\($0)" } ?? ""

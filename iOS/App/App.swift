@@ -15,10 +15,10 @@ struct SwiftUIConceptApp: App {
 
 #Preview {
    // ArrayView()
-//    Demo()
 //   NavRoot()
     
-    LinearSearchRoute()
+ //   LinearSearchRoute()
+    BinarySearchRoute()
     
     
   
