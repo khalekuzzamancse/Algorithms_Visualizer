@@ -1,50 +1,18 @@
 //// MARK: - Simulation State
 public enum BinarySearchST {
     case start(String)
-    case pointers(low: Int, high: Int, mid: Int?, code: String)
+    case pointers(low: Int?, high: Int?, mid: Int?, code: String)
     case foundAt(index: Int, code: String)
     case finished(String)
 }
 
-public class BinarySearchIterator {
-    let array: [Int]
-    let target: Int
-    var low = 0
-    var high: Int
-    var mid: Int? = nil
-    var step: Step = .start
-    var isFinished = false
-    private var model: CodeStateModel
 
-    enum Step {
-        case start
-        case search
-        case found
-        case finished
-    }
+ class BinarySearchIterator: SearchIteratorBase {
+    
+   private var label="1"
 
-    init(array: [Int], target: Int) {
-        self.array = array
-        self.target = target
-        self.high = array.count - 1
-        self.model = CodeStateModel(
-            target: target,
-            low: nil,
-            high: nil,
-            mid: nil,
-            current: nil,
-            isFound: nil,
-            currentLessThanTarget: nil,
-            currentGreaterThanTarget: nil,
-            returnIndex: nil
-        )
-    }
-
-    func hasNext() -> Bool {
-        return !isFinished
-    }
-
-    func next() -> BinarySearchST {
+    
+    override func next() -> BinarySearchST {
         if isFinished { return onFinished() }
 
         switch step {
@@ -60,40 +28,66 @@ public class BinarySearchIterator {
         }
     }
 
+  
     private func searchNext() -> BinarySearchST {
-        // Check if search bounds are valid
+    
         guard low <= high else {
             step = .finished
             model = model.copy(returnIndex: -1)
             return .finished(Code.generate(model))
         }
-
-        mid = low + (high - low) / 2
-        
-        // Ensure mid is within array bounds
-        guard mid! >= 0 && mid! < array.count else {
-            step = .finished
-            model = model.copy(returnIndex: -1)
-            return .finished(Code.generate(model))
+    
+        switch(label){
+            
+        case "1":  mid = low + (high - low) / 2
+                   label="2"
+            model = model.copy( mid: mid, current: array[mid!])
+            return .pointers(low: low, high: high, mid: mid, code: Code.generate(model))
+            
+        case "2":   if( array[mid!] == target) {
+                step = .found
+                 model = model.copy(low: low, high: high, mid: mid, current: array[mid!], isFound: true, returnIndex: mid)
+            label="xx"
+            return  .foundAt(index:mid!, code:Code.generate(model))
+                     }
+            else {
+                label="3"
+                return .start(Code.generate(model))
+                
+            }
+        case "3": if(low<array[mid!]){
+            low=mid!+1
+            mid=nil
+            label="1"
+            model = model.copy( low: low,mid:nil,current: nil)
+            return .pointers(low: low, high: high, mid: nil, code: Code.generate(model))
         }
+            else {
+                label="4"
+                return .start(Code.generate(model))
+            }
+            
+        case "4" : high=mid!-1
+                   mid=nil
+                label="1"
+            model = model.copy( high: high,mid:nil,current: nil)
+            return .pointers(low: low, high: high, mid: nil, code: Code.generate(model))
+            
+        default: return .finished("")
+            
         
-        let currentValue = array[mid!]
-
-        if currentValue == target {
-            step = .found
-            model = model.copy(low: low, high: high, mid: mid, current: currentValue, isFound: true, returnIndex: mid)
-        } else if currentValue < target {
-            low = mid! + 1
-            model = model.copy(low: low, high: high, mid: mid, current: currentValue, isFound: false, currentLessThanTarget: true, currentGreaterThanTarget: false)
-        } else {
-            high = mid! - 1
-            model = model.copy(low: low, high: high, mid: mid, current: currentValue, isFound: false, currentLessThanTarget: false, currentGreaterThanTarget: true)
+            
         }
+    
 
-        // return all pointers together
-        return .pointers(low: low, high: high, mid: mid, code: Code.generate(model))
+        return .start(Code.generate(model))
     }
-
+    
+  
+    
+    
+    
+    
     private func onStart() -> BinarySearchST {
         step = .search
         return .start(Code.generate(model))
@@ -104,6 +98,58 @@ public class BinarySearchIterator {
         return .finished(Code.generate(model))
     }
 }
+
+
+
+class SearchIteratorBase {
+    var isFinished = false
+    var step: Step = .start
+    
+    enum Step {
+        case start
+        case search
+        case found
+        case finished
+    }
+    
+    func hasNext() -> Bool { !isFinished }
+    
+    func next() -> BinarySearchST {
+        fatalError("Subclasses must override next()")
+    }
+    
+    let array: [Int]
+    let target: Int
+    
+    var low = 0
+    var high: Int
+    var mid: Int? = nil
+    
+    var emitLow = false
+    var emitMid = false
+    var emitHigh = false
+    
+    var model: CodeStateModel
+    
+    init(array: [Int], target: Int) {
+        self.array = array
+        self.target = target
+        self.high = array.count - 1
+        self.model = CodeStateModel(
+            target: target,
+            low: nil,
+            high: nil,
+            mid: nil,
+            current: nil,
+            isFound: nil,
+            currentLessThanTarget: nil,
+            currentGreaterThanTarget: nil,
+            returnIndex: nil
+        )
+       
+    }
+}
+
 
 
 // MARK: - Code State Model

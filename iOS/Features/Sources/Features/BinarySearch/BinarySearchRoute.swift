@@ -5,13 +5,16 @@ import CoreUI
 
 public struct BinarySearchRoute: View {
     private let tag = "BinarySearchRoute"
+    
     @State var code: String? = nil
+
+    
     @StateObject var controller = ArrayControllerImpl(
         itemLabels: ["10", "20", "30", "40", "50", "60", "70", "80"],
         pointerLabels: ["low", "high", "mid"]
     )
 
-    let iterator = BinarySearchIterator(array: [10, 20, 30, 40, 50, 60, 70, 80], target: 90)
+    let iterator = BinarySearchIterator(array: [10, 20, 30, 40, 50, 60, 70, 80], target: 50)
 
     public init() {}
 
@@ -20,15 +23,15 @@ public struct BinarySearchRoute: View {
             onNextRequest: {
                 let ctrl = controller // capture safely
                 Task {
-                    let state = self.iterator.next()
+                    let st = self.iterator.next()
 
-                    switch state {
-                    case .start(let code):
+                    switch st {
+                    case .start(let code): print("")
                         self.code = code
 
                     case .pointers(let low, let high, let mid, let code):
-                        ctrl.movePointer(label: "low", index: low)
-                        ctrl.movePointer(label: "high", index: high)
+                        ctrl.movePointer(label: "low", index: low!)
+                        ctrl.movePointer(label: "high", index: high!)
                         if let midIndex = mid {
                             ctrl.movePointer(label: "mid", index: midIndex)
                         } else {
