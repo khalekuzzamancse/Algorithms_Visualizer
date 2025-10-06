@@ -18,8 +18,8 @@ struct SwiftUIConceptApp: App {
 //   NavRoot()
     
  //   LinearSearchRoute()
-    BinarySearchRoute()
-    
+   // BinarySearchRoute()
+    BubbleSortRoute()
     
   
   

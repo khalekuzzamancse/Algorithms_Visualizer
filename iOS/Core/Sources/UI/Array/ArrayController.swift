@@ -87,20 +87,42 @@ public class ArrayControllerImpl : ArrayController{
         let newElement = oldElement.copy(position: position)
         elements[index] = newElement
     }
-
-   public func swap(i: Int, j: Int, delay: TimeInterval) async {
+    public func swap(i: Int, j: Int, delay: TimeInterval) async {
         guard i < elements.count, j < elements.count else { return }
 
-        // Swap positions
         let posI = elements[i].position
         let posJ = elements[j].position
 
-        // Optional: animate delay
-        try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
-
+        // Animate positions first
         elements[i] = elements[i].copy(position: posJ)
         elements[j] = elements[j].copy(position: posI)
+
+//        // Optional delay for animation
+//        try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+
+        // Swap elements in the array for sorting logic
+        var newElements = elements
+        let temp = newElements[i]
+        newElements[i] = newElements[j]
+        newElements[j] = temp
+
+        // Update the array
+        elements = newElements
     }
+
+//   public func swap(i: Int, j: Int, delay: TimeInterval) async {
+//        guard i < elements.count, j < elements.count else { return }
+//
+//        // Swap positions
+//        let posI = elements[i].position
+//        let posJ = elements[j].position
+//
+//        // Optional: animate delay
+//        ///try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+//
+//        elements[i] = elements[i].copy(position: posJ)
+//        elements[j] = elements[j].copy(position: posI)
+//    }
 
     public func movePointer(label: String, index: Int) {
         guard index < cells.count else { return }
