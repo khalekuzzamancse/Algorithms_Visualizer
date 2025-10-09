@@ -19,7 +19,8 @@ struct SwiftUIConceptApp: App {
     
  //   LinearSearchRoute()
    // BinarySearchRoute()
-    BubbleSortRoute()
+   // BubbleSortRoute()
+    SelectionSortRoute()
     
   
   
