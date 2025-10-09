@@ -1,6 +1,7 @@
 // MARK: - Simulation State
 public enum BubbleSortEvent {
     case start(String)
+    case none(String)
     case pointers(i: Int, j: Int?, code: String)
     case swapped(i: Int, j: Int, array: [Int], code: String)
     case finished(String)
@@ -11,9 +12,6 @@ class BubbleSortIterator: BubbleSortIteratorStates {
     private var state: IState? = nil
 
     override func next() -> BubbleSortEvent {
-//        if(step == .finished){
-//            return _Finished(self).handle()
-//        }
         switch step {
         case .start:
             state = _Start(self)
@@ -44,103 +42,106 @@ private class _Start: IState {
 
 private class _NextStep: IState {
 
-    
-    nonisolated(unsafe) static var subLabel = "1.0"
+    nonisolated(unsafe) static var label = "1"
+ 
    
     override func handle() -> BubbleSortEvent {
         let lastIndex = __.array.count-1
-        let label=__.label
-        print("array:\(__.array), i:\(__.i),j:\(__.j)")
-//        if(__.i>=lastIndex){
-//            __.step = .finished
-//        }
-        switch(label){
+        if (__.i >= lastIndex) {
             
-        case "0": //while(i<lastIndex)
-            if(__.i < lastIndex){
-                __.label="1"
-                let i = __.i
-                __.i+=1
-                __.j=0
-                return .pointers(i:i, j:0, code: Code.generate(__.model))
+            return .finished(Code.generate(__.model))
+        }
+        
+        let L=_NextStep.label
+
+        if(L=="1"){
+            __.j=0
+            nextL("2")
+            return .pointers(i: __.i, j: nil, code: "")
+        }
+        else if(L=="2" || L=="3" || L=="4"){
+            if(__.j>=lastIndex){
+                nextL("5")
+                __.model=__.model.copy(i:__.i)
+                let code=__.model.code()
+               
+                return .pointers(i: __.i, j:nil, code:code)
             }
-           
             
-        case "1": return innerLoop()
-    
+            if(L=="2"){
+                nextL("3")
+                __.model=__.model.copy(j: __.j)
+                let code=__.model.code()
+                return .pointers(i: __.i, j:__.j, code: code)
+            }
+            else if(L=="3"){
+                let shouldSwap = __.array[__.j] > __.array[__.j + 1]
+                
+                if (shouldSwap) {
+                    __.array.swapAt(__.j, __.j + 1)
+                    nextL("4")
+                    __.model=__.model.copy(swapped: true)
+                    let code=__.model.code()
+                    return .swapped(i: __.j, j:__.j + 1, array: __.array, code: code)
+                }
+                nextL("4")
+                
+            }
+            else if(L=="4"){
+                __.j+=1
+                nextL("2")
+                let code=__.model.code()
+                return .none(code)
+            }
             
-          default: return .finished("")
             
         }
-    
+        else if(L=="5")  {
+            __.i+=1
+            __.j=0
         
-
-        return .pointers(i: __.i, j:nil, code: Code.generate(__.model))
+            nextL("1")
+    
+            let code=__.model.code()
+            return .none(code)
+        }
+        __.model=__.model.copy(swapped: true)
+        let code=__.model.code()
+        return .finished(code)
+    
     }
     
-    // for i: 0 to n-2
-    func innerLoop()->BubbleSortEvent{
-        let lastIndex = __.array.count-1
-        let j=__.j
-        let i=__.i
+    func nextL(_ label:String){
+        _NextStep.label = label
+    }
     
-        let label=__.label
-        //while ( j<lastIndex )
-      //  print("innetLoopCalled")
-        switch(_NextStep.subLabel){
-        case "1.0":
-            if(j < lastIndex-1){
-                __.label="1"
-                _NextStep.subLabel="1.1"
-              //  print("innerLoop:j=\(j),lastIndex=\(lastIndex)")
-                return .pointers(i:i, j:j, code: Code.generate(__.model))
-                
-            }
-            else{
-                __.label="0"
-            }
-        case "1.1":
-            print("innerLoop:swap(\(j),\(j+1))")
 
-            if j >= 0 && j + 1 < __.array.count {
-                let shouldSwap = __.array[j] > __.array[j + 1]
-                
-                if shouldSwap {
-                    print("innerLoop:swap(\(j),\(j+1))")
-                    __.label = "1"
-                    _NextStep.subLabel = "1.0"
-                    __.array.swapAt(j, j + 1)
-                    print("array:\(__.array)")
-                    return .swapped(i: j, j: j + 1, array: __.array, code: "")
-                }
-            }
-           
+}
+/**
+ Bubble sort
+ while(i <lastIndex){            →L1
+          j=0                  →L1
+         pause: emit(i), L=2
+        while(j<lastIndex){         →L2
+              pause: emit(i), L=3
+              swap=a[j]>a[j+1]           →L3
+  if(swap){               →L3
+   swap()                →L3
+   pause: emit(swap), L=4
+    j++                → L4
+    L=2
+ }
+    
+ }
+ i++                    →L5
+ L=1                    →L5
+ }
 
-            // increment j even if no swap or indices invalid
-            __.j += 1
+ */
 
-//            print("innerLoop:swap(\(j),\(j+1) )")
-//            let swap=(__.array[j]>__.array[j+1])
-//            if(swap){
-//              print("innerLoop:swap(\(j),\(j+1) )")
-//              
-//                __.label="1"
-//                _NextStep.subLabel="1.0"
-//                __.array.swapAt(j,j+1)
-//                print("array:\(__.array)")
-//                return .swapped(i:j, j:j+1, array:__.array,code: "")
-//                
-//            }
-//            __.j+=1 //swap or not increamnet j
-        
-        default: let x=0
-            
-            
-        }
-
-        
-       return .pointers(i:__.i, j:nil, code: Code.generate(__.model))
-        
+private extension _BubbleSortCodeStateModel {
+    func code() -> String {
+        return Code.generate(self)
     }
 }
 

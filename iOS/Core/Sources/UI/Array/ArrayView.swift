@@ -139,23 +139,26 @@ struct CellPointer: View {
     let color: Color
     let position: CGPoint
 
-    @State private var animatedPosition: CGPoint = .zero
+
 
     var body: some View {
+        ZStack(alignment: .bottom) {
+            TextView(
+                text:label,
+                color: .white,
+                fontSize: 22
+            )
+           .background(Color.yellow.opacity(0.5))
+            Rectangle().stroke(Color.clear, lineWidth: 1)
+        }
+        .size(value: cellSize)
+       
+        .cornerRadius(8)
+        .position(position)
+
+       
     
-        TextView(text:label,color: .white,fontSize: 20)
-            .size(value: cellSize)
-            .background(Color.yellow.opacity(0.9))
-            .cornerRadius(8)
-            .position(animatedPosition)
-            .onChange(of: position) { newValue in
-                withAnimation(.easeInOut(duration: 0.3)) {
-                    animatedPosition = newValue
-                }
-            }
-            .onAppear {
-                animatedPosition = position
-            }
+        
     }
 }
 
