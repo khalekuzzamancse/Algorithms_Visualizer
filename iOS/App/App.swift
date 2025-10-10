@@ -14,13 +14,15 @@ struct SwiftUIConceptApp: App {
 
 
 #Preview {
+    
    // ArrayView()
 //   NavRoot()
     
  //   LinearSearchRoute()
    // BinarySearchRoute()
    // BubbleSortRoute()
-    SelectionSortRoute()
+   // SelectionSortRoute()
+    QuickSortRoute()
     
   
   
