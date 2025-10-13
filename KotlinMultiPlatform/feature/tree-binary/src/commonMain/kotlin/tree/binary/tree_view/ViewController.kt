@@ -48,7 +48,7 @@ constructor(
 
     private var canvasWidth: Float = 0f
     private var canvasHeight: Float = 0f
-    private var bst: BstIterator<T> = BstIterator.create()
+    private var  bst: BstIterator<T> = BstIterator.create()
     private val _root = MutableStateFlow<Node<T>?>(null)
     private val _nodes = MutableStateFlow<List<NodeLayout>>(emptyList())
     private val _lines = MutableStateFlow<List<VisualLine>>(emptyList())
@@ -63,10 +63,12 @@ constructor(
         val root = _root.value
         this.canvasWidth = canvasWidth
         this.canvasHeight = canvasHeight
+
         if (root != null) {
           val (nodes,lines) = algorithm.calculateTreeLayout(root, canvasWidth, canvasHeight)
             _nodes.update { nodes }
             _lines.update { lines }
+
         }
 
     }

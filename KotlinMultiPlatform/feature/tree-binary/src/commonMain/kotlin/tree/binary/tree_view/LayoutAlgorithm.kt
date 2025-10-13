@@ -1,7 +1,9 @@
 package tree.binary.tree_view
 
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import tree.binary.core.BaseNode
+import kotlin.math.max
 
 interface  LayoutAlgorithm<T>{
     fun calculateTreeLayout(root: Node<T>, width: Float, height: Float):VisualTree
@@ -141,4 +143,37 @@ class DonaldKnuthAlgorithm3{
         return 1 + countNodes(node.left) + countNodes(node.right)
     }
 
+}
+
+data class NodeLayout(
+    val center: Offset,
+    val label: String,
+    val id: String,
+    val color: Color = Color.Blue
+) {
+    /**
+     * For comparing use this method, because if we override hashcode and equal then
+     * it will cause unwanted behaviour in case of copy, because the VM will ignore the other filed
+     * that did not mention in the hashcode
+     */
+    fun isSame(other: NodeLayout) = other.id == this.id
+    override fun toString(): String {
+        return "NodeLayout($label,${center.x},${center.y})"
+    }
+}
+data class Node<T>(
+    val data: T,
+    val left: Node<T>? = null,
+    val right: Node<T>? = null,
+    val id: String = "$data",
+    var center: Offset = Offset.Zero
+) {
+
+    fun getDepth(): Int {
+        val leftDepth = left?.getDepth() ?: 0
+        val rightDepth = right?.getDepth() ?: 0
+        return 1 + max(leftDepth, rightDepth)
+    }
+
+    val label = "$data"
 }

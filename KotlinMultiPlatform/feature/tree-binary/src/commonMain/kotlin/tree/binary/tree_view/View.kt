@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 
 
 
+@Suppress("UnusedBoxWithConstraintsScope")
 @Composable
 fun <T : Comparable<T>> TreeView(
     modifier: Modifier=Modifier,
@@ -43,6 +44,7 @@ fun <T : Comparable<T>> TreeView(
     }
 
     BoxWithConstraints(modifier=modifier) {
+
         val canvasWidth = constraints.maxWidth.toFloat()
         val canvasHeight = constraints.maxHeight.toFloat()
         controller.onCanvasSizeChanged(canvasWidth, canvasHeight)

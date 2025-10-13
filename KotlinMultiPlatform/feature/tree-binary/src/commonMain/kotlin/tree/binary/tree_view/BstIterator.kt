@@ -1,17 +1,16 @@
-@file:Suppress("unused","className","functionName")
+@file:Suppress("unused", "className", "functionName")
+
 package tree.binary.tree_view
 
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import kotlin.math.max
 
 interface State {
     data class ProcessingNode(val id: String) : State
-    data class TargetReached(val id:String):State
-    data object  Finish:State
+    data class TargetReached(val id: String) : State
+    data object Finish : State
     data class NewTree<T : Comparable<T>>(val tree: BstIterator<T>) : State
 }
-
 
 
 interface BstIterator<T : Comparable<T>> {
@@ -20,59 +19,22 @@ interface BstIterator<T : Comparable<T>> {
     fun search(value: T): Sequence<State>
     fun findMin(): Sequence<State>
     fun findMax(): Sequence<State>
-    fun findSuccessor (value: T): Sequence<State>
+    fun findSuccessor(value: T): Sequence<State>
     fun findPredecessor(value: T): Sequence<State>
 
 
-
-    companion object{
-        fun <T:Comparable<T>> create():BstIterator<T>{
-            return  BstIteratorImpl(null)
+    companion object {
+        fun <T : Comparable<T>> create(): BstIterator<T> {
+            // return BstIteratorImpl(null)
+            return BstIteratorImpl2(null)
         }
     }
 }
 
 
-data class Node<T>(
-    val data: T,
-    val left: Node<T>? = null,
-    val right: Node<T>? = null,
-    val id: String = "$data",
-    var center: Offset=Offset.Zero
-) {
-
-    fun getDepth(): Int {
-        val leftDepth = left?.getDepth() ?: 0
-        val rightDepth = right?.getDepth() ?: 0
-        return 1 + max(leftDepth, rightDepth)
-    }
-
-    val label = "$data"
-}
-
-data class NodeLayout(
-    val center: Offset,
-    val label: String,
-    val id: String,
-    val color: Color = Color.Blue
-) {
-    /**
-     * For comparing use this method, because if we override hashcode and equal then
-     * it will cause unwanted behaviour in case of copy, because the VM will ignore the other filed
-     * that did not mention in the hashcode
-     */
-    fun  isSame(other:NodeLayout)=other.id==this.id
-    override fun toString(): String {
-        return "NodeLayout($label,${center.x},${center.y})"
-    }
-}
-
-
-
-
 private class BstIteratorImpl<T : Comparable<T>>(override val root: Node<T>?) : BstIterator<T> {
 
-    override fun insert(value: T) = sequence {
+    override fun insert(value: T): Sequence<State> = sequence {
         val iterator = _insert(root, value).iterator()
         var current: Node<T>? = null
         while (iterator.hasNext()) {
@@ -124,7 +86,7 @@ private class BstIteratorImpl<T : Comparable<T>>(override val root: Node<T>?) : 
         yield(path.first()) // Return new immutable tree root
     }
 
-    override fun search(value: T):Sequence<State> = sequence {
+    override fun search(value: T): Sequence<State> = sequence {
         var current = root
         while (current != null) {
             yield(State.ProcessingNode(current.id)) // Emit each visited node
@@ -163,9 +125,9 @@ private class BstIteratorImpl<T : Comparable<T>>(override val root: Node<T>?) : 
         }
 
         while (current!!.right != null) {
-                yield(State.ProcessingNode(current.id)) // Emit each visited node
-                current = current.right
-            }
+            yield(State.ProcessingNode(current.id)) // Emit each visited node
+            current = current.right
+        }
 
         yield(State.TargetReached(current.id)) // Found maximum value
     }
@@ -182,6 +144,7 @@ private class BstIteratorImpl<T : Comparable<T>>(override val root: Node<T>?) : 
                     successor = current  // Store potential successor (ancestor case)
                     current.left
                 }
+
                 value > current.data -> current.right
                 else -> {
                     //TODO: Target node reached
@@ -226,6 +189,7 @@ private class BstIteratorImpl<T : Comparable<T>>(override val root: Node<T>?) : 
                     predecessor = current  // Store potential predecessor (ancestor case)
                     current.right
                 }
+
                 value < current.data -> current.left
                 else -> {
                     //TODO: Target node reached
@@ -259,3 +223,94 @@ private class BstIteratorImpl<T : Comparable<T>>(override val root: Node<T>?) : 
     }
 
 }
+
+private class BstIteratorImpl2<T : Comparable<T>>(override val root: Node<T>?) : BstIterator<T> {
+    private val states = mutableListOf<Node<T>>()
+    var current: Node<T>? = null
+   companion object{
+       var cnt = 0
+       var cnt2=0
+   }
+    override fun insert(value: T): Sequence<State> = sequence {
+        __insert(root, value)
+        for (node in states) {
+            yield(State.ProcessingNode(node.id))
+        }
+        yield(State.NewTree(BstIteratorImpl2(states.last())))
+    }
+
+    fun __insert(value: T):State {
+        __insert(root, value)
+        while (cnt < states.lastIndex) {
+            current = states[cnt]
+            if (current == null) break
+            cnt++
+          return  State.ProcessingNode(current!!.id)
+        }
+        current=states[cnt]
+        return  State.NewTree(BstIteratorImpl2(current))
+    }
+
+
+    private fun _insert(value: T): State {
+        if (root == null) {
+            return State.NewTree(BstIteratorImpl2(Node(value)))
+        }
+        __insert(root, value)
+        while (cnt < states.lastIndex) {
+            current = states[cnt]
+            if (current == null) break
+            cnt++
+            return State.ProcessingNode(current!!.id)
+        }
+        return State.NewTree(BstIteratorImpl2(current))
+    }
+
+    private fun __insert(root: Node<T>?, value: T) {
+        if (root == null) {
+            states.add(Node(value))
+            return
+        }
+
+        val stack = ArrayDeque<Node<T>>() // Stack for traversal
+        val path = ArrayDeque<Node<T>>() // Stack to rebuild immutable nodes
+
+        var current = root
+        while (current != null) {
+            //emit each visited not means the node with we comparing, this the path
+            states.add(current)
+            stack.addFirst(current)
+            current = when {
+                value < current.data -> current.left
+                value > current.data -> current.right
+                else -> {
+                    states.add(root) // Value exists, return original tree
+                    return
+                }
+            }
+        }
+
+        // Insert new node at the correct position
+        var newNode = Node(value)
+
+        // Rebuild the immutable tree from the stack
+        while (stack.isNotEmpty()) {
+            val parent = stack.removeFirst()
+            newNode = if (value < parent.data) {
+                Node(parent.data, newNode, parent.right) // Recreate with updated left child
+            } else {
+                Node(parent.data, parent.left, newNode) // Recreate with updated right child
+            }
+            path.addFirst(newNode)
+        }
+        states.add(path.first()) // Return new immutable tree root
+    }
+
+    override fun search(value: T) = TODO()
+    override fun findMin(): Sequence<State> = TODO()
+    override fun findMax(): Sequence<State> = TODO()
+    override fun findSuccessor(value: T) = TODO()
+    override fun findPredecessor(value: T) = TODO()
+
+}
+

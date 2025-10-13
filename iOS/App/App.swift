@@ -22,8 +22,10 @@ struct SwiftUIConceptApp: App {
    // BinarySearchRoute()
    // BubbleSortRoute()
    // SelectionSortRoute()
-    QuickSortRoute()
+   // QuickSortRoute()
+//    TreeDemo()
     
+    NavRoot()
   
   
 }
