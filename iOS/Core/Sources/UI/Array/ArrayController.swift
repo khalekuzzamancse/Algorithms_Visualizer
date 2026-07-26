@@ -87,6 +87,7 @@ public class ArrayControllerImpl : ArrayController{
         let newElement = oldElement.copy(position: position)
         elements[index] = newElement
     }
+    @MainActor
     public func swap(i: Int, j: Int, delay: TimeInterval) async {
         guard i < elements.count, j < elements.count else { return }
 

@@ -12,20 +12,19 @@ struct SwiftUIConceptApp: App {
     }
 }
 
-
 #Preview {
     
    // ArrayView()
 //   NavRoot()
     
- //   LinearSearchRoute()
+  LinearSearchRoute()
    // BinarySearchRoute()
    // BubbleSortRoute()
    // SelectionSortRoute()
-   // QuickSortRoute()
-//    TreeDemo()
+  // QuickSortRoute()
+
     
-    NavRoot()
+  //  NavRoot()
   
   
 }

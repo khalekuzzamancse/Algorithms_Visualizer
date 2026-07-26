@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:feature/entry_point.dart';
 import 'package:flutter/material.dart';
-void main() {
+import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
+
+void main() async{
+   test2();
   runApp(const MyApp());
 }
 
