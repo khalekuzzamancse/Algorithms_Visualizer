@@ -6,18 +6,18 @@ import Features
 struct SwiftUIConceptApp: App {
     var body: some Scene {
         WindowGroup {
-            LinearSearchRoute()
+            RootNavHost()
        
         }
     }
 }
 
 #Preview {
-    
+    RootNavHost()
    // ArrayView()
-//   NavRoot()
+   //NavRoot()
     
-  LinearSearchRoute()
+  //LinearSearchRoute()
    // BinarySearchRoute()
    // BubbleSortRoute()
    // SelectionSortRoute()

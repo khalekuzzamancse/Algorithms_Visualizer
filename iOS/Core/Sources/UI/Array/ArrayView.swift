@@ -84,6 +84,7 @@ public struct ArrayView: View {
             }
         }
         .coordinateSpace(name: "OverlaySpace") // Add this
+        .padding()
     }
     
 }

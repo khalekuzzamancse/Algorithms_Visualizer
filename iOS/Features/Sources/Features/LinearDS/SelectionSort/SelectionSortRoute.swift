@@ -11,25 +11,23 @@ import CoreUI
 
 public struct SelectionSortRoute: View {
     private let tag = "SelectionSortRoute"
-    
-    @State var code: String? = nil
-    
-        @StateObject var controller = ArrayControllerImpl(
-            itemLabels: ["10", "5", "4", "13", "8"],
-            pointerLabels: ["i", "min"]
-        )
-    
-        let iterator = SelectionSortIterator(array: [10, 5, 4, 13, 8])
 
-//    @StateObject var controller = ArrayControllerImpl(
-//        itemLabels: ["10", "5", "4", "3", "2"],
-    
-//        pointerLabels: ["i", "min"]
-//    )
-//    
-//    let iterator = SelectionSortIterator(array: [10, 5, 4, 3, 2])
-    
-    public init() {}
+
+       @State private var code: String? = nil
+
+       @StateObject private var controller: ArrayControllerImpl
+       private let iterator: SelectionSortIterator
+
+       public init(array: [Int]) {
+           _controller = StateObject(
+               wrappedValue: ArrayControllerImpl(
+                   itemLabels: array.map(\.description),
+                   pointerLabels: ["i", "min"]
+               )
+           )
+
+           iterator = SelectionSortIterator(array: array)
+       }
     
     public var body: some View {
         SimulationSlot(

@@ -3,18 +3,32 @@ import SwiftUI
 import CoreUI
 
 public struct LinearSearchRoute:View {
-    private let tag="LinearSearchRoute"
-    @State var code:String? = nil
-    @State var next=0
-    @StateObject var controller = ArrayControllerImpl(
-        itemLabels: ["10", "20", "30", "40","50","60","70","80"],
-        pointerLabels: ["i"]
-    )
+    private let array: [Int]
+       private let target: Int
+       private let tag = "LinearSearchRoute"
 
-    let iterator = LinearSearchIterator(array: [10, 20, 30,40,50,60,70,80], target: 90)
+       @State private var code: String? = nil
+       @State private var next = 0
 
+       @StateObject private var controller: ArrayControllerImpl
+       private let iterator: LinearSearchIterator
 
-    public init(){}
+       public init(array: [Int], target: Int) {
+           self.array = array
+           self.target = target
+
+           _controller = StateObject(
+               wrappedValue: ArrayControllerImpl(
+                   itemLabels: array.map(\.description),
+                   pointerLabels: ["i"]
+               )
+           )
+
+           iterator = LinearSearchIterator(
+               array: array,
+               target: target
+           )
+       }
      public var body: some View {
     
        
@@ -55,6 +69,7 @@ public struct LinearSearchRoute:View {
            pseudocode: $code,
            visualization:{
                ArrayView(controller: controller)
+        
                
            }
        )

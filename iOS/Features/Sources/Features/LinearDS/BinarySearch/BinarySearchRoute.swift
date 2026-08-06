@@ -6,17 +6,25 @@ import CoreUI
 public struct BinarySearchRoute: View {
     private let tag = "BinarySearchRoute"
     
-    @State var code: String? = nil
-
+    @State private var code: String? = nil
     
-    @StateObject var controller = ArrayControllerImpl(
-        itemLabels: ["10", "20", "30", "40", "50", "60", "70", "80"],
-        pointerLabels: ["low", "high", "mid"]
-    )
-
-    let iterator = BinarySearchIterator(array: [10, 20, 30, 40, 50, 60, 70, 80], target: 50)
-
-    public init() {}
+    @StateObject private var controller: ArrayControllerImpl
+    private let iterator: BinarySearchIterator
+    
+    public init(array: [Int], target: Int) {
+        _controller = StateObject(
+            wrappedValue: ArrayControllerImpl(
+                itemLabels: array.map(\.description),
+                pointerLabels: ["low", "high", "mid"]
+            )
+        )
+        
+        iterator = BinarySearchIterator(
+            array: array,
+            target: target
+        )
+    }
+    
 
     public var body: some View {
         SimulationSlot(

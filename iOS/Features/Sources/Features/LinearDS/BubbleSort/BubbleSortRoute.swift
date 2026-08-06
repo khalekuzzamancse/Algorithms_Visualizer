@@ -5,23 +5,21 @@ import CoreUI
 public struct BubbleSortRoute: View {
     private let tag = "BubbleSortRoute"
     
-    @State var code: String? = nil
-    
-//    @StateObject var controller = ArrayControllerImpl(
-//        itemLabels: ["10", "5", "4", "13", "8"],
-//        pointerLabels: ["i", "j","j+1"]
-//    )
-//    
-//    let iterator = BubbleSortIterator(array: [10, 5, 4, 13, 8])
+    @State private var code: String? = nil
 
-    @StateObject var controller = ArrayControllerImpl(
-        itemLabels: ["10", "5", "4", "3", "2"],
-        pointerLabels: ["i", "j"]
-    )
-    
-    let iterator = BubbleSortIterator(array: [10, 5, 4, 3, 2])
-    
-    public init() {}
+    @StateObject private var controller: ArrayControllerImpl
+    private let iterator: BubbleSortIterator
+
+    public init(array: [Int]) {
+        _controller = StateObject(
+            wrappedValue: ArrayControllerImpl(
+                itemLabels: array.map(\.description),
+                pointerLabels: ["i", "j"]
+            )
+        )
+
+        iterator = BubbleSortIterator(array: array)
+    }
     
     public var body: some View {
         SimulationSlot(

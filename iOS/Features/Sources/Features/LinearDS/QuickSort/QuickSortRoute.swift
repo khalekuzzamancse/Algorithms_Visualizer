@@ -13,15 +13,20 @@ public struct QuickSortRoute: View {
     private let tag = "QuickSortRoute"
     
     @State private var code: String? = nil
-    
-    @StateObject private var controller = ArrayControllerImpl(
-        itemLabels: ["10", "5", "4", "13", "8"],
-        pointerLabels: ["low", "high", "i", "j", "pivot"]
-    )
-    
-    private let simulator = QuickSortSimulatorImpl(list: [10, 5, 4, 13, 8])
-    
-    public init() {}
+
+    @StateObject private var controller: ArrayControllerImpl
+    private let simulator: QuickSortSimulatorImpl
+
+    public init(array: [Int]) {
+        _controller = StateObject(
+            wrappedValue: ArrayControllerImpl(
+                itemLabels: array.map(\.description),
+                pointerLabels: ["low", "high", "i", "j", "pivot"]
+            )
+        )
+
+        simulator = QuickSortSimulatorImpl(list: array)
+    }
     
     public var body: some View {
         SimulationSlot(

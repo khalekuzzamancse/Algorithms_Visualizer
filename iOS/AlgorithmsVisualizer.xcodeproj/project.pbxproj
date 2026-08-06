@@ -34,6 +34,16 @@
 		5037752A2E11151300EB3E50 /* AlgorithmsVisualizerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlgorithmsVisualizerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		500CDB903024536500AB5B7E /* Exceptions for "Features" folder in "AlgorithmsVisualizer" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Sources/Features/HomeScreen.swift,
+			);
+			target = 503775122E11151200EB3E50 /* AlgorithmsVisualizer */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		503775152E11151200EB3E50 /* App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -47,6 +57,9 @@
 		};
 		50978FCC2E8D28DC00185A86 /* Features */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				500CDB903024536500AB5B7E /* Exceptions for "Features" folder in "AlgorithmsVisualizer" target */,
+			);
 			path = Features;
 			sourceTree = "<group>";
 		};

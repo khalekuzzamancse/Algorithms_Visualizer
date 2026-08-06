@@ -29,50 +29,49 @@ public struct SimulationSlot<Content: View>: View {
     }
 
     public var body: some View {
-        NavigationStack {
-            ZStack {
-                VStack {
-                    visualization()
-                      
-                    if let code = pseudocode {
-                        CodeViewer(code: code)
-                    }
-
-                  
-                }
-                .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        IconView(icon: SFIcons.next)
-                            .onTapGesture(perform: onNextRequest)
-                        Spacer().frame(width: 8)
-                        IconView(icon: SFIcons.reload)
-                            .onTapGesture(perform: onResetRequst)
-                        Spacer().frame(width: 8)
-                        IconView(icon: SFIcons.timer)
-                            .onTapGesture {
-                                showAutoPlayDialog = true
-                            }
-                        Spacer().frame(width: 8)
-                        IconView(icon: SFIcons.code)
-                    }
+        ZStack {
+            VStack {
+                visualization()
+                
+                if let code = pseudocode {
+                    CodeViewer(code: code)
                 }
                 
-                if showAutoPlayDialog {
-                    AutoPlayBlockingDialog(
-                        delayInput: $autoPlayDelayInput,
-                        onCancel: { showAutoPlayDialog = false },
-                        onConfirm: { delayMs in
-                            showAutoPlayDialog = false
-                            startAutoPlay(withDelay: delayMs)
+                
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    IconView(icon: SFIcons.next)
+                        .onTapGesture(perform: onNextRequest)
+                    Spacer().frame(width: 8)
+                    IconView(icon: SFIcons.reload)
+                        .onTapGesture(perform: onResetRequst)
+                    Spacer().frame(width: 8)
+                    IconView(icon: SFIcons.timer)
+                        .onTapGesture {
+                            showAutoPlayDialog = true
                         }
-                    )
-                    .transition(.opacity)
-                    .zIndex(1)
+                    Spacer().frame(width: 8)
+                    IconView(icon: SFIcons.code)
                 }
             }
+            
+            if showAutoPlayDialog {
+                AutoPlayBlockingDialog(
+                    delayInput: $autoPlayDelayInput,
+                    onCancel: { showAutoPlayDialog = false },
+                    onConfirm: { delayMs in
+                        showAutoPlayDialog = false
+                        startAutoPlay(withDelay: delayMs)
+                    }
+                )
+                .transition(.opacity)
+                .zIndex(1)
+            }
+        }
             .onDisappear {
                 stopAutoPlay()
-            }
+            
         }
     }
 
@@ -156,77 +155,3 @@ func randomString(n: Int) -> String {
     return String((0..<n).map { _ in letters.randomElement()! })
 }
 
-
-
-//import SwiftUI
-//import CoreUI
-//
-//public struct SimulationSlot<Content: View>: View {
-//    
-//    private let onNextRequest:   ()->Void
-//    private let onResetRequst:   ()->Void
-//    private let onAutoPlayRequest:  (Int)->Void
-//    private let peudocode:String?
-//    let visualization: () -> Content
-//    
-//   public init(
-//        onNextRequest: @escaping () -> Void,
-//        onResetRequst: @escaping () -> Void,
-//        onAutoPlayRequest: @escaping (Int) -> Void,
-//        peudocode:String? = nil,
-//        @ViewBuilder visualization: @escaping () -> Content
-//        
-//   ) {
-//        self.onNextRequest = onNextRequest
-//        self.onResetRequst = onResetRequst
-//        self.onAutoPlayRequest = onAutoPlayRequest
-//        self.visualization = visualization
-//        self.peudocode = peudocode
-//    }
-//    
-//
-//
-//   public var body: some View {
-//       NavigationStack{
-//           VStack {
-//               
-//               visualization()
-//                   .height(200)
-//                   .background(Color.green)
-//               CodeViewer(code:randomString(n:900))
-//            
-//              
-//               
-//           }
-//           
-//           .toolbar {
-//           
-//               ToolbarItemGroup(placement: .navigationBarTrailing) {
-//                       IconView(icon: SFIcons.next)
-//                       .onTapGesture(perform: onNextRequest)
-//                       SpacerHorizontal(8)
-//                       IconView(icon: SFIcons.reload)
-//                       .onTapGesture(perform: onResetRequst)
-//                       SpacerHorizontal(8)
-//                       IconView(icon: SFIcons.timer)
-//                       .onTapGesture(perform: {
-//                           onAutoPlayRequest(1000)
-//                       })
-//                       SpacerHorizontal(8)
-//                       IconView(icon: SFIcons.code)
-//                      
-//                   }
-//               
-//           }
-//            
-//        }
-//       
-//    }
-//}
-//
-//
-//func randomString(n: Int) -> String {
-//    let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
-//    return String((0..<n).map { _ in letters.randomElement()! })
-//}
-//

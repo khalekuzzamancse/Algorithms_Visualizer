@@ -12,22 +12,21 @@ import CoreUI
 public struct InsertionSortRoute: View {
     private let tag = "InsertionSortRoute"
     
-    @State var code: String? = nil
-        @StateObject var controller = ArrayControllerImpl(
-            itemLabels: ["10", "5", "4", "13", "8"],
-            pointerLabels: ["i", "j","j+1"]
+    @State private var code: String? = nil
+
+    @StateObject private var controller: ArrayControllerImpl
+    private let iterator: InsertionSortIterator
+
+    public init(array: [Int]) {
+        _controller = StateObject(
+            wrappedValue: ArrayControllerImpl(
+                itemLabels: array.map(\.description),
+                pointerLabels: ["i", "j", "j+1"]
+            )
         )
-    
-        let iterator = InsertionSortIterator(array: [10, 5, 4, 13, 8])
-//
-//    @StateObject var controller = ArrayControllerImpl(
-//        itemLabels: ["10", "5", "4", "3", "2"],
-//        pointerLabels: ["i", "j","j-1"]
-//    )
-//    
-//    let iterator = InsertionSortIterator(array: [10, 5, 4, 3, 2])
-    
-    public init() {}
+
+        iterator = InsertionSortIterator(array: array)
+    }
     
     public var body: some View {
         SimulationSlot(
